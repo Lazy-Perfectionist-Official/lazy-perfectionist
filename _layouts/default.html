@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title }} | {{ site.title }}</title>
+  <meta name="description" content="{{ page.excerpt | strip_html | truncate: 160 }}">
+  {{ site | seo }}
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MusicGroup",
+    "name": "Lazy Perfectionist",
+    "url": "{{ site.url }}",
+    "genre": "Progressive Rock, Instrumental Metal",
+    "sameAs": [
+      "https://instagram.com/lazyperfectionist_official",
+      "https://tiktok.com/@lazyperfectionist_official",
+      "https://youtube.com/watch?v=Hw2a43RV1p0"
+    ],
+    "member": [{ "@type": "Person", "name": "Sammy" }]
+  }
+  </script>
+</head>
+<body>
+  <header>
+    <h1>Lazy Perfectionist</h1>
+    <nav>
+      <a href="/">Home</a> |
+      <a href="/about">About</a> |
+      <a href="/ep">EP</a> |
+      <a href="/journey">Orbit Journey</a> |
+      <a href="/blog">Blog</a>
+    </nav>
+  </header>
+  <main>{{ content }}</main>
+  <footer>
+    <p>&copy; 2025 Sammy. Made with 💿 on GitHub Pages.</p>
+  </footer>
+</body>
+</html>
