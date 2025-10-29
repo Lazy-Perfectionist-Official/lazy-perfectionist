@@ -31,11 +31,11 @@ export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
 
-  // SINGLE scroll hook for entire page
+  // SINGLE scroll hook
   const { scrollY } = useScroll();
 
-  // Hero gradient overlay fade
-  const heroOverlayOpacity = useTransform(scrollY, [0, 200], [1, 0]);
+  // Gradient overlay: starts half-dark → gets darker on scroll
+  const overlayOpacity = useTransform(scrollY, [0, 300], [0.6, 0.9]);
 
   // -----------------------------------------------------------------
   // Reduce-motion detection
@@ -128,23 +128,23 @@ export default function Home() {
       </nav>
 
       {/* -----------------------------------------------------------------
-          HERO – FIXED: Image visible, gradient fades, no shadow stuck */}
-      <motion.section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Background Image – always visible */}
+          HERO – Image centered, gradient darkens on scroll */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Background Image – centered, full coverage */}
         <div className="absolute inset-0 -z-10">
           <img
             src="/assets/img/logo.png"
             alt="Lazy Perfectionist"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-center"
             style={{ transform: 'translateZ(0)' }}
             loading="eager"
           />
         </div>
 
-        {/* Gradient Overlay – fades out on scroll */}
+        {/* Gradient Overlay – starts half-dark, gets darker */}
         <motion.div
-          className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/80 pointer-events-none"
-          style={{ opacity: heroOverlayOpacity }}
+          className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/90 pointer-events-none"
+          style={{ opacity: overlayOpacity }}
         />
 
         {/* Content */}
@@ -220,7 +220,7 @@ export default function Home() {
             <ChevronDown className="w-8 h-8 text-white/60" />
           </motion.div>
         )}
-      </motion.section>
+      </section>
 
       {/* -----------------------------------------------------------------
           YouTube Section */}
