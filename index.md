@@ -4,24 +4,46 @@ layout: default
 ---
 
 <div class="hero-intro">
-  <p class="subtitle">Instrumental progressive rock/metal from Hong Kong</p>
+  <p class="subtitle">Instrumental Progressive Rock/Metal from Hong Kong</p>
 </div>
 
-<div id="yt-player">
-  <iframe 
-    width="560" 
-    height="315" 
-    src="https://www.youtube.com/embed/Hw2a43RV1p0" 
-    title="Orbit - Lazy Perfectionist (Official Video)" 
-    frameborder="0" 
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-    allowfullscreen>
-  </iframe>
+<div class="logo-container">
+  <img src="/assets/img/logo.png" alt="Lazy Perfectionist Logo" class="hero-logo">
 </div>
 
-<div class="description">
-  <p><strong>Debut single <em>Orbit</em> out now</strong></p>
-  <p>A "sound walk" through human contradictions — perfectionism vs. laziness, Earth vs. cosmos.</p>
+<div class="hero-content">
+  <div class="description">
+    <p class="hero-tagline">🎵 Debut Single <em>Orbit</em> Out Now</p>
+    <p class="hero-description">A "sound walk" through human contradictions — perfectionism vs. laziness, Earth vs. cosmos.</p>
+  </div>
+</div>
+
+<div class="hero-cta">
+  <a href="#listen" class="cta-button primary">
+    <span>🎧</span> Listen Now
+  </a>
+  <a href="#about" class="cta-button secondary">
+    <span>ℹ️</span> Learn More
+  </a>
+</div>
+
+<div id="yt-player" class="video-section">
+  <div class="video-container">
+    <iframe 
+      width="560" 
+      height="315" 
+      src="https://www.youtube.com/embed/Hw2a43RV1p0" 
+      title="Orbit - Lazy Perfectionist (Official Video)" 
+      frameborder="0" 
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+      allowfullscreen>
+    </iframe>
+    <div class="play-overlay">
+      <div class="play-button">
+        <span>▶</span>
+      </div>
+    </div>
+  </div>
 </div>
 
 ---
