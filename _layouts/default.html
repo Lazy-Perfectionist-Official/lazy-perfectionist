@@ -3,12 +3,67 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ page.title }} | {{ site.title }}</title>
-  <meta name="description" content="{{ page.excerpt | strip_html | truncate: 160 }}">
-  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" /> <!-- AOS -->
+  <title>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</title>
+  <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
+  <meta name="keywords" content="instrumental progressive rock, metal, Hong Kong, Lazy Perfectionist, Orbit, music artist, Sammy">
+  <meta name="author" content="Sammy - Lazy Perfectionist">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ site.url }}{{ site.baseurl }}{{ page.url }}">
+  <meta property="og:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
+  <meta property="og:description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
+  <meta property="og:image" content="{{ site.url }}{{ site.baseurl }}/assets/img/orbit-cover.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="{{ site.url }}{{ site.baseurl }}{{ page.url }}">
+  <meta property="twitter:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
+  <meta property="twitter:description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
+  <meta property="twitter:image" content="{{ site.url }}{{ site.baseurl }}/assets/img/orbit-cover.jpg">
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="{{ site.url }}{{ site.baseurl }}{{ page.url }}">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/logo.png">
+  
+  <!-- Preload critical resources -->
+  <link rel="preload" href="/assets/css/style.css" as="style">
+  <link rel="preload" href="https://unpkg.com/aos@next/dist/aos.css" as="style">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css">
   <link rel="stylesheet" href="/assets/css/style.css">
+  
+  <!-- Structured Data -->
   <script type="application/ld+json">
-  { /* unchanged schema */ }
+  {
+    "@context": "https://schema.org",
+    "@type": "MusicGroup",
+    "name": "Lazy Perfectionist",
+    "description": "Instrumental progressive rock/metal from Hong Kong. Debut single 'Orbit' out now.",
+    "url": "{{ site.url }}{{ site.baseurl }}",
+    "image": "{{ site.url }}{{ site.baseurl }}/assets/img/orbit-cover.jpg",
+    "sameAs": [
+      "https://instagram.com/lazyperfectionist_official",
+      "https://tiktok.com/@lazyperfectionist_official",
+      "https://youtube.com/watch?v=Hw2a43RV1p0"
+    ],
+    "genre": ["Progressive Rock", "Progressive Metal", "Instrumental"],
+    "member": {
+      "@type": "Person",
+      "name": "Sammy"
+    },
+    "album": {
+      "@type": "MusicAlbum",
+      "name": "Lazy Perfectionist EP",
+      "datePublished": "2025-10-17"
+    }
+  }
   </script>
 </head>
 <body>
@@ -26,6 +81,7 @@
     <p>&copy; 2025 Sammy. Made with 💿 on GitHub Pages.</p>
   </footer>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12/dist/gsap.min.js"></script> <!-- GSAP -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12/dist/ScrollTrigger.min.js"></script> <!-- GSAP ScrollTrigger -->
   <script src="https://unpkg.com/aos@next/dist/aos.js"></script> <!-- AOS -->
   <script src="/assets/js/animations.js"></script>
 </body>

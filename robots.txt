@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: {{ site.url }}{{ site.baseurl }}/sitemap.xml
+
+# Block common non-content paths
+Disallow: /admin/
+Disallow: /_site/
+Disallow: /.git/
+Disallow: /node_modules/

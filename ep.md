@@ -1,5 +1,6 @@
 ---
 title: EP - Lazy Perfectionist
+layout: default
 ---
 
 # EP: *Lazy Perfectionist*

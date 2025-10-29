@@ -1,7 +1,7 @@
 title: Lazy Perfectionist
 description: Instrumental progressive rock/metal from Hong Kong. Debut single "Orbit" out now.
-url: "https://Lazy-Perfectionist-Official.github.io/lazy-perfectionist"  # Change after custom domain
-baseurl: ""
+url: "https://Lazy-Perfectionist-Official.github.io"
+baseurl: "/lazy-perfectionist"
 
 plugins:
   - jekyll-feed
@@ -14,3 +14,22 @@ defaults:
       layout: default
 
 permalink: pretty
+
+# SEO settings
+twitter:
+  username: lazyperfectist
+  card: summary_large_image
+
+social:
+  name: Lazy Perfectionist
+  links:
+    - https://instagram.com/lazyperfectionist_official
+    - https://tiktok.com/@lazyperfectionist_official
+    - https://youtube.com/watch?v=Hw2a43RV1p0
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge

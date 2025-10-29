@@ -1,0 +1,27 @@
+# SEO Configuration
+site_name: Lazy Perfectionist
+site_description: Instrumental progressive rock/metal from Hong Kong. Debut single "Orbit" out now.
+site_keywords: instrumental progressive rock, metal, Hong Kong, Lazy Perfectionist, Orbit, music artist, Sammy
+site_author: Sammy - Lazy Perfectionist
+
+# Social Media
+twitter_username: lazyperfectist
+facebook_page: 
+instagram_username: lazyperfectionist_official
+
+# Business Information
+business_type: MusicArtist
+business_location: Hong Kong
+business_contact: 
+
+# Music Information
+genre: 
+  - Progressive Rock
+  - Progressive Metal  
+  - Instrumental
+instruments:
+  - Guitar
+  - Bass
+  - Drums
+  - Synthesizer
+  - Orchestral elements
