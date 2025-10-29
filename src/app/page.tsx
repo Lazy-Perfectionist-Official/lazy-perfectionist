@@ -14,6 +14,8 @@ import {
 } from 'lucide-react';
 import { motion, useScroll, useInView, useTransform } from 'framer-motion';
 
+// ---------------------------------------------------------------------
+// Global black canvas (prevents white flash on pinch-zoom)
 <style jsx global>{`
   html, body, #__next {
     background-color: #000 !important;
@@ -96,48 +98,53 @@ export default function Home() {
             </a>
           </div>
 
+          {/* Mobile menu button – instant tap */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden linktree-text/80 p-2"
+            className="md:hidden linktree-text/80 p-2 touch-manipulation"
+            aria-label="Toggle menu"
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
-        {isMenuOpen && (
-          <motion.div
-            className="md:hidden linktree-button backdrop-blur-md border-t border-black/20 rounded-b-2xl overflow-hidden"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-          >
-            <div className="px-4 sm:px-6 lg:px-8 py-2 space-y-1">
-              <Link href="/" className="linktree-text block px-3 py-2 text-base font-medium rounded-md hover:bg-black/10 transition-colors">
-                Home
-              </Link>
-              <Link href="/music" className="linktree-text/80 block px-3 py-2 text-base font-medium rounded-md hover:bg-black/10 transition-colors">
-                Music
-              </Link>
-              <Link href="/blog" className="linktree-text/80 block px-3 py-2 text-base font-medium rounded-md hover:bg-black/10 transition-colors">
-                Blog
-              </Link>
-              <a
-                href="https://linktr.ee/lazyperfectionist_official"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="linktree-text/80 block px-3 py-2 text-base font-medium rounded-md hover:bg-black/10 transition-colors flex items-center gap-1"
-              >
-                Links <ExternalLink size={14} />
-              </a>
-            </div>
-          </motion.div>
-        )}
+        {/* Mobile menu – smooth height animation */}
+        <motion.div
+          initial={{ height: 0, opacity: 0 }}
+          animate={{ 
+            height: isMenuOpen ? 'auto' : 0, 
+            opacity: isMenuOpen ? 1 : 0 
+          }}
+          exit={{ height: 0, opacity: 0 }}
+          transition={{ duration: 0.25, ease: 'easeOut' }}
+          className="md:hidden linktree-button backdrop-blur-md border-t border-black/20 rounded-b-2xl overflow-hidden"
+          style={{ overflow: 'hidden' }}
+        >
+          <div className="px-4 sm:px-6 lg:px-8 py-2 space-y-1">
+            <Link href="/" className="linktree-text block px-3 py-2 text-base font-medium rounded-md hover:bg-black/10 transition-colors">
+              Home
+            </Link>
+            <Link href="/music" className="linktree-text/80 block px-3 py-2 text-base font-medium rounded-md hover:bg-black/10 transition-colors">
+              Music
+            </Link>
+            <Link href="/blog" className="linktree-text/80 block px-3 py-2 text-base font-medium rounded-md hover:bg-black/10 transition-colors">
+              Blog
+            </Link>
+            <a
+              href="https://linktr.ee/lazyperfectionist_official"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="linktree-text/80 block px-3 py-2 text-base font-medium rounded-md hover:bg-black/10 transition-colors flex items-center gap-1"
+            >
+              Links <ExternalLink size={14} />
+            </a>
+          </div>
+        </motion.div>
       </nav>
 
       {/* -----------------------------------------------------------------
           HERO – Image centered, gradient darkens on scroll */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Background Image – centered, full coverage */}
         <div className="absolute inset-0">
           <img
             src="/assets/img/logo.png"
@@ -148,13 +155,11 @@ export default function Home() {
           />
         </div>
 
-        {/* Gradient Overlay – starts half-dark, gets darker */}
         <motion.div
           className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/95 pointer-events-none"
           style={{ opacity: overlayOpacity }}
         />
 
-        {/* Content */}
         <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
           <motion.h1
             className="text-5xl md:text-7xl font-bold text-white mb-6"
@@ -217,7 +222,6 @@ export default function Home() {
           </motion.div>
         </div>
 
-        {/* Scroll indicator */}
         {!reduceMotion && (
           <motion.div
             className="absolute bottom-8 left-1/2 -translate-x-1/2"
@@ -308,7 +312,7 @@ export default function Home() {
       </section>
 
       {/* -----------------------------------------------------------------
-          ABOUT SECTION – revised: single white box, no Musical Style grid */}
+          ABOUT SECTION */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-black/5">
         <div className="max-w-4xl mx-auto">
           <motion.div
@@ -323,7 +327,6 @@ export default function Home() {
             </h2>
           </motion.div>
 
-          {/* SINGLE WHITE BOX – everything inside */}
           <motion.div
             className="linktree-button backdrop-blur-md rounded-2xl p-8 shadow-2xl border border-black/20"
             initial={{ scale: 0.95, opacity: 0 }}
@@ -332,7 +335,6 @@ export default function Home() {
             viewport={{ once: true }}
           >
             <div className="grid md:grid-cols-2 gap-8 mb-10">
-              {/* Left column – quick facts */}
               <motion.div
                 initial={{ x: -40, opacity: 0 }}
                 whileInView={{ x: 0, opacity: 1 }}
@@ -346,7 +348,6 @@ export default function Home() {
                 <p><strong>Genre:</strong> Instrumental Progressive</p>
               </motion.div>
 
-              {/* Right column – tagline */}
               <motion.p
                 initial={{ x: 40, opacity: 0 }}
                 whileInView={{ x: 0, opacity: 1 }}
@@ -360,7 +361,6 @@ export default function Home() {
               </motion.p>
             </div>
 
-            {/* Debut single */}
             <motion.p
               initial={{ y: 20, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
@@ -372,7 +372,6 @@ export default function Home() {
               four-track EP — a “sound walk” exploring human contradictions.
             </motion.p>
 
-            {/* Core Philosophy */}
             <div className="space-y-8 mb-10">
               <motion.div
                 initial={{ opacity: 0 }}
@@ -401,14 +400,12 @@ export default function Home() {
                 </h4>
                 <p className="linktree-text/90">
                   Self-taught Hong Kong business student blending solfa instinct,
-                  orchestral arrangements, and raw duality into unique “Sounds”
+                  orchestral arrangements, and raw duality into unique “Sounds”.
                   Bedroom DIY ethos — from AirPods mixing to pro studio recordings.
                 </p>
               </motion.div>
-
             </div>
 
-            {/* Socials – inside the box */}
             <motion.div
               className="text-center"
               initial={{ opacity: 0 }}
@@ -426,7 +423,7 @@ export default function Home() {
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 linktree-text/80 hover:linktree-text transition-colors"
                 >
-                  📸 Instagram: @lazyperfectionist_official
+                  Instagram: @lazyperfectionist_official
                 </a>
                 <a
                   href="https://tiktok.com/@lazyperfectionist_official"
@@ -434,7 +431,7 @@ export default function Home() {
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 linktree-text/80 hover:linktree-text transition-colors"
                 >
-                  🎵 TikTok: @lazyperfectionist_official
+                  TikTok: @lazyperfectionist_official
                 </a>
                 <a
                   href="https://www.youtube.com/watch?v=Hw2a43RV1p0"
@@ -442,7 +439,7 @@ export default function Home() {
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 linktree-text/80 hover:linktree-text transition-colors"
                 >
-                  🎬 YouTube: Orbit (Official Video)
+                  YouTube: Orbit (Official Video)
                 </a>
               </div>
             </motion.div>
