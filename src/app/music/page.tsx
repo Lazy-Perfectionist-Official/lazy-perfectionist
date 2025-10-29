@@ -96,22 +96,29 @@ export default function MusicPage() {
         {/* Mobile Dropdown Menu */}
         {isMenuOpen && (
           <motion.div
-            className="md:hidden -mx-4 sm:-mx-6 lg:-mx-8 linktree-button backdrop-blur-md border-t border-black/20 rounded-b-2xl"
+            className="md:hidden linktree-button backdrop-blur-md border-t border-black/20 rounded-b-2xl overflow-hidden"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.15 }}
           >
             <div className="px-4 sm:px-6 lg:px-8 py-2 space-y-1">
-              <Link href="/" className="linktree-text block px-3 py-2 text-base font-medium">
+              <Link href="/" className="linktree-text block px-3 py-2 text-base font-medium rounded-md hover:bg-black/10 transition-colors">
                 Home
               </Link>
-              <Link href="/music" className="linktree-text/80 hover:opacity-80 block px-3 py-2 text-base font-medium">
+              <Link href="/music" className="linktree-text/80 block px-3 py-2 text-base font-medium rounded-md hover:bg-black/10 transition-colors">
                 Music
               </Link>
-              <Link href="/blog" className="linktree-text/80 hover:opacity-80 block px-3 py-2 text-base font-medium">
+              <Link href="/blog" className="linktree-text/80 block px-3 py-2 text-base font-medium rounded-md hover:bg-black/10 transition-colors">
                 Blog
               </Link>
+              <a
+                href="https://linktr.ee/lazyperfectionist_official"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="linktree-text/80 block px-3 py-2 text-base font-medium rounded-md hover:bg-black/10 transition-colors flex items-center gap-1"
+              >
+                Links <ExternalLink size={14} />
+              </a>
             </div>
           </motion.div>
         )}
