@@ -1,4 +1,4 @@
-# GitHub OAuth Setup for Static CMS
+# GitHub OAuth Setup for Decap CMS
 
 ## Steps to Configure GitHub OAuth
 
@@ -16,7 +16,7 @@
    - Add it to `static/cms/config.yml` in the `client_id` field
 
 3. **Generate Client Secret** (Optional for PKCE)
-   - Static CMS uses PKCE by default, so client secret is not required
+   - Decap CMS uses PKCE by default, so client secret is not required
    - If needed, generate a client secret and keep it secure
 
 4. **Update Configuration**
