@@ -125,7 +125,7 @@ export default function Home() {
         <div className="h-full px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
-              <span className="linktree-text font-semibold text-lg">Lazy Perfectionist</span>
+              <span className="linktree-text font-semibold text-lg font-dm-serif">Lazy Perfectionist</span>
             </div>
             
             <div className="hidden md:block">

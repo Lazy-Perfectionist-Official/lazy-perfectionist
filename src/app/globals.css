@@ -187,4 +187,15 @@
     font-family: 'Epilogue', sans-serif;
     font-weight: 600;
   }
+
+  .font-dm-serif {
+    font-family: var(--font-dm-serif), serif;
+  }
+
+  .font-dm-serif-italic {
+    font-family: var(--font-dm-serif), serif;
+    font-style: italic;
+  }
 }
+
+

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, DM_Serif_Text } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
@@ -11,6 +11,14 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const dmSerif = DM_Serif_Text({
+  weight: ["400"],               // regular
+  style: ["normal", "italic"],   // both normal & italic
+  subsets: ["latin"],
+  variable: "--font-dm-serif",   // CSS variable name
+  display: "swap",               // prevents FOIT
 });
 
 export const metadata: Metadata = {
