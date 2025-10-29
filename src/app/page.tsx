@@ -121,8 +121,8 @@ export default function Home() {
       </div>
 
       {/* Navigation */}
-      <nav className="fixed top-4 left-1/2 -translate-x-1/2 w-full max-w-7xl px-4 sm:px-6 lg:px-8 linktree-button backdrop-blur-md z-50 border border-black/20 rounded-2xl shadow-2xl">
-        <div className="h-full">
+      <nav className="fixed top-4 left-4 right-4 max-w-7xl mx-auto linktree-button backdrop-blur-md z-50 border border-black/20 rounded-2xl shadow-2xl">
+        <div className="h-full px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
               <span className="linktree-text font-semibold text-lg">Lazy Perfectionist</span>
@@ -161,10 +161,10 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Mobile menu */}
+        {/* Mobile menu — full width of bar, no overflow */}
         {isMenuOpen && (
           <motion.div 
-            className="md:hidden -mx-4 sm:-mx-6 lg:-mx-8 linktree-button backdrop-blur-md border-t border-black/20"
+            className="md:hidden -mx-4 sm:-mx-6 lg:-mx-8 linktree-button backdrop-blur-md border-t border-black/20 rounded-b-2xl"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
