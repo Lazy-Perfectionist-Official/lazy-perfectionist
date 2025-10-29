@@ -159,9 +159,17 @@
   }
 
   .linktree-gradient {
-    background: linear-gradient(135deg, #ED8734, #FFE17D, #DC9894, #F4B558, #E8C488);
+    background: radial-gradient(ellipse at center, 
+      #cf6f20 0%, 
+      #ecc850 25%, 
+      #d88c88 45%, 
+      #ffa319 65%, 
+      #ffcb71 85%, 
+      transparent 100%
+    );
+    background-color: #000; /* fallback + zoom-out safety */
   }
-
+  
   .linktree-button {
     background-color: #ffffff;
     color: #090c34;
