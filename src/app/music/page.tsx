@@ -61,7 +61,7 @@ export default function MusicPage() {
             <div className="flex items-center">
               <Link href="/" className="flex items-center">
                 <ArrowLeft className="mr-3 linktree-text/80 hover:opacity-80 transition-colors" size={20} />
-                <span className="linktree-text font-semibold text-lg">Lazy Perfectionist</span>
+                <span className="linktree-text font-semibold text-lg font-dm-serif">Lazy Perfectionist</span>
               </Link>
             </div>
 

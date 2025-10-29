@@ -2,168 +2,107 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { motion, useScroll, useTransform, useInView } from 'framer-motion';
-import { 
-  Youtube, 
-  Music, 
-  BookOpen, 
-  ExternalLink, 
+import {
+  Youtube,
+  Music,
+  BookOpen,
+  ExternalLink,
   ChevronDown,
   Play,
   Menu,
-  X
+  X,
 } from 'lucide-react';
+import { motion, useScroll, useInView, useTransform } from 'framer-motion';
 
-// YouTube video ID extraction
+// ---------------------------------------------------------------------
+// YouTube ID extraction (unchanged)
 const getYouTubeId = (url: string) => {
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const regExp =
+    /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
   const match = url.match(regExp);
   return match && match[2].length === 11 ? match[2] : null;
 };
 
 const youtubeId = getYouTubeId('https://www.youtube.com/watch?v=Hw2a43RV1p0');
 
+// ---------------------------------------------------------------------
+// Main component
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  
-  const { scrollY } = useScroll();
-  const { scrollYProgress } = useScroll();
-  
-  // Smoother parallax effects
-  const heroY = useTransform(scrollY, [0, 300], [0, 100]);
-  const heroOpacity = useTransform(scrollY, [0, 200], [1, 0]);
-  const textScale = useTransform(scrollY, [0, 150], [1, 0.9]);
-  
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: false });
+  const [reduceMotion, setReduceMotion] = useState(false);
 
+  // ONE scroll hook for the whole page
+  const { scrollY } = useScroll();
+
+  // Hero fade-out (lightweight)
+  const heroOpacity = useTransform(scrollY, [0, 150], [1, 0.75]);
+
+  // -----------------------------------------------------------------
+  // Reduce-motion handling
   useEffect(() => {
-    setMounted(true);
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setReduceMotion(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setReduceMotion(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
   }, []);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
-    },
-  };
+  // -----------------------------------------------------------------
+  // Mobile menu toggle
+  const toggleMenu = () => setIsMenuOpen((v) => !v);
 
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 10,
-      },
-    },
-  };
-
-  const floatingVariants = {
-    initial: { y: 0 },
-    animate: {
-      y: [-10, 10, -10],
-      transition: {
-        duration: 3,
-        repeat: Infinity,
-        ease: "easeInOut"
-      }
-    }
-  };
+  // -----------------------------------------------------------------
+  // YouTube section – lazy load iframe
+  const ytRef = useRef<HTMLDivElement>(null);
+  const ytInView = useInView(ytRef, { once: true, margin: '-150px' });
 
   return (
     <div className="min-h-screen linktree-gradient">
-      {/* Animated background elements */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <motion.div
-          className="absolute top-20 left-10 w-72 h-72 bg-white/5 rounded-full mix-blend-multiply filter blur-3xl opacity-70"
-          animate={{
-            x: [0, 100, 0],
-            y: [0, -100, 0],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            repeatType: "reverse",
-          }}
-        />
-        <motion.div
-          className="absolute top-40 right-10 w-96 h-96 bg-white/5 rounded-full mix-blend-multiply filter blur-3xl opacity-70"
-          animate={{
-            x: [0, -100, 0],
-            y: [0, 100, 0],
-          }}
-          transition={{
-            duration: 25,
-            repeat: Infinity,
-            repeatType: "reverse",
-          }}
-        />
-        <motion.div
-          className="absolute bottom-20 left-1/2 w-80 h-80 bg-white/5 rounded-full mix-blend-multiply filter blur-3xl opacity-70"
-          animate={{
-            x: [0, 50, 0],
-            y: [0, -50, 0],
-          }}
-          transition={{
-            duration: 15,
-            repeat: Infinity,
-            repeatType: "reverse",
-          }}
-        />
+      {/* -----------------------------------------------------------------
+          Subtle static background gradients (no animation, no blur) */}
+      <div className="fixed inset-0 -z-20 pointer-events-none overflow-hidden">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-br from-white/10 to-transparent rounded-full" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-tr from-orange-500/5 to-transparent rounded-full" />
       </div>
 
-      {/* Navigation */}
+      {/* -----------------------------------------------------------------
+          Navigation – unchanged except mobile menu animation */}
       <nav className="fixed top-4 left-4 right-4 max-w-7xl mx-auto linktree-button backdrop-blur-md z-50 border border-black/20 rounded-2xl shadow-2xl">
-        <div className="h-full px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center">
-              <span className="linktree-text font-semibold text-lg font-dm-serif">Lazy Perfectionist</span>
-            </div>
-            
-            <div className="hidden md:block">
-              <div className="ml-10 flex items-baseline space-x-8">
-                <Link href="/" className="linktree-text hover:opacity-80 px-3 py-2 text-sm font-medium transition-colors">
-                  Home
-                </Link>
-                <Link href="/music" className="linktree-text/80 hover:opacity-80 px-3 py-2 text-sm font-medium transition-colors">
-                  Music
-                </Link>
-                <Link href="/blog" className="linktree-text/80 hover:opacity-80 px-3 py-2 text-sm font-medium transition-colors">
-                  Blog
-                </Link>
-                <a 
-                  href="https://linktr.ee/lazyperfectionist_official"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="linktree-text/80 hover:opacity-80 px-3 py-2 text-sm font-medium transition-colors"
-                >
-                  Links
-                </a>
-              </div>
-            </div>
-            
-            <div className="md:hidden">
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="linktree-text/80 hover:opacity-80 p-2"
-              >
-                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-              </button>
-            </div>
+        <div className="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
+          <span className="linktree-text font-semibold text-lg font-dm-serif">
+            Lazy Perfectionist
+          </span>
+
+          {/* Desktop */}
+          <div className="hidden md:flex items-baseline space-x-8">
+            <Link href="/" className="linktree-text hover:opacity-80 px-3 py-2 text-sm font-medium transition-colors">
+              Home
+            </Link>
+            <Link href="/music" className="linktree-text/80 hover:opacity-80 px-3 py-2 text-sm font-medium transition-colors">
+              Music
+            </Link>
+            <Link href="/blog" className="linktree-text/80 hover:opacity-80 px-3 py-2 text-sm font-medium transition-colors">
+              Blog
+            </Link>
+            <a
+              href="https://linktr.ee/lazyperfectionist_official"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="linktree-text/80 hover:opacity-80 px-3 py-2 text-sm font-medium transition-colors"
+            >
+              Links
+            </a>
           </div>
+
+          {/* Mobile toggle */}
+          <button onClick={toggleMenu} className="md:hidden linktree-text/80 p-2">
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
 
-        {/* Mobile menu — full width of bar, no overflow */}
+        {/* Mobile menu */}
         {isMenuOpen && (
-          <motion.div 
+          <motion.div
             className="md:hidden -mx-4 sm:-mx-6 lg:-mx-8 linktree-button backdrop-blur-md border-t border-black/20 rounded-b-2xl"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -179,7 +118,7 @@ export default function Home() {
               <Link href="/blog" className="linktree-text/80 hover:opacity-80 block px-3 py-2 text-base font-medium">
                 Blog
               </Link>
-              <a 
+              <a
                 href="https://linktr.ee/lazyperfectionist_official"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -192,47 +131,48 @@ export default function Home() {
         )}
       </nav>
 
-      {/* Hero Section */}
-      <motion.section 
+      {/* -----------------------------------------------------------------
+          Hero – fade only, no Y transform */}
+      <motion.section
         className="relative min-h-screen flex items-center justify-center overflow-hidden"
-        style={{ y: heroY, opacity: heroOpacity }}
+        style={{ opacity: heroOpacity }}
       >
-        {/* Full screen background image */}
-        <div className="absolute inset-0">
+        {/* Fixed background image (GPU hint) */}
+        <div className="absolute inset-0 -z-10">
           <img
             src="/assets/img/logo.png"
             alt="Lazy Perfectionist"
             className="w-full h-full object-cover"
+            style={{ transform: 'translateZ(0)' }}
+            loading="eager"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/50"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/50" />
         </div>
-        
-        <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
 
-          <motion.h1 
+        <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+          <motion.h1
             className="text-5xl md:text-7xl font-bold text-white mb-6"
-            style={{ scale: textScale }}
-            initial={{ y: 50, opacity: 0 }}
+            initial={{ y: 40, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+            transition={{ duration: 0.7, ease: 'easeOut' }}
           >
             @Lazy Perfectionist
           </motion.h1>
-          
-          <motion.p 
+
+          <motion.p
             className="text-xl md:text-2xl text-white/90 mb-8 leading-relaxed"
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+            transition={{ duration: 0.7, delay: 0.2, ease: 'easeOut' }}
           >
             Bedroom Instrumental Rock!
           </motion.p>
 
-          <motion.div 
+          <motion.div
             className="flex flex-col sm:flex-row gap-4 justify-center mb-12"
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
+            transition={{ duration: 0.7, delay: 0.4, ease: 'easeOut' }}
           >
             <motion.a
               href="https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8"
@@ -245,7 +185,7 @@ export default function Home() {
               <Play className="mr-2" size={20} />
               Stream "Orbit" Now!
             </motion.a>
-            
+
             <motion.a
               href="https://medium.com/@lazyperfectist"
               target="_blank"
@@ -259,77 +199,80 @@ export default function Home() {
             </motion.a>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             className="flex items-center justify-center gap-6 text-white/80"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.8, ease: "easeOut" }}
+            transition={{ duration: 0.8, delay: 0.6 }}
           >
-            <span className="flex items-center gap-2">
-              🇭🇰 Hong Kong
-            </span>
+            <span className="flex items-center gap-2">🇭🇰 Hong Kong</span>
             <span>•</span>
             <span>@Lazy Perfectionist</span>
           </motion.div>
         </div>
 
-        <motion.div 
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <ChevronDown className="w-8 h-8 text-white/60" />
-        </motion.div>
+        {/* Scroll indicator – only animate if motion is allowed */}
+        {!reduceMotion && (
+          <motion.div
+            className="absolute bottom-8 left-1/2 -translate-x-1/2"
+            animate={{ y: [0, 10, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            <ChevronDown className="w-8 h-8 text-white/60" />
+          </motion.div>
+        )}
       </motion.section>
 
-      {/* YouTube Video Section */}
-      <motion.section 
-        className="py-20 px-4 sm:px-6 lg:px-8 bg-black/10"
-        ref={ref}
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-        transition={{ duration: 0.8 }}
-      >
+      {/* -----------------------------------------------------------------
+          YouTube Section – lazy iframe */}
+      <section ref={ytRef} className="py-20 px-4 sm:px-6 lg:px-8 bg-black/10">
         <div className="max-w-4xl mx-auto">
-          <motion.div 
+          <motion.div
             className="text-center mb-12"
             initial={{ y: 30, opacity: 0 }}
-            animate={isInView ? { y: 0, opacity: 1 } : { y: 30, opacity: 0 }}
+            animate={ytInView ? { y: 0, opacity: 1 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <motion.div
-              animate={{ scale: [1, 1.05, 1] }}
+              animate={reduceMotion ? {} : { scale: [1, 1.05, 1] }}
               transition={{ duration: 2, repeat: Infinity }}
               className="inline-flex items-center gap-2 mb-4"
             >
               <Youtube className="w-8 h-8 text-red-500" />
-              <h2 className="text-4xl md:text-5xl font-bold linktree-header-text">Featured Video</h2>
+              <h2 className="text-4xl md:text-5xl font-bold linktree-header-text">
+                Featured Video
+              </h2>
             </motion.div>
-            <p className="text-xl linktree-header-text/80">Watch my latest music video and performance</p>
+            <p className="text-xl linktree-header-text/80">
+              Watch my latest music video and performance
+            </p>
           </motion.div>
-          
-          <motion.div 
+
+          <motion.div
             className="relative aspect-video rounded-2xl overflow-hidden shadow-2xl"
             initial={{ scale: 0.9, opacity: 0 }}
-            animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0.9, opacity: 0 }}
+            animate={ytInView ? { scale: 1, opacity: 1 } : {}}
             transition={{ duration: 0.8, delay: 0.4 }}
             whileHover={{ scale: 1.02 }}
           >
             <div className="absolute inset-0 bg-gradient-to-r from-orange-400/20 to-amber-300/20 z-10 pointer-events-none" />
-            <iframe
-              className="w-full h-full"
-              src={`https://www.youtube.com/embed/${youtubeId}`}
-              title="Lazy Perfectionist - Featured Video"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
+            {ytInView && (
+              <iframe
+                className="w-full h-full"
+                src={`https://www.youtube.com/embed/${youtubeId}`}
+                title="Lazy Perfectionist - Featured Video"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                loading="lazy"
+              />
+            )}
           </motion.div>
-          
-          <motion.div 
+
+          <motion.div
             className="flex flex-col sm:flex-row gap-4 justify-center mt-8"
             initial={{ y: 20, opacity: 0 }}
-            animate={isInView ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
+            animate={ytInView ? { y: 0, opacity: 1 } : {}}
             transition={{ duration: 0.6, delay: 0.6 }}
           >
             <motion.a
@@ -343,7 +286,7 @@ export default function Home() {
               <Youtube className="mr-2" size={20} />
               Watch on YouTube
             </motion.a>
-            
+
             <motion.a
               href="https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8"
               target="_blank"
@@ -357,54 +300,57 @@ export default function Home() {
             </motion.a>
           </motion.div>
         </div>
-      </motion.section>
+      </section>
 
-      {/* Music Section */}
-      <motion.section 
-        className="py-20 px-4 sm:px-6 lg:px-8 bg-black/10"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: false }}
-      >
+      {/* -----------------------------------------------------------------
+          Music Section – once-only entrance */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-black/10">
         <div className="max-w-6xl mx-auto">
-          <motion.div 
+          <motion.div
             className="text-center mb-16"
             initial={{ y: 30, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6 }}
-            viewport={{ once: false }}
+            viewport={{ once: true, margin: '-100px' }}
           >
             <motion.div
-              animate={{ rotate: [0, 5, -5, 0] }}
+              animate={reduceMotion ? {} : { rotate: [0, 5, -5, 0] }}
               transition={{ duration: 4, repeat: Infinity }}
               className="inline-block mb-4"
             >
               <Music className="w-12 h-12 linktree-text mx-auto" />
             </motion.div>
-            <h2 className="text-4xl md:text-5xl font-bold linktree-header-text mb-4">Latest Music</h2>
-            <p className="text-xl linktree-header-text/80">Listen to "Orbit" - my debut single</p>
+            <h2 className="text-4xl md:text-5xl font-bold linktree-header-text mb-4">
+              Latest Music
+            </h2>
+            <p className="text-xl linktree-header-text/80">
+              Listen to "Orbit" - my debut single
+            </p>
           </motion.div>
-          
-          <motion.div 
+
+          <motion.div
             className="bg-white/90 rounded-3xl p-8 backdrop-blur-sm shadow-2xl"
             initial={{ scale: 0.9, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.8 }}
-            viewport={{ once: false }}
+            viewport={{ once: true, margin: '-100px' }}
             whileHover={{ scale: 1.02 }}
           >
             <div className="aspect-video rounded-2xl overflow-hidden bg-gradient-to-br from-orange-400/20 to-amber-300/20 flex items-center justify-center">
               <div className="text-center">
                 <motion.div
-                  animate={{ scale: [1, 1.1, 1] }}
+                  animate={reduceMotion ? {} : { scale: [1, 1.1, 1] }}
                   transition={{ duration: 2, repeat: Infinity }}
                   className="mb-4"
                 >
                   <Music className="w-16 h-16 linktree-text mx-auto" />
                 </motion.div>
-                <h3 className="text-2xl font-semibold linktree-text mb-2">Orbit</h3>
-                <p className="linktree-text/70 mb-6">Debut single now available on all platforms</p>
+                <h3 className="text-2xl font-semibold linktree-text mb-2">
+                  Orbit
+                </h3>
+                <p className="linktree-text/70 mb-6">
+                  Debut single now available on all platforms
+                </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <motion.a
                     href="https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8"
@@ -429,57 +375,66 @@ export default function Home() {
             </div>
           </motion.div>
         </div>
-      </motion.section>
+      </section>
 
-      {/* Blog Section */}
-      <motion.section 
-        className="py-20 px-4 sm:px-6 lg:px-8"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: false }}
-      >
+      {/* -----------------------------------------------------------------
+          Blog Section – once-only staggered cards */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
-          <motion.div 
+          <motion.div
             className="text-center mb-16"
             initial={{ y: 30, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6 }}
-            viewport={{ once: false }}
+            viewport={{ once: true, margin: '-100px' }}
           >
             <motion.div
-              animate={{ y: [0, -5, 0] }}
+              animate={reduceMotion ? {} : { y: [0, -5, 0] }}
               transition={{ duration: 3, repeat: Infinity }}
               className="inline-block mb-4"
             >
               <BookOpen className="w-12 h-12 linktree-text mx-auto" />
             </motion.div>
-            <h2 className="text-4xl md:text-5xl font-bold linktree-header-text mb-4">Stories & Thoughts</h2>
-            <p className="text-xl linktree-header-text/80">Read my latest posts on Medium</p>
+            <h2 className="text-4xl md:text-5xl font-bold linktree-header-text mb-4">
+              Stories & Thoughts
+            </h2>
+            <p className="text-xl linktree-header-text/80">
+              Read my latest posts on Medium
+            </p>
           </motion.div>
-          
-          <motion.div 
+
+          <motion.div
             className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
-            variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: false }}
+            viewport={{ once: true, margin: '-100px' }}
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: { staggerChildren: 0.1, delayChildren: 0.2 },
+              },
+            }}
           >
             {[1, 2, 3].map((i) => (
-              <motion.div 
-                key={i} 
+              <motion.div
+                key={i}
                 className="bg-white/90 rounded-2xl p-6 backdrop-blur-sm shadow-xl hover:shadow-2xl transition-all"
-                variants={itemVariants}
+                variants={{
+                  hidden: { y: 20, opacity: 0 },
+                  visible: { y: 0, opacity: 1 },
+                }}
                 whileHover={{ scale: 1.05, y: -5 }}
               >
-                <motion.div 
-                  className="aspect-video rounded-xl bg-gradient-to-br from-orange-400/20 to-amber-300/20 mb-4 flex items-center justify-center"
-                  whileHover={{ scale: 1.05 }}
-                >
+                <div className="aspect-video rounded-xl bg-gradient-to-br from-orange-400/20 to-amber-300/20 mb-4 flex items-center justify-center">
                   <BookOpen className="w-12 h-12 linktree-text" />
-                </motion.div>
-                <h3 className="text-xl font-semibold linktree-text mb-2">Latest Story {i}</h3>
-                <p className="linktree-text/70 mb-4">Discover insights about music, creativity, and the journey...</p>
+                </div>
+                <h3 className="text-xl font-semibold linktree-text mb-2">
+                  Latest Story {i}
+                </h3>
+                <p className="linktree-text/70 mb-4">
+                  Discover insights about music, creativity, and the journey...
+                </p>
                 <div className="flex gap-3">
                   <motion.a
                     href="https://medium.com/@lazyperfectist"
@@ -500,13 +455,13 @@ export default function Home() {
               </motion.div>
             ))}
           </motion.div>
-          
-          <motion.div 
+
+          <motion.div
             className="text-center mt-12"
             initial={{ y: 20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            viewport={{ once: false }}
+            viewport={{ once: true, margin: '-100px' }}
           >
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.a
@@ -529,50 +484,54 @@ export default function Home() {
             </div>
           </motion.div>
         </div>
-      </motion.section>
+      </section>
 
-      {/* Enhanced Footer */}
+      {/* -----------------------------------------------------------------
+          Footer – unchanged except reduced-motion for decorative notes */}
       <footer className="relative bg-black/90 backdrop-blur-xl border-t border-white/10 overflow-hidden">
-        {/* Animated background pattern */}
         <div className="absolute inset-0 opacity-5">
-          <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 via-transparent to-amber-500/20"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 via-transparent to-amber-500/20" />
         </div>
-        
+
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          {/* Main footer content */}
           <div className="grid md:grid-cols-3 gap-8 mb-12">
-            {/* Brand section */}
-            <motion.div 
+            {/* Brand */}
+            <motion.div
               className="text-center md:text-left"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              viewport={{ once: false }}
+              viewport={{ once: true }}
             >
               <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                animate={reduceMotion ? {} : { rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
                 className="inline-block mb-4"
               >
                 <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-amber-500 rounded-xl flex items-center justify-center">
                   <Music className="w-6 h-6 text-white" />
                 </div>
               </motion.div>
-              <h3 className="text-xl font-bold text-white mb-2">Lazy Perfectionist</h3>
+              <h3 className="text-xl font-bold text-white mb-2">
+                Lazy Perfectionist
+              </h3>
               <p className="text-gray-400 text-sm leading-relaxed">
-                Bedroom Instrumental Rock from Hong Kong 🇭🇰. Creating music that moves the soul.
+                Bedroom Instrumental Rock from Hong Kong 🇭🇰. Creating music that
+                moves the soul.
               </p>
             </motion.div>
 
             {/* Quick links */}
-            <motion.div 
+            <motion.div
               className="text-center"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: false }}
+              viewport={{ once: true }}
             >
-              <h4 className="text-lg font-semibold text-white mb-4">Quick Links</h4>
+              <h4 className="text-lg font-semibold text-white mb-4">
+                Quick Links
+              </h4>
               <div className="space-y-2">
                 <Link href="/" className="block text-gray-400 hover:text-orange-400 transition-colors text-sm">
                   Home
@@ -583,7 +542,7 @@ export default function Home() {
                 <Link href="/blog" className="block text-gray-400 hover:text-orange-400 transition-colors text-sm">
                   Blog
                 </Link>
-                <a 
+                <a
                   href="https://linktr.ee/lazyperfectionist_official"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -595,14 +554,16 @@ export default function Home() {
             </motion.div>
 
             {/* Connect */}
-            <motion.div 
+            <motion.div
               className="text-center md:text-right"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: false }}
+              viewport={{ once: true }}
             >
-              <h4 className="text-lg font-semibold text-white mb-4">Connect</h4>
+              <h4 className="text-lg font-semibold text-white mb-4">
+                Connect
+              </h4>
               <div className="space-y-2">
                 <a
                   href="https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8"
@@ -632,25 +593,20 @@ export default function Home() {
             </motion.div>
           </div>
 
-          {/* Divider */}
-          <div className="border-t border-white/10 mb-8"></div>
+          <div className="border-t border-white/10 mb-8" />
 
-          {/* Bottom section */}
-          <motion.div 
+          <motion.div
             className="flex flex-col md:flex-row justify-between items-center"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            viewport={{ once: false }}
+            viewport={{ once: true }}
           >
             <div className="text-gray-400 text-sm mb-4 md:mb-0">
               © 2025 Lazy Perfectionist Team. All rights reserved.
             </div>
-            
-            <motion.div 
-              className="flex items-center space-x-6"
-              whileHover={{ scale: 1.05 }}
-            >
+
+            <motion.div className="flex items-center space-x-6" whileHover={{ scale: 1.05 }}>
               <a
                 href="https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8"
                 target="_blank"
@@ -681,39 +637,28 @@ export default function Home() {
             </motion.div>
           </motion.div>
 
-          {/* Floating music note decoration */}
-          <motion.div
-            className="absolute bottom-10 left-10 text-orange-500/20"
-            animate={{
-              y: [0, -20, 0],
-              rotate: [0, 10, -10, 0],
-            }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          >
-            <Music className="w-8 h-8" />
-          </motion.div>
+          {/* Floating notes – only when motion is allowed */}
+          {!reduceMotion && (
+            <>
+              <motion.div
+                className="absolute bottom-10 left-10 text-orange-500/20"
+                animate={{ y: [0, -20, 0], rotate: [0, 10, -10, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+              >
+                <Music className="w-8 h-8" />
+              </motion.div>
 
-          <motion.div
-            className="absolute top-10 right-10 text-amber-500/20"
-            animate={{
-              y: [0, -15, 0],
-              rotate: [0, -10, 10, 0],
-            }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 1
-            }}
-          >
-            <Music className="w-6 h-6" />
-          </motion.div>
+              <motion.div
+                className="absolute top-10 right-10 text-amber-500/20"
+                animate={{ y: [0, -15, 0], rotate: [0, -10, 10, 0] }}
+                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+              >
+                <Music className="w-6 h-6" />
+              </motion.div>
+            </>
+          )}
         </div>
       </footer>
     </div>
-  )
+  );
 }
