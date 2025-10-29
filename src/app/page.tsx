@@ -15,7 +15,7 @@ import {
 import { motion, useScroll, useInView, useTransform } from 'framer-motion';
 
 // ---------------------------------------------------------------------
-// YouTube ID extraction (unchanged)
+// YouTube ID extraction
 const getYouTubeId = (url: string) => {
   const regExp =
     /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
@@ -31,14 +31,14 @@ export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
 
-  // ONE scroll hook for the whole page
+  // SINGLE scroll hook for entire page
   const { scrollY } = useScroll();
 
-  // Hero fade-out (lightweight)
-  const heroOpacity = useTransform(scrollY, [0, 150], [1, 0.75]);
+  // Hero gradient overlay fade
+  const heroOverlayOpacity = useTransform(scrollY, [0, 200], [1, 0]);
 
   // -----------------------------------------------------------------
-  // Reduce-motion handling
+  // Reduce-motion detection
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
     setReduceMotion(mq.matches);
@@ -48,32 +48,27 @@ export default function Home() {
   }, []);
 
   // -----------------------------------------------------------------
-  // Mobile menu toggle
-  const toggleMenu = () => setIsMenuOpen((v) => !v);
-
-  // -----------------------------------------------------------------
-  // YouTube section – lazy load iframe
+  // YouTube lazy load
   const ytRef = useRef<HTMLDivElement>(null);
   const ytInView = useInView(ytRef, { once: true, margin: '-150px' });
 
   return (
     <div className="min-h-screen linktree-gradient">
       {/* -----------------------------------------------------------------
-          Subtle static background gradients (no animation, no blur) */}
+          Static subtle background gradients */}
       <div className="fixed inset-0 -z-20 pointer-events-none overflow-hidden">
         <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-br from-white/10 to-transparent rounded-full" />
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-tr from-orange-500/5 to-transparent rounded-full" />
       </div>
 
       {/* -----------------------------------------------------------------
-          Navigation – unchanged except mobile menu animation */}
+          Navigation */}
       <nav className="fixed top-4 left-4 right-4 max-w-7xl mx-auto linktree-button backdrop-blur-md z-50 border border-black/20 rounded-2xl shadow-2xl">
         <div className="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
           <span className="linktree-text font-semibold text-lg font-dm-serif">
             Lazy Perfectionist
           </span>
 
-          {/* Desktop */}
           <div className="hidden md:flex items-baseline space-x-8">
             <Link href="/" className="linktree-text hover:opacity-80 px-3 py-2 text-sm font-medium transition-colors">
               Home
@@ -94,13 +89,14 @@ export default function Home() {
             </a>
           </div>
 
-          {/* Mobile toggle */}
-          <button onClick={toggleMenu} className="md:hidden linktree-text/80 p-2">
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="md:hidden linktree-text/80 p-2"
+          >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
-        {/* Mobile menu */}
         {isMenuOpen && (
           <motion.div
             className="md:hidden -mx-4 sm:-mx-6 lg:-mx-8 linktree-button backdrop-blur-md border-t border-black/20 rounded-b-2xl"
@@ -132,12 +128,9 @@ export default function Home() {
       </nav>
 
       {/* -----------------------------------------------------------------
-          Hero – fade only, no Y transform */}
-      <motion.section
-        className="relative min-h-screen flex items-center justify-center overflow-hidden"
-        style={{ opacity: heroOpacity }}
-      >
-        {/* Fixed background image (GPU hint) */}
+          HERO – FIXED: Image visible, gradient fades, no shadow stuck */}
+      <motion.section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Background Image – always visible */}
         <div className="absolute inset-0 -z-10">
           <img
             src="/assets/img/logo.png"
@@ -146,9 +139,15 @@ export default function Home() {
             style={{ transform: 'translateZ(0)' }}
             loading="eager"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/50" />
         </div>
 
+        {/* Gradient Overlay – fades out on scroll */}
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/80 pointer-events-none"
+          style={{ opacity: heroOverlayOpacity }}
+        />
+
+        {/* Content */}
         <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
           <motion.h1
             className="text-5xl md:text-7xl font-bold text-white mb-6"
@@ -205,13 +204,13 @@ export default function Home() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            <span className="flex items-center gap-2">🇭🇰 Hong Kong</span>
+            <span className="flex items-center gap-2">Hong Kong</span>
             <span>•</span>
             <span>@Lazy Perfectionist</span>
           </motion.div>
         </div>
 
-        {/* Scroll indicator – only animate if motion is allowed */}
+        {/* Scroll indicator */}
         {!reduceMotion && (
           <motion.div
             className="absolute bottom-8 left-1/2 -translate-x-1/2"
@@ -224,7 +223,7 @@ export default function Home() {
       </motion.section>
 
       {/* -----------------------------------------------------------------
-          YouTube Section – lazy iframe */}
+          YouTube Section */}
       <section ref={ytRef} className="py-20 px-4 sm:px-6 lg:px-8 bg-black/10">
         <div className="max-w-4xl mx-auto">
           <motion.div
@@ -303,7 +302,7 @@ export default function Home() {
       </section>
 
       {/* -----------------------------------------------------------------
-          Music Section – once-only entrance */}
+          Music Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-black/10">
         <div className="max-w-6xl mx-auto">
           <motion.div
@@ -378,7 +377,7 @@ export default function Home() {
       </section>
 
       {/* -----------------------------------------------------------------
-          Blog Section – once-only staggered cards */}
+          Blog Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <motion.div
@@ -487,7 +486,7 @@ export default function Home() {
       </section>
 
       {/* -----------------------------------------------------------------
-          Footer – unchanged except reduced-motion for decorative notes */}
+          Footer */}
       <footer className="relative bg-black/90 backdrop-blur-xl border-t border-white/10 overflow-hidden">
         <div className="absolute inset-0 opacity-5">
           <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 via-transparent to-amber-500/20" />
@@ -495,7 +494,6 @@ export default function Home() {
 
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="grid md:grid-cols-3 gap-8 mb-12">
-            {/* Brand */}
             <motion.div
               className="text-center md:text-left"
               initial={{ opacity: 0, y: 20 }}
@@ -516,12 +514,11 @@ export default function Home() {
                 Lazy Perfectionist
               </h3>
               <p className="text-gray-400 text-sm leading-relaxed">
-                Bedroom Instrumental Rock from Hong Kong 🇭🇰. Creating music that
+                Bedroom Instrumental Rock from Hong Kong. Creating music that
                 moves the soul.
               </p>
             </motion.div>
 
-            {/* Quick links */}
             <motion.div
               className="text-center"
               initial={{ opacity: 0, y: 20 }}
@@ -553,7 +550,6 @@ export default function Home() {
               </div>
             </motion.div>
 
-            {/* Connect */}
             <motion.div
               className="text-center md:text-right"
               initial={{ opacity: 0, y: 20 }}
@@ -637,7 +633,6 @@ export default function Home() {
             </motion.div>
           </motion.div>
 
-          {/* Floating notes – only when motion is allowed */}
           {!reduceMotion && (
             <>
               <motion.div
