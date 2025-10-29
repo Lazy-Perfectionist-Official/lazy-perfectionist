@@ -28,16 +28,16 @@
   <link rel="canonical" href="{{ site.url }}{{ site.baseurl }}{{ page.url }}">
   
   <!-- Favicon -->
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ site.baseurl }}/assets/img/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ site.baseurl }}/assets/img/logo.png">
   
   <!-- Preload critical resources -->
-  <link rel="preload" href="/assets/css/style.css" as="style">
+  <link rel="preload" href="{{ site.baseurl }}/assets/css/style.css" as="style">
   <link rel="preload" href="https://unpkg.com/aos@next/dist/aos.css" as="style">
   
   <!-- Stylesheets -->
   <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css">
-  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/style.css">
   
   <!-- Structured Data -->
   <script type="application/ld+json">
@@ -67,13 +67,13 @@
   </script>
 </head>
 <body>
-  <header class="hero parallax"> <!-- Parallax class for CSS */
+  <header class="hero parallax">
     <h1>Lazy Perfectionist</h1>
     <nav>
-      <a href="/">Home</a> |
-      <a href="/about">About</a> |
-      <a href="/ep">EP</a> |
-      <a href="/blog">Blog</a>
+      <a href="{{ site.baseurl }}/">Home</a> |
+      <a href="{{ site.baseurl }}/about">About</a> |
+      <a href="{{ site.baseurl }}/ep">EP</a> |
+      <a href="{{ site.baseurl }}/blog">Blog</a>
     </nav>
   </header>
   <main>{{ content }}</main>
@@ -83,6 +83,6 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12/dist/gsap.min.js"></script> <!-- GSAP -->
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12/dist/ScrollTrigger.min.js"></script> <!-- GSAP ScrollTrigger -->
   <script src="https://unpkg.com/aos@next/dist/aos.js"></script> <!-- AOS -->
-  <script src="/assets/js/animations.js"></script>
+  <script src="{{ site.baseurl }}/assets/js/animations.js"></script>
 </body>
 </html>

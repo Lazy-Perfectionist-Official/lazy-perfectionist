@@ -33,3 +33,7 @@ highlighter: rouge
 kramdown:
   input: GFM
   syntax_highlighter: rouge
+
+# GitHub Pages specific
+safe: true
+lsi: false

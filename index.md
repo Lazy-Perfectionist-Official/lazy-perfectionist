@@ -4,7 +4,6 @@ layout: default
 ---
 
 <div data-aos="fade-down" class="hero-intro">
-  <h1>Lazy Perfectionist</h1>
   <p class="subtitle">Instrumental progressive rock/metal from Hong Kong</p>
 </div>
 
