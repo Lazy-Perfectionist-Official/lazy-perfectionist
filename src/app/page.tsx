@@ -14,6 +14,13 @@ import {
 } from 'lucide-react';
 import { motion, useScroll, useInView, useTransform } from 'framer-motion';
 
+<style jsx global>{`
+  html, body, #__next {
+    background-color: #000 !important;
+    min-height: 100vh;
+  }
+`}</style>
+
 // ---------------------------------------------------------------------
 // YouTube ID extraction
 const getYouTubeId = (url: string) => {
@@ -99,28 +106,28 @@ export default function Home() {
 
         {isMenuOpen && (
           <motion.div
-            className="md:hidden -mx-4 sm:-mx-6 lg:-mx-8 linktree-button backdrop-blur-md border-t border-black/20 rounded-b-2xl"
+            className="md:hidden linktree-button backdrop-blur-md border-t border-black/20 rounded-b-2xl overflow-hidden"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
           >
             <div className="px-4 sm:px-6 lg:px-8 py-2 space-y-1">
-              <Link href="/" className="linktree-text block px-3 py-2 text-base font-medium">
+              <Link href="/" className="linktree-text block px-3 py-2 text-base font-medium rounded-md hover:bg-black/10 transition-colors">
                 Home
               </Link>
-              <Link href="/music" className="linktree-text/80 hover:opacity-80 block px-3 py-2 text-base font-medium">
+              <Link href="/music" className="linktree-text/80 block px-3 py-2 text-base font-medium rounded-md hover:bg-black/10 transition-colors">
                 Music
               </Link>
-              <Link href="/blog" className="linktree-text/80 hover:opacity-80 block px-3 py-2 text-base font-medium">
+              <Link href="/blog" className="linktree-text/80 block px-3 py-2 text-base font-medium rounded-md hover:bg-black/10 transition-colors">
                 Blog
               </Link>
               <a
                 href="https://linktr.ee/lazyperfectionist_official"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="linktree-text/80 hover:opacity-80 block px-3 py-2 text-base font-medium"
+                className="linktree-text/80 block px-3 py-2 text-base font-medium rounded-md hover:bg-black/10 transition-colors flex items-center gap-1"
               >
-                Links
+                Links <ExternalLink size={14} />
               </a>
             </div>
           </motion.div>
@@ -233,13 +240,12 @@ export default function Home() {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <motion.div
-              animate={reduceMotion ? {} : { scale: [1, 1.05, 1] }}
+              animate={reduceMotion ? {} : { scale: [1, 1, 1] }}
               transition={{ duration: 2, repeat: Infinity }}
               className="inline-flex items-center gap-2 mb-4"
             >
-              <Youtube className="w-8 h-8 text-red-500" />
               <h2 className="text-4xl md:text-5xl font-bold linktree-header-text">
-                Featured Video
+                Videos
               </h2>
             </motion.div>
             <p className="text-xl linktree-header-text/80">
@@ -315,9 +321,6 @@ export default function Home() {
             <h2 className="text-4xl md:text-5xl font-bold linktree-header-text">
               About Lazy Perfectionist
             </h2>
-            <p className="mt-2 text-lg linktree-header-text/80">
-              Last updated: October 28, 2025
-            </p>
           </motion.div>
 
           {/* SINGLE WHITE BOX – everything inside */}
@@ -340,7 +343,7 @@ export default function Home() {
                 <p><strong>Artist:</strong> Sammy</p>
                 <p><strong>Project:</strong> Lazy Perfectionist</p>
                 <p><strong>Location:</strong> Hong Kong</p>
-                <p><strong>Genre:</strong> Instrumental Progressive Rock/Metal</p>
+                <p><strong>Genre:</strong> Instrumental Progressive</p>
               </motion.div>
 
               {/* Right column – tagline */}
@@ -377,7 +380,7 @@ export default function Home() {
                 transition={{ duration: 0.6, delay: 0.4 }}
                 viewport={{ once: true }}
               >
-                <h3 className="text-2xl font-semibold linktree-header-text mb-4">
+                <h3 className="text-2xl font-semibold linktree-header-text-blue mb-4">
                   Core Philosophy
                 </h3>
                 <ul className="list-disc list-inside space-y-1 text-linktree-text/90">
@@ -394,29 +397,16 @@ export default function Home() {
                 transition={{ duration: 0.6, delay: 0.5 }}
                 viewport={{ once: true }}
               >
-                <h4 className="text-xl font-medium linktree-header-text mb-2">
+                <h4 className="text-xl font-medium linktree-header-text-blue mb-2">
                   What Makes It Different
                 </h4>
                 <p className="linktree-text/90">
                   Self-taught Hong Kong business student blending solfa instinct,
-                  orchestral clouds, and raw duality into unique “sound walks.”
-                  Bedroom DIY ethos — from AirPods mixing to pro studio drums.
+                  orchestral arrangements, and raw duality into unique “Sounds”
+                  Bedroom DIY ethos — from AirPods mixing to pro studio recordings.
                 </p>
               </motion.div>
 
-              <motion.div
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.6 }}
-                viewport={{ once: true }}
-              >
-                <h4 className="text-xl font-medium linktree-header-text mb-2">
-                  Creative Enemies
-                </h4>
-                <p className="linktree-text/90">
-                  Perfectionism paralysis, self-doubt before release.
-                </p>
-              </motion.div>
             </div>
 
             {/* Socials – inside the box */}
@@ -427,7 +417,7 @@ export default function Home() {
               transition={{ duration: 0.6, delay: 0.7 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-2xl font-semibold linktree-header-text mb-6">
+              <h3 className="text-2xl font-semibold linktree-header-text-blue mb-6">
                 Connect
               </h3>
               <div className="flex flex-wrap justify-center gap-6 text-lg">

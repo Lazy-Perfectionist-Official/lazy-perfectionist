@@ -188,6 +188,12 @@
     font-weight: 600;
   }
 
+  .linktree-header-text-blue {
+    color: #090c34;
+    font-family: 'Epilogue', sans-serif;
+    font-weight: 600;
+  }
+
   .font-dm-serif {
     font-family: var(--font-dm-serif), serif;
   }
