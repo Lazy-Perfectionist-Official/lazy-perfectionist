@@ -14,23 +14,23 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Z.ai Code Scaffold - AI-Powered Development",
-  description: "Modern Next.js scaffold optimized for AI-powered development with Z.ai. Built with TypeScript, Tailwind CSS, and shadcn/ui.",
-  keywords: ["Z.ai", "Next.js", "TypeScript", "Tailwind CSS", "shadcn/ui", "AI development", "React"],
-  authors: [{ name: "Z.ai Team" }],
+  title: "Lazy Perfectionist - Official Site",
+  description: "Website for Lazy Perfectionist, a Progressive Rock Instrumental Project/Band by Sammy.",
+  keywords: ["Lazy Perfectionist", "Progressive Rock", "Instrumental Music", "Sammy", "Musician", "Orbit", "Band"],
+  authors: [{ name: "Lazy Perfectionist Team" }],
   icons: {
-    icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
+    icon: "/assets/img/logo.png",
   },
   openGraph: {
-    title: "Z.ai Code Scaffold",
+    title: "Lazy Perfectionist",
     description: "AI-powered development with modern React stack",
-    url: "https://chat.z.ai",
-    siteName: "Z.ai",
+    url: "https://Lazy-Perfectionist.vercel.app",
+    siteName: "Lazy Perfectionist",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Z.ai Code Scaffold",
+    title: "Lazy Perfectionist",
     description: "AI-powered development with modern React stack",
   },
 };

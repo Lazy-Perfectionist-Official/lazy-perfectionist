@@ -84,8 +84,8 @@ export default function MusicPage() {
           <div className={`text-center mb-12 transition-all duration-1000 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <div className="mb-8">
               <img
-                src="https://i.scdn.co/image/ab67616d0000b2731c72e79ba84d8ea8f34e7d88"
-                alt="Orbit Cover"
+                src="/assets/img/logo.png"
+                alt="Lazy Perfectionist Logo"
                 width={300}
                 height={300}
                 className="mx-auto rounded-2xl shadow-2xl border-4 border-white/20"
@@ -143,8 +143,8 @@ export default function MusicPage() {
                     <div className="flex items-center space-x-4">
                       <div className="relative">
                         <img
-                          src={track.album.images[0]?.url || 'https://i.scdn.co/image/ab67616d0000b2731c72e79ba84d8ea8f34e7d88'}
-                          alt={track.album.name}
+                          src="/assets/img/logo.png"
+                          alt="Lazy Perfectionist Logo"
                           width={64}
                           height={64}
                           className="rounded-xl"

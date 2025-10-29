@@ -200,9 +200,9 @@ export default function Home() {
         {/* Full screen background image */}
         <div className="absolute inset-0">
           <img
-            src="https://ugc.production.linktr.ee/5dc466a2-5c82-4fb7-8ee3-53312f264170_LP-Grave-Illustration-Focused.png?io=true&size=avatar-v3_0"
+            src="/assets/img/logo.png"
             alt="Lazy Perfectionist"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/50"></div>
         </div>

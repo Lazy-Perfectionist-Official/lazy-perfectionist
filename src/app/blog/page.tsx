@@ -131,11 +131,11 @@ export default function BlogPage() {
                 >
                   <div className="relative">
                     <img
-                      src={post.thumbnail}
-                      alt={post.title}
+                      src="/assets/img/logo.png"
+                      alt="Lazy Perfectionist Logo"
                       width={400}
                       height={250}
-                      className="w-full h-48 object-cover"
+                      className="w-full h-48 object-contain"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                   </div>
