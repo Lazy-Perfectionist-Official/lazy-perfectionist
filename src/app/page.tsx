@@ -122,7 +122,7 @@ export default function Home() {
 
       {/* Navigation */}
       <nav className="fixed top-4 left-4 right-4 linktree-button backdrop-blur-md z-50 border border-black/20 rounded-2xl shadow-2xl">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
+        <div className="max-w-7xl mx-auto px-4 md:px-20 py-4">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
               <span className="linktree-text font-semibold text-lg">Lazy Perfectionist</span>
@@ -202,7 +202,7 @@ export default function Home() {
           <img
             src="/assets/img/logo.png"
             alt="Lazy Perfectionist"
-            className="w-full h-full object-contain"
+            className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/50"></div>
         </div>
@@ -644,7 +644,7 @@ export default function Home() {
             viewport={{ once: false }}
           >
             <div className="text-gray-400 text-sm mb-4 md:mb-0">
-              © 2024 Lazy Perfectionist. All rights reserved.
+              © 2025 Lazy Perfectionist Team. All rights reserved.
             </div>
             
             <motion.div 
