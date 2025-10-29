@@ -386,7 +386,6 @@ export default function Home() {
                 <ul className="list-disc list-inside space-y-1 text-linktree-text/90">
                   <li>Flaws are the heartbeat of art</li>
                   <li>Instrumental music is a universal story</li>
-                  <li>Perspective transforms via “sound walks”</li>
                   <li>Commit when it captures intent</li>
                 </ul>
               </motion.div>
