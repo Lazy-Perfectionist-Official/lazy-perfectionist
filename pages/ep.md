@@ -1,6 +1,7 @@
 ---
 title: EP - Lazy Perfectionist
 layout: default
+permalink: /ep/
 ---
 
 # EP: *Lazy Perfectionist*
