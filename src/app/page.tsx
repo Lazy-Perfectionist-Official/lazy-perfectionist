@@ -302,6 +302,188 @@ export default function Home() {
       </section>
 
       {/* -----------------------------------------------------------------
+          ABOUT SECTION – insert here */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-black/5">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            className="text-center mb-12"
+            initial={{ y: 30, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl md:text-5xl font-bold linktree-header-text">
+              About Lazy Perfectionist
+            </h2>
+            <p className="mt-2 text-lg linktree-header-text/80">
+              Last updated: October 28, 2025
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
+            {/* Left column – quick facts */}
+            <motion.div
+              initial={{ x: -40, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="space-y-3 text-lg linktree-text"
+            >
+              <p><strong>Artist:</strong> Sammy</p>
+              <p><strong>Project:</strong> Lazy Perfectionist</p>
+              <p><strong>Location:</strong> Hong Kong</p>
+              <p><strong>Genre:</strong> Instrumental Progressive Rock/Metal</p>
+            </motion.div>
+
+            {/* Right column – tagline */}
+            <motion.p
+              initial={{ x: 40, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              viewport={{ once: true }}
+              className="text-lg linktree-text/90 leading-relaxed"
+            >
+              Lazy Perfectionist is an instrumental progressive rock/metal project
+              blending technical precision, emotional storytelling, orchestral layers,
+              EDM-inspired synths, and anime music influences.
+            </motion.p>
+          </div>
+
+          {/* Debut single */}
+          <motion.p
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            viewport={{ once: true }}
+            className="text-center text-lg linktree-text/80 mb-12 italic"
+          >
+            The debut single <strong>Orbit</strong> (released October 17, 2025) anchors a
+            four-track EP — a “sound walk” exploring human contradictions.
+          </motion.p>
+
+          {/* Core Philosophy */}
+          <div className="space-y-8">
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <h3 className="text-2xl font-semibold linktree-header-text mb-4">
+                Core Philosophy
+              </h3>
+              <ul className="list-disc list-inside space-y-1 text-linktree-text/90">
+                <li>Flaws are the heartbeat of art</li>
+                <li>Instrumental music is a universal story</li>
+                <li>Perspective transforms via “sound walks”</li>
+                <li>Commit when it captures intent</li>
+              </ul>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <h4 className="text-xl font-medium linktree-header-text mb-2">
+                What Makes It Different
+              </h4>
+              <p className="linktree-text/90">
+                Self-taught Hong Kong business student blending solfa instinct,
+                orchestral clouds, and raw duality into unique “sound walks.”
+                Bedroom DIY ethos — from AirPods mixing to pro studio drums.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.7 }}
+              viewport={{ once: true }}
+            >
+              <h4 className="text-xl font-medium linktree-header-text mb-2">
+                Creative Enemies
+              </h4>
+              <p className="linktree-text/90">
+                Perfectionism paralysis, self-doubt before release.
+              </p>
+            </motion.div>
+          </div>
+
+          {/* Musical Style */}
+          <motion.div
+            className="mt-12"
+            initial={{ y: 30, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <h3 className="text-2xl font-semibold linktree-header-text mb-6">
+              Musical Style
+            </h3>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[
+                { icon: '🎸', title: 'Progressive Rock', desc: 'Complex time signatures & extended compositions' },
+                { icon: '🤘', title: 'Metal Elements', desc: 'Heavy riffs & powerful dynamics' },
+                { icon: '🎻', title: 'Orchestral Layers', desc: 'Cinematic arrangements & textures' },
+                { icon: '🎹', title: 'EDM Influences', desc: 'Electronic elements & modern production' },
+                { icon: '🌸', title: 'Anime Music', desc: 'Melodic sensibilities & emotional storytelling' },
+              ].map((item, i) => (
+                <div
+                  key={i}
+                  className="linktree-button p-4 rounded-xl text-center backdrop-blur-sm"
+                >
+                  <div className="text-3xl mb-2">{item.icon}</div>
+                  <h5 className="font-medium">{item.title}</h5>
+                  <p className="text-sm linktree-text/70 mt-1">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Socials */}
+          <motion.div
+            className="mt-16 text-center"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.9 }}
+            viewport={{ once: true }}
+          >
+            <h3 className="text-2xl font-semibold linktree-header-text mb-6">
+              Connect
+            </h3>
+            <div className="flex flex-wrap justify-center gap-6 text-lg">
+              <a
+                href="https://instagram.com/lazyperfectionist_official"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 linktree-text/80 hover:linktree-text transition-colors"
+              >
+                📸 Instagram: @lazyperfectionist_official
+              </a>
+              <a
+                href="https://tiktok.com/@lazyperfectionist_official"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 linktree-text/80 hover:linktree-text transition-colors"
+              >
+                🎵 TikTok: @lazyperfectionist_official
+              </a>
+              <a
+                href="https://www.youtube.com/watch?v=Hw2a43RV1p0"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 linktree-text/80 hover:linktree-text transition-colors"
+              >
+                🎬 YouTube: Orbit (Official Video)
+              </a>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* -----------------------------------------------------------------
           Footer */}
       <footer className="relative bg-black/90 backdrop-blur-xl border-t border-white/10 overflow-hidden">
         <div className="absolute inset-0 opacity-5">
