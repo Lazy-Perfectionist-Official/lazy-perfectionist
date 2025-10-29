@@ -62,8 +62,7 @@ export default function BlogPage() {
             <div className="flex items-center">
               <Link href="/" className="flex items-center">
                 <ArrowLeft className="mr-3 linktree-text/80 hover:opacity-80 transition-colors" size={20} />
-                starry
-                <span className="linktree-text font-semibold text-lg font-dm-serif">Lazy Perfectionist</span>
+                <span className="linktree-text font-semibold text-lg font-dm-serif">✨ Lazy Perfectionist</span>
               </Link>
             </div>
 
@@ -130,31 +129,61 @@ export default function BlogPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-24 pb-12 px-4 sm:px-6 lg:px-8">
+      <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
-          <div className={`text-center mb-12 transition-all duration-1000 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <div className="mb-8">
-              <BookOpen className="w-20 h-20 linktree-text mx-auto" />
-            </div>
-            
-            <h1 className="text-4xl md:text-6xl font-bold linktree-header-text mb-4">
-              Stories & Thoughts
-            </h1>
-            
-            <p className="text-xl linktree-header-text/90 mb-8 max-w-2xl mx-auto">
-              Read my latest posts on Medium, where I share my stories and thoughts.
-            </p>
-            
-            <a
-              href="https://medium.com/@lazyperfectist"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="linktree-button inline-flex items-center px-8 py-3 font-semibold transition-all"
+          <motion.div
+            className="text-center"
+            initial={{ opacity: 0, y: 30 }}
+            animate={mounted ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
+          >
+            {/* Icon */}
+            <motion.div
+              className="mb-10"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={mounted ? { scale: 1, opacity: 1 } : {}}
+              transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <BookOpen className="mr-2" size={20} />
-              Follow on Medium
-            </a>
-          </div>
+              <BookOpen className="w-24 h-24 linktree-text mx-auto" />
+            </motion.div>
+
+            {/* Title */}
+            <motion.h1
+              className="text-5xl md:text-7xl font-bold linktree-header-text mb-6"
+              initial={{ y: 20, opacity: 0 }}
+              animate={mounted ? { y: 0, opacity: 1 } : {}}
+              transition={{ duration: 0.7, delay: 0.3 }}
+            >
+              Stories & Thoughts
+            </motion.h1>
+
+            {/* Subtitle */}
+            <motion.p
+              className="text-xl md:text-2xl linktree-header-text/90 mb-10 max-w-3xl mx-auto leading-relaxed"
+              initial={{ y: 20, opacity: 0 }}
+              animate={mounted ? { y: 0, opacity: 1 } : {}}
+              transition={{ duration: 0.7, delay: 0.4 }}
+            >
+              Read my latest posts on Medium, where I share my stories and thoughts.
+            </motion.p>
+
+            {/* CTA Button */}
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={mounted ? { y: 0, opacity: 1 } : {}}
+              transition={{ duration: 0.7, delay: 0.5 }}
+            >
+              <a
+                href="https://medium.com/@lazyperfectist"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="linktree-button inline-flex items-center px-8 py-4 text-lg font-semibold transition-all hover:scale-105 active:scale-95"
+              >
+                <BookOpen className="mr-2" size={22} />
+                Follow on Medium
+              </a>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 

@@ -75,7 +75,7 @@ export default function Home() {
       <nav className="fixed top-4 left-4 right-4 max-w-7xl mx-auto linktree-button backdrop-blur-md z-50 border border-black/20 rounded-2xl shadow-2xl">
         <div className="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
           <span className="linktree-text font-semibold text-lg font-dm-serif">
-            Lazy Perfectionist
+            ✨ Lazy Perfectionist
           </span>
 
           <div className="hidden md:flex items-baseline space-x-8">
