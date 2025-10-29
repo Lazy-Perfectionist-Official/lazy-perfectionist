@@ -53,7 +53,7 @@ export default function BlogPage() {
     <div className="min-h-screen linktree-gradient">
       {/* Navigation */}
       <nav className="fixed top-4 left-4 right-4 linktree-button backdrop-blur-md z-50 border border-black/20 rounded-2xl shadow-2xl">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-20">
+        <div className="max-w-7xl mx-auto px-4 md:px-20 py-4">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
               <Link href="/" className="flex items-center">
