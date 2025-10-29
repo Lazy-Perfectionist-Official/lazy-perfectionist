@@ -4,17 +4,17 @@ layout: default
 ---
 
 # Lazy Perfectionist
-
-**Debut single *Orbit* out now**  
-[Listen on YouTube](https://www.youtube.com/watch?v=Hw2a43RV1p0) · [Stream everywhere](https://distrokid.com/hyperfollow/lazyperfectionist/orbit)
-
-> Instrumental progressive rock/metal from Hong Kong.  
-> A "sound walk" through human contradictions — perfectionism vs. laziness, Earth vs. cosmos.
+<div data-aos="fade-down">**Debut single *Orbit* out now**</div>
+<div data-aos="zoom-in" id="yt-player">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/Hw2a43RV1p0" title="Orbit" frameborder="0" allowfullscreen></iframe>
+</div>
+<div data-aos="fade-up">> Instrumental progressive rock/metal from Hong Kong.  
+> A "sound walk" through human contradictions — perfectionism vs. laziness, Earth vs. cosmos.</div>
 
 ---
 
 ## Latest from Medium
-<div id="medium-feed"></div>
+<div data-aos="slide-up" id="medium-feed"></div>
 <script>
   fetch('https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@lazyperfectist')
     .then(r => r.json())

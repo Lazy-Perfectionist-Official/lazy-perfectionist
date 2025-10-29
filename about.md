@@ -3,12 +3,11 @@ title: About
 ---
 
 # About Lazy Perfectionist
-
-**Artist**: Sammy  
+<div data-aos="fade-right">**Artist**: Sammy  
 **Project**: Lazy Perfectionist  
-**Last Updated**: October 28, 2025
+**Last Updated**: October 28, 2025</div>
 
-Lazy Perfectionist is an instrumental progressive rock/metal project blending technical precision, emotional storytelling, orchestral layers, EDM-inspired synths, and anime music influences.
+<div data-aos="fade-left">Lazy Perfectionist is an instrumental progressive rock/metal project blending technical precision, emotional storytelling, orchestral layers, EDM-inspired synths, and anime music influences.</div>
 
 The debut single *Orbit* (released October 17, 2025) anchors a four-track EP — a "sound walk" exploring human contradictions.
 
@@ -27,5 +26,5 @@ Self-taught HK business student blending solfa instinct, orchestral clouds, and 
 
 ## Socials
 {% for s in site.data.socials %}
-- **[{{ s.platform }}]({{ s.url }})** — {{ s.handle }}  
+- <a class="social-link" href="{{ s.url }}" data-aos="flip-left">[{{ s.platform }}] — {{ s.handle }}</a>  
 {% endfor %}

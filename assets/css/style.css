@@ -1,0 +1,9 @@
+body { font-family: system-ui; max-width: 1200px; margin: 0 auto; padding: 0 1em; line-height: 1.6; background: #121212; color: #fff; }
+.hero { background: url('/assets/img/orbit-cover.jpg') center/cover fixed; height: 50vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+.parallax { background-attachment: fixed; } /* Simple parallax */
+nav a { margin: 0 1em; color: #fff; text-decoration: none; transition: color 0.3s; }
+nav a:hover { color: #ff0000; }
+.social-link { transition: transform 0.3s; } /* For GSAP hover */
+section { padding: 2em; }
+article { border-top: 1px solid #333; padding-top: 1em; }
+/* AOS overrides if needed */
