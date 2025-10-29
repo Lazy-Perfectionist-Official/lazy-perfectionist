@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Music, Play, ExternalLink, Clock, Album } from 'lucide-react'
+import { ArrowLeft, Music, Play, ExternalLink, Clock, Album, Menu, X } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 interface SpotifyTrack {
   id: string
@@ -22,6 +23,7 @@ export default function MusicPage() {
   const [tracks, setTracks] = useState<SpotifyTrack[]>([])
   const [loading, setLoading] = useState(true)
   const [mounted, setMounted] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -35,7 +37,6 @@ export default function MusicPage() {
       setTracks(data.data || [])
     } catch (error) {
       console.error('Failed to fetch Spotify data:', error)
-      // Fallback to mock data
       setTracks([])
     } finally {
       setLoading(false)
@@ -50,23 +51,27 @@ export default function MusicPage() {
 
   return (
     <div className="min-h-screen linktree-gradient">
-      {/* Navigation */}
-      <nav className="fixed top-4 left-4 right-4 linktree-button backdrop-blur-md z-50 border border-black/20 rounded-2xl shadow-2xl">
-        <div className="max-w-7xl mx-auto px-4 sm:px-10 lg:px-40">
+
+      {/* ========== NAVBAR (Fixed, Responsive, Capped) ========== */}
+      <nav className="fixed top-4 left-4 right-4 max-w-7xl mx-auto linktree-button backdrop-blur-md z-50 border border-black/20 rounded-2xl shadow-2xl">
+        <div className="h-full px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
+
+            {/* Logo + Back Arrow */}
             <div className="flex items-center">
               <Link href="/" className="flex items-center">
                 <ArrowLeft className="mr-3 linktree-text/80 hover:opacity-80 transition-colors" size={20} />
                 <span className="linktree-text font-semibold text-lg">Lazy Perfectionist</span>
               </Link>
             </div>
-            
+
+            {/* Desktop Links */}
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-8">
                 <Link href="/" className="linktree-text/80 hover:opacity-80 px-3 py-2 text-sm font-medium transition-colors">
                   Home
                 </Link>
-                <Link href="/music" className="linktree-text hover:opacity-80 px-3 py-2 text-sm font-medium transition-colors">
+                <Link href="/music" className="linktree-text/80 hover:opacity-80 px-3 py-2 text-sm font-medium transition-colors">
                   Music
                 </Link>
                 <Link href="/blog" className="linktree-text/80 hover:opacity-80 px-3 py-2 text-sm font-medium transition-colors">
@@ -74,22 +79,58 @@ export default function MusicPage() {
                 </Link>
               </div>
             </div>
+
+            {/* Mobile Hamburger */}
+            <div className="md:hidden">
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="linktree-text/80 hover:opacity-80 p-2"
+                aria-label="Toggle menu"
+              >
+                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
           </div>
         </div>
+
+        {/* Mobile Dropdown Menu */}
+        {isMenuOpen && (
+          <motion.div
+            className="md:hidden -mx-4 sm:-mx-6 lg:-mx-8 linktree-button backdrop-blur-md border-t border-black/20 rounded-b-2xl"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.15 }}
+          >
+            <div className="px-4 sm:px-6 lg:px-8 py-2 space-y-1">
+              <Link href="/" className="linktree-text block px-3 py-2 text-base font-medium">
+                Home
+              </Link>
+              <Link href="/music" className="linktree-text/80 hover:opacity-80 block px-3 py-2 text-base font-medium">
+                Music
+              </Link>
+              <Link href="/blog" className="linktree-text/80 hover:opacity-80 block px-3 py-2 text-base font-medium">
+                Blog
+              </Link>
+            </div>
+          </motion.div>
+        )}
       </nav>
 
       {/* Hero Section */}
       <section className="pt-24 pb-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <div className={`text-center mb-12 transition-all duration-1000 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            
+            {/* Rounded Icon */}
             <div className="mb-8">
-              <img
-                src="/assets/img/logo.png"
-                alt="Lazy Perfectionist Logo"
-                width={300}
-                height={300}
-                className="mx-auto rounded-2xl shadow-2xl border-4 border-white/20"
-              />
+              <div className="w-32 h-32 md:w-40 md:h-40 mx-auto rounded-full overflow-hidden border-4 border-white/30 shadow-2xl bg-white/10 backdrop-blur-sm p-2">
+                <img
+                  src="/assets/img/logo.png"
+                  alt="Lazy Perfectionist Logo"
+                  className="w-full h-full object-contain rounded-full"
+                />
+              </div>
             </div>
             
             <h1 className="text-4xl md:text-6xl font-bold linktree-header-text mb-4">

@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, BookOpen, ExternalLink, Calendar, Clock, User } from 'lucide-react'
+import { ArrowLeft, BookOpen, ExternalLink, Calendar, Clock, User, Menu, X } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 interface MediumPost {
   id: string
@@ -20,6 +21,7 @@ export default function BlogPage() {
   const [posts, setPosts] = useState<MediumPost[]>([])
   const [loading, setLoading] = useState(true)
   const [mounted, setMounted] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -33,7 +35,6 @@ export default function BlogPage() {
       setPosts(data.data || [])
     } catch (error) {
       console.error('Failed to fetch Medium data:', error)
-      // Fallback to empty array
       setPosts([])
     } finally {
       setLoading(false)
@@ -51,17 +52,21 @@ export default function BlogPage() {
 
   return (
     <div className="min-h-screen linktree-gradient">
-      {/* Navigation */}
-      <nav className="fixed top-4 left-4 right-4 linktree-button backdrop-blur-md z-50 border border-black/20 rounded-2xl shadow-2xl">
-        <div className="max-w-7xl mx-auto px-4 sm:px-10 lg:px-40">
+
+      {/* ========== NAVBAR (Fixed, Responsive, Capped) ========== */}
+      <nav className="fixed top-4 left-4 right-4 max-w-7xl mx-auto linktree-button backdrop-blur-md z-50 border border-black/20 rounded-2xl shadow-2xl">
+        <div className="h-full px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
+
+            {/* Logo + Back Arrow */}
             <div className="flex items-center">
               <Link href="/" className="flex items-center">
                 <ArrowLeft className="mr-3 linktree-text/80 hover:opacity-80 transition-colors" size={20} />
                 <span className="linktree-text font-semibold text-lg">Lazy Perfectionist</span>
               </Link>
             </div>
-            
+
+            {/* Desktop Links */}
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-8">
                 <Link href="/" className="linktree-text/80 hover:opacity-80 px-3 py-2 text-sm font-medium transition-colors">
@@ -70,13 +75,47 @@ export default function BlogPage() {
                 <Link href="/music" className="linktree-text/80 hover:opacity-80 px-3 py-2 text-sm font-medium transition-colors">
                   Music
                 </Link>
-                <Link href="/blog" className="linktree-text hover:opacity-80 px-3 py-2 text-sm font-medium transition-colors">
+                <Link href="/blog" className="linktree-text/80 hover:opacity-80 px-3 py-2 text-sm font-medium transition-colors">
                   Blog
                 </Link>
               </div>
             </div>
+
+            {/* Mobile Hamburger */}
+            <div className="md:hidden">
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="linktree-text/80 hover:opacity-80 p-2"
+                aria-label="Toggle menu"
+              >
+                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
           </div>
         </div>
+
+        {/* Mobile Dropdown Menu */}
+        {isMenuOpen && (
+          <motion.div
+            className="md:hidden -mx-4 sm:-mx-6 lg:-mx-8 linktree-button backdrop-blur-md border-t border-black/20 rounded-b-2xl"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.15 }}
+          >
+            <div className="px-4 sm:px-6 lg:px-8 py-2 space-y-1">
+              <Link href="/" className="linktree-text block px-3 py-2 text-base font-medium">
+                Home
+              </Link>
+              <Link href="/music" className="linktree-text/80 hover:opacity-80 block px-3 py-2 text-base font-medium">
+                Music
+              </Link>
+              <Link href="/blog" className="linktree-text/80 hover:opacity-80 block px-3 py-2 text-base font-medium">
+                Blog
+              </Link>
+            </div>
+          </motion.div>
+        )}
       </nav>
 
       {/* Hero Section */}

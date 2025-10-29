@@ -225,7 +225,7 @@ export default function Home() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
           >
-            Bedroom Instrumental Rock! Debut Single coming soon!
+            Bedroom Instrumental Rock!
           </motion.p>
 
           <motion.div 
