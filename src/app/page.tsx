@@ -122,7 +122,7 @@ export default function Home() {
 
       {/* Navigation */}
       <nav className="fixed top-4 left-4 right-4 linktree-button backdrop-blur-md z-50 border border-black/20 rounded-2xl shadow-2xl">
-        <div className="max-w-7xl mx-auto px-4 md:px-20 py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-10 lg:px-40">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
               <span className="linktree-text font-semibold text-lg">Lazy Perfectionist</span>
