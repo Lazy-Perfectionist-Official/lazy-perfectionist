@@ -131,7 +131,7 @@ export default function BlogPage() {
             </h1>
             
             <p className="text-xl linktree-header-text/90 mb-8 max-w-2xl mx-auto">
-              Read my latest posts on Medium. A bedroom instrumental prog project based in Hong Kong 🇭🇰.
+              Read my latest posts on Medium, where I share my stories and thoughts.
             </p>
             
             <a
