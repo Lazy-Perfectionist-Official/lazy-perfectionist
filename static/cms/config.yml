@@ -2,6 +2,10 @@ backend:
   name: github
   repo: Lazy-Perfectionist-Official/lazy-perfectionist
   branch: main
+  auth_type: pkce
+  client_id: # TODO: Add your GitHub OAuth App Client ID here
+
+site_url: https://lazy-perfectionist-official.github.io/lazy-perfectionist
 
 media_folder: "assets/img"
 public_folder: "/assets/img"

@@ -6,6 +6,13 @@
 - `bundle exec jekyll build` - Build production site to _site/
 - `bundle exec jekyll serve --livereload` - Start with live reload
 
+## CMS (Content Management)
+- **Static CMS** - GitHub Pages compatible CMS at `/admin/`
+- **Configuration**: `static/cms/config.yml`
+- **OAuth Setup**: See `GITHUB_OAUTH_SETUP.md`
+- **Collections**: Pages (About, EP), Blog Posts
+- **Media**: Assets stored in `assets/img/`
+
 ## Code Style Guidelines
 - **Language**: Jekyll (Ruby static site generator) with HTML/CSS/JS
 - **Frontmatter**: YAML with title, date, categories arrays
