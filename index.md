@@ -3,11 +3,11 @@ title: Home
 layout: default
 ---
 
-<div data-aos="fade-down" class="hero-intro">
+<div class="hero-intro">
   <p class="subtitle">Instrumental progressive rock/metal from Hong Kong</p>
 </div>
 
-<div data-aos="zoom-in" id="yt-player">
+<div id="yt-player">
   <iframe 
     width="560" 
     height="315" 
@@ -19,56 +19,91 @@ layout: default
   </iframe>
 </div>
 
-<div data-aos="fade-up" class="description">
+<div class="description">
   <p><strong>Debut single <em>Orbit</em> out now</strong></p>
   <p>A "sound walk" through human contradictions — perfectionism vs. laziness, Earth vs. cosmos.</p>
 </div>
 
 ---
 
-<div data-aos="fade-right" class="cta-section">
+<div class="cta-section">
   <h2>Connect & Listen</h2>
   <div class="cta-buttons">
     <a href="https://instagram.com/lazyperfectionist_official" class="cta-button" target="_blank" rel="noopener">
-      <span>📸 Instagram</span>
+      <span>📸</span> Instagram
     </a>
     <a href="https://tiktok.com/@lazyperfectionist_official" class="cta-button" target="_blank" rel="noopener">
-      <span>🎵 TikTok</span>
+      <span>🎵</span> TikTok
     </a>
     <a href="https://youtube.com/watch?v=Hw2a43RV1p0" class="cta-button" target="_blank" rel="noopener">
-      <span>🎬 YouTube</span>
+      <span>🎬</span> YouTube
     </a>
   </div>
 </div>
 
 ---
 
-<div data-aos="slide-up" class="latest-section">
+<div class="latest-section">
   <h2>Latest Updates</h2>
-  <div id="medium-feed"></div>
+  <div class="update-cards">
+    <div class="update-card">
+      <h3>🎵 New Single Released</h3>
+      <p><strong>Orbit</strong> is now available on all major streaming platforms. This instrumental journey explores the tension between perfection and imperfection.</p>
+      <a href="https://youtube.com/watch?v=Hw2a43RV1p0" target="_blank" rel="noopener">Watch Now →</a>
+    </div>
+    
+    <div class="update-card">
+      <h3>🎸 EP in Progress</h3>
+      <p>Working on a 4-track EP that expands the "sound walk" concept. Each track represents different aspects of human duality.</p>
+      <a href="/ep/">Learn More →</a>
+    </div>
+    
+    <div class="update-card">
+      <h3>📝 Behind the Scenes</h3>
+      <p>From university assignment to official release. Read the story of how <em>Orbit</em> came to life.</p>
+      <a href="/blog/orbit-journey/">Read Story →</a>
+    </div>
+  </div>
 </div>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    fetch('https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@lazyperfectist')
-      .then(response => response.json())
-      .then(data => {
-        const feedContainer = document.getElementById('medium-feed');
-        if (data.items && data.items.length > 0) {
-          feedContainer.innerHTML = data.items.slice(0, 3).map(post => `
-            <article data-aos="fade-up" data-aos-delay="${data.items.indexOf(post) * 100}">
-              <h3><a href="${post.link}" target="_blank" rel="noopener">${post.title}</a></h3>
-              <p>${post.description.replace(/<[^>]*>/g, '').substring(0, 180)}...</p>
-              <small>${new Date(post.pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</small>
-            </article>
-          `).join('');
-        } else {
-          feedContainer.innerHTML = '<p>Stay tuned for the latest updates!</p>';
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching Medium feed:', error);
-        document.getElementById('medium-feed').innerHTML = '<p>Follow us on social media for the latest updates!</p>';
-      });
-  });
-</script>
+<style>
+.update-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.update-card {
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.update-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-2px);
+}
+
+.update-card h3 {
+  margin-bottom: 1rem;
+  color: #0066cc;
+}
+
+.update-card p {
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.update-card a {
+  color: #0066cc;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.update-card a:hover {
+  text-decoration: underline;
+}
+</style>

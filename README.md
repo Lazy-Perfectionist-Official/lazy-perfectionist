@@ -14,8 +14,8 @@ Lazy Perfectionist is an instrumental progressive rock/metal project from Hong K
 
 - **Static Site Generator**: Jekyll (Ruby)
 - **Deployment**: GitHub Pages
-- **Styling**: Custom CSS with system-ui font, dark theme
-- **Animations**: GSAP + AOS (Animate On Scroll)
+- **Styling**: Custom CSS with Inter font, dark professional theme
+- **JavaScript**: Minimal, performance-focused
 - **Content**: Manual markdown editing
 
 ## 🚀 Quick Start
@@ -93,18 +93,21 @@ lazy-perfectionist/
 ## 🎨 Design System
 
 ### Colors
-- **Background**: #121212 (dark theme)
-- **Text**: #ffffff
-- **Accent**: Custom accent colors for CTAs
+- **Background**: #0a0a0a (professional dark)
+- **Primary**: #0066cc (electric blue)
+- **Text**: #ffffff (pure white)
+- **Secondary**: #cccccc (light gray)
 
 ### Typography
-- **Font**: system-ui (native system fonts)
+- **Font**: Inter (modern, readable)
 - **Mobile-first**: Responsive design approach
+- **Minimal animations**: Focus on content
 
-### Animations
-- **GSAP**: For complex animations
-- **AOS**: For scroll-triggered animations
-- **Parallax**: Hero section effects
+### Design Philosophy
+- **Professional**: Metal/rock appropriate aesthetic
+- **Clean**: Minimal distractions
+- **Accessible**: High contrast, readable
+- **Fast**: Optimized performance
 
 ## 🔧 Configuration
 

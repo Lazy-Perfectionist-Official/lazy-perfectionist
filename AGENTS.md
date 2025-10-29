@@ -16,9 +16,9 @@
 ## Code Style Guidelines
 - **Language**: Jekyll (Ruby static site generator) with HTML/CSS/JS
 - **Frontmatter**: YAML with title, date, categories arrays
-- **CSS**: system-ui font, dark theme (#121212 bg, #fff text), mobile-first
-- **JavaScript**: GSAP for animations, AOS for scroll effects via CDN
+- **CSS**: Inter font, professional dark theme (#0a0a0a bg, #0066cc accent), mobile-first
+- **JavaScript**: Minimal, performance-focused, vanilla JS
 - **Structure**: Follow Jekyll conventions (pages/, _layouts, _data)
 - **Naming**: kebab-case for files, snake_case for YAML keys
 - **Images**: /assets/img/ with descriptive names, optimize for web
-- **Dependencies**: Use CDN for external libraries, include via script tags
+- **Dependencies**: Minimal external libraries, focus on performance
