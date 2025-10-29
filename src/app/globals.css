@@ -159,17 +159,10 @@
   }
 
   .linktree-gradient {
-    background: radial-gradient(ellipse at center, 
-      #cf6f20 0%, 
-      #ecc850 25%, 
-      #d88c88 45%, 
-      #ffa319 65%, 
-      #ffcb71 85%, 
-      transparent 100%
-    );
-    background-color: #000; /* fallback + zoom-out safety */
+    background: #ffc354;
+    background: linear-gradient(153deg,rgba(255, 195, 84, 1) 0%, rgba(255, 209, 41, 1) 23%, rgba(255, 181, 112, 1) 33%, rgba(255, 161, 79, 1) 44%, rgba(255, 115, 28, 1) 55%, rgba(253, 149, 37, 1) 72%, rgba(252, 191, 58, 1) 89%, rgba(252, 176, 69, 1) 100%);
   }
-  
+
   .linktree-button {
     background-color: #ffffff;
     color: #090c34;
