@@ -3,31 +3,41 @@ title: Home
 layout: default
 ---
 
-<div class="hero-intro">
-  <p class="subtitle">Instrumental Progressive Rock/Metal from Hong Kong</p>
-</div>
-
-<div class="logo-container">
-  <img src="/assets/img/logo.png" alt="Lazy Perfectionist Logo" class="hero-logo">
-</div>
-
-<div class="hero-content">
-  <div class="description">
-    <p class="hero-tagline">🎵 Debut Single <em>Orbit</em> Out Now</p>
-    <p class="hero-description">A "sound walk" through human contradictions — perfectionism vs. laziness, Earth vs. cosmos.</p>
+<div class="hero">
+  <div class="hero-intro">
+    <p class="subtitle">Instrumental Progressive Rock/Metal from Hong Kong</p>
   </div>
+
+  <div class="logo-container">
+    <img src="/assets/img/logo.png" alt="Lazy Perfectionist Logo">
+  </div>
+
+  <h1>Lazy Perfectionist</h1>
+
+  <div class="hero-content">
+    <div class="description">
+      <p class="hero-tagline">🎵 Debut Single <em>Orbit</em> Out Now</p>
+      <p class="hero-description">A "sound walk" through human contradictions — perfectionism vs. laziness, Earth vs. cosmos.</p>
+    </div>
+  </div>
+
+  <div class="hero-cta">
+    <a href="#listen" class="cta-button primary">
+      <span>🎧</span> Listen Now
+    </a>
+    <a href="#about" class="cta-button secondary">
+      <span>ℹ️</span> Learn More
+    </a>
+  </div>
+
+  <nav>
+    <a href="/about/">About</a>
+    <a href="/ep/">EP</a>
+    <a href="/blog/">Blog</a>
+  </nav>
 </div>
 
-<div class="hero-cta">
-  <a href="#listen" class="cta-button primary">
-    <span>🎧</span> Listen Now
-  </a>
-  <a href="#about" class="cta-button secondary">
-    <span>ℹ️</span> Learn More
-  </a>
-</div>
-
-<div id="yt-player" class="video-section">
+<div id="listen" class="video-section">
   <div class="video-container">
     <iframe 
       width="560" 
@@ -42,6 +52,46 @@ layout: default
       <div class="play-button">
         <span>▶</span>
       </div>
+    </div>
+  </div>
+</div>
+
+---
+
+<div id="about" class="content-section">
+  <h2 class="section-title">Latest Updates</h2>
+  <div class="update-cards">
+    <div class="update-card featured">
+      <div class="card-icon">🎵</div>
+      <h3>New Single Released</h3>
+      <p><strong>Orbit</strong> is now available on all major streaming platforms. This instrumental journey explores the tension between perfection and imperfection.</p>
+      <div class="card-stats">
+        <span class="stat">📅 Oct 17, 2025</span>
+        <span class="stat">🎸 Progressive Rock</span>
+      </div>
+      <a href="https://youtube.com/watch?v=Hw2a43RV1p0" target="_blank" rel="noopener" class="card-link">Watch Now →</a>
+    </div>
+    
+    <div class="update-card">
+      <div class="card-icon">🎸</div>
+      <h3>EP in Progress</h3>
+      <p>Working on a 4-track EP that expands the "sound walk" concept. Each track represents different aspects of human duality.</p>
+      <div class="card-stats">
+        <span class="stat">📀 4 Tracks</span>
+        <span class="stat">🎹 Coming Soon</span>
+      </div>
+      <a href="/ep/" class="card-link">Learn More →</a>
+    </div>
+    
+    <div class="update-card">
+      <div class="card-icon">📝</div>
+      <h3>Behind the Scenes</h3>
+      <p>From university assignment to official release. Read the complete story of how <em>Orbit</em> came to life.</p>
+      <div class="card-stats">
+        <span class="stat">📚 Production Story</span>
+        <span class="stat">💡 Creative Process</span>
+      </div>
+      <a href="/blog/orbit-journey/" class="card-link">Read Story →</a>
     </div>
   </div>
 </div>

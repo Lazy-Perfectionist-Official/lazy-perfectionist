@@ -1,4 +1,4 @@
-// Enhanced JavaScript - Better Animations & Interactions
+// Orange Theme JavaScript - Rich Animations & Interactions
 document.addEventListener('DOMContentLoaded', function() {
     
     // Enhanced intersection observer for animations
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }, observerOptions);
 
     // Observe all main content sections
-    document.querySelectorAll('main > div, article, section, .blog-post').forEach(el => {
+    document.querySelectorAll('.update-card, .video-section, .content-section').forEach(el => {
         observer.observe(el);
     });
 
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Enhanced hover effects for interactive elements
-    document.querySelectorAll('.cta-button, .blog-post, nav a').forEach(element => {
+    document.querySelectorAll('.cta-button, .update-card, nav a').forEach(element => {
         element.addEventListener('mouseenter', function() {
             this.style.transform = 'translateY(-4px) scale(1.02)';
         });
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const scrolled = window.pageYOffset;
         const hero = document.querySelector('.hero');
         if (hero) {
-            const speed = 0.5;
+            const speed = 0.3;
             hero.style.transform = `translateY(${scrolled * speed}px)`;
         }
         ticking = false;
@@ -69,31 +69,42 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('scroll', requestTick);
 
     // Enhanced loading animation for hero elements
+    const logoContainer = document.querySelector('.logo-container');
     const heroH1 = document.querySelector('.hero h1');
-    const heroNav = document.querySelector('.hero nav');
+    const heroSubtitle = document.querySelector('.hero .subtitle');
+    
+    if (logoContainer) {
+        setTimeout(() => {
+            logoContainer.style.opacity = '1';
+            logoContainer.style.transform = 'translateY(0) scale(1)';
+        }, 200);
+    }
     
     if (heroH1) {
         setTimeout(() => {
             heroH1.style.opacity = '1';
             heroH1.style.transform = 'translateY(0)';
-        }, 300);
+        }, 500);
     }
     
-    if (heroNav) {
+    if (heroSubtitle) {
         setTimeout(() => {
-            heroNav.style.opacity = '1';
-            heroNav.style.transform = 'translateY(0)';
-        }, 600);
+            heroSubtitle.style.opacity = '1';
+            heroSubtitle.style.transform = 'translateY(0)';
+        }, 800);
     }
 
-    // Add magnetic effect to CTA buttons
-    document.querySelectorAll('.cta-button').forEach(button => {
+    // Add magnetic effect to CTA buttons and navigation
+    document.querySelectorAll('.cta-button, nav a').forEach(button => {
         button.addEventListener('mousemove', function(e) {
             const rect = this.getBoundingClientRect();
             const x = e.clientX - rect.left - rect.width / 2;
             const y = e.clientY - rect.top - rect.height / 2;
             
-            this.style.transform = `translateY(-4px) scale(1.02) rotateX(${-y * 0.1}deg) rotateY(${x * 0.1}deg)`;
+            const moveX = x * 0.15;
+            const moveY = y * 0.15;
+            
+            this.style.transform = `translateY(-3px) scale(1.02) rotateX(${-moveY}deg) rotateY(${moveX}deg)`;
         });
         
         button.addEventListener('mouseleave', function() {
@@ -101,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Enhanced scroll progress indicator
+    // Enhanced scroll progress indicator with orange theme
     function updateScrollProgress() {
         const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
         const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -116,10 +127,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 position: fixed;
                 top: 0;
                 left: 0;
-                height: 3px;
-                background: linear-gradient(90deg, #0066cc, #0052a3);
+                height: 4px;
+                background: linear-gradient(90deg, #ff6b35, #f7931e);
                 z-index: 1000;
                 transition: width 0.3s ease;
+                box-shadow: 0 2px 10px rgba(255, 107, 53, 0.5);
             `;
             document.body.appendChild(progressBar);
         }
@@ -152,7 +164,34 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Video play button interaction
+    const playOverlay = document.querySelector('.play-overlay');
+    const videoContainer = document.querySelector('.video-container');
+    
+    if (playOverlay && videoContainer) {
+        playOverlay.addEventListener('click', function() {
+            const iframe = videoContainer.querySelector('iframe');
+            if (iframe) {
+                const src = iframe.src;
+                iframe.src = src + '&autoplay=1';
+                playOverlay.style.display = 'none';
+            }
+        });
+    }
+
+    // Logo hover effect
+    const logo = document.querySelector('.logo-container img');
+    if (logo) {
+        logo.addEventListener('mouseenter', function() {
+            this.style.filter = 'drop-shadow(0 25px 50px rgba(0, 0, 0, 0.4)) brightness(1.1)';
+        });
+        
+        logo.addEventListener('mouseleave', function() {
+            this.style.filter = 'drop-shadow(0 20px 40px rgba(0, 0, 0, 0.3)) brightness(1)';
+        });
+    }
+
     // Console log for debugging
     console.log('🎸 Lazy Perfectionist site loaded successfully');
-    console.log('🚀 Enhanced animations and interactions active');
+    console.log('🟠 Orange theme with rich animations active');
 });
