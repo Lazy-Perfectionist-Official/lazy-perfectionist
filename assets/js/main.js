@@ -1,4 +1,4 @@
-// Orange Theme JavaScript - Rich Animations & Interactions
+// Lazy Perfectionist - Linktree Inspired Interactions
 document.addEventListener('DOMContentLoaded', function() {
     
     // Enhanced intersection observer for animations
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (entry.isIntersecting) {
                 setTimeout(() => {
                     entry.target.classList.add('fade-in');
-                }, index * 100); // Staggered animations
+                }, index * 100);
             }
         });
     }, observerOptions);
@@ -39,11 +39,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Enhanced hover effects for interactive elements
     document.querySelectorAll('.cta-button, .update-card, nav a').forEach(element => {
         element.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-4px) scale(1.02)';
+            this.style.transform = 'translateY(-2px)';
         });
         
         element.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0) scale(1)';
+            this.style.transform = 'translateY(0)';
         });
     });
 
@@ -101,14 +101,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const x = e.clientX - rect.left - rect.width / 2;
             const y = e.clientY - rect.top - rect.height / 2;
             
-            const moveX = x * 0.15;
-            const moveY = y * 0.15;
+            const moveX = x * 0.1;
+            const moveY = y * 0.1;
             
-            this.style.transform = `translateY(-3px) scale(1.02) rotateX(${-moveY}deg) rotateY(${moveX}deg)`;
+            this.style.transform = `translateY(-2px) rotateX(${-moveY}deg) rotateY(${moveX}deg)`;
         });
         
         button.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0) scale(1) rotateX(0) rotateY(0)';
+            this.style.transform = 'translateY(0) rotateX(0) rotateY(0)';
         });
     });
 
@@ -128,10 +128,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 top: 0;
                 left: 0;
                 height: 4px;
-                background: linear-gradient(90deg, #ff6b35, #f7931e);
+                background: linear-gradient(90deg, #ED8734, #1c205d);
                 z-index: 1000;
                 transition: width 0.3s ease;
-                box-shadow: 0 2px 10px rgba(255, 107, 53, 0.5);
+                box-shadow: 0 2px 10px rgba(237, 135, 52, 0.5);
             `;
             document.body.appendChild(progressBar);
         }
@@ -156,10 +156,10 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('a[target="_blank"]').forEach(link => {
         link.addEventListener('click', function() {
             this.style.opacity = '0.7';
-            this.style.transform = 'scale(0.95)';
+            this.style.transform = 'translateY(0) scale(0.95)';
             setTimeout(() => {
                 this.style.opacity = '1';
-                this.style.transform = 'scale(1)';
+                this.style.transform = 'translateY(0) scale(1)';
             }, 200);
         });
     });
@@ -183,15 +183,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const logo = document.querySelector('.logo-container img');
     if (logo) {
         logo.addEventListener('mouseenter', function() {
-            this.style.filter = 'drop-shadow(0 25px 50px rgba(0, 0, 0, 0.4)) brightness(1.1)';
+            this.style.filter = 'drop-shadow(0 25px 50px rgba(28, 32, 93, 0.4)) brightness(1.1)';
         });
         
         logo.addEventListener('mouseleave', function() {
-            this.style.filter = 'drop-shadow(0 20px 40px rgba(0, 0, 0, 0.3)) brightness(1)';
+            this.style.filter = 'drop-shadow(0 20px 40px rgba(28, 32, 93, 0.3)) brightness(1)';
         });
     }
 
     // Console log for debugging
     console.log('🎸 Lazy Perfectionist site loaded successfully');
-    console.log('🟠 Orange theme with rich animations active');
+    console.log('🟠 Linktree-inspired design with orange theme active');
 });
