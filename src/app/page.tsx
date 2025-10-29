@@ -231,7 +231,7 @@ export default function Home() {
 
       {/* -----------------------------------------------------------------
           YouTube Section */}
-      <section ref={ytRef} className="py-20 px-4 sm:px-6 lg:px-8 bg-black/10">
+      <section ref={ytRef} className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <motion.div
             className="text-center mb-12"
