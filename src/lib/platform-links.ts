@@ -235,21 +235,12 @@ export class PlatformLinksService {
   }
 
   private createFallbackLinks(trackName: string, artistName: string): PlatformLinksResponse {
-    // Handle platform-specific naming conventions
-    const spotifyQuery = encodeURIComponent(`${trackName} ${artistName}`)
-
-    // For Apple Music, convert "Orbit - Stripped Version" to "Orbit (Stripped Version)"
-    let appleQuery = trackName
-    if (trackName.includes(' - Stripped Version')) {
-      appleQuery = trackName.replace(' - Stripped Version', ' (Stripped Version)')
-    } else if (trackName.includes(' - ')) {
-      // Handle other cases with dashes
-      appleQuery = trackName.replace(/ - (.+)/, ' ($1)')
-    }
-    const appleSearchQuery = encodeURIComponent(`${appleQuery} ${artistName}`)
-
-    const youtubeQuery = encodeURIComponent(`${trackName} ${artistName}`)
-    const soundcloudQuery = encodeURIComponent(`${trackName} ${artistName}`)
+    // Use consistent search query across all platforms since Apple Music works with dashes
+    const baseQuery = encodeURIComponent(`${trackName} ${artistName}`)
+    const spotifyQuery = baseQuery
+    const appleSearchQuery = baseQuery
+    const youtubeQuery = baseQuery
+    const soundcloudQuery = baseQuery
 
     const fallbackLinks: PlatformLinksResponse = {
       entityId: 'fallback',
