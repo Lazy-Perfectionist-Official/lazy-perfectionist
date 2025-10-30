@@ -20,6 +20,17 @@ const CACHE_DURATION = 15 * 60 * 1000 // 15 minutes
 // Clear cache to force fresh data with CDATA fixes
 cache = null
 
+function cleanText(text: string): string {
+  if (!text) return ''
+  // Remove HTML tags, CDATA markers, and clean whitespace
+  return text
+    .replace(/<!\[CDATA\[/g, '')
+    .replace(/\]\]>/g, '')
+    .replace(/<[^>]*>/g, '')
+    .trim()
+    .replace(/\s+/g, ' ')
+}
+
 function extractThumbnailFromContent(content: string): string {
   // Try to extract the first image from the content
   const imgMatch = content.match(/<img[^>]+src="([^"]+)"[^>]*>/i)
@@ -99,11 +110,15 @@ export async function GET(request: Request) {
             const descMatch = item.match(/<description><!\[CDATA\[(.*?)\]\]><\/description>/)
             const contentMatch = item.match(/<content:encoded><!\[CDATA\[(.*?)\]\]><\/content:encoded>/)
 
-            const title = titleMatch ? titleMatch[1].trim() : `Medium Post ${index + 1}`
+            const rawTitle = titleMatch ? titleMatch[1] : `Medium Post ${index + 1}`
+            const rawDescription = descMatch ? descMatch[1] : 'Latest article from Lazy Perfectionist'
+            const rawContent = contentMatch ? contentMatch[1] : rawDescription
+
+            const title = cleanText(rawTitle) || `Medium Post ${index + 1}`
             const link = linkMatch ? linkMatch[1] : `https://medium.com/@lazyperfectist`
             const pubDate = pubDateMatch ? new Date(pubDateMatch[1]).toISOString() : new Date().toISOString()
-            const description = descMatch ? descMatch[1].replace(/<[^>]*>/g, '').trim().substring(0, 200) : 'Latest article from Lazy Perfectionist'
-            const content = contentMatch ? contentMatch[1] : description
+            const description = cleanText(rawDescription).substring(0, 200) || 'Latest article from Lazy Perfectionist'
+            const content = rawContent
 
             // Extract real thumbnail from content
             const thumbnail = extractThumbnailFromContent(content)

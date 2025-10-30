@@ -51,7 +51,7 @@ export default function BlogSortSelect({ value, onChange }: BlogSortSelectProps)
     return (
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
         <span className="text-sm linktree-text whitespace-nowrap">Sort by:</span>
-        <div className="linktree-button w-full sm:w-48 h-10 flex items-center justify-center px-4">
+        <div className="linktree-button w-full sm:w-48 h-12 flex items-center justify-center px-4">
           <span className="text-sm">Loading...</span>
         </div>
       </div>
@@ -65,7 +65,7 @@ export default function BlogSortSelect({ value, onChange }: BlogSortSelectProps)
       <span className="text-sm linktree-text whitespace-nowrap">Sort by:</span>
       <div className="w-full sm:w-auto">
         <Select value={value} onValueChange={onChange}>
-          <SelectTrigger className="linktree-button w-full sm:w-48 h-10 px-4 py-2">
+          <SelectTrigger className="linktree-button w-full sm:w-48 h-12 px-4 py-3">
             <div className="flex items-center justify-between w-full">
               <div className="flex items-center gap-2 min-w-0 flex-1">
                 {selectedOption && <selectedOption.icon className="w-4 h-4 flex-shrink-0" />}
