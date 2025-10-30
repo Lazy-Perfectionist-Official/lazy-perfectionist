@@ -39,34 +39,25 @@ export default function BlogPage() {
   }, [])
 
   useEffect(() => {
-    // Sort posts whenever posts or sortBy changes
-    const sorted = [...posts].sort((a, b) => {
-      switch (sortBy) {
-        case 'oldest':
-          return new Date(a.publishedDate).getTime() - new Date(b.publishedDate).getTime()
-        case 'popular':
-          return (b.claps || 0) - (a.claps || 0)
-        case 'latest':
-        default:
-          return new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime()
-      }
-    })
-    setSortedPosts(sorted)
-  }, [posts, sortBy])
+    fetchMediumData()
+  }, [sortBy])
 
   const fetchMediumData = async () => {
     try {
+      setLoading(true)
       const response = await fetch(`/api/medium?limit=15&sort=${sortBy}`)
       if (!response.ok) {
         throw new Error('Failed to fetch Medium data')
       }
       const data = await response.json()
       setPosts(data.data || [])
+      setSortedPosts(data.data || [])
       setError(null)
     } catch (error) {
       console.error('Failed to fetch Medium data:', error)
       setError('Unable to load articles. Please try again later.')
       setPosts([])
+      setSortedPosts([])
     } finally {
       setLoading(false)
     }
@@ -208,7 +199,7 @@ export default function BlogPage() {
 
             {/* Subtitle */}
             <motion.p
-              className="text-xl md:text-2xl linktree-header-text/90 mb-10 max-w-3xl mx-auto leading-relaxed"
+              className="text-xl md:text-2xl text-blue-200 mb-10 max-w-3xl mx-auto leading-relaxed"
               initial={{ y: 20, opacity: 0 }}
               animate={mounted ? { y: 0, opacity: 1 } : {}}
               transition={{ duration: 0.7, delay: 0.4 }}
@@ -254,7 +245,7 @@ export default function BlogPage() {
                 <h3 className="text-xl font-semibold text-white mb-2">
                   Unable to Load Articles
                 </h3>
-                <p className="text-gray-400 mb-6">
+                <p className="text-blue-200 mb-6">
                   {error}
                 </p>
                 <Button
@@ -280,7 +271,7 @@ export default function BlogPage() {
                 <h3 className="text-xl font-semibold text-white mb-2">
                   No Articles Found
                 </h3>
-                <p className="text-gray-400 mb-6">
+                <p className="text-blue-200 mb-6">
                   Be the first to know when new stories are published.
                 </p>
                 <a
@@ -302,7 +293,7 @@ export default function BlogPage() {
                 animate={{ opacity: 1 }}
                 className="text-center mb-8"
               >
-                <p className="text-gray-400">
+                <p className="text-blue-200">
                   Showing {sortedPosts.length} of {posts.length} articles
                 </p>
               </motion.div>
@@ -321,7 +312,7 @@ export default function BlogPage() {
                 className="text-center"
               >
                 <div className="inline-flex flex-col items-center">
-                  <p className="text-gray-400 mb-4 text-sm">
+                  <p className="text-blue-200 mb-4 text-sm">
                     Read more stories on Medium
                   </p>
                   <a
@@ -335,7 +326,7 @@ export default function BlogPage() {
                     </span>
                     <ExternalLink className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
                   </a>
-                  <p className="text-gray-500 text-xs mt-3">
+                  <p className="text-blue-300/70 text-xs mt-3">
                     Full archive with {posts.length > 15 ? '100+' : `${posts.length}+`} articles
                   </p>
                 </div>

@@ -57,13 +57,15 @@ export default function BlogCard({ post, index }: BlogCardProps) {
   if (!isClient) {
     return (
       <div className="group">
-        <Card className="linktree-button backdrop-blur-md border-black/20 overflow-hidden">
+        <Card className="linktree-button backdrop-blur-md border-black/20 overflow-hidden rounded-2xl">
           <CardContent className="p-0">
-            <div className="aspect-video bg-gray-900"></div>
-            <div className="p-6">
-              <div className="h-6 bg-black/20 rounded w-3/4 mb-2"></div>
-              <div className="h-4 bg-black/10 rounded w-full mb-4"></div>
-              <div className="h-4 bg-black/10 rounded w-1/2"></div>
+            <div className="relative aspect-[4/3] bg-gray-900">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent"></div>
+              <div className="absolute bottom-6 left-6 right-6">
+                <div className="h-6 bg-white/20 rounded w-3/4 mb-2"></div>
+                <div className="h-4 bg-white/10 rounded w-full mb-3"></div>
+                <div className="h-3 bg-white/10 rounded w-1/2"></div>
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -79,10 +81,10 @@ export default function BlogCard({ post, index }: BlogCardProps) {
       whileHover={{ y: -4 }}
       className="group"
     >
-      <Card className="linktree-button backdrop-blur-md border-black/20 overflow-hidden hover:shadow-xl transition-all duration-300">
+      <Card className="linktree-button backdrop-blur-md border-black/20 overflow-hidden hover:shadow-xl transition-all duration-300 rounded-2xl">
         <CardContent className="p-0">
-          {/* Article Image */}
-          <div className="relative aspect-video overflow-hidden bg-gray-900">
+          {/* Article Image - Fills entire card */}
+          <div className="relative aspect-[4/3] overflow-hidden bg-gray-900">
             {!imageError && post.thumbnail && (
               <Image
                 src={post.thumbnail}
@@ -113,7 +115,7 @@ export default function BlogCard({ post, index }: BlogCardProps) {
             )}
 
             {/* Overlay gradient */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
             {/* Read time indicator */}
             <div className="absolute top-3 right-3">
@@ -124,40 +126,40 @@ export default function BlogCard({ post, index }: BlogCardProps) {
             </div>
           </div>
 
-          {/* Article Content */}
-          <div className="p-6">
+          {/* Content Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-6 flex flex-col justify-end">
             {/* Tags */}
             {post.tags && post.tags.length > 0 && (
               <div className="flex flex-wrap gap-1 mb-3">
-                {post.tags.slice(0, 3).map((tag, tagIndex) => (
+                {post.tags.slice(0, 2).map((tag, tagIndex) => (
                   <Badge
                     key={tagIndex}
-                    variant="outline"
-                    className="text-xs border-white/20 text-white/80 bg-black/20"
+                    variant="secondary"
+                    className="text-xs bg-white/20 text-white backdrop-blur-sm border-0"
                   >
                     {tag}
                   </Badge>
                 ))}
-                {post.tags.length > 3 && (
-                  <Badge variant="outline" className="text-xs border-white/20 text-white/60 bg-black/20">
-                    +{post.tags.length - 3}
+                {post.tags.length > 2 && (
+                  <Badge variant="secondary" className="text-xs bg-white/10 text-white/80 backdrop-blur-sm border-0">
+                    +{post.tags.length - 2}
                   </Badge>
                 )}
               </div>
             )}
 
             {/* Title */}
-            <h3 className="font-bold text-lg mb-2 line-clamp-2 group-hover:text-orange-300 transition-colors duration-200">
+            <h3 className="font-bold text-lg mb-2 line-clamp-2 text-white group-hover:text-blue-200 transition-colors duration-200">
               {post.title}
             </h3>
 
             {/* Description */}
-            <p className="text-gray-400 text-sm mb-4 line-clamp-2 leading-relaxed">
+            <p className="text-white/70 text-sm mb-4 line-clamp-1 leading-relaxed">
               {post.subtitle}
             </p>
 
             {/* Footer */}
-            <div className="flex items-center justify-between text-xs text-gray-500">
+            <div className="flex items-center justify-between text-xs text-white/60">
               <div className="flex items-center gap-2">
                 <span>{formatDate(post.publishedDate)}</span>
                 {post.claps && (
@@ -168,8 +170,8 @@ export default function BlogCard({ post, index }: BlogCardProps) {
                 )}
               </div>
 
-              <div className="flex items-center text-orange-400 group-hover:text-orange-300 transition-colors">
-                <span className="mr-1">Read more</span>
+              <div className="flex items-center text-blue-300 group-hover:text-blue-200 transition-colors">
+                <span className="mr-1">Read</span>
                 <ExternalLink className="w-3 h-3" />
               </div>
             </div>
