@@ -89,12 +89,10 @@ export default function MusicPage() {
 
   return (
     <div className="min-h-screen linktree-gradient relative">
-      {/* -----------------------------------------------------------------
-          Background gradient (base layer) */}
+      {/* Background gradient (base layer) */}
       <div className="fixed inset-0 -z-20 pointer-events-none" />
 
-      {/* -----------------------------------------------------------------
-          Noise texture overlay - OVER the gradient */}
+      {/* Noise texture overlay */}
       <div
         className="fixed inset-0 pointer-events-none z-0"
         style={{
@@ -343,7 +341,7 @@ export default function MusicPage() {
                           trackId={track.id}
                           trackName={track.name}
                           artistName={track.artists[0]?.name || 'Lazy Perfectionist'}
-                          className="mb-2"
+                          className="mt-4"
                         />
                       </div>
                     </div>
