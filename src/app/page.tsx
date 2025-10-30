@@ -11,17 +11,10 @@ import {
   Play,
   Menu,
   X,
+  Sparkles,
+  Zap,
 } from 'lucide-react';
 import { motion, useScroll, useInView, useTransform } from 'framer-motion';
-
-// ---------------------------------------------------------------------
-// Global black canvas (prevents white flash on pinch-zoom)
-<style jsx global>{`
-  html, body, #__next {
-    background-color: #000 !important;
-    min-height: 100vh;
-  }
-`}</style>
 
 // ---------------------------------------------------------------------
 // YouTube ID extraction
@@ -64,10 +57,48 @@ export default function Home() {
   return (
     <div className="min-h-screen linktree-gradient">
       {/* -----------------------------------------------------------------
-          Static subtle background gradients */}
+          Enhanced animated background gradients with noise texture */}
       <div className="fixed inset-0 -z-20 pointer-events-none overflow-hidden">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-br from-white/10 to-transparent rounded-full" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-tr from-orange-500/5 to-transparent rounded-full" />
+        {/* Noise texture overlay */}
+        <div
+          className="absolute inset-0 opacity-[0.12] mix-blend-overlay pointer-events-none"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E")`,
+            backgroundSize: '150px 150px',
+            backgroundPosition: '0 0, 10px 10px',
+            backgroundRepeat: 'repeat',
+            transform: 'scale(1.2)',
+          }}
+        />
+
+        <motion.div
+          className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-br from-white/10 to-transparent rounded-full"
+          animate={{
+            x: [0, 30, 0],
+            y: [0, -20, 0],
+            scale: [1, 1.1, 1],
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+        />
+        <motion.div
+          className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-tr from-orange-500/5 to-transparent rounded-full"
+          animate={{
+            x: [0, -40, 0],
+            y: [0, 30, 0],
+            scale: [1, 0.9, 1],
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+        />
+        {!reduceMotion && (
+          <motion.div
+            className="absolute top-1/2 left-1/3 w-64 h-64 bg-gradient-to-br from-amber-500/5 via-transparent to-orange-500/10 rounded-full blur-2xl"
+            animate={{
+              scale: [1, 1.3, 1],
+              opacity: [0.3, 0.6, 0.3],
+            }}
+            transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+          />
+        )}
       </div>
 
       {/* -----------------------------------------------------------------
@@ -161,64 +192,149 @@ export default function Home() {
         />
 
         <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
-          <motion.h1
-            className="text-5xl md:text-7xl font-bold text-white mb-6"
-            initial={{ y: 40, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.7, ease: 'easeOut' }}
-          >
-            @Lazy Perfectionist
-          </motion.h1>
+          {/* Enhanced title with sophisticated animations */}
+          <motion.div className="relative mb-6">
+            <motion.h1
+              className="text-5xl md:text-7xl font-bold text-white relative z-10"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 1.2, ease: 'easeOut' }}
+            >
+              <motion.span
+                className="inline-block"
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: 'spring', stiffness: 400 }}
+              >
+                @Lazy Perfectionist
+              </motion.span>
+            </motion.h1>
 
+            {/* Glow effect behind title */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-orange-500/20 to-amber-500/20 blur-3xl rounded-full"
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1.2, opacity: 0.6 }}
+              transition={{ duration: 2, ease: 'easeOut', delay: 0.5 }}
+              style={{ transform: 'translateZ(-1)' }}
+            />
+          </motion.div>
+
+          {/* Enhanced subtitle with staggered word animation */}
           <motion.p
             className="text-xl md:text-2xl text-white/90 mb-8 leading-relaxed"
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.7, delay: 0.2, ease: 'easeOut' }}
+            transition={{ duration: 0.8, delay: 0.6, ease: 'easeOut' }}
           >
-            Bedroom Instrumental Rock!
+            {['Bedroom', 'Instrumental', 'Rock!'].map((word, i) => (
+              <motion.span
+                key={i}
+                className="inline-block mx-1"
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.8 + i * 0.1, ease: 'easeOut' }}
+                whileHover={{ scale: 1.1, color: '#fbbf24' }}
+              >
+                {word}
+              </motion.span>
+            ))}
           </motion.p>
 
+          {/* Enhanced CTA buttons with staggered entrance */}
           <motion.div
-            className="flex flex-col sm:flex-row gap-4 justify-center mb-12"
+            className="flex flex-col sm:flex-row gap-6 justify-center mb-12"
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.7, delay: 0.4, ease: 'easeOut' }}
+            transition={{ duration: 0.8, delay: 1, ease: 'easeOut' }}
           >
             <motion.a
               href="https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8"
               target="_blank"
               rel="noopener noreferrer"
-              className="linktree-button inline-flex items-center justify-center px-8 py-4 font-semibold transition-all"
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.98 }}
+              className="linktree-button inline-flex items-center justify-center px-8 py-4 font-semibold relative overflow-hidden group shadow-lg"
+              whileHover={{
+                scale: 1.05,
+                y: -3,
+                boxShadow: '0 20px 25px -5px rgba(34, 197, 94, 0.3)'
+              }}
+              whileTap={{ scale: 0.95 }}
+              initial={{ x: -50, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 1.1, duration: 0.6 }}
             >
-              <Play className="mr-2" size={20} />
-              Stream "Orbit" Now!
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-green-500/20 to-emerald-500/20"
+                initial={{ x: '-100%' }}
+                whileHover={{ x: '0%' }}
+                transition={{ duration: 0.3 }}
+              />
+              <motion.div
+                className="relative z-10 flex items-center"
+                whileHover={{ x: 5 }}
+              >
+                <Play className="mr-2" size={20} />
+                Stream "Orbit" Now!
+              </motion.div>
             </motion.a>
 
             <motion.a
               href="https://medium.com/@lazyperfectist"
               target="_blank"
               rel="noopener noreferrer"
-              className="linktree-button inline-flex items-center justify-center px-8 py-4 font-semibold transition-all"
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.98 }}
+              className="linktree-button inline-flex items-center justify-center px-8 py-4 font-semibold relative overflow-hidden group shadow-lg"
+              whileHover={{
+                scale: 1.05,
+                y: -3,
+                boxShadow: '0 20px 25px -5px rgba(59, 130, 246, 0.3)'
+              }}
+              whileTap={{ scale: 0.95 }}
+              initial={{ x: 50, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 1.2, duration: 0.6 }}
             >
-              <BookOpen className="mr-2" size={20} />
-              Read on Medium
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-indigo-500/20"
+                initial={{ x: '-100%' }}
+                whileHover={{ x: '0%' }}
+                transition={{ duration: 0.3 }}
+              />
+              <motion.div
+                className="relative z-10 flex items-center"
+                whileHover={{ x: 5 }}
+              >
+                <BookOpen className="mr-2" size={20} />
+                Read on Medium
+              </motion.div>
             </motion.a>
           </motion.div>
 
+          {/* Enhanced location info with icons */}
           <motion.div
             className="flex items-center justify-center gap-6 text-white/80"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 1.4, ease: 'easeOut' }}
           >
-            <span className="flex items-center gap-2">Hong Kong</span>
-            <span>•</span>
-            <span>@Lazy Perfectionist</span>
+            <motion.span
+              className="flex items-center gap-2"
+              whileHover={{ scale: 1.1, color: '#fbbf24' }}
+            >
+              <Music className="w-4 h-4" />
+              Hong Kong
+            </motion.span>
+            <motion.span
+              animate={{ opacity: [0.5, 1, 0.5] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              •
+            </motion.span>
+            <motion.span
+              className="flex items-center gap-2"
+              whileHover={{ scale: 1.1, color: '#fbbf24' }}
+            >
+              <Zap className="w-4 h-4" />
+              Lazy Perfectionist
+            </motion.span>
           </motion.div>
         </div>
 

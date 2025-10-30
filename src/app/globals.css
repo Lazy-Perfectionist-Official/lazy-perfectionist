@@ -1,6 +1,12 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Global black canvas (prevents white flash on pinch-zoom) */
+html, body {
+  background-color: #000 !important;
+  min-height: 100vh;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
