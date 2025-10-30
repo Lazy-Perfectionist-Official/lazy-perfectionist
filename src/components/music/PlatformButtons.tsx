@@ -58,7 +58,7 @@ export default function PlatformButtons({
         whileTap={{ scale: 0.98 }}
       >
         <ExternalLink size={18} />
-        <span>Listen on all platforms</span>
+        <span>Listen</span>
       </motion.a>
     </div>
   )

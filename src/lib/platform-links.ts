@@ -264,7 +264,7 @@ export class PlatformLinksService {
         }],
         soundcloud: [{
           platform: 'soundcloud',
-          url: `https://soundcloud.com/search?q=${encodedQuery}`,
+          url: `https://soundcloud.com/search/sounds?q=${encodedQuery}`,
           country: 'US',
           entityUniqueIds: { 'trackId': 'search' }
         }]

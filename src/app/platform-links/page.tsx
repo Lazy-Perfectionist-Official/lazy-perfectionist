@@ -28,13 +28,28 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
   const [platforms, setPlatforms] = useState<Platform[]>([])
   const [loading, setLoading] = useState(true)
   const [mounted, setMounted] = useState(false)
+  const [albumArt, setAlbumArt] = useState<string | null>(null)
 
   useEffect(() => {
     setMounted(true)
     if (trackId) {
       fetchPlatformLinks()
+      fetchAlbumArt()
     }
   }, [trackId])
+
+  const fetchAlbumArt = async () => {
+    try {
+      const response = await fetch(`/api/platform-links?trackId=${trackId}`)
+      const data = await response.json()
+
+      if (data.success && data.data && data.data.albumImage) {
+        setAlbumArt(data.data.albumImage)
+      }
+    } catch (error) {
+      console.error('Error fetching album art:', error)
+    }
+  }
 
   const fetchPlatformLinks = async () => {
     try {
@@ -44,6 +59,10 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
 
       if (data.success && data.data) {
         setPlatforms(data.data.platforms || [])
+        // Also set album art if available
+        if (data.data.albumImage) {
+          setAlbumArt(data.data.albumImage)
+        }
       }
     } catch (error) {
       console.error('Error fetching platform links:', error)
@@ -125,12 +144,18 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
               animate={mounted ? { scale: 1, opacity: 1 } : {}}
               transition={{ duration: 0.7, delay: 0.2 }}
             >
-              <div className="w-24 h-24 mx-auto rounded-full overflow-hidden border-4 border-white/30 shadow-2xl bg-white/10 backdrop-blur-sm p-2">
-                <img
-                  src="/assets/img/logo.png"
-                  alt="Lazy Perfectionist Logo"
-                  className="w-full h-full object-contain rounded-full"
-                />
+              <div className="w-32 h-32 mx-auto rounded-2xl overflow-hidden border-4 border-white/30 shadow-2xl bg-white/10 backdrop-blur-sm">
+                {albumArt ? (
+                  <img
+                    src={albumArt}
+                    alt={`${trackName ? decodeURIComponent(trackName) : 'Track'} cover art`}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-black/20">
+                    <Music className="w-12 h-12 text-white/60" />
+                  </div>
+                )}
               </div>
             </motion.div>
 
