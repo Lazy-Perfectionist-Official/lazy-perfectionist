@@ -235,36 +235,49 @@ export class PlatformLinksService {
   }
 
   private createFallbackLinks(trackName: string, artistName: string): PlatformLinksResponse {
-    // Create fallback links that search on each platform
-    const encodedQuery = encodeURIComponent(`${trackName} ${artistName}`)
+    // Handle platform-specific naming conventions
+    const spotifyQuery = encodeURIComponent(`${trackName} ${artistName}`)
+
+    // For Apple Music, convert "Orbit - Stripped Version" to "Orbit (Stripped Version)"
+    let appleQuery = trackName
+    if (trackName.includes(' - Stripped Version')) {
+      appleQuery = trackName.replace(' - Stripped Version', ' (Stripped Version)')
+    } else if (trackName.includes(' - ')) {
+      // Handle other cases with dashes
+      appleQuery = trackName.replace(/ - (.+)/, ' ($1)')
+    }
+    const appleSearchQuery = encodeURIComponent(`${appleQuery} ${artistName}`)
+
+    const youtubeQuery = encodeURIComponent(`${trackName} ${artistName}`)
+    const soundcloudQuery = encodeURIComponent(`${trackName} ${artistName}`)
 
     const fallbackLinks: PlatformLinksResponse = {
       entityId: 'fallback',
       userCountry: 'US',
       userCountryEntityUniqueId: 'fallback',
-      pageUrl: `https://song.link/search/${encodedQuery}`,
+      pageUrl: `https://song.link/search/${spotifyQuery}`,
       linksByPlatform: {
         spotify: [{
           platform: 'spotify',
-          url: `https://open.spotify.com/search/${encodedQuery}`,
+          url: `https://open.spotify.com/search/${spotifyQuery}`,
           country: 'US',
           entityUniqueIds: { 'trackId': 'search' }
         }],
         apple_music: [{
           platform: 'apple_music',
-          url: `https://music.apple.com/search?term=${encodedQuery}`,
+          url: `https://music.apple.com/search?term=${appleSearchQuery}`,
           country: 'US',
           entityUniqueIds: { 'trackId': 'search' }
         }],
         youtube_music: [{
           platform: 'youtube_music',
-          url: `https://music.youtube.com/search?q=${encodedQuery}`,
+          url: `https://music.youtube.com/search?q=${youtubeQuery}`,
           country: 'US',
           entityUniqueIds: { 'trackId': 'search' }
         }],
         soundcloud: [{
           platform: 'soundcloud',
-          url: `https://soundcloud.com/search/sounds?q=${encodedQuery}`,
+          url: `https://soundcloud.com/search/sounds?q=${soundcloudQuery}`,
           country: 'US',
           entityUniqueIds: { 'trackId': 'search' }
         }]
