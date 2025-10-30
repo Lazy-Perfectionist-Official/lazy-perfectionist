@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ArrowUpDown, Clock, TrendingUp, Calendar } from 'lucide-react'
 import {
   Select,
@@ -39,14 +39,31 @@ const sortOptions = [
 ]
 
 export default function BlogSortSelect({ value, onChange }: BlogSortSelectProps) {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isClient, setIsClient] = useState(false)
+
+  // Ensure component is mounted on client side
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
+  if (!isClient) {
+    // Return a simple static placeholder during SSR
+    return (
+      <div className="flex items-center gap-2">
+        <span className="text-sm text-gray-400 hidden sm:block">Sort by:</span>
+        <div className="linktree-button border-black/20 bg-black/20 backdrop-blur-sm text-white w-[140px] sm:w-[160px] h-[40px] flex items-center justify-center">
+          <span className="text-sm">Loading...</span>
+        </div>
+      </div>
+    )
+  }
 
   const selectedOption = sortOptions.find(option => option.value === value)
 
   return (
     <div className="flex items-center gap-2">
       <span className="text-sm text-gray-400 hidden sm:block">Sort by:</span>
-      <Select value={value} onValueChange={onChange} open={isOpen} onOpenChange={setIsOpen}>
+      <Select value={value} onValueChange={onChange}>
         <SelectTrigger className="linktree-button border-black/20 bg-black/20 backdrop-blur-sm text-white hover:bg-black/30 transition-all duration-200 w-[140px] sm:w-[160px]">
           <div className="flex items-center gap-2">
             {selectedOption && <selectedOption.icon className="w-4 h-4" />}

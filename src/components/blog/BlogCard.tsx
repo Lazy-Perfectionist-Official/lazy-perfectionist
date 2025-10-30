@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
@@ -29,6 +29,11 @@ interface BlogCardProps {
 export default function BlogCard({ post, index }: BlogCardProps) {
   const [imageError, setImageError] = useState(false)
   const [imageLoaded, setImageLoaded] = useState(false)
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
@@ -46,6 +51,24 @@ export default function BlogCard({ post, index }: BlogCardProps) {
 
   const handleImageLoad = () => {
     setImageLoaded(true)
+  }
+
+  // Return simple placeholder during SSR to avoid hydration issues
+  if (!isClient) {
+    return (
+      <div className="group">
+        <Card className="linktree-button backdrop-blur-md border-black/20 overflow-hidden">
+          <CardContent className="p-0">
+            <div className="aspect-video bg-gray-900"></div>
+            <div className="p-6">
+              <div className="h-6 bg-black/20 rounded w-3/4 mb-2"></div>
+              <div className="h-4 bg-black/10 rounded w-full mb-4"></div>
+              <div className="h-4 bg-black/10 rounded w-1/2"></div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    )
   }
 
   return (
