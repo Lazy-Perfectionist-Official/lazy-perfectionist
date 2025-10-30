@@ -71,7 +71,7 @@ export default function Home() {
           backgroundRepeat: 'repeat',
           opacity: 0.25,
           mixBlendMode: 'overlay',
-          transform: 'scale(1.2)',
+          transform: 'scale(2)',
         }}
       />
 
@@ -587,15 +587,13 @@ export default function Home() {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <motion.div
-                animate={reduceMotion ? {} : { rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-                className="inline-block mb-4"
-              >
-                <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-amber-500 rounded-xl flex items-center justify-center">
-                  <Music className="w-6 h-6 text-white" />
-                </div>
-              </motion.div>
+              <div className="mb-4">
+                <img
+                  src="/assets/img/logo.png"
+                  alt="Lazy Perfectionist Logo"
+                  className="w-12 h-12 rounded-xl object-cover"
+                />
+              </div>
               <h3 className="text-xl font-bold text-white mb-2">
                 Lazy Perfectionist
               </h3>
