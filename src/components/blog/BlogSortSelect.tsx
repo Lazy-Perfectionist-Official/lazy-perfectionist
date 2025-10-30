@@ -7,7 +7,6 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
 } from '@/components/ui/select'
 
 type SortOption = 'latest' | 'oldest' | 'popular'
@@ -41,39 +40,47 @@ const sortOptions = [
 export default function BlogSortSelect({ value, onChange }: BlogSortSelectProps) {
   const [isClient, setIsClient] = useState(false)
 
-  // Ensure component is mounted on client side
   useEffect(() => {
     setIsClient(true)
   }, [])
 
+  const selectedOption = sortOptions.find(option => option.value === value)
+
   if (!isClient) {
-    // Return a simple static placeholder during SSR
     return (
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
         <span className="text-sm linktree-text whitespace-nowrap">Sort by:</span>
-        <div className="linktree-button w-full sm:w-48 h-12 flex items-center justify-center px-4">
-          <span className="text-sm">Loading...</span>
+        <div className="linktree-button w-full sm:w-48 h-12 flex items-center gap-2 px-4">
+          <Clock className="w-4 h-4 flex-shrink-0 text-gray-700" />
+          <span className="text-sm font-medium flex-1 truncate">Latest First</span>
+          <ArrowUpDown className="w-4 h-4 flex-shrink-0 text-gray-500" />
         </div>
       </div>
     )
   }
-
-  const selectedOption = sortOptions.find(option => option.value === value)
 
   return (
     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
       <span className="text-sm linktree-text whitespace-nowrap">Sort by:</span>
       <div className="w-full sm:w-auto">
         <Select value={value} onValueChange={onChange}>
-          <SelectTrigger className="linktree-button w-full sm:w-48 h-12 px-4 py-3">
-            <div className="flex items-center justify-between w-full">
-              <div className="flex items-center gap-2 min-w-0 flex-1">
-                {selectedOption && <selectedOption.icon className="w-4 h-4 flex-shrink-0" />}
-                <SelectValue placeholder="Sort by" className="text-sm" />
+          <SelectTrigger
+            aria-label="Sort blog posts"
+            className="linktree-button w-full sm:w-48 h-12 px-4 py-3"
+          >
+            <div className="flex items-center gap-2 w-full justify-between">
+              <div className="flex items-center gap-2 flex-1 min-w-0">
+                {selectedOption && (
+                  <selectedOption.icon className="w-4 h-4 flex-shrink-0 text-gray-700" />
+                )}
+                <span className="text-sm font-medium truncate">
+                  {selectedOption?.label || 'Sort by'}
+                </span>
               </div>
-              <ArrowUpDown className="w-4 h-4 flex-shrink-0 ml-2" />
+              <ArrowUpDown className="w-4 h-4 flex-shrink-0 text-gray-500" />
             </div>
           </SelectTrigger>
+
           <SelectContent className="bg-white border-[#1c205d] text-[#090c34] min-w-[240px] shadow-lg">
             {sortOptions.map((option) => {
               const Icon = option.icon
