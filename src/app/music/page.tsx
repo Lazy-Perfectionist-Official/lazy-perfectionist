@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { ArrowLeft, Music, Play, ExternalLink, Clock, Album, Menu, X } from 'lucide-react'
 import { motion } from 'framer-motion'
+import PlatformButtons from '@/components/music/PlatformButtons'
 
 interface SpotifyTrack {
   id: string
@@ -321,7 +322,7 @@ export default function MusicPage() {
                       <div className="flex-1 min-w-0">
                         <h3 className="linktree-text font-semibold text-lg truncate">{track.name}</h3>
                         <p className="linktree-text/70 text-sm mb-2 truncate">{track.album.name}</p>
-                        <div className="flex items-center space-x-4">
+                        <div className="flex items-center space-x-4 mb-3">
                           <span className="linktree-text/60 text-xs flex items-center">
                             <Album className="mr-1" size={12} />
                             {new Date(track.album.release_date).getFullYear()}
@@ -336,16 +337,15 @@ export default function MusicPage() {
                             </span>
                           )}
                         </div>
+
+                        {/* Platform Buttons */}
+                        <PlatformButtons
+                          trackId={track.id}
+                          trackName={track.name}
+                          artistName={track.artists[0]?.name || 'Lazy Perfectionist'}
+                          className="mb-2"
+                        />
                       </div>
-                      
-                      <a
-                        href={track.external_urls.spotify}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="linktree-text hover:underline transition-colors"
-                      >
-                        <ExternalLink size={20} />
-                      </a>
                     </div>
                   </div>
                 ))}
@@ -353,15 +353,21 @@ export default function MusicPage() {
             )}
             
             <div className="mt-8 text-center">
-              <a
-                href="https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="linktree-button inline-flex items-center px-6 py-2 font-semibold transition-all"
-              >
-                Listen on Spotify
-                <ExternalLink className="ml-2" size={16} />
-              </a>
+              <div className="flex flex-col items-center gap-4">
+                <p className="linktree-text/70 text-sm">
+                  Available on multiple platforms
+                </p>
+                <a
+                  href="https://open.spotify.com/artist/7ELTTbYXSvCIXh0W6IV3um"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="linktree-button inline-flex items-center px-6 py-2 font-semibold transition-all"
+                >
+                  <Music className="mr-2" size={16} />
+                  Follow on Spotify
+                  <ExternalLink className="ml-2" size={16} />
+                </a>
+              </div>
             </div>
           </div>
         </div>
