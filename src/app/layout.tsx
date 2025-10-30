@@ -27,7 +27,13 @@ export const metadata: Metadata = {
   keywords: ["Lazy Perfectionist", "Progressive Rock", "Instrumental Music", "Sammy", "Musician", "Orbit", "Band"],
   authors: [{ name: "Lazy Perfectionist Team" }],
   icons: {
-    icon: "/assets/img/logo.png",
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.png", type: "image/png", sizes: "32x32" },
+    ],
+    apple: [
+      { url: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
+    ],
   },
   openGraph: {
     title: "Lazy Perfectionist",
