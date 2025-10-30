@@ -66,11 +66,12 @@ export default function Home() {
         className="fixed inset-0 pointer-events-none z-0"
         style={{
           backgroundImage: `url("/assets/img/noise.jpg")`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          opacity: 0.2,
+          backgroundSize: '300px 300px',
+          backgroundPosition: '0 0, 150px 150px',
+          backgroundRepeat: 'repeat',
+          opacity: 0.25,
           mixBlendMode: 'overlay',
+          transform: 'scale(1.2)',
         }}
       />
 
