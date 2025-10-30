@@ -61,30 +61,30 @@ export default function BlogSortSelect({ value, onChange }: BlogSortSelectProps)
   const selectedOption = sortOptions.find(option => option.value === value)
 
   return (
-    <div className="flex items-center gap-2">
-      <span className="text-sm text-blue-300 hidden sm:block">Sort by:</span>
+    <div className="flex items-center gap-2 flex-wrap">
+      <span className="text-sm linktree-text hidden sm:block whitespace-nowrap">Sort by:</span>
       <Select value={value} onValueChange={onChange}>
-        <SelectTrigger className="linktree-button border-black/20 bg-black/20 backdrop-blur-sm text-white hover:bg-black/30 transition-all duration-200 w-[140px] sm:w-[180px] h-10">
-          <div className="flex items-center gap-2">
+        <SelectTrigger className="linktree-button min-w-[120px] max-w-[160px] sm:min-w-[140px] sm:max-w-[200px] h-10 px-3 py-2">
+          <div className="flex items-center gap-2 overflow-hidden">
             {selectedOption && <selectedOption.icon className="w-4 h-4 flex-shrink-0" />}
-            <SelectValue placeholder="Sort by" className="text-sm" />
+            <SelectValue placeholder="Sort by" className="text-sm truncate" />
           </div>
-          <ArrowUpDown className="w-4 h-4 ml-auto opacity-50 flex-shrink-0" />
+          <ArrowUpDown className="w-4 h-4 ml-2 opacity-50 flex-shrink-0" />
         </SelectTrigger>
-        <SelectContent className="bg-black/90 backdrop-blur-xl border-white/10 text-white min-w-[200px]">
+        <SelectContent className="bg-black/95 backdrop-blur-xl border-[#1c205d]/20 text-white min-w-[220px] max-w-[300px]">
           {sortOptions.map((option) => {
             const Icon = option.icon
             return (
               <SelectItem
                 key={option.value}
                 value={option.value}
-                className="focus:bg-orange-500/20 focus:text-orange-300 cursor-pointer py-3"
+                className="focus:bg-orange-500/20 focus:text-orange-300 cursor-pointer py-3 px-4"
               >
                 <div className="flex items-center gap-3">
                   <Icon className="w-4 h-4 flex-shrink-0" />
-                  <div className="flex-1">
-                    <div className="font-medium text-sm">{option.label}</div>
-                    <div className="text-xs text-blue-200/70">{option.description}</div>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-medium text-sm truncate">{option.label}</div>
+                    <div className="text-xs linktree-text/70 truncate">{option.description}</div>
                   </div>
                 </div>
               </SelectItem>

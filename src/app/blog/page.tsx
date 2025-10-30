@@ -199,7 +199,7 @@ export default function BlogPage() {
 
             {/* Subtitle */}
             <motion.p
-              className="text-xl md:text-2xl text-blue-200 mb-10 max-w-3xl mx-auto leading-relaxed"
+              className="text-xl md:text-2xl linktree-text/80 mb-10 max-w-3xl mx-auto leading-relaxed"
               initial={{ y: 20, opacity: 0 }}
               animate={mounted ? { y: 0, opacity: 1 } : {}}
               transition={{ duration: 0.7, delay: 0.4 }}
@@ -245,7 +245,7 @@ export default function BlogPage() {
                 <h3 className="text-xl font-semibold text-white mb-2">
                   Unable to Load Articles
                 </h3>
-                <p className="text-blue-200 mb-6">
+                <p className="linktree-text/80 mb-6">
                   {error}
                 </p>
                 <Button
@@ -271,7 +271,7 @@ export default function BlogPage() {
                 <h3 className="text-xl font-semibold text-white mb-2">
                   No Articles Found
                 </h3>
-                <p className="text-blue-200 mb-6">
+                <p className="linktree-text/80 mb-6">
                   Be the first to know when new stories are published.
                 </p>
                 <a
@@ -293,7 +293,7 @@ export default function BlogPage() {
                 animate={{ opacity: 1 }}
                 className="text-center mb-8"
               >
-                <p className="text-blue-200">
+                <p className="linktree-text/70">
                   Showing {sortedPosts.length} of {posts.length} articles
                 </p>
               </motion.div>
@@ -312,7 +312,7 @@ export default function BlogPage() {
                 className="text-center"
               >
                 <div className="inline-flex flex-col items-center">
-                  <p className="text-blue-200 mb-4 text-sm">
+                  <p className="linktree-text/70 mb-4 text-sm">
                     Read more stories on Medium
                   </p>
                   <a
@@ -326,7 +326,7 @@ export default function BlogPage() {
                     </span>
                     <ExternalLink className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
                   </a>
-                  <p className="text-blue-300/70 text-xs mt-3">
+                  <p className="linktree-text/60 text-xs mt-3">
                     Full archive with {posts.length > 15 ? '100+' : `${posts.length}+`} articles
                   </p>
                 </div>
