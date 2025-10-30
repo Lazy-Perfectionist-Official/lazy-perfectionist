@@ -587,7 +587,7 @@ export default function Home() {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <div className="mb-4">
+              <div className="mb-4 flex justify-center md:justify-start">
                 <img
                   src="/assets/img/logo.png"
                   alt="Lazy Perfectionist Logo"
