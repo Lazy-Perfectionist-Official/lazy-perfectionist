@@ -235,12 +235,18 @@ export class PlatformLinksService {
   }
 
   private createFallbackLinks(trackName: string, artistName: string): PlatformLinksResponse {
-    // Use consistent search query across all platforms with proper URL encoding
+    // Create properly encoded URLs using fixed space encoding
     const searchQuery = `${trackName} ${artistName}`
-    const spotifyQuery = encodeURIComponent(searchQuery).replace(/\+/g, '%20')
-    const appleSearchQuery = encodeURIComponent(searchQuery).replace(/\+/g, '%20')
-    const youtubeQuery = encodeURIComponent(searchQuery).replace(/\+/g, '%20')
-    const soundcloudQuery = encodeURIComponent(searchQuery).replace(/\+/g, '%20')
+
+    // Custom encoding to ensure spaces become %20, not +
+    const fixedEncodeURIComponent = (str: string) => {
+      return encodeURIComponent(str).replace(/\+/g, '%20')
+    }
+
+    const spotifyQuery = fixedEncodeURIComponent(searchQuery)
+    const appleSearchQuery = fixedEncodeURIComponent(searchQuery)
+    const youtubeQuery = fixedEncodeURIComponent(searchQuery)
+    const soundcloudQuery = fixedEncodeURIComponent(searchQuery)
 
     const fallbackLinks: PlatformLinksResponse = {
       entityId: 'fallback',
@@ -256,7 +262,7 @@ export class PlatformLinksService {
         }],
         apple_music: [{
           platform: 'apple_music',
-          url: `https://music.apple.com/search?term=${appleSearchQuery}`,
+          url: `https://music.apple.com/us/search?term=${appleSearchQuery}`,
           country: 'US',
           entityUniqueIds: { 'trackId': 'search' }
         }],
