@@ -1,76 +1,72 @@
 import { NextResponse } from 'next/server'
-
-interface SpotifyTrack {
-  id: string
-  name: string
-  artists: { name: string }[]
-  album: {
-    name: string
-    images: { url: string }[]
-    release_date: string
-  }
-  duration_ms: number
-  external_urls: { spotify: string }
-  preview_url: string | null
-}
+import { getAllArtistTracks, getArtist } from '@/lib/spotify'
 
 export async function GET() {
   try {
-    // Real track data from your Linktree
-    const realTracks: SpotifyTrack[] = [
-      {
-        id: '1XIv8JGEDU9MZT6HEFmdk8',
-        name: 'Orbit',
-        artists: [{ name: 'Lazy Perfectionist' }],
-        album: {
-          name: 'Orbit',
-          images: [
-            { 
-              url: 'https://i.scdn.co/image/ab67616d0000b2731c72e79ba84d8ea8f34e7d88'
-            }
-          ],
-          release_date: '2025-01-17'
-        },
-        duration_ms: 208000, // ~3:28
-        external_urls: { 
-          spotify: 'https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8'
-        },
-        preview_url: null
-      }
-    ]
+    // Fetch artist data and all tracks from Spotify API
+    const [artist, tracks] = await Promise.all([
+      getArtist(),
+      getAllArtistTracks()
+    ])
 
-    // Try to fetch real data from Spotify's public API
-    let trackData = realTracks
-    
-    try {
-      // Using Spotify's public embed API to get track info
-      const response = await fetch('https://open.spotify.com/embed/track/1XIv8JGEDU9MZT6HEFmdk8', {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-        }
+    if (!tracks || tracks.length === 0) {
+      return NextResponse.json({
+        data: [],
+        lastUpdated: new Date().toISOString(),
+        source: 'spotify-api',
+        totalTracks: 0,
+        artist: null
       })
-      
-      if (response.ok) {
-        // If we can access the embed, the track exists
-        console.log('Spotify track is accessible')
-      }
-    } catch (error) {
-      console.log('Could not verify Spotify track, using cached data')
     }
 
+    // Transform the data to match the expected interface
+    const transformedTracks = tracks.map((track) => ({
+      id: track.id,
+      name: track.name,
+      artists: [{ name: artist?.name || 'Lazy Perfectionist' }],
+      album: {
+        name: track.album.name,
+        images: track.album.images.map(img => ({ url: img.url })),
+        release_date: track.album.release_date
+      },
+      duration_ms: track.duration_ms,
+      external_urls: {
+        spotify: track.external_urls.spotify
+      },
+      preview_url: track.preview_url,
+      popularity: track.popularity,
+      explicit: track.explicit,
+      track_number: track.track_number,
+      isrc: track.external_ids.isrc
+    }))
+
     const response = {
-      data: trackData,
+      data: transformedTracks,
       lastUpdated: new Date().toISOString(),
-      source: 'real-data',
-      totalTracks: trackData.length
+      source: 'spotify-api',
+      totalTracks: transformedTracks.length,
+      artist: artist ? {
+        id: artist.id,
+        name: artist.name,
+        followers: artist.followers.total,
+        popularity: artist.popularity,
+        imageUrl: artist.images[0]?.url || null,
+        genres: artist.genres
+      } : null
     }
 
     return NextResponse.json(response)
   } catch (error) {
     console.error('Spotify API Error:', error)
-    return NextResponse.json(
-      { error: 'Failed to fetch Spotify data' },
-      { status: 500 }
-    )
+
+    // Fallback to a basic response if API fails
+    return NextResponse.json({
+      data: [],
+      lastUpdated: new Date().toISOString(),
+      source: 'fallback',
+      totalTracks: 0,
+      artist: null,
+      error: 'Failed to fetch Spotify data'
+    })
   }
 }

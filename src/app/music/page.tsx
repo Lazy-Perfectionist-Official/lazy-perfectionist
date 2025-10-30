@@ -24,6 +24,8 @@ export default function MusicPage() {
   const [loading, setLoading] = useState(true)
   const [mounted, setMounted] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(null)
+  const [playingTrack, setPlayingTrack] = useState<string | null>(null)
 
   useEffect(() => {
     setMounted(true)
@@ -47,6 +49,41 @@ export default function MusicPage() {
     const minutes = Math.floor(ms / 60000)
     const seconds = Math.floor((ms % 60000) / 1000)
     return `${minutes}:${seconds.toString().padStart(2, '0')}`
+  }
+
+  const playPreview = (track: SpotifyTrack) => {
+    if (!track.preview_url) return
+
+    // Stop current audio if playing
+    if (currentAudio) {
+      currentAudio.pause()
+      setCurrentAudio(null)
+      setPlayingTrack(null)
+    }
+
+    // If clicking the same track, just stop it
+    if (playingTrack === track.id) {
+      return
+    }
+
+    // Play new track
+    const audio = new Audio(track.preview_url)
+    audio.play()
+    setCurrentAudio(audio)
+    setPlayingTrack(track.id)
+
+    audio.onended = () => {
+      setCurrentAudio(null)
+      setPlayingTrack(null)
+    }
+  }
+
+  const stopPreview = () => {
+    if (currentAudio) {
+      currentAudio.pause()
+      setCurrentAudio(null)
+      setPlayingTrack(null)
+    }
   }
 
   return (
@@ -214,10 +251,23 @@ export default function MusicPage() {
       <section className="px-4 sm:px-6 lg:px-8 pb-20">
         <div className="max-w-6xl mx-auto">
           <div className="bg-white/90 rounded-3xl p-8 backdrop-blur-sm shadow-2xl">
-            <h2 className="text-2xl font-bold linktree-text mb-6 flex items-center">
-              <Music className="mr-3" size={24} />
-              Latest Releases
-            </h2>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold linktree-text flex items-center">
+                <Music className="mr-3" size={24} />
+                Discography
+              </h2>
+              <div className="flex items-center gap-2">
+                <span className="linktree-text/70 text-sm">
+                  {tracks.length} {tracks.length === 1 ? 'track' : 'tracks'}
+                </span>
+                {playingTrack && (
+                  <div className="flex items-center gap-1 text-green-600">
+                    <div className="w-2 h-2 bg-green-600 rounded-full animate-pulse"></div>
+                    <span className="text-xs font-medium">Playing</span>
+                  </div>
+                )}
+              </div>
+            </div>
             
             {loading ? (
               <div className="space-y-4">
@@ -240,29 +290,51 @@ export default function MusicPage() {
                     <div className="flex items-center space-x-4">
                       <div className="relative">
                         <img
-                          src="/assets/img/logo.png"
-                          alt="Lazy Perfectionist Logo"
+                          src={track.album.images[0]?.url || "/assets/img/logo.png"}
+                          alt={`${track.album.name} cover art`}
                           width={64}
                           height={64}
-                          className="rounded-xl"
+                          className="rounded-xl object-cover"
                         />
-                        <div className="absolute inset-0 bg-black/50 rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                          <Play className="text-white" size={20} />
+                        <div
+                          className={`absolute inset-0 bg-black/50 rounded-xl flex items-center justify-center transition-opacity cursor-pointer ${
+                            track.preview_url ? 'opacity-0 group-hover:opacity-100' : 'opacity-0'
+                          }`}
+                          onClick={() => playPreview(track)}
+                        >
+                          {playingTrack === track.id ? (
+                            <div className="text-white flex items-center gap-1">
+                              <Play className="w-0 h-0 border-l-[8px] border-l-white border-y-[6px] border-y-transparent" />
+                              <Play className="w-0 h-0 border-l-[8px] border-l-white border-y-[6px] border-y-transparent" />
+                            </div>
+                          ) : (
+                            <Play className="text-white" size={20} />
+                          )}
                         </div>
+                        {track.preview_url && (
+                          <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1 py-0.5">
+                            <span className="text-white text-xs">Preview</span>
+                          </div>
+                        )}
                       </div>
                       
                       <div className="flex-1 min-w-0">
-                        <h3 className="linktree-text font-semibold truncate">{track.name}</h3>
-                        <p className="linktree-text/70 text-sm truncate">{track.artists.map(a => a.name).join(', ')}</p>
-                        <div className="flex items-center space-x-4 mt-1">
+                        <h3 className="linktree-text font-semibold text-lg truncate">{track.name}</h3>
+                        <p className="linktree-text/70 text-sm mb-2 truncate">{track.album.name}</p>
+                        <div className="flex items-center space-x-4">
                           <span className="linktree-text/60 text-xs flex items-center">
                             <Album className="mr-1" size={12} />
-                            {track.album.name}
+                            {new Date(track.album.release_date).getFullYear()}
                           </span>
                           <span className="linktree-text/60 text-xs flex items-center">
                             <Clock className="mr-1" size={12} />
                             {formatDuration(track.duration_ms)}
                           </span>
+                          {track.popularity > 0 && (
+                            <span className="linktree-text/60 text-xs">
+                              ♫ {track.popularity}
+                            </span>
+                          )}
                         </div>
                       </div>
                       

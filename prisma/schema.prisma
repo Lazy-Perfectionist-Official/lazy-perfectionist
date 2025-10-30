@@ -30,3 +30,92 @@ model Post {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+// Music Management Models
+
+model Artist {
+  id              String   @id @default(cuid())
+  spotifyId       String   @unique
+  name            String
+  followers       Int      @default(0)
+  popularity      Int      @default(0)
+  imageUrl        String?
+  bio             String?
+  lastSynced      DateTime @default(now())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  albums          Album[]
+  tracks          Track[]
+  syncHistory     SyncHistory[]
+}
+
+model Album {
+  id            String   @id @default(cuid())
+  spotifyId     String   @unique
+  artistId      String
+  name          String
+  releaseDate   DateTime
+  totalTracks   Int      @default(0)
+  imageUrl      String?
+  albumType     String   // 'album', 'single', 'ep', 'compilation'
+  spotifyUrl    String?
+  lastSynced    DateTime @default(now())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  artist        Artist   @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  tracks        Track[]
+}
+
+model Track {
+  id              String   @id @default(cuid())
+  spotifyId       String   @unique
+  albumId         String
+  artistId        String
+  name            String
+  trackNumber     Int      @default(0)
+  durationMs      Int      @default(0)
+  previewUrl      String?
+  isrc            String?
+  spotifyUrl      String?
+  explicit        Boolean  @default(false)
+  popularity      Int      @default(0)
+  danceability    Float?
+  energy          Float?
+  valence         Float?
+  acousticness    Float?
+  instrumentalness Float?
+  lastSynced      DateTime @default(now())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  album           Album   @relation(fields: [albumId], references: [id], onDelete: Cascade)
+  artist          Artist  @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  platformLinks   PlatformLink[]
+}
+
+model PlatformLink {
+  id           String   @id @default(cuid())
+  trackId      String
+  platformName String   // 'spotify', 'apple_music', 'youtube_music', 'soundcloud', 'bandcamp', etc.
+  platformUrl  String
+  isActive      Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  track        Track    @relation(fields: [trackId], references: [id], onDelete: Cascade)
+
+  @@unique([trackId, platformName])
+}
+
+model SyncHistory {
+  id            String   @id @default(cuid())
+  syncType      String   // 'artist', 'albums', 'tracks', 'platform_links'
+  itemsProcessed Int     @default(0)
+  status        String   // 'success', 'error', 'partial'
+  errorMessage  String?
+  syncTimestamp DateTime @default(now())
+
+  artist        Artist   @relation(fields: [id], references: [id], onDelete: Cascade)
+}
