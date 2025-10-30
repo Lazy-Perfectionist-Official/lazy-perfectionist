@@ -165,7 +165,7 @@ html, body {
   }
 
   .linktree-gradient {
-    background: linear-gradient(135deg, #cf6f20, #ecc850, #d88c88, #ffa319, #E8C488);
+    background: linear-gradient(135deg, #b7621c, #cfae45, #bd7a77, #db8c14, #caab76);
   }
 
   .linktree-button {
@@ -207,6 +207,40 @@ html, body {
   .font-dm-serif-italic {
     font-family: var(--font-dm-serif), serif;
     font-style: italic;
+  }
+
+  .noise-texture {
+    position: absolute;
+    inset: 0;
+    opacity: 0.15;
+    pointer-events: none;
+    z-index: 10;
+    background-image:
+      radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(255,255,255,0.05) 0%, transparent 50%),
+      radial-gradient(circle at 40% 20%, rgba(255,255,255,0.08) 0%, transparent 50%);
+    background-size: 200px 200px, 150px 150px, 100px 100px;
+    background-position: 0 0, 50px 50px, 100px 100px;
+    animation: noise-move 20s ease-in-out infinite;
+  }
+
+  @keyframes noise-move {
+    0%, 100% {
+      background-position: 0 0, 50px 50px, 100px 100px;
+      transform: scale(1);
+    }
+    25% {
+      background-position: 20px 20px, 70px 70px, 120px 120px;
+      transform: scale(1.02);
+    }
+    50% {
+      background-position: -10px -10px, 30px 30px, 80px 80px;
+      transform: scale(0.98);
+    }
+    75% {
+      background-position: 15px -15px, 60px 40px, 110px 90px;
+      transform: scale(1.01);
+    }
   }
 }
 

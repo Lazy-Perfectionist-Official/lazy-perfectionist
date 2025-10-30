@@ -55,19 +55,28 @@ export default function Home() {
   const ytInView = useInView(ytRef, { once: true, margin: '-150px' });
 
   return (
-    <div className="min-h-screen linktree-gradient">
+    <div className="min-h-screen linktree-gradient relative">
       {/* -----------------------------------------------------------------
-          Enhanced animated background gradients with noise texture */}
-      <div className="fixed inset-0 -z-20 pointer-events-none overflow-hidden">
-        {/* Noise texture overlay */}
-        <div
-          className="absolute inset-0 opacity-[0.25] mix-blend-overlay pointer-events-none"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.9' /%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E")`,
-            backgroundSize: '200px 200px',
-            backgroundRepeat: 'repeat',
-          }}
-        />
+          Background gradient (base layer) */}
+      <div className="fixed inset-0 -z-20 pointer-events-none" />
+
+      {/* -----------------------------------------------------------------
+          Noise texture overlay - OVER the gradient */}
+      <div
+        className="fixed inset-0 pointer-events-none z-0"
+        style={{
+          backgroundImage: `url("/assets/img/noise.jpg")`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          opacity: 0.2,
+          mixBlendMode: 'overlay',
+        }}
+      />
+
+      {/* -----------------------------------------------------------------
+          Enhanced animated background gradients */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
 
         <motion.div
           className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-br from-white/10 to-transparent rounded-full"
