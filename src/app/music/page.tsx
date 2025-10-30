@@ -50,7 +50,25 @@ export default function MusicPage() {
   }
 
   return (
-    <div className="min-h-screen linktree-gradient">
+    <div className="min-h-screen linktree-gradient relative">
+      {/* -----------------------------------------------------------------
+          Background gradient (base layer) */}
+      <div className="fixed inset-0 -z-20 pointer-events-none" />
+
+      {/* -----------------------------------------------------------------
+          Noise texture overlay - OVER the gradient */}
+      <div
+        className="fixed inset-0 pointer-events-none z-0"
+        style={{
+          backgroundImage: `url("/assets/img/noise.jpg")`,
+          backgroundSize: '300px 300px',
+          backgroundPosition: '0 0, 150px 150px',
+          backgroundRepeat: 'repeat',
+          opacity: 0.25,
+          mixBlendMode: 'overlay',
+          transform: 'scale(1.2)',
+        }}
+      />
 
       {/* ========== NAVBAR (Fixed, Responsive, Capped) ========== */}
       <nav className="fixed top-4 left-4 right-4 max-w-7xl mx-auto linktree-button backdrop-blur-md z-50 border border-black/20 rounded-2xl shadow-2xl">
