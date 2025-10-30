@@ -235,12 +235,12 @@ export class PlatformLinksService {
   }
 
   private createFallbackLinks(trackName: string, artistName: string): PlatformLinksResponse {
-    // Use consistent search query across all platforms since Apple Music works with dashes
-    const baseQuery = encodeURIComponent(`${trackName} ${artistName}`)
-    const spotifyQuery = baseQuery
-    const appleSearchQuery = baseQuery
-    const youtubeQuery = baseQuery
-    const soundcloudQuery = baseQuery
+    // Use consistent search query across all platforms with proper URL encoding
+    const searchQuery = `${trackName} ${artistName}`
+    const spotifyQuery = encodeURIComponent(searchQuery).replace(/\+/g, '%20')
+    const appleSearchQuery = encodeURIComponent(searchQuery).replace(/\+/g, '%20')
+    const youtubeQuery = encodeURIComponent(searchQuery).replace(/\+/g, '%20')
+    const soundcloudQuery = encodeURIComponent(searchQuery).replace(/\+/g, '%20')
 
     const fallbackLinks: PlatformLinksResponse = {
       entityId: 'fallback',

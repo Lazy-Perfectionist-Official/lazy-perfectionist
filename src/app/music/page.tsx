@@ -286,90 +286,76 @@ export default function MusicPage() {
               <div className="space-y-4">
                 {tracks.map((track, index) => (
                   <div key={track.id} className="bg-orange-50/50 rounded-2xl p-4 hover:bg-orange-100/50 transition-all group">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-4 flex-1">
-                        <div className="relative">
-                          <img
-                            src={track.album.images[0]?.url || "/assets/img/logo.png"}
-                            alt={`${track.album.name} cover art`}
-                            width={64}
-                            height={64}
-                            className="rounded-xl object-cover"
-                          />
-                          <div
-                            className={`absolute inset-0 bg-black/50 rounded-xl flex items-center justify-center transition-opacity cursor-pointer ${
-                              track.preview_url ? 'opacity-0 group-hover:opacity-100' : 'opacity-0'
-                            }`}
-                            onClick={() => playPreview(track)}
-                          >
-                            {playingTrack === track.id ? (
-                              <div className="text-white flex items-center gap-1">
-                                <Play className="w-0 h-0 border-l-[8px] border-l-white border-y-[6px] border-y-transparent" />
-                                <Play className="w-0 h-0 border-l-[8px] border-l-white border-y-[6px] border-y-transparent" />
-                              </div>
-                            ) : (
-                              <Play className="text-white" size={20} />
-                            )}
-                          </div>
-                          {track.preview_url && (
-                            <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1 py-0.5">
-                              <span className="text-white text-xs">Preview</span>
+                    <div className="flex items-center space-x-4">
+                      <div className="relative">
+                        <img
+                          src={track.album.images[0]?.url || "/assets/img/logo.png"}
+                          alt={`${track.album.name} cover art`}
+                          width={64}
+                          height={64}
+                          className="rounded-xl object-cover"
+                        />
+                        <div
+                          className={`absolute inset-0 bg-black/50 rounded-xl flex items-center justify-center transition-opacity cursor-pointer ${
+                            track.preview_url ? 'opacity-0 group-hover:opacity-100' : 'opacity-0'
+                          }`}
+                          onClick={() => playPreview(track)}
+                        >
+                          {playingTrack === track.id ? (
+                            <div className="text-white flex items-center gap-1">
+                              <Play className="w-0 h-0 border-l-[8px] border-l-white border-y-[6px] border-y-transparent" />
+                              <Play className="w-0 h-0 border-l-[8px] border-l-white border-y-[6px] border-y-transparent" />
                             </div>
+                          ) : (
+                            <Play className="text-white" size={20} />
                           )}
                         </div>
-
-                        <div className="flex-1 min-w-0">
-                          <h3 className="linktree-text font-semibold text-lg truncate">{track.name}</h3>
-                          <p className="linktree-text/70 text-sm mb-2 truncate">{track.album.name}</p>
-                          <div className="flex items-center space-x-4 mb-3">
-                            <span className="linktree-text/60 text-xs flex items-center">
-                              <Album className="mr-1" size={12} />
-                              {new Date(track.album.release_date).getFullYear()}
-                            </span>
-                            <span className="linktree-text/60 text-xs flex items-center">
-                              <Clock className="mr-1" size={12} />
-                              {formatDuration(track.duration_ms)}
-                            </span>
-                            {track.popularity > 0 && (
-                              <span className="linktree-text/60 text-xs">
-                                ♫ {track.popularity}
-                              </span>
-                            )}
-                          </div>
-
-                          {/* Platform Buttons */}
-                          <PlatformButtons
-                            trackId={track.id}
-                            trackName={track.name}
-                            artistName={track.artists[0]?.name || 'Lazy Perfectionist'}
-                            className="mt-4"
-                          />
-                        </div>
-                      </div>
-
-                      {/* Right-aligned elements */}
-                      <div className="flex items-center space-x-3 ml-4">
-                        <div className="text-right">
-                          <div className="text-xs linktree-text/50 mb-1">Duration</div>
-                          <div className="text-sm font-medium linktree-text">
-                            {formatDuration(track.duration_ms)}
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <div className="text-xs linktree-text/50 mb-1">Released</div>
-                          <div className="text-sm font-medium linktree-text">
-                            {new Date(track.album.release_date).getFullYear()}
-                          </div>
-                        </div>
-                        {track.popularity > 0 && (
-                          <div className="text-right">
-                            <div className="text-xs linktree-text/50 mb-1">Popularity</div>
-                            <div className="text-sm font-medium linktree-text">
-                              ♫ {track.popularity}
-                            </div>
+                        {track.preview_url && (
+                          <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1 py-0.5">
+                            <span className="text-white text-xs">Preview</span>
                           </div>
                         )}
                       </div>
+
+                      <div className="flex-1 min-w-0">
+                        <h3 className="linktree-text font-semibold text-lg truncate">{track.name}</h3>
+                        <p className="linktree-text/70 text-sm mb-1 truncate">{track.album.name}</p>
+                        <div className="flex items-center space-x-4">
+                          <span className="linktree-text/60 text-xs flex items-center">
+                            <Album className="mr-1" size={12} />
+                            {new Date(track.album.release_date).getFullYear()}
+                          </span>
+                          <span className="linktree-text/60 text-xs flex items-center">
+                            <Clock className="mr-1" size={12} />
+                            {formatDuration(track.duration_ms)}
+                          </span>
+                          {track.popularity > 0 && (
+                            <span className="linktree-text/60 text-xs">
+                              ♫ {track.popularity}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Listen Button - Desktop only */}
+                      <div className="hidden md:block">
+                        <PlatformButtons
+                          trackId={track.id}
+                          trackName={track.name}
+                          artistName={track.artists[0]?.name || 'Lazy Perfectionist'}
+                          className="mb-2"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Listen Button - Mobile only */}
+                    <div className="md:hidden mt-3">
+                      <PlatformButtons
+                        trackId={track.id}
+                        trackName={track.name}
+                        artistName={track.artists[0]?.name || 'Lazy Perfectionist'}
+                        className="mb-2"
+                      />
                     </div>
                   </div>
                 ))}
