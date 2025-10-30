@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, use } from 'react'
 import { ArrowLeft, Music, ExternalLink, Clock, Album } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
@@ -24,7 +24,8 @@ interface PlatformLinksPageProps {
 }
 
 export default function PlatformLinksPage({ searchParams }: PlatformLinksPageProps) {
-  const { trackId, trackName, artistName } = searchParams
+  const resolvedParams = use(searchParams)
+  const { trackId, trackName, artistName } = resolvedParams
   const [platforms, setPlatforms] = useState<Platform[]>([])
   const [loading, setLoading] = useState(true)
   const [mounted, setMounted] = useState(false)
