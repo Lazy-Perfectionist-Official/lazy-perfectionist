@@ -49,12 +49,12 @@ export default function Home() {
         <motion.div
           className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-br from-indigo-500/30 to-transparent rounded-full blur-3xl"
           animate={!reduceMotion ? { x: [0, 100, 0], y: [0, -80, 0], scale: [1, 1.2, 1] } : {}}
-          transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
         />
         <motion.div
           className="absolute bottom-20 right-10 w-[500px] h-[500px] bg-gradient-to-tr from-purple-500/20 to-transparent rounded-full blur-3xl"
           animate={!reduceMotion ? { x: [0, -120, 0], y: [0, 100, 0], scale: [1, 0.8, 1] } : {}}
-          transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
         />
       </div>
 
@@ -75,7 +75,7 @@ export default function Home() {
         className="fixed top-4 left-4 right-4 z-50"
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.8, ease: 'easeOut' }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
       >
         <div className="max-w-7xl mx-auto bg-white/95 backdrop-blur-xl border-2 border-black rounded-3xl shadow-2xl overflow-hidden">
           <div className="flex items-center justify-between h-16 px-6">
@@ -179,7 +179,7 @@ export default function Home() {
             className="text-6xl md:text-8xl font-bold mb-6 drop-shadow-2xl"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.4 }}
           >
             @ Lazy Perfectionist
           </motion.h1>
@@ -188,7 +188,7 @@ export default function Home() {
             className="text-2xl md:text-3xl mb-16 text-white/90 drop-shadow-md"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
           >
             Bedroom Instrumental Rock!
           </motion.p>
@@ -197,7 +197,7 @@ export default function Home() {
             className="flex flex-col sm:flex-row gap-6 justify-center mb-12"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
+            transition={{ duration: 0.4, delay: 0.2 }}
           >
             <motion.a
               href="https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8"
@@ -211,7 +211,7 @@ export default function Home() {
                 className="absolute inset-0 bg-gradient-to-r from-green-500/20 to-emerald-500/20"
                 initial={{ x: '-100%' }}
                 whileHover={{ x: '0%' }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.15 }}
               />
               <span className="relative z-10 flex items-center">
                 <Play className="mr-2" size={22} /> Stream "Orbit" Now
@@ -230,7 +230,7 @@ export default function Home() {
                 className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-indigo-500/20"
                 initial={{ x: '-100%' }}
                 whileHover={{ x: '0%' }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.15 }}
               />
               <span className="relative z-10 flex items-center">
                 <BookOpen className="mr-2" size={22} /> Read on Medium
@@ -242,14 +242,14 @@ export default function Home() {
             className="flex items-center justify-center gap-6 text-white/80"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
+            transition={{ duration: 0.4, delay: 0.3 }}
           >
             <motion.span className="flex items-center gap-2" whileHover={{ scale: 1.1 }}>
               <Music className="w-4 h-4" /> Hong Kong
             </motion.span>
             <motion.span
               animate={!reduceMotion ? { opacity: [0.5, 1, 0.5] } : {}}
-              transition={{ duration: 2, repeat: Infinity }}
+              transition={{ duration: 1, repeat: Infinity }}
             >
               •
             </motion.span>
@@ -262,8 +262,8 @@ export default function Home() {
         {!reduceMotion && (
           <motion.div
             className="absolute bottom-8 left-1/2 -translate-x-1/2"
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
+            animate={{ y: [0, 6, 0] }}
+            transition={{ duration: 0.8, repeat: Infinity }}
           >
             <ChevronDown className="w-8 h-8 text-white/60" />
           </motion.div>
@@ -281,7 +281,7 @@ export default function Home() {
             className="bg-white/95 backdrop-blur-xl rounded-3xl p-6 sm:p-8 lg:p-12 border-2 border-black shadow-2xl"
             initial={{ y: 50, opacity: 0 }}
             animate={aboutInView ? { y: 0, opacity: 1 } : {}}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.4 }}
           >
             <div className="grid gap-8 md:gap-12 md:grid-cols-2 items-start">
               <div className="space-y-6">
