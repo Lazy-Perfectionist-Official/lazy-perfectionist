@@ -1,14 +1,55 @@
+# Robots.txt for Lazy Perfectionist
+# https://lazyperfectionist.com
+
+User-agent: *
+Allow: /
+
+# Prioritize important pages
+Allow: /music
+Allow: /blog
+Allow: /platform-links
+
+# Allow image indexing for SEO
+Allow: /assets/img/
+Allow: /favicon.ico
+Allow: /apple-touch-icon.png
+
+# Sitemap location
+Sitemap: https://lazyperfectionist.com/sitemap.xml
+
+# Block AI scrapers that don't respect content
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: GoogleOther
+Disallow: /
+
+# Common crawler rules
 User-agent: Googlebot
 Allow: /
 
 User-agent: Bingbot
 Allow: /
 
-User-agent: Twitterbot
+User-agent: Slurp
 Allow: /
 
+# Social media crawlers (allow for rich previews)
 User-agent: facebookexternalhit
 Allow: /
 
-User-agent: *
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+# Allow music discovery platforms
+User-agent: Spotify
+Allow: /
+
+User-agent: Applebot
 Allow: /
