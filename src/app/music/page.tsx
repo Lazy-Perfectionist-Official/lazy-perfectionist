@@ -2,9 +2,11 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Music, Play, ExternalLink, Clock, Album, Menu, X } from 'lucide-react'
+import { Music, Play, ExternalLink, Clock, Album } from 'lucide-react'
 import { motion } from 'framer-motion'
 import PlatformButtons from '@/components/music/PlatformButtons'
+import Navigation from '@/components/Navigation'
+import Background from '@/components/Background'
 
 interface SpotifyTrack {
   id: string
@@ -24,7 +26,6 @@ export default function MusicPage() {
   const [tracks, setTracks] = useState<SpotifyTrack[]>([])
   const [loading, setLoading] = useState(true)
   const [mounted, setMounted] = useState(false)
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(null)
   const [playingTrack, setPlayingTrack] = useState<string | null>(null)
 
@@ -89,124 +90,8 @@ export default function MusicPage() {
 
   return (
     <div className="min-h-screen linktree-gradient relative">
-      {/* Background gradient (base layer) */}
-      <div className="fixed inset-0 -z-20 pointer-events-none" />
-
-      {/* Multi-layered brilliant noise texture overlay */}
-      <div
-        className="fixed inset-0 pointer-events-none z-0"
-        style={{
-          // Base layer - larger seamless pattern
-          backgroundImage: `url("/assets/img/noise.jpg")`,
-          backgroundSize: '600px 600px',
-          backgroundPosition: '0 0',
-          backgroundRepeat: 'repeat',
-          opacity: 0.15,
-          mixBlendMode: 'soft-light',
-          transform: 'scale(1.5)',
-        }}
-      />
-      <div
-        className="fixed inset-0 pointer-events-none z-0"
-        style={{
-          // Secondary layer - finer detail with different blend mode
-          backgroundImage: `url("/assets/img/noise.jpg")`,
-          backgroundSize: '200px 200px',
-          backgroundPosition: '100px 100px',
-          backgroundRepeat: 'repeat',
-          opacity: 0.12,
-          mixBlendMode: 'overlay',
-          transform: 'scale(1.2) rotate(1deg)',
-        }}
-      />
-      <div
-        className="fixed inset-0 pointer-events-none z-0"
-        style={{
-          // Fine top layer - organic texture
-          backgroundImage: `url("/assets/img/noise.jpg")`,
-          backgroundSize: '100px 100px',
-          backgroundPosition: '50px 25px',
-          backgroundRepeat: 'repeat',
-          opacity: 0.08,
-          mixBlendMode: 'multiply',
-          transform: 'scale(1.8) rotate(-0.5deg)',
-        }}
-      />
-
-      {/* ========== NAVBAR (Fixed, Responsive, Capped) ========== */}
-      <nav className="fixed top-4 left-4 right-4 max-w-7xl mx-auto linktree-button backdrop-blur-md z-50 border border-black/20 rounded-2xl shadow-2xl">
-        <div className="h-full px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-
-            {/* Logo + Back Arrow */}
-            <div className="flex items-center">
-              <Link href="/" className="flex items-center">
-                <ArrowLeft className="mr-3 linktree-text/80 hover:opacity-80 transition-colors" size={20} />
-                <span className="linktree-text font-semibold text-lg font-dm-serif">✨ Lazy Perfectionist</span>
-              </Link>
-            </div>
-
-            {/* Desktop Links */}
-            <div className="hidden md:block">
-              <div className="ml-10 flex items-baseline space-x-8">
-                <Link href="/" className="linktree-text/80 hover:opacity-80 px-3 py-2 text-sm font-medium transition-colors">
-                  Home
-                </Link>
-                <Link href="/music" className="linktree-text/80 hover:opacity-80 px-3 py-2 text-sm font-medium transition-colors">
-                  Music
-                </Link>
-                <Link href="/blog" className="linktree-text/80 hover:opacity-80 px-3 py-2 text-sm font-medium transition-colors">
-                  Blog
-                </Link>
-              </div>
-            </div>
-
-            {/* Mobile Hamburger – instant tap */}
-            <div className="md:hidden">
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="linktree-text/80 p-2 touch-manipulation"
-                aria-label="Toggle menu"
-              >
-                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile Dropdown Menu – smooth height expand */}
-        <motion.div
-          initial={{ height: 0, opacity: 0 }}
-          animate={{ 
-            height: isMenuOpen ? 'auto' : 0, 
-            opacity: isMenuOpen ? 1 : 0 
-          }}
-          exit={{ height: 0, opacity: 0 }}
-          transition={{ duration: 0.25, ease: 'easeOut' }}
-          className="md:hidden linktree-button backdrop-blur-md border-t border-black/20 rounded-b-2xl overflow-hidden"
-          style={{ overflow: 'hidden' }}
-        >
-          <div className="px-4 sm:px-6 lg:px-8 py-2 space-y-1">
-            <Link href="/" className="linktree-text block px-3 py-2 text-base font-medium rounded-md hover:bg-black/10 transition-colors">
-              Home
-            </Link>
-            <Link href="/music" className="linktree-text/80 block px-3 py-2 text-base font-medium rounded-md hover:bg-black/10 transition-colors">
-              Music
-            </Link>
-            <Link href="/blog" className="linktree-text/80 block px-3 py-2 text-base font-medium rounded-md hover:bg-black/10 transition-colors">
-              Blog
-            </Link>
-            <a
-              href="https://linktr.ee/lazyperfectionist_official"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="linktree-text/80 block px-3 py-2 text-base font-medium rounded-md hover:bg-black/10 transition-colors flex items-center gap-1"
-            >
-              Links <ExternalLink size={14} />
-            </a>
-          </div>
-        </motion.div>
-      </nav>
+      <Background />
+      <Navigation currentPage="music" />
 
       {/* Hero Section */}
       <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8">

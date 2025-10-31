@@ -8,14 +8,13 @@ import {
   Youtube,
   Music,
   BookOpen,
-  ExternalLink,
   ChevronDown,
   Play,
-  Menu,
-  X,
   Zap,
 } from 'lucide-react';
 import { motion, useInView, easeOut } from 'framer-motion';
+import Navigation from '@/components/Navigation';
+import Background from '@/components/Background';
 
 // ---------------------------------------------------------------------
 // Scroll → CSS variable: 0.5 → 1.0 (50% → 100% dark)
@@ -43,7 +42,6 @@ function useScrollOpacity() {
 // ---------------------------------------------------------------------
 // Main component
 export default function Home() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
 
@@ -105,134 +103,8 @@ export default function Home() {
       </Head>
 
       <div className="min-h-screen linktree-gradient relative overflow-x-hidden">
-        {/* Static background blobs */}
-        <div className="fixed inset-0 -z-20 pointer-events-none">
-          <div className="absolute top-20 left-10 w-64 h-64 bg-indigo-500/5 rounded-full blur-xl" />
-          <div className="absolute bottom-20 right-10 w-80 h-80 bg-purple-500/5 rounded-full blur-xl" />
-        </div>
-
-        {/* Multi-layered brilliant noise texture overlay */}
-        <div
-          className="fixed inset-0 pointer-events-none z-0"
-          style={{
-            // Base layer - larger seamless pattern
-            backgroundImage: `url("/assets/img/noise.jpg")`,
-            backgroundSize: '600px 600px',
-            backgroundPosition: '0 0',
-            backgroundRepeat: 'repeat',
-            opacity: 0.15,
-            mixBlendMode: 'soft-light',
-            transform: 'scale(1.5)',
-          }}
-        />
-        <div
-          className="fixed inset-0 pointer-events-none z-0"
-          style={{
-            // Secondary layer - finer detail with different blend mode
-            backgroundImage: `url("/assets/img/noise.jpg")`,
-            backgroundSize: '200px 200px',
-            backgroundPosition: '100px 100px',
-            backgroundRepeat: 'repeat',
-            opacity: 0.12,
-            mixBlendMode: 'overlay',
-            transform: 'scale(1.2) rotate(1deg)',
-          }}
-        />
-        <div
-          className="fixed inset-0 pointer-events-none z-0"
-          style={{
-            // Fine top layer - organic texture
-            backgroundImage: `url("/assets/img/noise.jpg")`,
-            backgroundSize: '100px 100px',
-            backgroundPosition: '50px 25px',
-            backgroundRepeat: 'repeat',
-            opacity: 0.08,
-            mixBlendMode: 'multiply',
-            transform: 'scale(1.8) rotate(-0.5deg)',
-          }}
-        />
-
-        {/* Navigation */}
-        <motion.nav
-          className="fixed top-4 left-4 right-4 z-50"
-          initial={{ y: -100 }}
-          animate={{ y: 0 }}
-          transition={{ duration: 0.4, ease: 'easeOut' }}
-        >
-          <div className="max-w-7xl mx-auto bg-white/95 backdrop-blur-xl border-2 border-black rounded-3xl shadow-2xl overflow-hidden">
-            <div className="flex items-center justify-between h-16 px-6">
-              <motion.div whileHover={{ scale: 1.05 }}>
-                <Link href="/" className="flex items-center">
-                  <span className="text-black font-bold text-xl font-dm-serif tracking-tight">
-                    Lazy Perfectionist
-                  </span>
-                </Link>
-              </motion.div>
-
-              <div className="hidden md:flex items-center space-x-8">
-                {['Home', 'Music', 'Blog'].map((item) => (
-                  <motion.div key={item} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
-                    <Link
-                      href={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
-                      className="text-black hover:text-blue-600 transition-colors font-medium"
-                    >
-                      {item}
-                    </Link>
-                  </motion.div>
-                ))}
-                <motion.a
-                  href="https://linktr.ee/lazyperfectionist_official"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-black/70 hover:text-blue-600 flex items-center gap-1 font-medium"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Links <ExternalLink size={14} />
-                </motion.a>
-              </div>
-
-              <motion.button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="md:hidden text-black/70 p-2"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                aria-label="Toggle menu"
-              >
-                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-              </motion.button>
-            </div>
-
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: isMenuOpen ? 'auto' : 0, opacity: isMenuOpen ? 1 : 0 }}
-              transition={{ duration: 0.3 }}
-              className="md:hidden overflow-hidden border-t border-black/20"
-            >
-              <div className="px-6 py-4 space-y-3">
-                {['Home', 'Music', 'Blog'].map((item) => (
-                  <motion.div key={item} whileHover={{ x: 10 }}>
-                    <Link
-                      href={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
-                      className="block text-black hover:text-blue-600 py-2 font-medium"
-                    >
-                      {item}
-                    </Link>
-                  </motion.div>
-                ))}
-                <motion.a
-                  href="https://linktr.ee/lazyperfectionist_official"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-black/70 hover:text-blue-600 flex items-center gap-1 py-2 font-medium"
-                  whileHover={{ x: 10 }}
-                >
-                  Links <ExternalLink size={14} />
-                </motion.a>
-              </div>
-            </motion.div>
-          </div>
-        </motion.nav>
+        <Background />
+        <Navigation currentPage="home" />
 
         {/* HERO SECTION – logo.png + 50% → 100% dark */}
         <section

@@ -5,6 +5,7 @@ import { ArrowLeft, Music, ExternalLink, Clock, Album } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { analyticsService } from '@/lib/analytics'
+import Background from '@/components/Background'
 
 interface Platform {
   platform: string
@@ -99,57 +100,15 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
 
   return (
     <div className="min-h-screen linktree-gradient relative">
-      {/* Background gradient (base layer) */}
-      <div className="fixed inset-0 -z-20 pointer-events-none" />
-
-      {/* Multi-layered brilliant noise texture overlay */}
-      <div
-        className="fixed inset-0 pointer-events-none z-0"
-        style={{
-          // Base layer - larger seamless pattern
-          backgroundImage: `url("/assets/img/noise.jpg")`,
-          backgroundSize: '600px 600px',
-          backgroundPosition: '0 0',
-          backgroundRepeat: 'repeat',
-          opacity: 0.15,
-          mixBlendMode: 'soft-light',
-          transform: 'scale(1.5)',
-        }}
-      />
-      <div
-        className="fixed inset-0 pointer-events-none z-0"
-        style={{
-          // Secondary layer - finer detail with different blend mode
-          backgroundImage: `url("/assets/img/noise.jpg")`,
-          backgroundSize: '200px 200px',
-          backgroundPosition: '100px 100px',
-          backgroundRepeat: 'repeat',
-          opacity: 0.12,
-          mixBlendMode: 'overlay',
-          transform: 'scale(1.2) rotate(1deg)',
-        }}
-      />
-      <div
-        className="fixed inset-0 pointer-events-none z-0"
-        style={{
-          // Fine top layer - organic texture
-          backgroundImage: `url("/assets/img/noise.jpg")`,
-          backgroundSize: '100px 100px',
-          backgroundPosition: '50px 25px',
-          backgroundRepeat: 'repeat',
-          opacity: 0.08,
-          mixBlendMode: 'multiply',
-          transform: 'scale(1.8) rotate(-0.5deg)',
-        }}
-      />
+      <Background />
 
       {/* ========== NAVBAR ========== */}
-      <nav className="fixed top-4 left-4 right-4 max-w-7xl mx-auto linktree-button backdrop-blur-md z-50 border border-black/20 rounded-2xl shadow-2xl">
+      <nav className="fixed top-4 left-4 right-4 max-w-7xl mx-auto bg-white/95 backdrop-blur-xl border-2 border-black rounded-3xl shadow-2xl z-50">
         <div className="h-full px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <Link href="/music" className="flex items-center">
-              <ArrowLeft className="mr-3 linktree-text/80 hover:opacity-80 transition-colors" size={20} />
-              <span className="linktree-text font-semibold text-lg font-dm-serif">
+              <ArrowLeft className="mr-3 text-black/80 hover:text-blue-600 transition-colors" size={20} />
+              <span className="text-black font-semibold text-lg font-dm-serif">
                 {trackName ? decodeURIComponent(trackName) : 'Back to Music'}
               </span>
             </Link>
