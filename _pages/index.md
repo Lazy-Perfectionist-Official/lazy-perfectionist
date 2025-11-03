@@ -5,14 +5,14 @@ description: Complete documentation for the Lazy Perfectionist website project
 ---
 
 <div class="alert alert-success">
-  <strong>🎸 Welcome!</strong> This is the complete documentation hub for Lazy Perfectionist - an instrumental progressive rock/metal project from Hong Kong.
+  <strong>🎸 Welcome!</strong> This is the documentation hub for Lazy Perfectionist - an instrumental progressive rock/metal project from Hong Kong.
 </div>
 
 # 🎸 Lazy Perfectionist Documentation
 
 > **Instrumental Progressive Rock/Metal from Hong Kong** 🇭🇰
 
-## 🚀 Quick Start
+## 🚀 Quick Navigation
 
 <div class="navigation-grid">
 
@@ -39,57 +39,35 @@ description: Complete documentation for the Lazy Perfectionist website project
 
 </div>
 
-## 🔥 Latest Updates (November 2025)
+## 🔥 Latest Updates
 
-### ✅ Major Improvements Recently Made
+### ✅ Recent Major Improvements
 
-<div class="navigation-grid">
+#### 🔍 SEO Optimization
+- Fixed messy Google search results
+- Added page-specific SEO metadata
+- Resolved structured data conflicts
+- Clean robots.txt configuration
 
-#### 🔍 Comprehensive SEO Optimization
-<div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 12px; padding: 1.5rem;">
-  <h4 style="color: #28a745; margin-top: 0;">🎯 Fixed messy Google search results</h4>
-  <ul>
-    <li>Page-specific SEO metadata for all pages</li>
-    <li>Resolved structured data conflicts</li>
-    <li>Clean robots.txt configuration</li>
-    <li>Better search result appearance</li>
-  </ul>
-  <a href="../changelogs/2025-11-03_comprehensive-seo-optimization.html" class="btn" style="margin-top: 1rem;">Read Details →</a>
-</div>
-
-#### 📚 Documentation Overhaul
-<div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 12px; padding: 1.5rem;">
-  <h4 style="color: #17a2b8; margin-top: 0;">📖 Improved documentation experience</h4>
-  <ul>
-    <li>Visual hierarchy and better navigation</li>
-    <li>Role-based documentation paths</li>
-    <li>New content contributor guide</li>
-    <li>Maintenance procedures broken down</li>
-  </ul>
-  <a href="../changelogs/2025-11-03_documentation-improvements.html" class="btn" style="margin-top: 1rem;">Read Details →</a>
-</div>
+#### 📚 Documentation Improvements
+- Enhanced documentation with visual hierarchy
+- Created content contributor guide
+- Better navigation for different user types
+- Maintenance procedures broken down
 
 #### 🎨 Music Page Redesign
-<div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 12px; padding: 1.5rem;">
-  <h4 style="color: #6f42c1; margin-top: 0;">🎵 Modern music showcase</h4>
-  <ul>
-    <li>Premium glassmorphism design</li>
-    <li>Enhanced featured single display</li>
-    <li>Improved responsive layout</li>
-    <li>Better user engagement features</li>
-  </ul>
-  <a href="../changelogs/2025-11-03_music-page-redesign.html" class="btn" style="margin-top: 1rem;">Read Details →</a>
-</div>
-
-</div>
+- Modern card-based layout
+- Enhanced featured single display
+- Improved responsive design
+- Better user engagement features
 
 ## 📚 Documentation Areas
 
 <div class="navigation-grid">
 
-### 🚀 Getting Started
+### 🛠️ Development Setup
 <div class="nav-card">
-  <h3>🛠️ Development Setup</h3>
+  <h3>🔧 For Developers</h3>
   <p>Set up the project locally and start contributing to the codebase.</p>
   <ul>
     <li><a href="../docs/local_deploy.html">Local Development Guide</a></li>
@@ -98,27 +76,25 @@ description: Complete documentation for the Lazy Perfectionist website project
   </ul>
 </div>
 
-### ✍️ Content Management
+### 📝 Content Management
 <div class="nav-card">
-  <h3>📝 Non-Technical Guide</h3>
+  <h3>✍️ For Content Contributors</h3>
   <p>Manage content without coding - perfect for musicians and content creators.</p>
   <ul>
     <li><a href="../docs/content-guide.html">Content Contributor Guide</a></li>
     <li>Music updates through Spotify</li>
     <li>Blog management via Medium</li>
-    <li>Platform link management</li>
   </ul>
 </div>
 
 ### 🔍 SEO & Optimization
 <div class="nav-card">
-  <h3>🔍 Search Optimization</h3>
+  <h3>🔍 SEO Optimization</h3>
   <p>Comprehensive SEO setup and optimization guides.</p>
   <ul>
     <li><a href="../docs/seo.html">SEO Implementation Guide</a></li>
     <li><a href="../docs/google-seo-setup.html">Google SEO Setup</a></li>
     <li><a href="../docs/GOOGLE_SEO_CHECKLIST.html">SEO Checklist</a></li>
-    <li><a href="../docs/seo-examples.html">SEO Examples</a></li>
   </ul>
 </div>
 
@@ -129,7 +105,7 @@ description: Complete documentation for the Lazy Perfectionist website project
   <ul>
     <li><a href="../docs/deployment.html">Deployment Guide</a></li>
     <li><a href="../docs/maintenance/">Maintenance Procedures</a></li>
-    <li>Daily health checks (5 min)</li>
+    <li>Daily health checks</li>
     <li>Monthly comprehensive tasks</li>
   </ul>
 </div>
@@ -143,15 +119,13 @@ description: Complete documentation for the Lazy Perfectionist website project
 </div>
 
 ### 🛠️ Technology Stack
-
 - **Framework**: Next.js 15 with TypeScript
-- **Styling**: Tailwind CSS + shadcn/ui components
+- **Styling**: Tailwind CSS + shadcn/ui
 - **Database**: SQLite with Prisma ORM
 - **Deployment**: Vercel (recommended)
 - **APIs**: Spotify, Medium integrations
 
 ### 🎵 Key Features
-
 - **🎵 Music Integration**: Spotify API for track listings
 - **📝 Blog Integration**: Medium API for blog posts
 - **📱 Responsive Design**: Mobile-first approach
@@ -162,20 +136,19 @@ description: Complete documentation for the Lazy Perfectionist website project
 ## 🔗 Quick Links
 
 <div class="quick-links">
-  <a href="https://lazy-perfectionist.com" class="btn" style="background: #28a745;">🌐 Live Website</a>
+  <a href="https://lazy-perfectionist.com" class="btn btn-success">🌐 Live Website</a>
   <a href="https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8" class="btn" style="background: #1db954;">🎵 Spotify</a>
   <a href="https://medium.com/@lazyperfectist" class="btn" style="background: #121212;">📝 Blog</a>
   <a href="https://ko-fi.com/lazyperfectionist" class="btn" style="background: #ff6b6b;">☕ Support</a>
-  <a href="https://github.com/Lazy-Perfectionist-Official/lazy-perfectionist" class="btn" style="background: #6c757d;">📂 GitHub</a>
 </div>
 
 ---
 
-<div style="text-align: center; margin-top: 3rem; padding: 2rem; background: #f8f9fa; border-radius: 12px;">
+<div style="text-align: center; margin-top: 3rem; padding: 2rem; background: #f8f9fa; border-radius: 6px;">
   <h3 style="color: #2c3e50; margin-bottom: 1rem;">🎸 Built with ❤️ for Lazy Perfectionist</h3>
   <p style="color: #6c757d; margin-bottom: 1rem;">A bedroom instrumental rock project from Hong Kong 🇭🇰</p>
   <div class="quick-links">
-    <a href="../changelogs/" class="btn" style="background: #6f42c1;">📅 View Changelogs</a>
-    <a href="../docs/" class="btn" style="background: #17a2b8;">📖 Full Documentation</a>
+    <a href="../changelogs/" class="btn btn-secondary">📅 View Changelogs</a>
+    <a href="../docs/" class="btn">📖 Full Documentation</a>
   </div>
 </div>

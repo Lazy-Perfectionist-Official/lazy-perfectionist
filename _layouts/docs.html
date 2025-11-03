@@ -8,65 +8,68 @@
   <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <style>
-    /* Modern design improvements */
+    /* Simple, clean design */
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       line-height: 1.6;
       color: #333;
-      background: #f8f9fa;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
     }
 
     .site-header {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      background: #2c3e50;
+      color: white;
+      padding: 1rem 0;
       position: sticky;
       top: 0;
       z-index: 100;
     }
 
     .site-title {
-      color: white !important;
-      font-weight: 700;
       font-size: 1.5rem;
+      font-weight: 600;
+      color: white !important;
       text-decoration: none;
     }
 
     .site-nav {
       display: flex;
-      gap: 1rem;
+      gap: 2rem;
       align-items: center;
+      margin-top: 0.5rem;
     }
 
     .site-nav .page-link {
-      color: white !important;
+      color: #ecf0f1 !important;
       text-decoration: none;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
+      padding: 0.5rem 0;
+      border-bottom: 2px solid transparent;
       transition: all 0.3s ease;
       font-weight: 500;
     }
 
     .site-nav .page-link:hover {
-      background: rgba(255,255,255,0.1);
-      transform: translateY(-1px);
+      border-bottom-color: #3498db;
+      color: #3498db !important;
     }
 
     .page-header {
-      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
       color: white;
-      padding: 4rem 0;
+      padding: 3rem 0;
       text-align: center;
     }
 
     .project-name {
-      font-size: 3rem;
-      font-weight: 800;
+      font-size: 2.5rem;
+      font-weight: 700;
       margin-bottom: 1rem;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
 
     .project-tagline {
-      font-size: 1.25rem;
+      font-size: 1.1rem;
       opacity: 0.9;
       max-width: 600px;
       margin: 0 auto 2rem;
@@ -76,77 +79,74 @@
       max-width: 1200px;
       margin: 0 auto;
       padding: 2rem;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      margin-top: -2rem;
-      position: relative;
-      z-index: 10;
     }
 
     .btn {
       display: inline-block;
       padding: 0.75rem 1.5rem;
-      background: #007bff;
+      background: #3498db;
       color: white;
       text-decoration: none;
-      border-radius: 8px;
-      font-weight: 600;
+      border-radius: 4px;
+      font-weight: 500;
       transition: all 0.3s ease;
       border: none;
       cursor: pointer;
+      margin: 0.5rem;
     }
 
     .btn:hover {
-      background: #0056b3;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,123,255,0.3);
+      background: #2980b9;
+    }
+
+    .btn-secondary {
+      background: #95a5a6;
+    }
+
+    .btn-secondary:hover {
+      background: #7f8c8d;
+    }
+
+    .btn-success {
+      background: #27ae60;
+    }
+
+    .btn-success:hover {
+      background: #229954;
     }
 
     .navigation-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 2rem;
-      margin: 3rem 0;
+      margin: 2rem 0;
     }
 
     .nav-card {
-      background: #f8f9fa;
-      border: 1px solid #e9ecef;
-      border-radius: 12px;
+      border: 1px solid #e1e8ed;
+      border-radius: 8px;
       padding: 2rem;
       text-decoration: none;
       color: inherit;
       transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .nav-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, #667eea, #764ba2);
+      background: white;
     }
 
     .nav-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
       text-decoration: none;
       color: inherit;
     }
 
     .nav-card h3 {
-      font-size: 1.5rem;
+      font-size: 1.25rem;
       margin-bottom: 1rem;
       color: #2c3e50;
     }
 
     .nav-card p {
-      color: #6c757d;
+      color: #7f8c8d;
       margin-bottom: 1.5rem;
     }
 
@@ -155,6 +155,7 @@
       gap: 1rem;
       flex-wrap: wrap;
       justify-content: center;
+      margin: 1rem 0;
     }
 
     .site-footer {
@@ -174,10 +175,10 @@
     }
 
     .site-footer-links a {
-      color: #6c757d;
+      color: #7f8c8d;
       text-decoration: none;
       padding: 0.5rem 1rem;
-      border-radius: 6px;
+      border-radius: 4px;
       transition: all 0.3s ease;
     }
 
@@ -198,13 +199,16 @@
       }
 
       .main-content {
-        margin: 1rem;
-        padding: 1.5rem;
+        padding: 1rem;
       }
 
       .navigation-grid {
         grid-template-columns: 1fr;
         gap: 1rem;
+      }
+
+      .quick-links {
+        flex-direction: column;
       }
     }
 
@@ -215,9 +219,9 @@
       margin-bottom: 1rem;
     }
 
-    h1 { font-size: 2.5rem; }
-    h2 { font-size: 2rem; }
-    h3 { font-size: 1.5rem; }
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.5rem; }
+    h3 { font-size: 1.25rem; }
 
     p {
       margin-bottom: 1rem;
@@ -236,7 +240,7 @@
     code {
       background: #f1f3f4;
       padding: 0.2rem 0.4rem;
-      border-radius: 4px;
+      border-radius: 3px;
       font-family: 'Monaco', 'Menlo', monospace;
       font-size: 0.9em;
     }
@@ -244,13 +248,13 @@
     pre {
       background: #f1f3f4;
       padding: 1rem;
-      border-radius: 8px;
+      border-radius: 6px;
       overflow-x: auto;
       margin: 1rem 0;
     }
 
     blockquote {
-      border-left: 4px solid #667eea;
+      border-left: 4px solid #3498db;
       padding-left: 1rem;
       margin: 1rem 0;
       color: #6c757d;
@@ -259,26 +263,33 @@
 
     .alert {
       padding: 1rem;
-      border-radius: 8px;
+      border-radius: 6px;
       margin: 1rem 0;
-    }
-
-    .alert-info {
-      background: #d1ecf1;
-      border: 1px solid #bee5eb;
-      color: #0c5460;
+      border-left: 4px solid;
     }
 
     .alert-success {
       background: #d4edda;
-      border: 1px solid #c3e6cb;
+      border-color: #c3e6cb;
       color: #155724;
+    }
+
+    .alert-info {
+      background: #d1ecf1;
+      border-color: #bee5eb;
+      color: #0c5460;
+    }
+
+    .alert-warning {
+      background: #fff3cd;
+      border-color: #ffeaa7;
+      color: #856404;
     }
   </style>
 </head>
 <body>
   <header class="site-header">
-    <div class="wrapper" style="display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 1rem;">
+    <div class="wrapper" style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
       <a class="site-title" href="{{ '/' | absolute_url }}">
         🎸 {{ site.title | escape }}
       </a>
@@ -294,13 +305,11 @@
     <div class="wrapper" style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
       <h1 class="project-name">{{ page.title | default: site.title | escape }}</h1>
       <h2 class="project-tagline">{{ page.description | default: site.description | escape }}</h2>
-      {% if page.github_star_url %}
-        <div class="quick-links">
-          <a href="{{ page.github_star_url }}" class="btn">📂 View on GitHub</a>
-          <a href="https://lazy-perfectionist.com" class="btn" style="background: #28a745;">🌐 Live Site</a>
-          <a href="/changelogs/" class="btn" style="background: #6f42c1;">📅 Changelogs</a>
-        </div>
-      {% endif %}
+      <div class="quick-links">
+        <a href="{{ page.github_star_url | default: 'https://github.com/Lazy-Perfectionist-Official/lazy-perfectionist' }}" class="btn">📂 GitHub</a>
+        <a href="https://lazy-perfectionist.com" class="btn btn-success">🌐 Live Site</a>
+        <a href="/changelogs/" class="btn btn-secondary">📅 Changelogs</a>
+      </div>
     </div>
   </section>
 
@@ -312,13 +321,12 @@
         {% if site.github.is_project_page %}
         <p><strong>{{ site.title | escape }}</strong> is maintained by <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a>.</p>
         {% endif %}
-        <p>This documentation site is generated by <a href="https://pages.github.com">GitHub Pages</a>.</p>
+        <p>This documentation is generated by <a href="https://pages.github.com">GitHub Pages</a>.</p>
         <div class="site-footer-links">
           <a href="https://lazy-perfectionist.com">🌐 Live Website</a>
           <a href="https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8">🎵 Spotify</a>
           <a href="https://medium.com/@lazyperfectist">📝 Blog</a>
           <a href="https://ko-fi.com/lazyperfectionist">☕ Support</a>
-          <a href="https://github.com/Lazy-Perfectionist-Official/lazy-perfectionist">📂 Source</a>
         </div>
       </footer>
     </div>
