@@ -7,11 +7,281 @@
   <meta name="description" content="{{ page.description | default: site.description | escape }}">
   <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <style>
+    /* Modern design improvements */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #f8f9fa;
+    }
+
+    .site-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .site-title {
+      color: white !important;
+      font-weight: 700;
+      font-size: 1.5rem;
+      text-decoration: none;
+    }
+
+    .site-nav {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .site-nav .page-link {
+      color: white !important;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .site-nav .page-link:hover {
+      background: rgba(255,255,255,0.1);
+      transform: translateY(-1px);
+    }
+
+    .page-header {
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      color: white;
+      padding: 4rem 0;
+      text-align: center;
+    }
+
+    .project-name {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .project-tagline {
+      font-size: 1.25rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
+
+    .main-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      margin-top: -2rem;
+      position: relative;
+      z-index: 10;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      background: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background: #0056b3;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,123,255,0.3);
+    }
+
+    .navigation-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+
+    .nav-card {
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 12px;
+      padding: 2rem;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+    }
+
+    .nav-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .nav-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: #2c3e50;
+    }
+
+    .nav-card p {
+      color: #6c757d;
+      margin-bottom: 1.5rem;
+    }
+
+    .quick-links {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .site-footer {
+      margin-top: 4rem;
+      padding: 2rem;
+      background: #f8f9fa;
+      border-top: 1px solid #e9ecef;
+      text-align: center;
+    }
+
+    .site-footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .site-footer-links a {
+      color: #6c757d;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .site-footer-links a:hover {
+      background: #e9ecef;
+      color: #495057;
+    }
+
+    /* Responsive improvements */
+    @media (max-width: 768px) {
+      .site-nav {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .project-name {
+        font-size: 2rem;
+      }
+
+      .main-content {
+        margin: 1rem;
+        padding: 1.5rem;
+      }
+
+      .navigation-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+    }
+
+    /* Content styling */
+    h1, h2, h3, h4, h5, h6 {
+      color: #2c3e50;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    h1 { font-size: 2.5rem; }
+    h2 { font-size: 2rem; }
+    h3 { font-size: 1.5rem; }
+
+    p {
+      margin-bottom: 1rem;
+      color: #495057;
+    }
+
+    ul, ol {
+      margin-bottom: 1rem;
+      padding-left: 2rem;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    code {
+      background: #f1f3f4;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 0.9em;
+    }
+
+    pre {
+      background: #f1f3f4;
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+
+    blockquote {
+      border-left: 4px solid #667eea;
+      padding-left: 1rem;
+      margin: 1rem 0;
+      color: #6c757d;
+      font-style: italic;
+    }
+
+    .alert {
+      padding: 1rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+    }
+
+    .alert-info {
+      background: #d1ecf1;
+      border: 1px solid #bee5eb;
+      color: #0c5460;
+    }
+
+    .alert-success {
+      background: #d4edda;
+      border: 1px solid #c3e6cb;
+      color: #155724;
+    }
+  </style>
 </head>
 <body>
   <header class="site-header">
-    <div class="wrapper">
-      <a class="site-title" href="{{ '/' | absolute_url }}">{{ site.title | escape }}</a>
+    <div class="wrapper" style="display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 1rem;">
+      <a class="site-title" href="{{ '/' | absolute_url }}">
+        🎸 {{ site.title | escape }}
+      </a>
       <nav class="site-nav">
         {% for nav_item in site.navigation %}
           <a class="page-link" href="{{ nav_item.url | relative_url }}">{{ nav_item.title }}</a>
@@ -21,11 +291,15 @@
   </header>
 
   <section class="page-header">
-    <div class="wrapper">
+    <div class="wrapper" style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
       <h1 class="project-name">{{ page.title | default: site.title | escape }}</h1>
       <h2 class="project-tagline">{{ page.description | default: site.description | escape }}</h2>
       {% if page.github_star_url %}
-        <a href="{{ page.github_star_url }}" class="btn">View on GitHub</a>
+        <div class="quick-links">
+          <a href="{{ page.github_star_url }}" class="btn">📂 View on GitHub</a>
+          <a href="https://lazy-perfectionist.com" class="btn" style="background: #28a745;">🌐 Live Site</a>
+          <a href="/changelogs/" class="btn" style="background: #6f42c1;">📅 Changelogs</a>
+        </div>
       {% endif %}
     </div>
   </section>
@@ -36,13 +310,15 @@
 
       <footer class="site-footer">
         {% if site.github.is_project_page %}
-        <span class="site-footer-owner"><a href="{{ site.github.repository_url }}">{{ site.title | escape }}</a> is maintained by <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a>.</span>
+        <p><strong>{{ site.title | escape }}</strong> is maintained by <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a>.</p>
         {% endif %}
-        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+        <p>This documentation site is generated by <a href="https://pages.github.com">GitHub Pages</a>.</p>
         <div class="site-footer-links">
-          <a href="https://lazy-perfectionist.com">🌐 Live Site</a>
+          <a href="https://lazy-perfectionist.com">🌐 Live Website</a>
           <a href="https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8">🎵 Spotify</a>
+          <a href="https://medium.com/@lazyperfectist">📝 Blog</a>
           <a href="https://ko-fi.com/lazyperfectionist">☕ Support</a>
+          <a href="https://github.com/Lazy-Perfectionist-Official/lazy-perfectionist">📂 Source</a>
         </div>
       </footer>
     </div>
