@@ -1,54 +1,63 @@
-# Lazy Perfectionist
+# 🎸 Lazy Perfectionist
 
-A modern Next.js website for Lazy Perfectionist - a bedroom instrumental rock project based in Hong Kong 🇭🇰. Built with TypeScript, Tailwind CSS, and shadcn/ui components.
+> A modern Next.js website for Lazy Perfectionist - a bedroom instrumental rock project based in Hong Kong 🇭🇰
 
-## 🎵 About
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
 
 Lazy Perfectionist is a musical project featuring instrumental rock music created in a bedroom studio. The website showcases music releases, blog posts, and provides links to streaming platforms.
 
-### Features
+## ✨ Key Features
 
-- **Responsive Design**: Optimized for all devices with mobile-first approach
-- **Modern Stack**: Next.js 15, TypeScript, Tailwind CSS, shadcn/ui
-- **Music Integration**: Spotify API integration for track listings
-- **Blog Integration**: Medium API integration for blog posts
-- **Real-time Features**: Socket.IO for potential live interactions
-- **SEO Optimized**: Meta tags, structured data, and sitemap
-- **Performance**: Optimized images, lazy loading, and fast builds
+- **🎵 Music Integration**: Spotify API integration for track listings and streaming platform links
+- **📝 Blog Integration**: Medium API integration for blog posts with automatic updates
+- **📱 Responsive Design**: Mobile-first approach optimized for all devices
+- **🔍 SEO Optimized**: Comprehensive SEO implementation with structured data and meta tags
+- **⚡ Performance**: Optimized images, lazy loading, and fast builds
+- **🎨 Modern UI**: Built with shadcn/ui components and Framer Motion animations
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
-- Node.js 18+ 
-- npm or yarn
+- **Node.js** 18+
+- **npm** or **yarn**
 
 ### Installation
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd lazy-perfectionist
-   ```
+```bash
+# Clone the repository
+git clone <repository-url>
+cd lazy-perfectionist
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+# Install dependencies
+npm install
 
-3. **Set up database**
-   ```bash
-   npm run db:generate
-   npm run db:push
-   ```
+# Set up database
+npm run db:generate
+npm run db:push
 
-4. **Start development server**
-   ```bash
-   npm run dev
-   ```
+# Start development server
+npm run dev
+```
 
-5. **Open your browser**
-   Navigate to [http://localhost:3000](http://localhost:3000)
+🌐 **Open your browser** and navigate to [http://localhost:3000](http://localhost:3000)
+
+## 📑 Table of Contents
+
+- [📁 Project Structure](#-project-structure)
+- [🛠️ Available Scripts](#️-available-scripts)
+- [🎨 Design System](#-design-system)
+- [🔧 Configuration](#-configuration)
+- [📱 Pages](#-pages)
+- [🚀 Deployment](#-deployment)
+- [🤝 Contributing](#-contributing)
+- [📊 Performance](#-performance)
+- [🔍 SEO Optimization](#-seo-optimization)
+- [📚 Documentation](#-documentation)
+- [🐛 Troubleshooting](#-troubleshooting)
+- [📞 Contact](#-contact)
 
 ## 📁 Project Structure
 
@@ -105,16 +114,21 @@ lazy-perfectionist/
 
 ## 🛠️ Available Scripts
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start development server with hot reload |
-| `npm run build` | Build for production |
-| `npm run start` | Start production server |
-| `npm run lint` | Run ESLint (errors ignored during build) |
-| `npm run db:push` | Push schema changes to database |
-| `npm run db:generate` | Generate Prisma client |
-| `npm run db:migrate` | Run database migrations |
-| `npm run db:reset` | Reset database |
+### Development
+```bash
+npm run dev          # Start development server with hot reload
+npm run build        # Build for production
+npm run start        # Start production server
+npm run lint         # Run ESLint (errors ignored during build)
+```
+
+### Database
+```bash
+npm run db:push      # Push schema changes to database
+npm run db:generate  # Generate Prisma client
+npm run db:migrate   # Run database migrations
+npm run db:reset     # Reset database
+```
 
 ## 🎨 Design System
 
@@ -234,102 +248,38 @@ npm start
 
 This website includes comprehensive SEO optimization designed specifically for music artists and content creators.
 
-### 📊 SEO Features Implemented
+### 🎯 Key SEO Features
+- **🎵 Music Industry SEO**: Specialized meta tags for music discovery platforms
+- **📊 Structured Data**: MusicGroup, WebSite, and MusicSong schemas for rich results
+- **🗺️ Technical SEO**: Dynamic sitemap, robots.txt, and canonical URLs
+- **📱 Social Media**: Optimized Open Graph and Twitter Card integration
+- **🎬 Rich Media**: Video schema and thumbnail optimization
+- **🌏 Local SEO**: Hong Kong geographic targeting
 
-#### Metadata Management
-- **Dynamic Meta Tags**: Page-specific titles, descriptions, and keywords
-- **Open Graph Optimization**: Enhanced social media sharing on Facebook, Instagram
-- **Twitter Cards**: Optimized Twitter sharing with rich media
-- **Music Industry Tags**: Specialized meta tags for music discovery platforms
-
-#### Structured Data (JSON-LD)
-- **MusicGroup Schema**: Artist identity with genres, location, and social links
-- **WebSite Schema**: Enhanced search results with action buttons
-- **MusicSong Schema**: Individual track optimization for platform pages
-- **Rich Results**: Enhanced search appearance with images and details
-
-#### Technical SEO
-- **Dynamic Sitemap**: Automatic sitemap.xml generation with proper priorities
-- **Robots.txt**: Comprehensive crawling rules for different search engines
-- **Canonical URLs**: Prevents duplicate content issues
-- **Performance Optimization**: Fast loading with resource hints and preconnect
-
-#### Music Industry SEO
-- **Platform Integration**: Spotify, Apple Music, YouTube optimization
-- **Local SEO**: Hong Kong geographic targeting
-- **Social Media**: Cross-platform optimization and linking
-- **Image SEO**: Optimized alt text and structured data
-
-### 🎵 SEO for Musicians
-
-#### Music Discovery
-```html
-<!-- Music-specific meta tags -->
-<meta name="music:artist" content="Lazy Perfectionist">
-<meta name="music:genre" content="Instrumental Progressive Rock">
-<meta name="music:release_date" content="2025-10-17">
-<meta name="music:title" content="Orbit">
-```
-
-#### Platform Optimization
-- **Spotify**: Rich integration with album art and track metadata
-- **YouTube**: Video schema and thumbnail optimization
-- **Social Media**: Consistent branding across platforms
-- **Streaming Links**: Optimized platform linking page
-
-### 📈 SEO Performance
-
-#### Search Engine Visibility
-- **Rich Snippets**: Enhanced search results with structured data
-- **Knowledge Panel**: Artist information panels in search results
-- **Music Boxes**: Direct music playback in search results
-- **Social Previews**: Optimized sharing cards
-
-#### Local SEO
-- **Geographic Targeting**: Hong Kong market focus
-- **Local Business Schema**: Studio location information
-- **Regional Keywords**: Hong Kong music scene optimization
-
-### 🔧 SEO Configuration
-
-#### SEO Component Usage
-```typescript
-import { generateSEOMetadata, generateStructuredData } from '@/components/SEO'
-
-// Page metadata
-export const metadata: Metadata = generateSEOMetadata({
-  title: 'Page Title',
-  description: 'Optimized description',
-  keywords: ['keyword1', 'keyword2'],
-  ogType: 'website',
-})
-
-// Structured data
-const structuredData = generateStructuredData('MusicGroup', {
-  name: 'Lazy Perfectionist',
-  description: 'Artist description',
-  genre: ['Progressive Rock', 'Instrumental'],
-})
-```
-
-#### Monitoring & Analytics
-- **Google Search Console**: Structured data and performance monitoring
-- **Page Speed**: Core Web Vitals optimization
-- **Mobile Testing**: Mobile-first indexing compliance
-- **Accessibility**: WCAG compliance for better user experience
-
-### 📚 SEO Documentation
-
-- **[Comprehensive SEO Guide](docs/seo.md)** - Detailed implementation guide
-- **[Technical SEO](docs/seo.md#-technical-seo)** - Sitemap, robots.txt, and optimization
-- **[Music Industry SEO](docs/seo.md#-music-industry-seo)** - Music platform optimization
-- **[Monitoring & Maintenance](docs/seo.md#-monitoring--analytics)** - Performance tracking
+### 📚 Detailed SEO Documentation
+- **[📖 Comprehensive SEO Guide](docs/seo.md)** - Complete implementation guide
+- **[⚙️ Google SEO Setup](docs/google-seo-setup.md)** - Step-by-step Google optimization
+- **[✅ SEO Setup Checklist](docs/GOOGLE_SEO_CHECKLIST.md)** - Quick deployment checklist
+- **[🎵 SEO Examples](docs/seo-examples.md)** - Practical implementation examples
 
 ## 📚 Documentation
 
-- **[Local Development Guide](docs/local_deploy.md)** - Detailed setup instructions
-- **[AGENTS.md](AGENTS.md)** - AI development guidelines and code style
-- **API Documentation** - Available endpoints and usage
+### 🚀 Getting Started
+- **[📖 Local Development Guide](docs/local_deploy.md)** - Set up and run the project locally
+- **[🛠️ Development Workflow](docs/local-development.md)** - Development best practices and workflow
+- **[📋 Project Overview](docs/README.md)** - Complete documentation overview
+- **[📝 Content Contributor Guide](docs/content-guide.md)** - Non-technical content management guide
+
+### 🎨 Development & Features
+- **[🔌 API Reference](docs/api_reference.md)** - API endpoints and integration details
+- **[🤖 AI Development Guidelines](AGENTS.md)** - Code style guidelines and development conventions
+
+### 🚀 Deployment & Operations
+- **[🌐 Deployment Guide](docs/deployment.md)** - Various deployment options and configurations
+- **[🔧 Maintenance Guide](docs/maintenance/)** - Ongoing maintenance tasks and procedures
+  - **[📅 Daily Tasks](docs/maintenance/daily-tasks.md)** - Quick health checks
+  - **[📆 Monthly Tasks](docs/maintenance/monthly-tasks.md)** - Comprehensive maintenance
+  - **[🔒 Security & Updates](docs/maintenance/security-updates.md)** - Security procedures
 
 ## 🐛 Troubleshooting
 
@@ -357,13 +307,27 @@ npm run db:generate
 
 This project is proprietary software. All rights reserved.
 
-## 📞 Contact
+## 📞 Connect & Listen
 
+### 🌐 Online
 - **Website**: [lazy-perfectionist.com](https://lazy-perfectionist.com)
+
+### 🎵 Streaming Platforms
 - **Spotify**: [Open Spotify](https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8)
-- **Medium**: [@lazyperfectist](https://medium.com/@lazyperfectist)
 - **YouTube**: [YouTube Channel](https://www.youtube.com/watch?v=Hw2a43RV1p0)
+
+### 📝 Social Media
+- **Medium**: [@lazyperfectist](https://medium.com/@lazyperfectist)
 
 ---
 
-Built with ❤️ for Lazy Perfectionist 🎸
+<div align="center">
+
+**🎸 Built with ❤️ for Lazy Perfectionist**
+
+*A bedroom instrumental rock project from Hong Kong 🇭🇰*
+
+[![License](https://img.shields.io/badge/license-proprietary-red?style=flat-square)](LICENSE)
+[![Website](https://img.shields.io/badge/website-lazy--perfectionist.com-blue?style=flat-square)](https://lazy-perfectionist.com)
+
+</div>
