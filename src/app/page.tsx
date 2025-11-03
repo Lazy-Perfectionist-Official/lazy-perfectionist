@@ -4,8 +4,10 @@ import HomePage from './HomePage';
 
 export const metadata: Metadata = generateSEOMetadata({
   title: 'Home - Bedroom Instrumental Rock from Hong Kong',
-  description: 'Lazy Perfectionist - Instrumental progressive rock/metal from Hong Kong. Discover technical precision meets emotional storytelling with orchestral layers, EDM-inspired synths, and anime music influences.',
+  description: 'Lazy Perfectionist - Instrumental progressive rock/metal project from Hong Kong. Discover technical precision meets emotional storytelling with orchestral layers, EDM-inspired synths, and anime music influences. featuring the Orbit single.',
   keywords: [
+    'Lazy Perfectionist Band',
+    'Lazy Perfectionist Project',
     'instrumental rock',
     'progressive metal',
     'bedroom producer',
@@ -13,7 +15,13 @@ export const metadata: Metadata = generateSEOMetadata({
     'orchestral rock',
     'EDM influences',
     'anime music',
-    'Lazy Perfectionist'
+    'Lazy Perfectionist',
+    'Orbit Band',
+    'Orbit Single',
+    'Hong Kong rock band',
+    'progressive metal band',
+    'instrumental rock band',
+    'bedroom rock band'
   ],
   ogType: 'website',
   canonical: 'https://lazyperfectionist.com'
