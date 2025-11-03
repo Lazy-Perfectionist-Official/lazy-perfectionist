@@ -16,6 +16,8 @@ Welcome to the Lazy Perfectionist project documentation. This directory contains
 - **[../AGENTS.md](../AGENTS.md)** - Code style guidelines and development conventions
 
 ### Deployment & Operations
+- **[Google SEO Setup Guide](google-seo-setup.md)** - Step-by-step Google search optimization setup
+- **[SEO Setup Checklist](GOOGLE_SEO_CHECKLIST.md)** - Quick checklist for Google SEO deployment
 - **[Deployment Guide](deployment.md)** - Various deployment options and configurations
 - **[Maintenance Guide](maintenance.md)** - Ongoing maintenance tasks and procedures
 
@@ -30,9 +32,11 @@ Welcome to the Lazy Perfectionist project documentation. This directory contains
 6. Review [AGENTS.md](../AGENTS.md) for coding standards
 
 ### For Deployment
-1. Choose your deployment method from the [Deployment Guide](deployment.md)
-2. Configure environment variables
-3. Follow platform-specific instructions
+1. Follow the [Google SEO Setup Guide](google-seo-setup.md) for search optimization
+2. Use the [SEO Setup Checklist](GOOGLE_SEO_CHECKLIST.md) to track progress
+3. Choose your deployment method from the [Deployment Guide](deployment.md)
+4. Configure environment variables
+5. Follow platform-specific instructions
 
 ### For Maintenance
 1. Follow the [Maintenance Guide](maintenance.md) for regular tasks
@@ -46,6 +50,8 @@ docs/
 ├── README.md              # This file - documentation overview
 ├── seo.md                 # Comprehensive SEO implementation guide
 ├── seo-examples.md        # Practical SEO implementation examples
+├── google-seo-setup.md    # Step-by-step Google search optimization
+├── GOOGLE_SEO_CHECKLIST.md # Quick checklist for Google setup
 ├── local_deploy.md        # Local development setup
 ├── local-development.md   # Development workflow and best practices
 ├── api_reference.md       # API documentation
