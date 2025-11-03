@@ -177,7 +177,7 @@ export default function MusicPage() {
                         </div>
 
                         <p className="text-black/70 leading-relaxed">
-                          From a Hong Kong bedroom, orchestral layers meet EDM-inspired synths in instrumental progressive rock. My debut single showcases a blend of technical precision and emotional storytelling.
+                          My debut single "Orbit" is an instrumental progressive rock sound walk experiment. Featuring a fusion of orchestral layers and modern synths.
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-3 pt-4">

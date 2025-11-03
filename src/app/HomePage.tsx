@@ -283,7 +283,7 @@ export default function HomePage() {
                     The Art of Lazy Perfectionism
                   </h2>
                   <p className="text-base sm:text-lg text-black/90 leading-relaxed">
-                    Lazy Perfectionist is an instrumental progressive rock/metal project that blends technical precision with emotional storytelling. From a Hong Kong bedroom, orchestral layers meet EDM-inspired synths and anime music influences.
+                    Lazy Perfectionist is an instrumental progressive rock/metal project that blends technical precision with emotional storytelling. All delivered from a bedroom studio in Hong Kong.
                   </p>
 
                   <div className="space-y-3">
