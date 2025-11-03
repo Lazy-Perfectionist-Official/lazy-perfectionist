@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = 'https://lazyperfectionist.com'
+  const baseUrl = 'https://lazyperfectionist.vercel.app'
 
   return {
     rules: [
