@@ -96,27 +96,6 @@
       padding: 2rem;
     }
 
-    .page-header {
-      background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
-      color: white;
-      padding: 3rem 2rem;
-      margin: -2rem -2rem 2rem;
-      text-align: center;
-    }
-
-    .page-title {
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-    }
-
-    .page-description {
-      font-size: 1.1rem;
-      opacity: 0.9;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
     .content {
       max-width: 800px;
       margin: 0 auto;
@@ -341,16 +320,14 @@
   </aside>
 
   <main class="main-content">
-    {% if page.title %}
-    <header class="page-header">
-      <h1 class="page-title">{{ page.title }}</h1>
-      {% if page.description %}
-      <p class="page-description">{{ page.description }}</p>
-      {% endif %}
-    </header>
-    {% endif %}
-
     <div class="content">
+      {% if page.title %}
+      <h1>{{ page.title }}</h1>
+      {% if page.description %}
+      <p><em>{{ page.description }}</em></p>
+      {% endif %}
+      {% endif %}
+
       {{ content }}
 
       <footer class="site-footer">
