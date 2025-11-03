@@ -28,12 +28,16 @@ defaults:
       path: ""
       type: "docs"
     values:
-      layout: "docs"
+      layout: "base"
   - scope:
       path: ""
       type: "changelogs"
     values:
-      layout: "changelog"
+      layout: "base"
+  - scope:
+      path: "_pages"
+    values:
+      layout: "base"
 
 # Exclude from processing
 exclude:

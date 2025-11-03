@@ -1,12 +1,9 @@
 ---
-layout: docs
 title: Changelog Archive
 description: Complete changelog archive for the Lazy Perfectionist website project
 ---
 
-<div class="alert alert-success">
-  <strong>📅 Welcome to the Changelog Archive!</strong> This section documents all significant changes, improvements, and updates to the project with detailed information about what was changed and why.
-</div>
+> **📅 Welcome to the Changelog Archive!** This section documents all significant changes, improvements, and updates to the project with detailed information about what was changed and why.
 
 # 📅 Lazy Perfectionist Changelog Archive
 
@@ -14,82 +11,69 @@ description: Complete changelog archive for the Lazy Perfectionist website proje
 
 ## 🔥 Latest Updates (November 2025)
 
-<div class="navigation-grid">
-
 ### ✅ Major Recent Changes
 
-<div class="nav-card">
-  <h3>🔍 Comprehensive SEO Optimization</h3>
-  <p><strong>Commit:</strong> <code>6af7a77</code> | <strong>Impact:</strong> <span class="impact-major">Major</span></p>
-  <p>Fixed messy Google search results with page-specific SEO metadata and structured data fixes.</p>
-  <ul>
-    <li>Page-specific SEO metadata for all main pages</li>
-    <li>Resolved structured data conflicts between layout and pages</li>
-    <li>Clean robots.txt configuration</li>
-    <li>Added verification codes for search engines</li>
-  </ul>
-  <a href="2025-11-03_comprehensive-seo-optimization.html" class="btn">Read Full Changelog →</a>
-</div>
+#### 🔍 Comprehensive SEO Optimization
+**Commit:** `6af7a77` | **Impact:** **Major**
 
-<div class="nav-card">
-  <h3>📚 Documentation Readability Improvements</h3>
-  <p><strong>Commit:</strong> <code>8508e0d</code> | <strong>Impact:</strong> <span class="impact-major">Major</span></p>
-  <p>Complete documentation overhaul with visual hierarchy, role-based navigation, and new content contributor guide.</p>
-  <ul>
-    <li>Enhanced main README with visual elements and better structure</li>
-    <li>Created non-technical content management guide</li>
-    <li>Broke down maintenance documentation into focused guides</li>
-    <li>Improved navigation and user experience</li>
-  </ul>
-  <a href="2025-11-03_documentation-improvements.html" class="btn">Read Full Changelog →</a>
-</div>
+Fixed messy Google search results with page-specific SEO metadata and structured data fixes.
 
-<div class="nav-card">
-  <h3>🔧 Google SEO Setup Guide & Checklist</h3>
-  <p><strong>Commit:</strong> <code>2164c7c</code> | <strong>Impact:</strong> <span class="impact-high">High</span></p>
-  <p>Created comprehensive Google SEO setup documentation with step-by-step guides and practical examples.</p>
-  <ul>
-    <li>Step-by-step Google Search Console setup guide</li>
-    <li>Comprehensive SEO checklist for implementation tracking</li>
-    <li>Music industry-specific SEO examples and strategies</li>
-    <li>Practical code examples and configuration guidance</li>
-  </ul>
-  <a href="2025-11-03_google-seo-setup.html" class="btn">Read Full Changelog →</a>
-</div>
+- Page-specific SEO metadata for all main pages
+- Resolved structured data conflicts between layout and pages
+- Clean robots.txt configuration
+- Added verification codes for search engines
 
-</div>
+[Read Full Changelog →](2025-11-03_comprehensive-seo-optimization.html)
+
+#### 📚 Documentation Readability Improvements
+**Commit:** `8508e0d` | **Impact:** **Major**
+
+Complete documentation overhaul with visual hierarchy, role-based navigation, and new content contributor guide.
+
+- Enhanced main README with visual elements and better structure
+- Created non-technical content management guide
+- Broke down maintenance documentation into focused guides
+- Improved navigation and user experience
+
+[Read Full Changelog →](2025-11-03_documentation-improvements.html)
+
+#### 🔧 Google SEO Setup Guide & Checklist
+**Commit:** `2164c7c` | **Impact:** **High**
+
+Created comprehensive Google SEO setup documentation with step-by-step guides and practical examples.
+
+- Step-by-step Google Search Console setup guide
+- Comprehensive SEO checklist for implementation tracking
+- Music industry-specific SEO examples and strategies
+- Practical code examples and configuration guidance
+
+[Read Full Changelog →](2025-11-03_google-seo-setup.html)
 
 ## 🎨 Design & User Experience Updates
 
-<div class="navigation-grid">
+#### 🎵 Music Page Modern Redesign
+**Commit:** `f4fdc65` | **Impact:** **High**
 
-<div class="nav-card">
-  <h3>🎵 Music Page Modern Redesign</h3>
-  <p><strong>Commit:</strong> <code>f4fdc65</code> | <strong>Impact:</strong> <span class="impact-high">High</span></p>
-  <p>Complete redesign of the music page with modern premium layout and enhanced user experience.</p>
-  <ul>
-    <li>Modern glassmorphism design with card-based layout</li>
-    <li>Enhanced featured single showcase for "Orbit"</li>
-    <li>Improved responsive design for all devices</li>
-    <li>Better user engagement and interaction features</li>
-  </ul>
-  <a href="2025-11-03_music-page-redesign.html" class="btn">Read Full Changelog →</a>
-</div>
+Complete redesign of the music page with modern premium layout and enhanced user experience.
 
-<div class="nav-card">
-  <h3>💰 Ko-fi Integration</h3>
-  <p><strong>Commit:</strong> <code>fc83671</code> | <strong>Impact:</strong> <span class="impact-medium">Medium</span></p>
-  <p>Integrated Ko-fi "Buy Me a Coffee" functionality throughout the website for fan support.</p>
-  <ul>
-    <li>Multiple touchpoints for fan support across the site</li>
-    <li>Store page redirect to Ko-fi profile</li>
-    <li>Strategic placement of support buttons</li>
-    <li>Seamless user experience for supporters</li>
-  </ul>
-  <a href="2025-11-03_kofi-integration.html" class="btn">Read Full Changelog →</a>
-</div>
+- Modern glassmorphism design with card-based layout
+- Enhanced featured single showcase for "Orbit"
+- Improved responsive design for all devices
+- Better user engagement and interaction features
 
-</div>
+[Read Full Changelog →](2025-11-03_music-page-redesign.html)
+
+#### 💰 Ko-fi Integration
+**Commit:** `fc83671` | **Impact:** **Medium**
+
+Integrated Ko-fi "Buy Me a Coffee" functionality throughout the website for fan support.
+
+- Multiple touchpoints for fan support across the site
+- Store page redirect to Ko-fi profile
+- Strategic placement of support buttons
+- Seamless user experience for supporters
+
+[Read Full Changelog →](2025-11-03_kofi-integration.html)
 
 ## 📊 Changelog Categories
 
@@ -229,11 +213,9 @@ If you have questions about any changes or need clarification:
 
 ---
 
-<div style="text-align: center; margin-top: 3rem; padding: 2rem; background: #f8f9fa; border-radius: 12px;">
-  <h3 style="color: #2c3e50; margin-bottom: 1rem;">📅 Continuous Improvement</h3>
-  <p style="color: #6c757d; margin-bottom: 1rem;">This changelog archive provides transparency about project development and helps users understand the evolution of the Lazy Perfectionist website.</p>
-  <div class="quick-links">
-    <a href="../docs/" class="btn" style="background: #17a2b8;">📚 Documentation</a>
-    <a href="https://lazy-perfectionist.com" class="btn" style="background: #28a745;">🌐 Live Site</a>
-  </div>
-</div>
+**📅 Continuous Improvement**
+
+This changelog archive provides transparency about project development and helps users understand the evolution of the Lazy Perfectionist website.
+
+- [📚 Documentation](../docs/)
+- [🌐 Live Site](https://lazy-perfectionist.com)

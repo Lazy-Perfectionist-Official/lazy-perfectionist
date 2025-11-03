@@ -1,3 +1,13 @@
+---
+title: 2025-11-03 - Ko-fi Buy Me a Coffee Integration
+description: Integrated Ko-fi functionality throughout the website for fan support
+commit: fc83671
+author: Samuel Lee
+category: 💰 Monetization & Integration
+impact: Medium
+date: 2025-11-03
+---
+
 # 📅 2025-11-03 - Ko-fi Buy Me a Coffee Integration
 
 **Commit**: `fc83671`

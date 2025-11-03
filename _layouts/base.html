@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title | escape }}</title>
+  <meta name="description" content="{{ page.description | default: site.description | escape }}">
+  <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <style>
+    /* Clean, simple design with sidebar navigation */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 280px;
+      background: #2c3e50;
+      color: white;
+      padding: 2rem 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar-header {
+      padding: 0 1.5rem 2rem;
+      border-bottom: 1px solid #34495e;
+    }
+
+    .site-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: white !important;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .site-subtitle {
+      font-size: 0.875rem;
+      opacity: 0.8;
+      margin: 0;
+    }
+
+    .sidebar-nav {
+      padding: 1.5rem 0;
+    }
+
+    .nav-section {
+      margin-bottom: 2rem;
+    }
+
+    .nav-section-title {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #95a5a6;
+      padding: 0 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .nav-link {
+      display: block;
+      color: #ecf0f1 !important;
+      text-decoration: none;
+      padding: 0.5rem 1.5rem;
+      transition: all 0.2s ease;
+      border-left: 3px solid transparent;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      background: rgba(52, 152, 219, 0.1);
+      border-left-color: #3498db;
+      color: #3498db !important;
+    }
+
+    .nav-link.active {
+      background: rgba(52, 152, 219, 0.2);
+      font-weight: 500;
+    }
+
+    .main-content {
+      flex: 1;
+      max-width: none;
+      margin: 0;
+      padding: 2rem;
+    }
+
+    .page-header {
+      background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+      color: white;
+      padding: 3rem 2rem;
+      margin: -2rem -2rem 2rem;
+      text-align: center;
+    }
+
+    .page-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .page-description {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      background: #3498db;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      margin: 0.5rem;
+    }
+
+    .btn:hover {
+      background: #2980b9;
+    }
+
+    .btn-secondary {
+      background: #95a5a6;
+    }
+
+    .btn-secondary:hover {
+      background: #7f8c8d;
+    }
+
+    .btn-success {
+      background: #27ae60;
+    }
+
+    .btn-success:hover {
+      background: #229954;
+    }
+
+    .alert {
+      padding: 1rem;
+      border-radius: 6px;
+      margin: 1rem 0;
+      border-left: 4px solid;
+    }
+
+    .alert-success {
+      background: #d4edda;
+      border-color: #c3e6cb;
+      color: #155724;
+    }
+
+    .alert-info {
+      background: #d1ecf1;
+      border-color: #bee5eb;
+      color: #0c5460;
+    }
+
+    .alert-warning {
+      background: #fff3cd;
+      border-color: #ffeaa7;
+      color: #856404;
+    }
+
+    .site-footer {
+      margin-top: 4rem;
+      padding: 2rem;
+      background: #f8f9fa;
+      border-top: 1px solid #e9ecef;
+      text-align: center;
+    }
+
+    .site-footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .site-footer-links a {
+      color: #7f8c8d;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+
+    .site-footer-links a:hover {
+      background: #e9ecef;
+      color: #495057;
+    }
+
+    /* Content styling */
+    h1, h2, h3, h4, h5, h6 {
+      color: #2c3e50;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.5rem; }
+    h3 { font-size: 1.25rem; }
+
+    p {
+      margin-bottom: 1rem;
+      color: #495057;
+    }
+
+    ul, ol {
+      margin-bottom: 1rem;
+      padding-left: 2rem;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    code {
+      background: #f1f3f4;
+      padding: 0.2rem 0.4rem;
+      border-radius: 3px;
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 0.9em;
+    }
+
+    pre {
+      background: #f1f3f4;
+      padding: 1rem;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+
+    blockquote {
+      border-left: 4px solid #3498db;
+      padding-left: 1rem;
+      margin: 1rem 0;
+      color: #6c757d;
+      font-style: italic;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+      }
+
+      .page-header {
+        margin: 0;
+      }
+
+      .main-content {
+        padding: 1rem;
+      }
+
+      .page-title {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a class="site-title" href="{{ '/' | absolute_url }}">
+        🎸 {{ site.title | escape }}
+      </a>
+      <p class="site-subtitle">{{ site.description | escape }}</p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-section-title">Navigation</div>
+        <a href="/" class="nav-link">🏠 Home</a>
+        <a href="/docs/" class="nav-link">📚 Documentation</a>
+        <a href="/changelogs/" class="nav-link">📅 Changelogs</a>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-title">Quick Links</div>
+        <a href="https://lazy-perfectionist.com" class="nav-link" target="_blank">🌐 Live Site</a>
+        <a href="https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8" class="nav-link" target="_blank">🎵 Spotify</a>
+        <a href="https://medium.com/@lazyperfectist" class="nav-link" target="_blank">📝 Blog</a>
+        <a href="https://ko-fi.com/lazyperfectionist" class="nav-link" target="_blank">☕ Support</a>
+        <a href="https://github.com/Lazy-Perfectionist-Official/lazy-perfectionist" class="nav-link" target="_blank">📂 GitHub</a>
+      </div>
+
+      {% if page.url contains '/docs/' %}
+      <div class="nav-section">
+        <div class="nav-section-title">Documentation</div>
+        <a href="/docs/" class="nav-link">📖 Overview</a>
+        <a href="/docs/local_deploy.html" class="nav-link">🛠️ Local Development</a>
+        <a href="/docs/content-guide.html" class="nav-link">✍️ Content Guide</a>
+        <a href="/docs/seo.html" class="nav-link">🔍 SEO Guide</a>
+        <a href="/docs/deployment.html" class="nav-link">🚀 Deployment</a>
+        <a href="/docs/maintenance.html" class="nav-link">🔧 Maintenance</a>
+        <a href="/docs/api_reference.html" class="nav-link">📡 API Reference</a>
+        <a href="/docs/google-seo-setup.html" class="nav-link">🔍 Google SEO</a>
+        <a href="/docs/GOOGLE_SEO_CHECKLIST.html" class="nav-link">✅ SEO Checklist</a>
+      </div>
+      {% endif %}
+
+      {% if page.url contains '/changelogs/' %}
+      <div class="nav-section">
+        <div class="nav-section-title">Changelogs</div>
+        <a href="/changelogs/" class="nav-link">📅 All Changes</a>
+        <a href="/changelogs/2025-11-03_comprehensive-seo-optimization.html" class="nav-link">🔍 SEO Optimization</a>
+        <a href="/changelogs/2025-11-03_documentation-improvements.html" class="nav-link">📚 Documentation</a>
+        <a href="/changelogs/2025-11-03_music-page-redesign.html" class="nav-link">🎵 Music Page</a>
+        <a href="/changelogs/2025-11-03_kofi-integration.html" class="nav-link">☕ Ko-fi Integration</a>
+        <a href="/changelogs/2025-11-03_google-seo-setup.html" class="nav-link">🔍 Google SEO Setup</a>
+      </div>
+      {% endif %}
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    {% if page.title %}
+    <header class="page-header">
+      <h1 class="page-title">{{ page.title }}</h1>
+      {% if page.description %}
+      <p class="page-description">{{ page.description }}</p>
+      {% endif %}
+    </header>
+    {% endif %}
+
+    <div class="content">
+      {{ content }}
+
+      <footer class="site-footer">
+        {% if site.github.is_project_page %}
+        <p><strong>{{ site.title | escape }}</strong> is maintained by <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a>.</p>
+        {% endif %}
+        <p>This documentation is generated by <a href="https://pages.github.com">GitHub Pages</a>.</p>
+        <div class="site-footer-links">
+          <a href="https://lazy-perfectionist.com">🌐 Live Website</a>
+          <a href="https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8">🎵 Spotify</a>
+          <a href="https://medium.com/@lazyperfectist">📝 Blog</a>
+          <a href="https://ko-fi.com/lazyperfectionist">☕ Support</a>
+        </div>
+      </footer>
+    </div>
+  </main>
+</body>
+</html>

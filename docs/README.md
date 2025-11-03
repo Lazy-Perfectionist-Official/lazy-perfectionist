@@ -1,3 +1,8 @@
+---
+title: Documentation
+description: Comprehensive guides for developing, deploying, and maintaining the Lazy Perfectionist website
+---
+
 # 📚 Documentation
 
 > Welcome to the Lazy Perfectionist project documentation. This directory contains comprehensive guides for developing, deploying, and maintaining the website.

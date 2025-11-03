@@ -1,3 +1,13 @@
+---
+title: 2025-11-03 - Comprehensive SEO Optimization
+description: Major SEO optimization to clean up Google search results and improve website visibility
+commit: 6af7a77
+author: Samuel Lee
+category: 🔍 SEO & Performance
+impact: Major
+date: 2025-11-03
+---
+
 # 📅 2025-11-03 - Comprehensive SEO Optimization
 
 **Commit**: `6af7a77`

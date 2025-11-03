@@ -1,3 +1,13 @@
+---
+title: 2025-11-03 - Documentation Readability Improvements
+description: Major documentation overhaul to improve readability, user experience, and navigation
+commit: 8508e0d
+author: Samuel Lee
+category: 📚 Documentation
+impact: Major
+date: 2025-11-03
+---
+
 # 📅 2025-11-03 - Documentation Readability Improvements
 
 **Commit**: `8508e0d`
