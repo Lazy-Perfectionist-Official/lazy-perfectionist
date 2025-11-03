@@ -6,10 +6,13 @@ Welcome to the Lazy Perfectionist project documentation. This directory contains
 
 ### Getting Started
 - **[Local Development Guide](local_deploy.md)** - Set up and run the project locally
+- **[Local Development Workflow](local-development.md)** - Development best practices and workflow
 - **[../README.md](../README.md)** - Project overview and quick start
 
-### Development
+### Development & Features
 - **[API Reference](api_reference.md)** - API endpoints and integration details
+- **[SEO Implementation Guide](seo.md)** - Comprehensive SEO optimization guide
+- **[SEO Examples](seo-examples.md)** - Practical SEO implementation examples
 - **[../AGENTS.md](../AGENTS.md)** - Code style guidelines and development conventions
 
 ### Deployment & Operations
@@ -21,7 +24,10 @@ Welcome to the Lazy Perfectionist project documentation. This directory contains
 ### For New Developers
 1. Read the main [README.md](../README.md) for project overview
 2. Follow the [Local Development Guide](local_deploy.md) to set up your environment
-3. Review [AGENTS.md](../AGENTS.md) for coding standards
+3. Review [Local Development Workflow](local-development.md) for development best practices
+4. Check the [SEO Implementation Guide](seo.md) to understand SEO features
+5. Review [SEO Examples](seo-examples.md) for practical implementation guidance
+6. Review [AGENTS.md](../AGENTS.md) for coding standards
 
 ### For Deployment
 1. Choose your deployment method from the [Deployment Guide](deployment.md)
@@ -38,7 +44,10 @@ Welcome to the Lazy Perfectionist project documentation. This directory contains
 ```
 docs/
 ├── README.md              # This file - documentation overview
+├── seo.md                 # Comprehensive SEO implementation guide
+├── seo-examples.md        # Practical SEO implementation examples
 ├── local_deploy.md        # Local development setup
+├── local-development.md   # Development workflow and best practices
 ├── api_reference.md       # API documentation
 ├── deployment.md          # Deployment options and guides
 └── maintenance.md         # Maintenance procedures

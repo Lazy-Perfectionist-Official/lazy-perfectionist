@@ -59,27 +59,45 @@ lazy-perfectionist/
 │   │   ├── page.tsx           # Home page with hero section
 │   │   ├── music/page.tsx     # Music releases page
 │   │   ├── blog/page.tsx      # Blog posts page
-│   │   ├── layout.tsx         # Root layout with metadata
+│   │   ├── store/page.tsx     # Store page (redirects to Ko-fi)
+│   │   ├── platform-links/    # Music platform linking page
+│   │   ├── layout.tsx         # Root layout with comprehensive SEO metadata
+│   │   ├── sitemap.xml/       # Dynamic sitemap generation
+│   │   ├── robots.txt/        # SEO robots configuration
 │   │   └── globals.css        # Global styles
+│   ├── components/            # Reusable React components
+│   │   ├── SEO.tsx           # SEO metadata generation component
+│   │   ├── Navigation.tsx    # Site navigation with Ko-fi integration
+│   │   ├── Background.tsx    # Background effects and noise texture
+│   │   ├── ui/               # shadcn/ui base components
+│   │   ├── blog/             # Blog-related components
+│   │   └── music/            # Music-related components
 │   ├── hooks/                 # Custom React hooks
 │   │   ├── use-mobile.ts      # Mobile detection hook
 │   │   └── use-toast.ts       # Toast notification hook
 │   └── lib/                   # Utilities and configurations
 │       ├── utils.ts           # Utility functions (cn helper)
 │       ├── db.ts              # Database connection
-│       └── socket.ts          # Socket.IO setup
+│       ├── socket.ts          # Socket.IO setup
+│       └── analytics.ts       # Analytics tracking utilities
 ├── public/
 │   ├── assets/img/            # Static images
-│   │   ├── logo.png          # Main logo
+│   │   ├── logo.png          # Main logo with SEO optimization
+│   │   ├── logo-handwritten.png # Logo variant for music pages
 │   │   └── orbit-cover.jpg   # Album cover
 │   ├── logo.svg              # Favicon
 │   └── robots.txt            # SEO robots file
 ├── prisma/
 │   └── schema.prisma         # Database schema
 ├── docs/                     # Documentation
-│   └── local_deploy.md       # Local development guide
+│   ├── seo.md               # Comprehensive SEO implementation guide
+│   ├── api_reference.md     # API documentation
+│   ├── deployment.md        # Production deployment guide
+│   ├── local_deploy.md      # Local development setup
+│   ├── local-development.md # Development workflow
+│   └── maintenance.md       # Maintenance and updates
 ├── server.ts                 # Custom Next.js server
-├── next.config.ts           # Next.js configuration
+├── next.config.ts           # Next.js configuration with image optimization
 ├── tailwind.config.ts       # Tailwind CSS configuration
 ├── components.json          # shadcn/ui configuration
 └── AGENTS.md               # AI development guidelines
@@ -212,19 +230,100 @@ npm start
 - Error tracking with proper error boundaries
 - Performance metrics in production builds
 
-## 🔍 SEO
+## 🔍 SEO Optimization
 
-### Meta Tags
-- Dynamic page titles and descriptions
-- Open Graph tags for social sharing
-- Twitter Card optimization
-- Structured data markup
+This website includes comprehensive SEO optimization designed specifically for music artists and content creators.
 
-### Technical SEO
-- XML sitemap generation
-- Robots.txt configuration
-- Canonical URLs
-- Proper heading hierarchy
+### 📊 SEO Features Implemented
+
+#### Metadata Management
+- **Dynamic Meta Tags**: Page-specific titles, descriptions, and keywords
+- **Open Graph Optimization**: Enhanced social media sharing on Facebook, Instagram
+- **Twitter Cards**: Optimized Twitter sharing with rich media
+- **Music Industry Tags**: Specialized meta tags for music discovery platforms
+
+#### Structured Data (JSON-LD)
+- **MusicGroup Schema**: Artist identity with genres, location, and social links
+- **WebSite Schema**: Enhanced search results with action buttons
+- **MusicSong Schema**: Individual track optimization for platform pages
+- **Rich Results**: Enhanced search appearance with images and details
+
+#### Technical SEO
+- **Dynamic Sitemap**: Automatic sitemap.xml generation with proper priorities
+- **Robots.txt**: Comprehensive crawling rules for different search engines
+- **Canonical URLs**: Prevents duplicate content issues
+- **Performance Optimization**: Fast loading with resource hints and preconnect
+
+#### Music Industry SEO
+- **Platform Integration**: Spotify, Apple Music, YouTube optimization
+- **Local SEO**: Hong Kong geographic targeting
+- **Social Media**: Cross-platform optimization and linking
+- **Image SEO**: Optimized alt text and structured data
+
+### 🎵 SEO for Musicians
+
+#### Music Discovery
+```html
+<!-- Music-specific meta tags -->
+<meta name="music:artist" content="Lazy Perfectionist">
+<meta name="music:genre" content="Instrumental Progressive Rock">
+<meta name="music:release_date" content="2025-10-17">
+<meta name="music:title" content="Orbit">
+```
+
+#### Platform Optimization
+- **Spotify**: Rich integration with album art and track metadata
+- **YouTube**: Video schema and thumbnail optimization
+- **Social Media**: Consistent branding across platforms
+- **Streaming Links**: Optimized platform linking page
+
+### 📈 SEO Performance
+
+#### Search Engine Visibility
+- **Rich Snippets**: Enhanced search results with structured data
+- **Knowledge Panel**: Artist information panels in search results
+- **Music Boxes**: Direct music playback in search results
+- **Social Previews**: Optimized sharing cards
+
+#### Local SEO
+- **Geographic Targeting**: Hong Kong market focus
+- **Local Business Schema**: Studio location information
+- **Regional Keywords**: Hong Kong music scene optimization
+
+### 🔧 SEO Configuration
+
+#### SEO Component Usage
+```typescript
+import { generateSEOMetadata, generateStructuredData } from '@/components/SEO'
+
+// Page metadata
+export const metadata: Metadata = generateSEOMetadata({
+  title: 'Page Title',
+  description: 'Optimized description',
+  keywords: ['keyword1', 'keyword2'],
+  ogType: 'website',
+})
+
+// Structured data
+const structuredData = generateStructuredData('MusicGroup', {
+  name: 'Lazy Perfectionist',
+  description: 'Artist description',
+  genre: ['Progressive Rock', 'Instrumental'],
+})
+```
+
+#### Monitoring & Analytics
+- **Google Search Console**: Structured data and performance monitoring
+- **Page Speed**: Core Web Vitals optimization
+- **Mobile Testing**: Mobile-first indexing compliance
+- **Accessibility**: WCAG compliance for better user experience
+
+### 📚 SEO Documentation
+
+- **[Comprehensive SEO Guide](docs/seo.md)** - Detailed implementation guide
+- **[Technical SEO](docs/seo.md#-technical-seo)** - Sitemap, robots.txt, and optimization
+- **[Music Industry SEO](docs/seo.md#-music-industry-seo)** - Music platform optimization
+- **[Monitoring & Maintenance](docs/seo.md#-monitoring--analytics)** - Performance tracking
 
 ## 📚 Documentation
 
