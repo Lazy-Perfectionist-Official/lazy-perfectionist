@@ -7,6 +7,7 @@ import {
   X,
   ExternalLink,
   ShoppingCart,
+  Coffee,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -52,6 +53,16 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
               </motion.div>
             ))}
             <motion.a
+              href="https://ko-fi.com/lazyperfectionist"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-amber-600 hover:text-amber-700 flex items-center gap-1 font-medium"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Coffee size={16} /> Support
+            </motion.a>
+            <motion.a
               href="https://linktr.ee/lazyperfectionist_official"
               target="_blank"
               rel="noopener noreferrer"
@@ -95,6 +106,15 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
                 </Link>
               </motion.div>
             ))}
+            <motion.a
+              href="https://ko-fi.com/lazyperfectionist"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-amber-600 hover:text-amber-700 flex items-center gap-1 py-2 font-medium"
+              whileHover={{ x: 10 }}
+            >
+              <Coffee size={16} /> Support
+            </motion.a>
             <motion.a
               href="https://linktr.ee/lazyperfectionist_official"
               target="_blank"

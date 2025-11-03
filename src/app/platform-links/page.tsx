@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, use } from 'react'
-import { ArrowLeft, Music, ExternalLink, Clock, Album, ShoppingCart } from 'lucide-react'
+import { ArrowLeft, Music, ExternalLink, Clock, Album, ShoppingCart, Coffee } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { analyticsService } from '@/lib/analytics'
@@ -112,6 +112,14 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
                 {trackName ? decodeURIComponent(trackName) : 'Back to Music'}
               </span>
             </Link>
+            <a
+              href="https://ko-fi.com/lazyperfectionist"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center text-amber-600 hover:text-amber-700 transition-colors"
+            >
+              <Coffee size={20} />
+            </a>
             <Link href="/store" className="flex items-center text-black/80 hover:text-blue-600 transition-colors">
               <ShoppingCart size={20} />
             </Link>

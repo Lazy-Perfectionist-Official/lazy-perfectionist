@@ -12,6 +12,7 @@ import {
   Play,
   Zap,
   ShoppingCart,
+  Coffee,
 } from 'lucide-react';
 import { motion, useInView, easeOut } from 'framer-motion';
 import Navigation from '@/components/Navigation';
@@ -181,6 +182,16 @@ export default function Home() {
               >
                 <span className="relative z-10 flex items-center">
                   <ShoppingCart className="mr-2" size={22} /> Shop on Ko-fi
+                </span>
+              </a>
+              <a
+                href="https://ko-fi.com/lazyperfectionist"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-amber-600 hover:bg-amber-700 text-white inline-flex items-center justify-center px-8 py-4 font-semibold relative overflow-hidden group shadow-lg rounded-full transition-all hover:scale-105 active:scale-95"
+              >
+                <span className="relative z-10 flex items-center">
+                  <Coffee className="mr-2" size={22} /> Buy Me a Coffee
                 </span>
               </a>
             </motion.div>
