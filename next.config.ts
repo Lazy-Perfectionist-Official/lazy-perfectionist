@@ -48,6 +48,18 @@ const nextConfig: NextConfig = {
         hostname: 'api.song.link',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'ko-fi.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.ko-fi.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
   webpack: (config, { dev }) => {

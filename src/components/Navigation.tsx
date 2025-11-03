@@ -6,6 +6,7 @@ import {
   Menu,
   X,
   ExternalLink,
+  ShoppingCart,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -16,7 +17,7 @@ interface NavigationProps {
 export default function Navigation({ currentPage = 'home' }: NavigationProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const navItems = ['Home', 'Music', 'Blog'];
+  const navItems = ['Home', 'Music', 'Blog', 'Store'];
 
   return (
     <motion.nav

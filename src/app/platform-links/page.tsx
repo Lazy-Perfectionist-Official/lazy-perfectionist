@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, use } from 'react'
-import { ArrowLeft, Music, ExternalLink, Clock, Album } from 'lucide-react'
+import { ArrowLeft, Music, ExternalLink, Clock, Album, ShoppingCart } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { analyticsService } from '@/lib/analytics'
@@ -111,6 +111,9 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
               <span className="text-black font-semibold text-lg font-dm-serif">
                 {trackName ? decodeURIComponent(trackName) : 'Back to Music'}
               </span>
+            </Link>
+            <Link href="/store" className="flex items-center text-black/80 hover:text-blue-600 transition-colors">
+              <ShoppingCart size={20} />
             </Link>
           </div>
         </div>
