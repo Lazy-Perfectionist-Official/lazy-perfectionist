@@ -21,72 +21,31 @@
     }
 
     .sidebar {
-      width: 280px;
+      width: 200px;
       background: #2c3e50;
-      color: white;
       padding: 2rem 0;
       position: sticky;
       top: 0;
       height: 100vh;
-      overflow-y: auto;
-    }
-
-    .sidebar-header {
-      padding: 0 1.5rem 2rem;
-      border-bottom: 1px solid #34495e;
-    }
-
-    .site-title {
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: white !important;
-      text-decoration: none;
-      display: block;
-      margin-bottom: 0.5rem;
-    }
-
-    .site-subtitle {
-      font-size: 0.875rem;
-      opacity: 0.8;
-      margin: 0;
     }
 
     .sidebar-nav {
-      padding: 1.5rem 0;
-    }
-
-    .nav-section {
-      margin-bottom: 2rem;
-    }
-
-    .nav-section-title {
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: #95a5a6;
-      padding: 0 1.5rem;
-      margin-bottom: 0.75rem;
+      padding: 0 1rem;
     }
 
     .nav-link {
       display: block;
       color: #ecf0f1 !important;
       text-decoration: none;
-      padding: 0.5rem 1.5rem;
+      padding: 0.75rem 1rem;
       transition: all 0.2s ease;
-      border-left: 3px solid transparent;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
     }
 
     .nav-link:hover, .nav-link.active {
-      background: rgba(52, 152, 219, 0.1);
-      border-left-color: #3498db;
-      color: #3498db !important;
-    }
-
-    .nav-link.active {
       background: rgba(52, 152, 219, 0.2);
-      font-weight: 500;
+      color: #3498db !important;
     }
 
     .main-content {
@@ -266,56 +225,11 @@
 </head>
 <body>
   <aside class="sidebar">
-    <div class="sidebar-header">
-      <a class="site-title" href="{{ '/' | absolute_url }}">
-        🎸 {{ site.title | escape }}
-      </a>
-      <p class="site-subtitle">{{ site.description | escape }}</p>
-    </div>
-
     <nav class="sidebar-nav">
-      <div class="nav-section">
-        <div class="nav-section-title">Navigation</div>
-        <a href="/" class="nav-link">🏠 Home</a>
-        <a href="/docs/" class="nav-link">📚 Documentation</a>
-        <a href="/changelogs/" class="nav-link">📅 Changelogs</a>
-      </div>
-
-      <div class="nav-section">
-        <div class="nav-section-title">Quick Links</div>
-        <a href="https://lazy-perfectionist.com" class="nav-link" target="_blank">🌐 Live Site</a>
-        <a href="https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8" class="nav-link" target="_blank">🎵 Spotify</a>
-        <a href="https://medium.com/@lazyperfectist" class="nav-link" target="_blank">📝 Blog</a>
-        <a href="https://ko-fi.com/lazyperfectionist" class="nav-link" target="_blank">☕ Support</a>
-        <a href="https://github.com/Lazy-Perfectionist-Official/lazy-perfectionist" class="nav-link" target="_blank">📂 GitHub</a>
-      </div>
-
-      {% if page.url contains '/docs/' %}
-      <div class="nav-section">
-        <div class="nav-section-title">Documentation</div>
-        <a href="/docs/" class="nav-link">📖 Overview</a>
-        <a href="/docs/local_deploy.html" class="nav-link">🛠️ Local Development</a>
-        <a href="/docs/content-guide.html" class="nav-link">✍️ Content Guide</a>
-        <a href="/docs/seo.html" class="nav-link">🔍 SEO Guide</a>
-        <a href="/docs/deployment.html" class="nav-link">🚀 Deployment</a>
-        <a href="/docs/maintenance.html" class="nav-link">🔧 Maintenance</a>
-        <a href="/docs/api_reference.html" class="nav-link">📡 API Reference</a>
-        <a href="/docs/google-seo-setup.html" class="nav-link">🔍 Google SEO</a>
-        <a href="/docs/GOOGLE_SEO_CHECKLIST.html" class="nav-link">✅ SEO Checklist</a>
-      </div>
-      {% endif %}
-
-      {% if page.url contains '/changelogs/' %}
-      <div class="nav-section">
-        <div class="nav-section-title">Changelogs</div>
-        <a href="/changelogs/" class="nav-link">📅 All Changes</a>
-        <a href="/changelogs/2025-11-03_comprehensive-seo-optimization.html" class="nav-link">🔍 SEO Optimization</a>
-        <a href="/changelogs/2025-11-03_documentation-improvements.html" class="nav-link">📚 Documentation</a>
-        <a href="/changelogs/2025-11-03_music-page-redesign.html" class="nav-link">🎵 Music Page</a>
-        <a href="/changelogs/2025-11-03_kofi-integration.html" class="nav-link">☕ Ko-fi Integration</a>
-        <a href="/changelogs/2025-11-03_google-seo-setup.html" class="nav-link">🔍 Google SEO Setup</a>
-      </div>
-      {% endif %}
+      <a href="/" class="nav-link">🏠 Home</a>
+      <a href="/docs/" class="nav-link">📚 Documentation</a>
+      <a href="/changelogs/" class="nav-link">📅 Changelogs</a>
+      <a href="https://lazy-perfectionist.com" class="nav-link" target="_blank">🌐 Live Site</a>
     </nav>
   </aside>
 
