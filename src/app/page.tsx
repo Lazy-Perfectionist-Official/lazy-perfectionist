@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import Head from 'next/head';
+import { generateStructuredData } from '@/components/SEO';
 import {
   Youtube,
   Music,
@@ -100,9 +100,46 @@ export default function Home() {
 
   return (
     <>
-      <Head>
-        <link rel="preload" as="image" href="/assets/img/logo.png" />
-      </Head>
+      {/* Structured Data for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={generateStructuredData('MusicGroup', {
+          name: 'Lazy Perfectionist',
+          description: 'Instrumental progressive rock/metal project from Hong Kong',
+          url: 'https://lazyperfectionist.com',
+          image: 'https://lazyperfectionist.com/assets/img/logo.png',
+          genre: ['Progressive Rock', 'Progressive Metal', 'Instrumental Rock'],
+          origin: 'Hong Kong',
+          foundingDate: '2023',
+          foundingLocation: 'Hong Kong',
+          member: {
+            '@type': 'Person',
+            name: 'Sammy Lee',
+            jobTitle: 'Musician, Producer',
+            nationality: 'Hong Kong'
+          },
+          sameAs: [
+            'https://open.spotify.com/artist/your-spotify-id',
+            'https://youtube.com/@lazyperfectionist',
+            'https://medium.com/@lazyperfectist',
+            'https://ko-fi.com/lazyperfectionist'
+          ]
+        })}
+      />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={generateStructuredData('WebSite', {
+          name: 'Lazy Perfectionist',
+          url: 'https://lazyperfectionist.com',
+          description: 'Instrumental progressive rock/metal from Hong Kong. Discover technical precision meets emotional storytelling with orchestral layers, EDM-inspired synths, and anime music influences.',
+          potentialAction: {
+            '@type': 'ListenAction',
+            target: 'https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8',
+            'action-status': 'ActiveActionStatus'
+          }
+        })}
+      />
 
       <div className="min-h-screen linktree-gradient relative overflow-x-hidden">
         <Background />
@@ -116,7 +153,7 @@ export default function Home() {
           <div className="absolute inset-0 -z-10 overflow-hidden">
             <Image
               src="/assets/img/logo.png"
-              alt="Lazy Perfectionist"
+              alt="Lazy Perfectionist - Instrumental Progressive Rock/Metal Artist from Hong Kong"
               fill
               quality={85}
               className="object-cover object-center"

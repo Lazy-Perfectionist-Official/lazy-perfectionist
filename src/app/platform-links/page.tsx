@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { analyticsService } from '@/lib/analytics'
 import Background from '@/components/Background'
+import { generateStructuredData } from '@/components/SEO'
 
 interface Platform {
   platform: string
@@ -100,6 +101,25 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
 
   return (
     <div className="min-h-screen linktree-gradient relative">
+      {/* Structured Data for Music Platform Links */}
+      {trackName && artistName && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={generateStructuredData('MusicSong', {
+            name: decodeURIComponent(trackName),
+            byArtist: {
+              '@type': 'MusicGroup',
+              name: decodeURIComponent(artistName)
+            },
+            url: `https://open.spotify.com/track/${trackId}`,
+            potentialAction: {
+              '@type': 'ListenAction',
+              target: platforms.map(p => p.url),
+              'action-status': 'ActiveActionStatus'
+            }
+          })}
+        />
+      )}
       <Background />
 
       {/* ========== NAVBAR ========== */}
