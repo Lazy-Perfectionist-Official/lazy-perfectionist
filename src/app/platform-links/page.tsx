@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, use } from 'react'
+import { useState, useEffect, use, useMemo, useCallback } from 'react'
 import { ArrowLeft, Music, ExternalLink, Clock, Album, ShoppingCart, Coffee } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
@@ -39,6 +39,11 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
       fetchPlatformLinks()
       fetchAlbumArt()
     }
+
+    // Cleanup function to prevent memory leaks
+    return () => {
+      setMounted(false)
+    }
   }, [trackId])
 
   const fetchAlbumArt = async () => {
@@ -74,7 +79,7 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
     }
   }
 
-  const handlePlatformClick = async (url: string, platform: Platform) => {
+  const handlePlatformClick = useCallback(async (url: string, platform: Platform) => {
     // Track the click analytics
     if (trackId && trackName && artistName) {
       await analyticsService.trackPlatformClick({
@@ -89,7 +94,10 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
 
     // Open in new window
     window.open(url, '_blank', 'noopener,noreferrer')
-  }
+  }, [trackId, trackName, artistName])
+
+  // Memoize the ExternalLink icon to prevent re-creation on each render
+  const externalLinkIcon = useMemo(() => <ExternalLink size={18} />, [])
 
   if (!mounted) {
     return (
@@ -224,7 +232,7 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
               <AnimatePresence>
                 {platforms.map((platform, index) => (
                   <motion.a
-                    key={platform.platform}
+                    key={`${platform.platform}-${index}`}
                     href={platform.url}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -259,7 +267,7 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
                     </div>
                     <div className="flex items-center space-x-2 text-linktree/60 group-hover:text-linktree transition-colors">
                       <span className="text-sm font-medium">Open</span>
-                      <ExternalLink size={18} />
+                      {externalLinkIcon}
                     </div>
                   </motion.a>
                 ))}
