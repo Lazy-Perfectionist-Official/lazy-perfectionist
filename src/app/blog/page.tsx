@@ -104,7 +104,7 @@ export default function BlogPage() {
               animate={mounted ? { y: 0, opacity: 1 } : {}}
               transition={{ duration: 0.7, delay: 0.3 }}
             >
-              Stories & Thoughts
+              Behind the Music
             </motion.h1>
 
             {/* Subtitle */}
@@ -114,7 +114,7 @@ export default function BlogPage() {
               animate={mounted ? { y: 0, opacity: 1 } : {}}
               transition={{ duration: 0.7, delay: 0.4 }}
             >
-              Read my latest posts on Medium, where I share my stories and thoughts.
+              Dive into the creative journey, stories, and insights from the making of Lazy Perfectionist. Discover the process behind the music.
             </motion.p>
 
             {/* Sorting and CTA */}
@@ -132,7 +132,7 @@ export default function BlogPage() {
                 className="linktree-button inline-flex items-center px-8 py-4 text-lg font-semibold transition-all hover:scale-105 active:scale-95"
               >
                 <BookOpen className="mr-2" size={22} />
-                Follow on Medium
+                Follow My Journey
               </a>
             </motion.div>
           </motion.div>
@@ -153,7 +153,7 @@ export default function BlogPage() {
                   <Book className="w-16 h-16 mx-auto" />
                 </div>
                 <h3 className="text-xl font-semibold text-white mb-2">
-                  Unable to Load Articles
+                  Stories Temporarily Unavailable
                 </h3>
                 <p className="linktree-text/80 mb-6">
                   {error}
@@ -162,7 +162,7 @@ export default function BlogPage() {
                   onClick={fetchMediumData}
                   className="linktree-button"
                 >
-                  Try Again
+                  Refresh Stories
                 </Button>
               </div>
             </motion.div>
@@ -179,10 +179,10 @@ export default function BlogPage() {
               <div className="max-w-md mx-auto">
                 <BookOpen className="w-16 h-16 text-gray-400 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold text-white mb-2">
-                  No Articles Found
+                  Stories Coming Soon
                 </h3>
                 <p className="linktree-text/80 mb-6">
-                  Be the first to know when new stories are published.
+                  I'm crafting new stories about the creative process. Stay tuned for fresh insights!
                 </p>
                 <a
                   href="https://medium.com/@lazyperfectist"
@@ -190,7 +190,7 @@ export default function BlogPage() {
                   rel="noopener noreferrer"
                   className="linktree-button inline-flex items-center px-6 py-3 font-semibold transition-all"
                 >
-                  Visit Medium
+                  Visit Medium Profile
                   <ExternalLink className="ml-2" size={16} />
                 </a>
               </div>
@@ -204,7 +204,7 @@ export default function BlogPage() {
                 className="text-center mb-8"
               >
                 <p className="linktree-text/70">
-                  Showing {sortedPosts.length} of {posts.length} articles
+                  Exploring {sortedPosts.length} creative stories from {posts.length} total writings
                 </p>
               </motion.div>
 
@@ -223,7 +223,7 @@ export default function BlogPage() {
               >
                 <div className="inline-flex flex-col items-center">
                   <p className="linktree-text/70 mb-4 text-sm">
-                    Read more stories on Medium
+                    Continue the journey on Medium
                   </p>
                   <a
                     href="https://medium.com/@lazyperfectist"
@@ -232,12 +232,12 @@ export default function BlogPage() {
                     className="linktree-button inline-flex items-center px-8 py-4 font-semibold text-lg transition-all hover:scale-105 active:scale-95 group"
                   >
                     <span className="group-hover:text-orange-300 transition-colors">
-                      View All Stories on Medium
+                      Explore Complete Story Archive
                     </span>
                     <ExternalLink className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
                   </a>
                   <p className="linktree-text/60 text-xs mt-3">
-                    Full archive with {posts.length > 15 ? '100+' : `${posts.length}+`} articles
+                    Deep dive into {posts.length > 15 ? '100+' : `${posts.length}+`} creative writings
                   </p>
                 </div>
               </motion.div>

@@ -78,6 +78,16 @@ export default function BlogCard({ post, index }: BlogCardProps) {
       className="group relative rounded-2xl overflow-hidden linktree-button backdrop-blur-md border-black/20 hover:shadow-xl transition-all duration-300"
       style={{ aspectRatio: '4/3' }}
     >
+      {/* Clickable Link - Wraps entire card */}
+      <a
+        href={post.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="absolute inset-0 z-10"
+        aria-label={`Read article: ${post.title}`}
+      >
+        <span className="sr-only">Read article: {post.title}</span>
+      </a>
       {/* Article Image - Fills entire card */}
       {!imageError && post.thumbnail && (
         <Image
@@ -109,7 +119,7 @@ export default function BlogCard({ post, index }: BlogCardProps) {
       )}
 
       {/* Read time indicator */}
-      <div className="absolute top-3 right-3 z-10">
+      <div className="absolute top-3 right-3 z-20 pointer-events-none">
         <Badge variant="secondary" className="bg-black/60 text-white backdrop-blur-sm border-0 text-xs">
           <Clock className="w-3 h-3 mr-1" />
           {post.readTime}
@@ -117,7 +127,7 @@ export default function BlogCard({ post, index }: BlogCardProps) {
       </div>
 
       {/* Content Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-6 flex flex-col justify-end">
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-6 flex flex-col justify-end z-20 pointer-events-none">
         {/* Tags */}
         {post.tags && post.tags.length > 0 && (
           <div className="flex flex-wrap gap-1 mb-3">
