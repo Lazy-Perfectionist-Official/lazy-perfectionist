@@ -11,7 +11,6 @@ import {
   ChevronDown,
   Play,
   Zap,
-  ShoppingCart,
   Coffee,
 } from 'lucide-react';
 import { motion, useInView, easeOut } from 'framer-motion';
@@ -211,14 +210,6 @@ export default function HomePage() {
               >
                 <span className="relative z-10 flex items-center">
                   <BookOpen className="mr-2" size={22} /> Read on Medium
-                </span>
-              </a>
-              <a
-                href="/store"
-                className="linktree-button inline-flex items-center justify-center px-8 py-4 font-semibold relative overflow-hidden group shadow-lg"
-              >
-                <span className="relative z-10 flex items-center">
-                  <ShoppingCart className="mr-2" size={22} /> Shop on Ko-fi
                 </span>
               </a>
               <a
