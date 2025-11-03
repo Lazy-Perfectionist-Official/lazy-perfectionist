@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import {
   Menu,
@@ -18,10 +18,17 @@ interface NavigationProps {
 export default function Navigation({ currentPage = 'home' }: NavigationProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const navItems = ['Home', 'Music', 'Blog', 'Store'];
+  // Debug: Log navigation renders
+  useEffect(() => {
+    console.log('Navigation rendered with currentPage:', currentPage);
+  }, [currentPage]);
+
+  // Ensure navItems is always consistent to prevent hydration issues
+  const navItems = useMemo(() => ['Home', 'Music', 'Blog', 'Store'], []);
 
   return (
     <motion.nav
+      key={`nav-${currentPage}`}
       className="fixed top-4 left-4 right-4 z-50"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
@@ -38,20 +45,38 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
           </motion.div>
 
           <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <motion.div key={item} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
-                <Link
-                  href={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
-                  className={`transition-colors font-medium ${
-                    currentPage === item.toLowerCase()
-                      ? 'text-blue-600'
-                      : 'text-black hover:text-blue-600'
-                  }`}
-                >
-                  {item}
-                </Link>
-              </motion.div>
-            ))}
+            {navItems && navItems.length > 0 ? (
+              navItems.map((item) => (
+                <motion.div key={item} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                  <Link
+                    href={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
+                    className={`transition-colors font-medium ${
+                      currentPage === item.toLowerCase()
+                        ? 'text-blue-600'
+                        : 'text-black hover:text-blue-600'
+                    }`}
+                  >
+                    {item}
+                  </Link>
+                </motion.div>
+              ))
+            ) : (
+              // Fallback navigation items
+              ['Home', 'Music', 'Blog', 'Store'].map((item) => (
+                <motion.div key={item} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                  <Link
+                    href={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
+                    className={`transition-colors font-medium ${
+                      currentPage === item.toLowerCase()
+                        ? 'text-blue-600'
+                        : 'text-black hover:text-blue-600'
+                    }`}
+                  >
+                    {item}
+                  </Link>
+                </motion.div>
+              ))
+            )}
             <motion.a
               href="https://ko-fi.com/lazyperfectionist"
               target="_blank"
@@ -92,20 +117,38 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
           className="md:hidden overflow-hidden border-t border-black/20"
         >
           <div className="px-6 py-4 space-y-3">
-            {navItems.map((item) => (
-              <motion.div key={item} whileHover={{ x: 10 }}>
-                <Link
-                  href={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
-                  className={`block py-2 font-medium transition-colors ${
-                    currentPage === item.toLowerCase()
-                      ? 'text-blue-600'
-                      : 'text-black hover:text-blue-600'
-                  }`}
-                >
-                  {item}
-                </Link>
-              </motion.div>
-            ))}
+            {navItems && navItems.length > 0 ? (
+              navItems.map((item) => (
+                <motion.div key={item} whileHover={{ x: 10 }}>
+                  <Link
+                    href={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
+                    className={`block py-2 font-medium transition-colors ${
+                      currentPage === item.toLowerCase()
+                        ? 'text-blue-600'
+                        : 'text-black hover:text-blue-600'
+                    }`}
+                  >
+                    {item}
+                  </Link>
+                </motion.div>
+              ))
+            ) : (
+              // Fallback navigation items
+              ['Home', 'Music', 'Blog', 'Store'].map((item) => (
+                <motion.div key={item} whileHover={{ x: 10 }}>
+                  <Link
+                    href={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
+                    className={`block py-2 font-medium transition-colors ${
+                      currentPage === item.toLowerCase()
+                        ? 'text-blue-600'
+                        : 'text-black hover:text-blue-600'
+                    }`}
+                  >
+                    {item}
+                  </Link>
+                </motion.div>
+              ))
+            )}
             <motion.a
               href="https://ko-fi.com/lazyperfectionist"
               target="_blank"
