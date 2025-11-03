@@ -121,50 +121,7 @@ export const metadata: Metadata = {
   },
 };
 
-// JSON-LD structured data for music artist
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'MusicGroup',
-  name: 'Lazy Perfectionist',
-  description: 'Hong Kong-based instrumental progressive rock project creating bedroom rock that blends technical precision with emotional storytelling.',
-  url: 'https://lazyperfectionist.com',
-  image: 'https://lazyperfectionist.com/assets/img/logo.png',
-  sameAs: [
-    'https://open.spotify.com/artist/7ELTTbYXSvCIXh0W6IV3um',
-    'https://www.youtube.com/watch?v=Hw2a43RV1p0',
-    'https://medium.com/@lazyperfectist',
-    'https://instagram.com/lazyperfectionist_official',
-    'https://tiktok.com/@lazyperfectionist_official',
-  ],
-  genre: ['Instrumental Progressive Rock', 'Bedroom Rock', 'Progressive Metal'],
-  foundingLocation: {
-    '@type': 'Place',
-    address: {
-      '@type': 'PostalAddress',
-      addressLocality: 'Hong Kong',
-      addressCountry: 'Hong Kong',
-    },
-  },
-  album: {
-    '@type': 'MusicAlbum',
-    name: 'Orbit - Single',
-    releaseDate: '2025-10-17',
-    byArtist: {
-      '@type': 'MusicGroup',
-      name: 'Lazy Perfectionist',
-    },
-  },
-  track: {
-    '@type': 'MusicRecording',
-    name: 'Orbit',
-    byArtist: {
-      '@type': 'MusicGroup',
-      name: 'Lazy Perfectionist',
-    },
-    duration: 'PT4M32S',
-    genre: 'Instrumental Progressive Rock',
-  },
-}
+// Note: Structured data is now handled at the page level to avoid conflicts
 
 export default function RootLayout({
   children,
@@ -187,19 +144,7 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="//instagram.com" />
         <link rel="dns-prefetch" href="//tiktok.com" />
 
-        {/* Structured data for SEO */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-
-        {/* Additional meta tags for music discovery */}
-        <meta name="music:artist" content="Lazy Perfectionist" />
-        <meta name="music:genre" content="Instrumental Progressive Rock" />
-        <meta name="music:release_date" content="2025-10-17" />
-        <meta name="music:title" content="Orbit" />
-        <meta name="geo.region" content="HK" />
-        <meta name="geo.placename" content="Hong Kong" />
+        {/* Note: Structured data is now handled at the page level to avoid conflicts */}
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${dmSerif.variable} antialiased bg-background text-foreground`}

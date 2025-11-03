@@ -1,0 +1,91 @@
+# Site settings
+title: Lazy Perfectionist
+description: Instrumental progressive rock/metal project from Hong Kong
+url: "https://lazy-perfectionist.github.io"
+baseurl: "/lazy-perfectionist"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+theme: minima
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# Collections
+collections:
+  docs:
+    output: true
+    permalink: /:collection/:path/
+  changelogs:
+    output: true
+    permalink: /:collection/:path/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "docs"
+    values:
+      layout: "docs"
+  - scope:
+      path: ""
+      type: "changelogs"
+    values:
+      layout: "changelog"
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - src/
+  - public/
+  - .gitignore
+  - package.json
+  - package-lock.json
+  - tsconfig.json
+  - next.config.js
+  - tailwind.config.js
+  - components.json
+  - .next/
+  - .vercel/
+
+# Include files that Jekyll might ignore
+include:
+  - _pages
+  - _data
+
+# SEO settings
+logo: "/assets/img/logo.png"
+image: "/assets/img/logo.png"
+twitter:
+  username: lazyperfectist
+  card: summary_large_image
+
+# Navigation
+navigation:
+  - title: "🏠 Home"
+    url: "/"
+  - title: "📚 Documentation"
+    url: "/docs/"
+  - title: "📅 Changelogs"
+    url: "/changelogs/"
+  - title: "🎵 Music"
+    url: "https://lazyperfectionist.com/music"
+  - title: "📝 Blog"
+    url: "https://lazy-perfectionist.com/blog"
+
+# Social links
+social:
+  name: Lazy Perfectionist
+  links:
+    - https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8
+    - https://medium.com/@lazyperfectist
+    - https://ko-fi.com/lazyperfectionist
+    - https://youtube.com/@lazyperfectionist

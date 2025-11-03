@@ -102,9 +102,9 @@ export function generateSEOMetadata(props: SEOProps): Metadata {
       },
     },
     verification: {
-      google: 'your-google-verification-code',
-      yandex: 'your-yandex-verification-code',
-      bing: 'your-bing-verification-code',
+      google: 'add-your-google-verification-code-here',
+      yandex: 'add-your-yandex-verification-code-here',
+      bing: 'add-your-bing-verification-code-here',
     },
   }
 
