@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://lazyperfectionist.com'
+  const baseUrl = 'https://lazyperfectionist.vercel.app'
 
   return [
     {
