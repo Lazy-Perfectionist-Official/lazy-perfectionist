@@ -64,11 +64,11 @@ async function getSpotifyTracks(): Promise<SpotifyTrack[]> {
   }
 }
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://lazy-perfectionist.vercel.app'
 
-  // Static pages
-  const staticPages: MetadataRoute.Sitemap = [
+  return [
+    // Static pages
     {
       url: baseUrl,
       lastModified: new Date(),
@@ -99,35 +99,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly',
       priority: 0.5,
     },
-  ]
-
-  try {
-    // Fetch dynamic content
-    const [mediumPosts, spotifyTracks] = await Promise.all([
-      getMediumPosts(),
-      getSpotifyTracks()
-    ])
-
-    // Add Medium blog posts to sitemap
-    const blogPages: MetadataRoute.Sitemap = mediumPosts.map((post) => ({
-      url: post.link,
-      lastModified: new Date(post.publishedDate),
-      changeFrequency: 'monthly' as const,
+    // Known Medium profile
+    {
+      url: 'https://medium.com/@lazyperfectist',
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
       priority: 0.6,
-    }))
-
-    // Add music platform links for each track
-    const trackPages: MetadataRoute.Sitemap = spotifyTracks.map((track) => ({
-      url: `${baseUrl}/platform-links?trackId=${track.id}`,
-      lastModified: new Date(track.album.release_date),
-      changeFrequency: 'monthly' as const,
-      priority: 0.4,
-    }))
-
-    return [...staticPages, ...blogPages, ...trackPages]
-  } catch (error) {
-    console.warn('Error generating dynamic sitemap content:', error)
-    // Return static pages only if dynamic content fails
-    return staticPages
-  }
+    },
+    // Known popular Medium posts (update these as needed)
+    {
+      url: 'https://medium.com/@lazyperfectist/how-i-created-orbit-for-lazy-perfectionist-from-bedroom-to-release-8bbcdc2b30f2',
+      lastModified: new Date('2025-10-28'),
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    }
+  ]
 }
