@@ -1,5 +1,5 @@
 # Robots.txt for Lazy Perfectionist
-# https://lazyperfectionist.com
+# https://lazy-perfectionist.vercel.app
 
 # Global rules for all crawlers
 User-agent: *
@@ -9,15 +9,18 @@ Disallow: /_next/
 Disallow: /.well-known/
 Allow: /
 
-# Block AI scrapers that don't respect content
-User-agent: ChatGPT-User
-Disallow: /
+# Allow major search engines with specific crawl delays
+User-agent: Googlebot
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Crawl-delay: 1
 
-User-agent: GPTBot
-Disallow: /
-
-User-agent: GoogleOther
-Disallow: /
+User-agent: Bingbot
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Crawl-delay: 2
 
 # Allow music discovery platforms
 User-agent: Spotify
@@ -27,4 +30,4 @@ User-agent: Applebot
 Allow: /
 
 # Sitemap location
-Sitemap: https://lazyperfectionist.com/sitemap.xml
+Sitemap: https://lazy-perfectionist.vercel.app/sitemaps/sitemap.xml
