@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import OptimizedImage from '@/components/OptimizedImage';
 import { generateStructuredData } from '@/components/SEO';
 import {
   Youtube,
@@ -106,7 +106,7 @@ export default function HomePage() {
           name: 'Lazy Perfectionist',
           description: 'Instrumental progressive rock/metal project from Hong Kong',
           url: 'https://lazyperfectionist.com',
-          image: 'https://lazyperfectionist.com/assets/img/logo.png',
+          image: 'https://lazyperfectionist.com/assets/img/optimized/logo-800.avif',
           genre: ['Progressive Rock', 'Progressive Metal', 'Instrumental Rock'],
           origin: 'Hong Kong',
           foundingDate: '2023',
@@ -150,16 +150,13 @@ export default function HomePage() {
           className="relative min-h-screen flex flex-col items-center justify-center text-white pt-20 z-0"
         >
           <div className="absolute inset-0 -z-10 overflow-hidden">
-            <Image
+            <OptimizedImage
               src="/assets/img/logo.png"
               alt="Lazy Perfectionist - Instrumental Progressive Rock/Metal Artist from Hong Kong"
               fill
               quality={85}
               className="object-cover object-center"
               sizes="100vw"
-              placeholder="blur"
-              blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
-              priority={false}
             />
             {/* DARK OVERLAY: starts 50%, goes to 100% */}
             <div

@@ -1,14 +1,18 @@
 'use client';
 
 import { memo } from 'react';
+import { generateNoisePattern } from '@/lib/imageUtils';
 
 /**
  * Optimized background component that creates layered noise effect
- * using a single small texture (100px) instead of loading 9.8MB 3 times
+ * using optimized 200px seamless tile (23KB vs 9.75MB original)
  *
- * Performance: <50KB total vs 29MB original (99.8% reduction)
+ * Performance: 23KB total vs 29MB original (99.9% reduction)
  */
 function BackgroundOptimized() {
+  // Use optimized 200px seamless tile
+  const noiseTile = generateNoisePattern(200);
+
   return (
     <>
       {/* Background gradient (base layer) */}
@@ -24,8 +28,8 @@ function BackgroundOptimized() {
       <div
         className="fixed inset-0 pointer-events-none z-0"
         style={{
-          // Single background layer using seamless tiling
-          backgroundImage: `url("/assets/img/noise.jpg")`,
+          // Single background layer using optimized seamless tile
+          backgroundImage: noiseTile,
           backgroundSize: '200px 200px',
           backgroundPosition: '0 0',
           backgroundRepeat: 'repeat',

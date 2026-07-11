@@ -1,47 +1,27 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Hls from 'hls.js';
-import LoadingScreen from './components/LoadingScreen';
-import Hero from './components/Hero';
-import SelectedWorks from './components/SelectedWorks';
-import Journal from './components/Journal';
-import Explorations from './components/Explorations';
-import Stats from './components/Stats';
-import Contact from './components/Contact';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
-// Register GSAP plugins
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
-
-export default function PortfolioPage() {
-  const [isLoading, setIsLoading] = useState(true);
-  const mainRef = useRef<HTMLDivElement>(null);
+export default function PortfolioRedirect() {
+  const router = useRouter();
 
   useEffect(() => {
-    // Cleanup ScrollTrigger on unmount
-    return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-    };
-  }, []);
+    // Redirect to root page with portfolio design
+    router.replace('/');
+  }, [router]);
 
+  // Show loading state while redirecting
   return (
-    <div ref={mainRef} className="min-h-screen bg-oryzo-canvas text-oryzo-cream">
-      {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
-
-      {!isLoading && (
-        <>
-          <Hero />
-          <SelectedWorks />
-          <Journal />
-          <Explorations />
-          <Stats />
-          <Contact />
-        </>
-      )}
+    <div className="min-h-screen bg-oryzo-canvas text-oryzo-cream flex items-center justify-center">
+      <div className="text-center">
+        <div className="text-2xl font-display italic text-oryzo-cream mb-4">
+          Redirecting...
+        </div>
+        <div className="text-sm text-oryzo-muted uppercase tracking-[0.3em]">
+          Portfolio design has moved to the homepage
+        </div>
+      </div>
     </div>
   );
 }

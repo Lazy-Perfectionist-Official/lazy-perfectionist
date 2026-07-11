@@ -3,6 +3,9 @@ import { Inter, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import "@/lib/ssr-polyfills";
+import PageTransition from "@/components/PageTransition";
+import LenisProvider from "@/components/LenisProvider";
+import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -78,7 +81,7 @@ export const metadata: Metadata = {
     description: 'Lazy Perfectionist is a Hong Kong-based instrumental progressive rock project creating bedroom rock that blends technical precision with emotional storytelling.',
     images: [
       {
-        url: 'https://lazyperfectionist.com/assets/img/logo.png',
+        url: 'https://lazyperfectionist.com/assets/img/optimized/logo-800.avif',
         width: 1200,
         height: 1200,
         alt: 'Lazy Perfectionist Logo',
@@ -96,7 +99,7 @@ export const metadata: Metadata = {
     title: 'Lazy Perfectionist - Bedroom Instrumental Rock',
     description: 'Hong Kong-based instrumental progressive rock project. Debut single "Orbit" available now.',
     images: [
-      'https://lazyperfectionist.com/assets/img/logo.png',
+      'https://lazyperfectionist.com/assets/img/optimized/logo-800.avif',
       'https://lazyperfectionist.com/assets/img/twitter-image.jpg',
     ],
     creator: '@lazyperfectist',
@@ -139,12 +142,27 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="//instagram.com" />
         <link rel="dns-prefetch" href="//tiktok.com" />
 
+        {/* PWA Meta Tags */}
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#6366f1" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Lazy Perf" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="application-name" content="Lazy Perfectionist" />
+
         {/* Note: Structured data is now handled at the page level to avoid conflicts */}
       </head>
       <body
         className={`${inter.variable} ${instrumentalSerif.variable} antialiased bg-background text-foreground`}
       >
-        {children}
+        <LenisProvider>
+          <PageTransition>
+            {children}
+          </PageTransition>
+        </LenisProvider>
+        <ServiceWorkerRegistration />
         <Toaster />
       </body>
     </html>

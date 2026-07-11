@@ -11,15 +11,19 @@
 const CACHE_NAME = 'lazy-perfectionist-v1';
 const RUNTIME_CACHE = 'lazy-perfectionist-runtime-v1';
 
-// Assets to cache immediately
+// Assets to cache immediately (using optimized images)
 const STATIC_ASSETS = [
   '/',
   '/music',
   '/blog',
   '/store',
   '/manifest.json',
-  '/assets/img/logo.png',
-  '/assets/img/noise.jpg',
+  '/assets/img/optimized/logo-800.avif',
+  '/assets/img/optimized/logo-600.avif',
+  '/assets/img/optimized/logo-400.avif',
+  '/assets/img/optimized/logo-200.avif',
+  '/assets/img/optimized/noise-tile-200.webp',
+  '/assets/img/optimized/noise-tile-100.webp',
   '/icon-512x512.png',
   '/apple-touch-icon.png',
 ];

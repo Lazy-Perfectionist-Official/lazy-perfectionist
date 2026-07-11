@@ -15,7 +15,7 @@ export interface PlatformClickEvent {
 // Temporarily disabled to fix SSR issues
 export const analyticsService = {
   trackPlatformClick: async (): Promise<void> => {
-    console.log('Analytics temporarily disabled for SSR debugging')
+    // Analytics temporarily disabled for SSR debugging
   },
   getClicks: (): PlatformClickEvent[] => [],
   getClicksByTrack: (): PlatformClickEvent[] => [],
@@ -28,6 +28,6 @@ export const analyticsService = {
     recentClicks: []
   }),
   clearData: (): void => {
-    console.log('Analytics temporarily disabled for SSR debugging')
+    // Analytics temporarily disabled for SSR debugging
   }
 }

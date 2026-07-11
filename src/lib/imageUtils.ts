@@ -41,8 +41,25 @@ export function preloadImage(src: string): Promise<HTMLImageElement> {
   });
 }
 
-// Generate seamless CSS noise pattern from base64
-export function generateNoisePattern(): string {
-  // This will be replaced with actual optimized noise texture
-  return 'url("/assets/img/noise.jpg")';
+// Generate seamless CSS noise pattern from optimized tile
+export function generateNoisePattern(tileSize: 200 | 100 = 200): string {
+  return `url("/assets/img/optimized/noise-tile-${tileSize}.webp")`;
+}
+
+// Get optimized image path with format fallback
+export function getOptimizedImagePath(
+  basename: string,
+  size: number,
+  format: 'webp' | 'avif' = 'avif'
+): string {
+  return `/assets/img/optimized/${basename}-${size}.${format}`;
+}
+
+// Get responsive image srcset
+export function generateSrcSet(
+  basename: string,
+  sizes: number[],
+  format: 'webp' | 'avif' = 'avif'
+): string {
+  return sizes.map(size => `${getOptimizedImagePath(basename, size, format)} ${size}w`).join(', ');
 }

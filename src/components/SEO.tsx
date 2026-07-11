@@ -33,7 +33,7 @@ export function generateSEOMetadata(props: SEOProps): Metadata {
     title,
     description = defaultDescription,
     canonical,
-    ogImage = '/assets/img/logo.png',
+    ogImage = '/assets/img/optimized/logo-800.avif',
     ogType = 'website',
     noindex = false,
     keywords = [],
