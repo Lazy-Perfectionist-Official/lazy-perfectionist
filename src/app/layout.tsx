@@ -1,24 +1,19 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, DM_Serif_Text } from "next/font/google";
+import { Inter, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import "@/lib/ssr-polyfills";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
   subsets: ["latin"],
+  variable: "--font-body",
+  weight: ["400", "500"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const instrumentalSerif = Instrument_Serif({
   subsets: ["latin"],
-});
-
-const dmSerif = DM_Serif_Text({
-  weight: ["400"],               // regular
-  style: ["normal", "italic"],   // both normal & italic
-  subsets: ["latin"],
-  variable: "--font-dm-serif",   // CSS variable name
-  display: "swap",               // prevents FOIT
+  variable: "--font-display",
+  weight: ["400"],
 });
 
 // Enhanced metadata for SEO optimization
@@ -147,7 +142,7 @@ export default function RootLayout({
         {/* Note: Structured data is now handled at the page level to avoid conflicts */}
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${dmSerif.variable} antialiased bg-background text-foreground`}
+        className={`${inter.variable} ${instrumentalSerif.variable} antialiased bg-background text-foreground`}
       >
         {children}
         <Toaster />

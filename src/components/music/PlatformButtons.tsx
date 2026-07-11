@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { ExternalLink } from 'lucide-react'
 import { motion } from 'framer-motion'
-import { analyticsService } from '@/lib/analytics'
+import { analyticsService } from '@/lib/analytics-stub'
 
 interface Platform {
   platform: string
@@ -32,7 +32,7 @@ export default function PlatformButtons({
   }, [trackId])
 
   const handlePlatformClick = async (url: string, platform: Platform) => {
-    // Track the click analytics
+    // Track the click analytics - using stub service
     await analyticsService.trackPlatformClick({
       trackId,
       trackName,
@@ -41,6 +41,9 @@ export default function PlatformButtons({
       platformName: platform.name,
       url: platform.url
     })
+
+    // Open in new window
+    window.open(url, '_blank', 'noopener,noreferrer')
   }
 
   // Create a smart link that opens platform selection

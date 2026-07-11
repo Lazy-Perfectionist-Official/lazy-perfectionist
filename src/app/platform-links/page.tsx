@@ -4,7 +4,7 @@ import { useState, useEffect, use, useMemo, useCallback } from 'react'
 import { ArrowLeft, Music, ExternalLink, Clock, Album, ShoppingCart, Coffee } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
-import { analyticsService } from '@/lib/analytics'
+import { analyticsService } from '@/lib/analytics-stub'
 import Background from '@/components/Background'
 import { generateStructuredData } from '@/components/SEO'
 

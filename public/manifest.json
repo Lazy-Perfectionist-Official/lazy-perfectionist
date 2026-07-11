@@ -1,0 +1,42 @@
+{
+  "name": "Lazy Perfectionist",
+  "short_name": "Lazy Perf",
+  "description": "Instrumental progressive rock/metal from Hong Kong. Discover technical precision meets emotional storytelling.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#6366f1",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "apple-touch-icon"
+    }
+  ],
+  "categories": ["music", "entertainment"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Listen to Music",
+      "short_name": "Music",
+      "description": "Discover Lazy Perfectionist music",
+      "url": "/music",
+      "icons": [{ "src": "/icon-512x512.png", "sizes": "512x512" }]
+    },
+    {
+      "name": "Read Blog",
+      "short_name": "Blog",
+      "description": "Read thoughts and stories",
+      "url": "/blog",
+      "icons": [{ "src": "/icon-512x512.png", "sizes": "512x512" }]
+    }
+  ]
+}

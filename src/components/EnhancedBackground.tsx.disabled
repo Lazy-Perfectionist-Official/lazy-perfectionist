@@ -1,0 +1,61 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
+import Background from './Background';
+
+/**
+ * Progressive Enhancement Background
+ *
+ * Loads WebGL background for supported browsers,
+ * falls back to optimized CSS background for others.
+ *
+ * This ensures the artistic experience works for all users
+ * while providing the best experience for modern browsers.
+ */
+
+const WebGLBackground = dynamic(
+  () => import('./WebGLBackground').then(mod => mod.default),
+  {
+    ssr: false,
+    loading: () => null,
+  }
+);
+
+export default function EnhancedBackground() {
+  const [supportsWebGL, setSupportsWebGL] = useState(false);
+  const [useWebGL, setUseWebGL] = useState(false);
+
+  useEffect(() => {
+    // Check WebGL support
+    const checkWebGL = () => {
+      try {
+        const canvas = document.createElement('canvas');
+        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        return gl !== null;
+      } catch (e) {
+        return false;
+      }
+    };
+
+    const hasWebGL = checkWebGL();
+    setSupportsWebGL(hasWebGL);
+
+    // Only use WebGL if user prefers reduced motion is false
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    setUseWebGL(hasWebGL && !prefersReducedMotion);
+  }, []);
+
+  return (
+    <>
+      {/* WebGL background for supported browsers */}
+      {supportsWebGL && useWebGL && <WebGLBackground />}
+
+      {/* Fallback optimized background */}
+      <Background />
+
+      {/* Additional gradient overlay for depth */}
+      <div className="fixed inset-0 -z-10 pointer-events-none bg-gradient-to-b from-transparent via-black/20 to-black/40" />
+    </>
+  );
+}

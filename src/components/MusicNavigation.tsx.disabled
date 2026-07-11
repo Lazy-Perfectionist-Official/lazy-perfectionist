@@ -1,0 +1,274 @@
+'use client';
+
+import { useState, useRef, useEffect } from 'react';
+import Link from 'next/link';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { Music, BookOpen, Store, Home, Menu, X } from 'lucide-react';
+
+/**
+ * Music-Inspired Creative Navigation
+ *
+ * Features:
+ * - Tempo-based transitions (scroll speed affects animation timing)
+ * - Harmonic color transitions between sections
+ * - Gesture controls (swipe, scroll-based)
+ * - Musical rhythm in animations
+ *
+ * This navigation transforms website browsing into a musical experience.
+ */
+interface MusicNavigationProps {
+  currentPage?: string;
+}
+
+export default function MusicNavigation({ currentPage = 'home' }: MusicNavigationProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const [scrollTempo, setScrollTempo] = useState(1);
+  const lastScrollY = useRef(0);
+  const lastScrollTime = useRef(Date.now());
+
+  // Track scroll speed for "tempo-based" animations
+  useEffect(() => {
+    let rafId: number;
+
+    const handleScroll = () => {
+      const now = Date.now();
+      const deltaY = Math.abs(window.scrollY - lastScrollY.current);
+      const deltaTime = now - lastScrollTime.current;
+
+      // Calculate scroll speed (pixels per second)
+      const speed = deltaY / (deltaTime / 1000);
+
+      // Map speed to tempo multiplier (0.5x to 3x)
+      const tempo = Math.min(3, Math.max(0.5, speed / 500));
+      setScrollTempo(tempo);
+
+      lastScrollY.current = window.scrollY;
+      lastScrollTime.current = now;
+
+      rafId = requestAnimationFrame(handleScroll);
+    };
+
+    const throttledScroll = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(handleScroll);
+    };
+
+    window.addEventListener('scroll', throttledScroll, { passive: true });
+
+    // Reset tempo when not scrolling
+    const resetTempo = () => {
+      setScrollTempo(1);
+    };
+
+    const timeoutId = setTimeout(resetTempo, 200);
+
+    return () => {
+      window.removeEventListener('scroll', throttledScroll);
+      cancelAnimationFrame(rafId);
+      clearTimeout(timeoutId);
+    };
+  }, []);
+
+  const navItems = [
+    {
+      name: 'Home',
+      path: '/',
+      icon: Home,
+      color: 'from-blue-500 to-indigo-500',
+      sound: 'do',
+    },
+    {
+      name: 'Music',
+      path: '/music',
+      icon: Music,
+      color: 'from-purple-500 to-pink-500',
+      sound: 're',
+    },
+    {
+      name: 'Blog',
+      path: '/blog',
+      icon: BookOpen,
+      color: 'from-orange-500 to-red-500',
+      sound: 'mi',
+    },
+    {
+      name: 'Store',
+      path: '/store',
+      icon: Store,
+      color: 'from-green-500 to-teal-500',
+      sound: 'fa',
+    },
+  ];
+
+  // "Harmonic" color transition based on current page
+  const getGradientForPage = (page: string) => {
+    const gradients: Record<string, string> = {
+      home: 'from-blue-500/20 to-indigo-500/20',
+      music: 'from-purple-500/20 to-pink-500/20',
+      blog: 'from-orange-500/20 to-red-500/20',
+      store: 'from-green-500/20 to-teal-500/20',
+    };
+    return gradients[page] || gradients.home;
+  };
+
+  // Musical note animations for hover
+  const playNoteAnimation = (itemName: string) => {
+    setHoveredItem(itemName);
+    // In a full implementation, you'd play actual audio notes here
+    setTimeout(() => setHoveredItem(null), 300);
+  };
+
+  return (
+    <>
+      {/* Desktop Navigation - Floating Musical Notes */}
+      <nav className="hidden md:flex fixed top-8 left-1/2 -translate-x-1/2 z-50 bg-black/40 backdrop-blur-xl rounded-full px-8 py-4 border border-white/10 shadow-2xl">
+        <div className="flex items-center gap-8">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = currentPage === item.name.toLowerCase();
+            const isHovered = hoveredItem === item.name;
+
+            return (
+              <Link key={item.name} href={item.path}>
+                <motion.div
+                  className="relative flex flex-col items-center gap-1"
+                  onHoverStart={() => playNoteAnimation(item.name)}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{
+                    duration: 0.2 / scrollTempo, // Tempo-based timing
+                    ease: 'easeOut',
+                  }}
+                >
+                  {/* Background glow */}
+                  {isActive && (
+                    <motion.div
+                      className={`absolute inset-0 rounded-full bg-gradient-to-r ${item.color} opacity-20 blur-xl`}
+                      layoutId="activeGlow"
+                      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                    />
+                  )}
+
+                  {/* Icon */}
+                  <motion.div
+                    className={`relative p-3 rounded-full transition-colors ${
+                      isActive
+                        ? `bg-gradient-to-r ${item.color} text-white`
+                        : 'text-white/70 hover:text-white'
+                    }`}
+                    animate={{
+                      scale: isHovered ? 1.2 : 1,
+                      rotate: isHovered ? [0, -5, 5, -5, 0] : 0,
+                    }}
+                    transition={{
+                      duration: 0.3 / scrollTempo,
+                      rotate: { duration: 0.4 / scrollTempo },
+                    }}
+                  >
+                    <Icon size={20} />
+                  </motion.div>
+
+                  {/* Label */}
+                  <motion.span
+                    className={`text-xs font-medium ${
+                      isActive ? 'text-white' : 'text-white/60'
+                    }`}
+                    animate={{
+                      opacity: isActive ? 1 : 0.7,
+                    }}
+                  >
+                    {item.name}
+                  </motion.span>
+
+                  {/* Musical note animation */}
+                  <AnimatePresence>
+                    {isHovered && (
+                      <motion.div
+                        className="absolute -top-2 -right-2 text-yellow-400"
+                        initial={{ scale: 0, opacity: 0, y: 10 }}
+                        animate={{ scale: 1, opacity: 1, y: 0 }}
+                        exit={{ scale: 0, opacity: 0, y: -10 }}
+                        transition={{ duration: 0.2 / scrollTempo }}
+                      >
+                        ♪
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              </Link>
+            );
+          })}
+        </div>
+
+        {/* Tempo indicator */}
+        <div className="absolute -bottom-1 left-1/2 -translate-x-1/2">
+          <motion.div
+            className="flex items-center gap-1 text-xs text-white/40"
+            animate={{
+              scale: 1 + (scrollTempo - 1) * 0.2,
+            }}
+          >
+            <span>Tempo: {scrollTempo.toFixed(1)}x</span>
+          </motion.div>
+        </div>
+      </nav>
+
+      {/* Mobile Navigation - Bottom Tab Bar */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-black/60 backdrop-blur-xl border-t border-white/10">
+        <div className="flex items-center justify-around py-3">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = currentPage === item.name.toLowerCase();
+
+            return (
+              <Link key={item.name} href={item.path}>
+                <motion.div
+                  className="flex flex-col items-center gap-1 relative"
+                  whileTap={{ scale: 0.9 }}
+                  transition={{ duration: 0.1 / scrollTempo }}
+                >
+                  {isActive && (
+                    <motion.div
+                      className={`absolute -top-1 inset-x-0 h-1 bg-gradient-to-r ${item.color} rounded-full`}
+                      layoutId="activeMobile"
+                    />
+                  )}
+
+                  <motion.div
+                    className={`p-2 rounded-full transition-colors ${
+                      isActive
+                        ? `bg-gradient-to-r ${item.color} text-white`
+                        : 'text-white/60'
+                    }`}
+                    animate={{
+                      scale: isActive ? 1.1 : 1,
+                    }}
+                  >
+                    <Icon size={20} />
+                  </motion.div>
+
+                  <span
+                    className={`text-xs font-medium ${
+                      isActive ? 'text-white' : 'text-white/60'
+                    }`}
+                  >
+                    {item.name}
+                  </span>
+                </motion.div>
+              </Link>
+            );
+          })}
+        </div>
+      </nav>
+
+      {/* Harmonic Background */}
+      <motion.div
+        className={`fixed inset-0 pointer-events-none bg-gradient-to-br ${getGradientForPage(currentPage)}`}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.3 }}
+        transition={{ duration: 2 / scrollTempo }}
+      />
+    </>
+  );
+}

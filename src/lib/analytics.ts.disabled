@@ -1,0 +1,125 @@
+// Safe analytics tracking that works during SSR
+export interface PlatformClickEvent {
+  trackId: string
+  trackName: string
+  artistName: string
+  platform: string
+  platformName: string
+  url: string
+  timestamp: number
+  userAgent: string
+  referrer?: string
+  country?: string
+}
+
+class AnalyticsService {
+  private clicks: PlatformClickEvent[] = []
+  private readonly MAX_CLICKS = 1000
+
+  // Safe localStorage check
+  private getLocalStorage() {
+    try {
+      if (typeof window !== 'undefined' && 'localStorage' in window && window.localStorage !== null) {
+        return window.localStorage;
+      }
+      return null;
+    } catch {
+      return null;
+    }
+  }
+
+  async trackPlatformClick(event: Omit<PlatformClickEvent, 'timestamp'>): Promise<void> {
+    const storage = this.getLocalStorage();
+    if (!storage) return;
+
+    const clickEvent: PlatformClickEvent = {
+      ...event,
+      timestamp: Date.now(),
+      userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : '',
+      referrer: typeof window !== 'undefined' && window.document ? window.document.referrer : undefined,
+    }
+
+    this.addToLocalStorage(clickEvent, storage)
+
+    try {
+      await this.sendToServer(clickEvent)
+    } catch (error) {
+      console.error('Failed to send analytics to server:', error)
+    }
+  }
+
+  private addToLocalStorage(clickEvent: PlatformClickEvent, storage: Storage): void {
+    try {
+      const existingClicks = this.getClicksFromStorage(storage)
+      existingClicks.push(clickEvent)
+      const recentClicks = existingClicks.slice(-this.MAX_CLICKS)
+      storage.setItem('platform_clicks', JSON.stringify(recentClicks))
+    } catch (error) {
+      console.error('Failed to save to localStorage:', error)
+    }
+  }
+
+  private getClicksFromStorage(storage?: Storage | null): PlatformClickEvent[] {
+    if (!storage) {
+      storage = this.getLocalStorage()
+      if (!storage) return []
+    }
+
+    try {
+      const stored = storage.getItem('platform_clicks')
+      return stored ? JSON.parse(stored) : []
+    } catch (error) {
+      console.error('Failed to load from localStorage:', error)
+      return []
+    }
+  }
+
+  private async sendToServer(clickEvent: PlatformClickEvent): Promise<void> {
+    try {
+      await fetch('/api/analytics/click', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(clickEvent),
+      })
+    } catch (error) {
+      console.error('Failed to send analytics to server:', error)
+    }
+  }
+
+  getClicks(): PlatformClickEvent[] {
+    return this.getClicksFromStorage()
+  }
+
+  getClicksByTrack(trackId: string): PlatformClickEvent[] {
+    return this.getClicks().filter(click => click.trackId === trackId)
+  }
+
+  getClicksByPlatform(platform: string): PlatformClickEvent[] {
+    return this.getClicks().filter(click => click.platform === platform)
+  }
+
+  getStats() {
+    const allClicks = this.getClicks()
+    return {
+      totalClicks: allClicks.length,
+      clicksByTrack: {},
+      clicksByPlatform: {},
+      clicksByDate: {},
+      recentClicks: allClicks.slice(-10)
+    }
+  }
+
+  clearData(): void {
+    const storage = this.getLocalStorage()
+    if (!storage) return
+
+    try {
+      storage.removeItem('platform_clicks')
+      this.clicks = []
+    } catch (error) {
+      console.error('Failed to clear analytics data:', error)
+    }
+  }
+}
+
+export const analyticsService = new AnalyticsService()

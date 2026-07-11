@@ -1,0 +1,72 @@
+Website Example,Category,Description,Tools Used,Workflow,Deployment,Key Features,Source
+Keith Teo's Blog,Personal Site,"AI-powered blog with 9,700+ pages and advanced SEO",Next.js TypeScript Tailwind CSS,Claude Code for architecture → SEO optimization → content generation,Vercel edge,Dynamic routing SEO optimization automated content generation,Keith Teo analysis
+Markana Media Gallery,Portfolio Site,"Curated gallery of 20+ Claude Code built websites",Next.js React,Framer Motion,Site showcase → project documentation → live demos,Vercel,Responsive design performance optimization animated transitions,Markana Media
+SaaS Dashboard,Business App,"Complete SaaS application with authentication and billing",Next.js Prisma Stripe,Authentication setup → database design → API development → payment integration,Vercel PostgreSQL,User management subscription handling payment processing,Keith Teo case study
+E-commerce Store,Online Store,"Full-featured online store with inventory management",Next.js Shopify API,Product catalog setup → payment integration → order management,Vercel,Product browsing cart functionality checkout process,Markana examples
+Developer Portfolio,Personal Branding,"Interactive portfolio with project showcases",Next.js GitHub API,Project integration → content creation → deployment optimization,Netlify,Dynamic content GitHub integration responsive design,Multiple sources
+Real Estate Platform,Property Listing,"Property search and listing website",Next.js Mapbox API,Search functionality → map integration → property database,Vercel,Advanced search map interface image galleries,Industry examples
+Educational Platform,LMS,"Learning management system with course delivery",Next.js Prisma,Course creation → user enrollment → progress tracking,Vercel PostgreSQL,Video content quiz systems progress tracking,Education sector
+Healthcare Portal,Medical,"Patient management and appointment scheduling",Next.js TypeScript HIPAA compliance,Authentication → patient database → appointment system,AWS,Secure data handling appointment booking medical records,Healthcare examples
+Restaurant Website,Food Service,"Menu display and online ordering system",Next.js Stripe,Menu creation → ordering system → payment integration,Vercel,Online ordering menu management payment processing,Local business
+News Website,Media,"Content-driven news site with categorization",Next.js CMS integration,Content workflow → category system → search functionality,Vercel CDN,Article management SEO optimization content scheduling,Media examples
+Fitness App,Health & Wellness,"Workout tracking and nutrition planning",Next.js Health APIs,Exercise database → meal planning → progress tracking,Mobile deployment,Workout guides nutrition tracking goal setting,Health examples
+Travel Booking,Travel,"Travel agency website with booking capabilities",Next.js Travel APIs,Destination catalog → booking system → payment integration,Vercel,Search filters booking engine itinerary management,Travel industry
+Event Platform,Events,"Event registration and management platform",Next.js Calendar APIs,Event creation → registration system → ticket management,Vercel,Calendar integration ticket selling attendee management,Events industry
+Law Firm Website,Professional Services,"Professional services website with case studies",Next.js CMS,Case study creation → service documentation → contact forms,Vercel,Professional presentation lead generation client testimonials,Professional services
+Nonprofit Site,Organization,"Charity website with donation processing",Next.js Stripe,Mission content → donation system → volunteer coordination,Vercel,Donation processing event management volunteer signup,Nonprofit examples
+Creative Agency Portfolio,Marketing,"Agency portfolio with client work showcase",Next.js Animation libraries,Project showcase → team presentation → service catalog,Netlify,Creative animations interactive elements case studies,Agency examples
+Tech Startup Landing,Product,"Product launch page with feature highlights",Next.js Analytics,Feature documentation → demo integration → signup flows,Vercel,Product demos feature comparison pricing tables,SaaS examples
+Food Blog,Content Site,"Recipe website with search and categorization",Next.js Image optimization,Recipe creation → category system → search functionality,Vercel,Recipe cards image galleries ingredient search,Content examples
+Job Board,Marketplace,"Employment platform with job listings and applications",Next.js Prisma,Job posting → application system → employer dashboard,Vercel,Job search resume building application tracking,Marketplace examples
+
+,,,
+Workflow Step,Step Number,Phase Name,Description,Tools Involved,Typical Duration,Complexity
+,1,Requirements Analysis,"Define project goals features and technical constraints",Claude Code analysis tools,1-2 hours,Low
+,2,Architecture Design,"Plan database structure API routes and component hierarchy",Next.js routing Prisma,2-4 hours,Medium
+,3,UI/UX Planning,"Design user interface and interaction patterns",Framer Motion Tailwind,2-3 hours,Medium
+,4,Database Setup,"Initialize Prisma schema and create migrations",Prisma CLI database,1-2 hours,Low
+,5,Authentication,"Implement user authentication and authorization",NextAuth.js bcrypt,2-3 hours,Medium
+,6,Core API Development,"Build main API endpoints with validation",Zod Next.js route handlers,4-6 hours,High
+,7,Component Development,"Create reusable UI components",React Next.js,6-8 hours,High
+,8,Integration Testing,"Test all features and user flows",Testing frameworks,3-4 hours,Medium
+,9,Performance Optimization,"Optimize images caching and bundle size",Next.js optimizations,2-3 hours,Medium
+,10,Deployment,"Deploy to production environment",Vercel Netlify,1-2 hours,Low
+
+,,,
+Best Practice,Category,Practice,Description,Benefit,Implementation Difficulty,Common Pitfalls
+Performance,Speed,Image Optimization,"Use Next.js Image component with WebP/AVIF formats",Faster load times better UX,Easy,Forgetting to enable external domains
+Performance,Bundling,Code Splitting,"Implement dynamic imports for heavy components",Reduced initial bundle size,Medium,Over-fragmenting bundles
+Security,Authentication,"Use NextAuth.js with proper session management",Secure user handling industry standard,Easy,Hardcoding secrets
+Security,Validation,"Implement Zod schemas for all API inputs",Type safety attack prevention,Medium,Missing validation on some endpoints
+SEO,Discoverability,"Dynamic meta tags and sitemaps",Better search rankings,Medium,Forgetting to update on content changes
+UX,Accessibility,"ARIA labels and semantic HTML",Inclusive design better reach,Easy,Overlooking keyboard navigation
+Database,Design,"Proper indexing and relation design",Fast queries scalable architecture,High,N+1 query problems
+Development,Speed,"Hot reload and fast refresh",Faster development cycle,Easy,Configuration conflicts
+Deployment,Reliability,"Environment variable management",Secure deployments easy configuration,Easy,Committing secrets to git
+Monitoring,Insights,"Error tracking and analytics",Better debugging user insights,Medium,Privacy violations
+
+,,;
+Tool Integration,Tool Name,Purpose,Integration Method,Setup Time,Learning Curve,Common Use Cases
+Next.js,Framework,"React framework for production apps",npm install next,30 minutes,Medium,Full-stack websites web applications
+Prisma,ORM,"Database ORM with type safety",npm install prisma,1 hour,Medium,Database modeling migrations
+Tailwind CSS,Styling,"Utility-first CSS framework",npm install tailwindcss,30 minutes,Low,Rapid UI development responsive design
+Framer Motion,Animation,"Production-ready motion library",npm install framer-motion,30 minutes,Low,Page transitions interactive animations
+NextAuth.js,Authentication,"Authentication for Next.js",npm install next-auth,1 hour,Medium,User login session management
+Zod,Validation,"TypeScript validation library",npm install zod,30 minutes,Low,API validation form handling
+Vercel,Deployment,"Platform for Next.js apps",Connect repository,15 minutes,Low,Production deployment previews
+Stripe,Payments,"Payment processing platform",API integration,2 hours,High,Subscription payments e-commerce
+React Three Fiber,3D Graphics,"React renderer for Three.js",npm install @react-three/fiber,2 hours,High,3D experiences visual effects
+GitHub,Version Control,"Code hosting and collaboration",Repository setup,30 minutes,Low,Version control CI/CD
+
+,,
+Key Insights,Category,Insight,Description,Impact Source,Applicability
+Performance,Optimization,"Start with performance foundation",Early optimization prevents technical debt,High All projects,Universal
+Development,Speed,"Use Claude Code for rapid prototyping",Fast iteration from idea to working prototype,High Early stage,Quick validation
+Architecture,Scalability,"Plan database schema carefully",Good schema prevents major refactors,High All projects,Foundation
+Deployment,Strategy,"Edge deployment improves global performance",CDN edge functions provide better UX,Medium Production,Optimization
+UX,Experience,"Progressive enhancement works best",Start simple add advanced features,High All projects,Accessibility
+Content,Management,"CMS integration enables non-tech updates",Allow content creators to update site,Medium Content sites,Maintenance
+SEO,Discovery,"Built-in SEO drives organic traffic",Better rankings without extra work,High Public sites,Marketing
+Security,Protection,"Never skip authentication best practices",Proper auth prevents major issues,High User systems,Critical
+Testing,Quality,"Automated testing catches regressions",Prevent breaking changes,Medium Larger projects,Reliability
+Analytics,Insights,"Track user behavior from day one",Data-driven improvement decisions,Medium All sites,Optimization
