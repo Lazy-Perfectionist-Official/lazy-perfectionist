@@ -56,7 +56,7 @@ export default function PlatformButtons({
         target="_blank"
         rel="noopener noreferrer"
         onClick={() => handlePlatformClick(smartLinkUrl, { platform: 'smartlink', name: 'Smart Link', url: smartLinkUrl } as Platform)}
-        className="linktree-button inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-semibold transition-all hover:scale-105 active:scale-95 w-full max-w-[200px]"
+        className="liquid-glass inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-semibold transition-all hover:scale-105 active:scale-95 w-full max-w-[200px] rounded-full text-oryzo-cream"
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
       >

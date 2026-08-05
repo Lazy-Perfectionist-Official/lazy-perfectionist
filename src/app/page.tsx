@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { gsap } from 'gsap';
-import Hls from 'hls.js';
 import LoadingScreen from '@/app/components/portfolio/LoadingScreen';
 import Hero from '@/app/components/portfolio/Hero';
 
@@ -24,19 +23,11 @@ const Journal = dynamic(
   }
 );
 
-const Explorations = dynamic(
-  () => import('@/app/components/portfolio/Explorations'),
-  {
-    loading: () => <div className="h-64 flex items-center justify-center text-oryzo-muted">Loading...</div>,
-    ssr: false  // Important: No SSR for components with potential 3D/complex animations
-  }
-);
-
 const Stats = dynamic(
   () => import('@/app/components/portfolio/Stats'),
   {
     loading: () => <div className="h-32 flex items-center justify-center text-oryzo-muted">Loading...</div>,
-    ssr: true  // Light component, can SSR
+    ssr: true
   }
 );
 
@@ -44,7 +35,7 @@ const Contact = dynamic(
   () => import('@/app/components/portfolio/Contact'),
   {
     loading: () => <div className="h-32 flex items-center justify-center text-oryzo-muted">Loading...</div>,
-    ssr: true  // Light component, can SSR
+    ssr: true
   }
 );
 
@@ -84,7 +75,6 @@ export default function HomePage() {
           <Hero />
           <SelectedWorks />
           <Journal />
-          <Explorations />
           <Stats />
           <Contact />
         </>

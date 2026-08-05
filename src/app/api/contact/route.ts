@@ -48,39 +48,3 @@ export async function POST(request: Request) {
     )
   }
 }
-
-// GET contact messages (admin only - should be protected with auth)
-export async function GET(request: Request) {
-  try {
-    const { searchParams } = new URL(request.url)
-    const responded = searchParams.get('responded')
-
-    const where: any = {}
-
-    if (responded === 'true') {
-      where.responded = true
-    } else if (responded === 'false') {
-      where.responded = false
-    }
-
-    const messages = await prisma.contactMessage.findMany({
-      where,
-      orderBy: {
-        createdAt: 'desc'
-      },
-      take: 50
-    })
-
-    return NextResponse.json({
-      success: true,
-      data: messages,
-      total: messages.length
-    })
-  } catch (error) {
-    console.error('Error fetching contact messages:', error)
-    return NextResponse.json(
-      { success: false, error: 'Failed to fetch contact messages' },
-      { status: 500 }
-    )
-  }
-}

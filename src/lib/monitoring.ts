@@ -213,8 +213,8 @@ export const initMonitoring = () => {
     document.head.appendChild(script);
 
     (window as any).dataLayer = (window as any).dataLayer || [];
-    (window as any).gtag = function () {
-      (window as any).dataLayer.push(arguments);
+    (window as any).gtag = function (...args: any[]) {
+      (window as any).dataLayer.push(args);
     };
     (window as any).gtag('js', new Date());
     (window as any).gtag('config', analyticsConfig.gaId, {
@@ -224,25 +224,27 @@ export const initMonitoring = () => {
     });
   }
 
-  // Initialize Sentry
+  // Initialize Sentry (optional — only if @sentry/nextjs is installed and DSN is set)
   if (errorTrackingConfig.enabled && errorTrackingConfig.sentryDsn) {
-    import('@sentry/nextjs').then((Sentry) => {
-      Sentry.init({
-        dsn: errorTrackingConfig.sentryDsn,
-        environment: errorTrackingConfig.environment,
-        tracesSampleRate: errorTrackingConfig.sampleRate,
-        environment: errorTrackingConfig.environment,
-        beforeSend(event) {
-          // Filter out sensitive information
-          if (event.request) {
-            delete event.request.cookies;
-          }
-          return event;
-        },
+    // Variable import prevents webpack from statically resolving an optional dep.
+    const sentryModule = '@sentry/nextjs';
+    import(sentryModule)
+      .then((Sentry: any) => {
+        Sentry.init({
+          dsn: errorTrackingConfig.sentryDsn,
+          environment: errorTrackingConfig.environment,
+          tracesSampleRate: errorTrackingConfig.sampleRate,
+          beforeSend(event: any) {
+            if (event.request) {
+              delete event.request.cookies;
+            }
+            return event;
+          },
+        });
+      })
+      .catch((error: unknown) => {
+        console.warn('Failed to initialize Sentry (module not installed):', error);
       });
-    }).catch((error) => {
-      console.warn('Failed to initialize Sentry:', error);
-    });
   }
 
   // Track initial page view
@@ -352,7 +354,7 @@ export const getMonitoringConfig = () => ({
   environment: process.env.NODE_ENV,
 });
 
-export default {
+const monitoringServices = {
   initMonitoring,
   trackPageView,
   trackEvent,
@@ -365,3 +367,5 @@ export default {
   errorTrackingConfig,
   performanceConfig,
 };
+
+export default monitoringServices;

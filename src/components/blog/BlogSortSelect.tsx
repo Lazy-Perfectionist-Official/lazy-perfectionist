@@ -49,11 +49,11 @@ export default function BlogSortSelect({ value, onChange }: BlogSortSelectProps)
   if (!isClient) {
     return (
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
-        <span className="text-sm linktree-text whitespace-nowrap">Sort by:</span>
-        <div className="linktree-button w-full sm:w-48 h-12 flex items-center gap-2 px-4">
-          <Clock className="w-4 h-4 flex-shrink-0 text-gray-700" />
-          <span className="text-sm font-medium flex-1 truncate">Latest First</span>
-          <ArrowUpDown className="w-4 h-4 flex-shrink-0 text-gray-500" />
+        <span className="text-sm text-oryzo-muted whitespace-nowrap">Sort by:</span>
+        <div className="liquid-glass rounded-full w-full sm:w-48 h-12 flex items-center gap-2 px-4">
+          <Clock className="w-4 h-4 flex-shrink-0 text-oryzo-muted" />
+          <span className="text-sm font-medium flex-1 truncate text-oryzo-cream">Latest First</span>
+          <ArrowUpDown className="w-4 h-4 flex-shrink-0 text-oryzo-muted" />
         </div>
       </div>
     )
@@ -61,40 +61,40 @@ export default function BlogSortSelect({ value, onChange }: BlogSortSelectProps)
 
   return (
     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
-      <span className="text-sm linktree-text whitespace-nowrap">Sort by:</span>
+      <span className="text-sm text-oryzo-muted whitespace-nowrap">Sort by:</span>
       <div className="w-full sm:w-auto">
         <Select value={value} onValueChange={onChange}>
           <SelectTrigger
             aria-label="Sort blog posts"
-            className="linktree-button w-full sm:w-48 h-12 px-4 py-3"
+            className="liquid-glass rounded-full w-full sm:w-48 h-12 px-4 py-3 border-oryzo-border text-oryzo-cream"
           >
             <div className="flex items-center gap-2 w-full justify-between">
               <div className="flex items-center gap-2 flex-1 min-w-0">
                 {selectedOption && (
-                  <selectedOption.icon className="w-4 h-4 flex-shrink-0 text-gray-700" />
+                  <selectedOption.icon className="w-4 h-4 flex-shrink-0 text-oryzo-muted" />
                 )}
-                <span className="text-sm font-medium truncate">
+                <span className="text-sm font-medium truncate text-oryzo-cream">
                   {selectedOption?.label || 'Sort by'}
                 </span>
               </div>
-              <ArrowUpDown className="w-4 h-4 flex-shrink-0 text-gray-500" />
+              <ArrowUpDown className="w-4 h-4 flex-shrink-0 text-oryzo-muted" />
             </div>
           </SelectTrigger>
 
-          <SelectContent className="bg-white border-[#1c205d] text-[#090c34] min-w-[240px] shadow-lg">
+          <SelectContent className="bg-oryzo-canvas border-oryzo-border text-oryzo-cream min-w-[240px] shadow-lg">
             {sortOptions.map((option) => {
               const Icon = option.icon
               return (
                 <SelectItem
                   key={option.value}
                   value={option.value}
-                  className="focus:bg-orange-100 focus:text-orange-600 cursor-pointer py-3 px-4 hover:bg-gray-50"
+                  className="focus:bg-oryzo-ember/20 focus:text-oryzo-cream cursor-pointer py-3 px-4 hover:bg-oryzo-surface"
                 >
                   <div className="flex items-center gap-3">
-                    <Icon className="w-4 h-4 flex-shrink-0 text-gray-600" />
+                    <Icon className="w-4 h-4 flex-shrink-0 text-oryzo-muted" />
                     <div className="flex-1">
                       <div className="font-medium text-sm">{option.label}</div>
-                      <div className="text-xs text-gray-500">{option.description}</div>
+                      <div className="text-xs text-oryzo-muted">{option.description}</div>
                     </div>
                   </div>
                 </SelectItem>

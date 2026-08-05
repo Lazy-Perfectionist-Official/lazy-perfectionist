@@ -3,17 +3,24 @@
 import { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import CursorReveal from '@/app/components/portfolio/CursorReveal';
+import { Menu, X } from 'lucide-react';
+import SpotlightReveal from '@/app/components/portfolio/SpotlightReveal';
 
 export default function Hero() {
   const [roleIndex, setRoleIndex] = useState(0);
   const [showShadow, setShowShadow] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navbarRef = useRef<HTMLElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
 
   const roles = ['Creative', 'Fullstack', 'Founder', 'Scholar'];
+
+  const navItems = ['Home', 'Music', 'Blog', 'Store', 'Connect'];
+
+  const navHref = (item: string) =>
+    item === 'Home' ? '/' : item === 'Connect' ? '/platform-links' : `/${item.toLowerCase()}`;
 
   useEffect(() => {
     // GSAP setup
@@ -24,14 +31,16 @@ export default function Hero() {
       gsap.registerPlugin(ScrollTrigger);
     }
 
-    // Navbar fade-in
-    gsap.from(navbarRef.current, {
-      opacity: 0,
-      y: -20,
-      duration: 0.8,
-      ease: 'power3.out',
-      delay: 2.8,
-    });
+    // Navbar fade-in - only if element exists
+    if (navbarRef.current) {
+      gsap.from(navbarRef.current, {
+        opacity: 0,
+        y: -20,
+        duration: 0.8,
+        ease: 'power3.out',
+        delay: 2.8,
+      });
+    }
 
     // Note: CursorReveal component handles its own interactive effects
     // Parallax effects are now handled by the cursor masking system
@@ -51,32 +60,34 @@ export default function Hero() {
       });
     }
 
-    // Hero content animations
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: heroRef.current,
-        start: 'top 80%',
-      },
-    });
+    // Hero content animations - only if hero element exists
+    if (heroRef.current) {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: heroRef.current,
+          start: 'top 80%',
+        },
+      });
 
-    // Name reveal animation
-    tl.from('.name-reveal', {
-      opacity: 0,
-      y: 50,
-      duration: 1.2,
-      ease: 'power3.out',
-      delay: 0.1,
-    });
+      // Name reveal animation
+      tl.from('.name-reveal', {
+        opacity: 0,
+        y: 50,
+        duration: 1.2,
+        ease: 'power3.out',
+        delay: 0.1,
+      });
 
-    // Blur-in animations
-    tl.from('.blur-in', {
-      opacity: 0,
-      filter: 'blur(10px)',
-      y: 20,
-      duration: 1,
-      stagger: 0.1,
-      delay: 0.3,
-    });
+      // Blur-in animations
+      tl.from('.blur-in', {
+        opacity: 0,
+        filter: 'blur(10px)',
+        y: 20,
+        duration: 1,
+        stagger: 0.1,
+        delay: 0.3,
+      });
+    }
 
     // Role cycling
     const roleInterval = setInterval(() => {
@@ -100,21 +111,21 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-screen flex flex-col overflow-hidden">
-      {/* Interactive Cursor Reveal Background with Brushstrokes */}
+      {/* Interactive Spotlight Reveal Background */}
       <div className="absolute inset-0 overflow-hidden">
-        <CursorReveal
-          originalImage="/assets/img/hero-background.jpg"
-          revealImage="/assets/img/hero-background-warm.JPG"
+        <SpotlightReveal
+          baseImage="/assets/img/optimized/hero-background-warm-2000.avif"
+          revealImage="/assets/img/optimized/hero-background-2000.avif"
           enabled={true}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-oryzo-canvas" />
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-oryzo-canvas to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-oryzo-canvas z-40" />
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-oryzo-canvas to-transparent z-40" />
       </div>
 
-      {/* Enhanced Navigation Bar with improved interactions */}
-      <nav className="relative z-10 flex flex-row justify-between px-8 py-6 max-w-7xl mx-auto w-full" data-testid="hero-navigation">
+      {/* Navigation Bar */}
+      <nav className="relative z-50 flex flex-row justify-between items-center px-6 md:px-8 py-6 max-w-7xl mx-auto w-full" data-testid="hero-navigation">
         <motion.div
-          className="text-3xl tracking-tight text-oryzo-cream"
+          className="text-2xl md:text-3xl tracking-tight text-oryzo-cream"
           style={{ fontFamily: "'Instrument Serif', serif" }}
           data-testid="nav-logo"
           whileHover={{ scale: 1.02 }}
@@ -124,18 +135,17 @@ export default function Hero() {
         </motion.div>
 
         <div className="hidden md:flex items-center gap-8" data-testid="nav-links">
-          {['Home', 'Music', 'Blog', 'Store', 'Connect'].map((item, index) => (
+          {navItems.map((item, index) => (
             <motion.div
               key={item}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17, delay: 0.8 + index * 0.1, duration: 0.4 }}
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8 + index * 0.1, duration: 0.4 }}
             >
               <Link
-                href={item === 'Home' ? '/' : item === 'Connect' ? '/platform-links' : `/${item.toLowerCase()}`}
+                href={navHref(item)}
                 className={`text-sm ${item === 'Home' ? 'text-oryzo-cream' : 'text-oryzo-muted hover:text-oryzo-cream'} transition-colors`}
                 data-testid={`nav-link-${item.toLowerCase()}`}
               >
@@ -145,83 +155,139 @@ export default function Hero() {
           ))}
         </div>
 
-        <motion.div
-          whileHover={{ scale: 1.05, y: -2 }}
-          whileTap={{ scale: 0.98 }}
-          transition={{ type: "spring", stiffness: 300, damping: 20 }}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 1.2, duration: 0.5 }}
-        >
-          <Link
-            href="https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="liquid-glass rounded-full px-6 py-2.5 text-sm text-oryzo-cream hover:scale-[1.03] transition-transform inline-flex items-center shadow-lg"
-            data-testid="nav-listen-now"
+        <div className="hidden md:block">
+          <motion.div
+            whileHover={{ scale: 1.05, y: -2 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20, delay: 1.2, duration: 0.5 }}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
           >
-            Listen Now
-          </Link>
-        </motion.div>
+            <Link
+              href="https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="liquid-glass rounded-full px-6 py-2.5 text-sm text-oryzo-cream hover:scale-[1.03] transition-transform inline-flex items-center shadow-lg"
+              data-testid="nav-listen-now"
+            >
+              Listen Now
+            </Link>
+          </motion.div>
+        </div>
+
+        {/* Mobile menu button */}
+        <button
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="md:hidden liquid-glass rounded-full p-2.5 text-oryzo-cream"
+          aria-label="Toggle menu"
+          aria-expanded={isMobileMenuOpen}
+          data-testid="nav-mobile-toggle"
+        >
+          {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
       </nav>
+
+      {/* Mobile menu panel */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            className="relative z-50 md:hidden px-6 pb-6"
+            data-testid="nav-mobile-menu"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+            style={{ overflow: 'hidden' }}
+          >
+            <div className="liquid-glass rounded-3xl p-6 flex flex-col gap-4">
+              {navItems.map((item) => (
+                <Link
+                  key={item}
+                  href={navHref(item)}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`text-base ${item === 'Home' ? 'text-oryzo-cream' : 'text-oryzo-muted'} hover:text-oryzo-cream transition-colors py-2`}
+                  data-testid={`nav-mobile-link-${item.toLowerCase()}`}
+                >
+                  {item}
+                </Link>
+              ))}
+              <Link
+                href="https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="liquid-glass rounded-full px-6 py-3 text-sm text-oryzo-cream text-center mt-2"
+              >
+                Listen Now
+              </Link>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Hero Content */}
       <div
         ref={heroRef}
-        className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-6 py-20"
+        className="relative z-50 flex-1 flex flex-col items-center justify-center text-center px-6 py-20"
         data-testid="hero-content"
       >
         {/* Eyebrow */}
-        <div className="mb-8 blur-in" data-testid="hero-eyebrow">
+        <div className="mb-8 hero-anim hero-fade" style={{ animationDelay: '0.7s' }} data-testid="hero-eyebrow">
           <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em]">
             COLLECTION '26
           </span>
         </div>
 
         {/* Name */}
-        <h1 className="text-5xl sm:text-7xl md:text-8xl leading-[0.95] tracking-[-2.46px] max-w-7xl font-normal animate-fade-rise font-display italic text-oryzo-cream mb-6 name-reveal" data-testid="hero-title">
-          Where <em className="not-italic text-oryzo-muted">silence</em> speaks{' '}
-          <em className="not-italic text-oryzo-muted">through the sound.</em>
+        <h1 className="text-5xl sm:text-7xl md:text-8xl leading-[0.95] tracking-[-2.46px] max-w-7xl font-normal font-display italic text-oryzo-cream mb-6" data-testid="hero-title">
+          <span className="hero-anim hero-reveal block" style={{ animationDelay: '0.25s' }}>
+            Where <em className="not-italic text-oryzo-muted">silence</em> speaks{' '}
+          </span>
+          <span className="hero-anim hero-reveal block" style={{ animationDelay: '0.42s' }}>
+            <em className="not-italic text-oryzo-muted">through the sound.</em>
+          </span>
         </h1>
 
         {/* Description */}
-        <p className="text-base sm:text-lg text-oryzo-muted max-w-2xl mt-8 leading-relaxed animate-fade-rise-delay" data-testid="hero-description">
+        <p className="text-base sm:text-lg text-oryzo-muted max-w-2xl mt-8 leading-relaxed hero-anim hero-fade" style={{ animationDelay: '0.85s' }} data-testid="hero-description">
           Instrumental progressive rock from a Hong Kong bedroom studio. Technical precision meets emotional storytelling
           without saying a word.
         </p>
 
         {/* CTA Button with magnetic effect */}
-        <motion.div
-          whileHover={{ scale: 1.05, y: -3 }}
-          whileTap={{ scale: 0.98 }}
-          transition={{ type: "spring", stiffness: 300, damping: 20 }}
-        >
+        <div className="hero-anim hero-fade" style={{ animationDelay: '1s' }}>
           <motion.div
-            className="relative inline-block"
-            whileHover={{ boxShadow: '0 0 30px rgba(220, 80, 0, 0.4)' }}
-            transition={{ duration: 0.3 }}
+            whileHover={{ scale: 1.05, y: -3 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
           >
-            <Link
-              href="https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="liquid-glass rounded-full px-14 py-5 text-base text-oryzo-cream mt-12 transition-transform cursor-pointer animate-fade-rise-delay-2 inline-flex items-center justify-center relative z-10"
-              data-testid="hero-cta-button"
-            >
-              Stream "Orbit" Now
-            </Link>
             <motion.div
-              className="absolute inset-0 rounded-full bg-oryzo-ember opacity-0"
-              whileHover={{ opacity: 0.2 }}
+              className="relative inline-block"
+              whileHover={{ boxShadow: '0 0 30px rgba(220, 80, 0, 0.4)' }}
               transition={{ duration: 0.3 }}
-            />
+            >
+              <Link
+                href="https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="liquid-glass rounded-full px-14 py-5 text-base text-oryzo-cream mt-12 transition-transform cursor-pointer inline-flex items-center justify-center relative z-10"
+                data-testid="hero-cta-button"
+              >
+                Stream "Orbit" Now
+              </Link>
+              <motion.div
+                className="absolute inset-0 rounded-full bg-oryzo-ember opacity-0"
+                whileHover={{ opacity: 0.2 }}
+                transition={{ duration: 0.3 }}
+              />
+            </motion.div>
           </motion.div>
-        </motion.div>
+        </div>
       </div>
 
       {/* Scroll Indicator */}
       <motion.div
-        className="relative z-10 mb-8"
+        className="relative z-50 mb-8"
         data-testid="scroll-indicator"
         animate={{
           y: [0, 10, 0],

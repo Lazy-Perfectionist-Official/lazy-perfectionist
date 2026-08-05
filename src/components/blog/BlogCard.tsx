@@ -56,13 +56,13 @@ export default function BlogCard({ post, index }: BlogCardProps) {
   // Return simple placeholder during SSR to avoid hydration issues
   if (!isClient) {
     return (
-      <div className="group relative rounded-2xl overflow-hidden linktree-button backdrop-blur-md border-black/20" style={{ aspectRatio: '4/3' }}>
-        <div className="absolute inset-0 bg-gray-900">
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent"></div>
+      <div className="group relative rounded-2xl overflow-hidden border border-oryzo-border bg-oryzo-surface/40" style={{ aspectRatio: '4/3' }}>
+        <div className="absolute inset-0 bg-oryzo-canvas">
+          <div className="absolute inset-0 bg-gradient-to-t from-oryzo-canvas via-oryzo-canvas/50 to-transparent"></div>
           <div className="absolute bottom-6 left-6 right-6">
-            <div className="h-6 bg-white/20 rounded w-3/4 mb-2"></div>
-            <div className="h-4 bg-white/10 rounded w-full mb-3"></div>
-            <div className="h-3 bg-white/10 rounded w-1/2"></div>
+            <div className="h-6 bg-oryzo-cream/20 rounded w-3/4 mb-2"></div>
+            <div className="h-4 bg-oryzo-cream/10 rounded w-full mb-3"></div>
+            <div className="h-3 bg-oryzo-cream/10 rounded w-1/2"></div>
           </div>
         </div>
       </div>
@@ -75,7 +75,7 @@ export default function BlogCard({ post, index }: BlogCardProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
       whileHover={{ y: -4 }}
-      className="group relative rounded-2xl overflow-hidden linktree-button backdrop-blur-md border-black/20 hover:shadow-xl transition-all duration-300"
+      className="group relative rounded-2xl overflow-hidden border border-oryzo-border hover:border-oryzo-cream/40 bg-oryzo-surface/40 transition-all duration-300"
       style={{ aspectRatio: '4/3' }}
     >
       {/* Clickable Link - Wraps entire card */}
@@ -105,13 +105,13 @@ export default function BlogCard({ post, index }: BlogCardProps) {
 
       {/* Loading skeleton */}
       {!imageLoaded && !imageError && (
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 animate-pulse" />
+        <div className="absolute inset-0 bg-gradient-to-br from-oryzo-surface to-oryzo-canvas animate-pulse" />
       )}
 
       {/* Fallback placeholder */}
       {imageError && (
-        <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-amber-500/20 flex items-center justify-center">
-          <div className="text-center text-white/60">
+        <div className="absolute inset-0 bg-gradient-to-br from-oryzo-ember/20 to-oryzo-surface/40 flex items-center justify-center">
+          <div className="text-center text-oryzo-muted">
             <ExternalLink className="w-8 h-8 mx-auto mb-2" />
             <p className="text-xs">Article Image</p>
           </div>
@@ -120,14 +120,14 @@ export default function BlogCard({ post, index }: BlogCardProps) {
 
       {/* Read time indicator */}
       <div className="absolute top-3 right-3 z-20 pointer-events-none">
-        <Badge variant="secondary" className="bg-black/60 text-white backdrop-blur-sm border-0 text-xs">
+        <Badge variant="secondary" className="bg-oryzo-canvas/70 text-oryzo-cream backdrop-blur-sm border-0 text-xs">
           <Clock className="w-3 h-3 mr-1" />
           {post.readTime}
         </Badge>
       </div>
 
       {/* Content Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-6 flex flex-col justify-end z-20 pointer-events-none">
+      <div className="absolute inset-0 bg-gradient-to-t from-oryzo-canvas via-oryzo-canvas/60 to-transparent p-6 flex flex-col justify-end z-20 pointer-events-none">
         {/* Tags */}
         {post.tags && post.tags.length > 0 && (
           <div className="flex flex-wrap gap-1 mb-3">
@@ -135,13 +135,13 @@ export default function BlogCard({ post, index }: BlogCardProps) {
               <Badge
                 key={tagIndex}
                 variant="secondary"
-                className="text-xs bg-white/20 text-white backdrop-blur-sm border-0"
+                className="text-xs bg-oryzo-cream/20 text-oryzo-cream backdrop-blur-sm border-0"
               >
                 {tag}
               </Badge>
             ))}
             {post.tags.length > 2 && (
-              <Badge variant="secondary" className="text-xs bg-white/10 text-white/80 backdrop-blur-sm border-0">
+              <Badge variant="secondary" className="text-xs bg-oryzo-cream/10 text-oryzo-muted backdrop-blur-sm border-0">
                 +{post.tags.length - 2}
               </Badge>
             )}
@@ -149,17 +149,17 @@ export default function BlogCard({ post, index }: BlogCardProps) {
         )}
 
         {/* Title */}
-        <h3 className="font-bold text-lg mb-2 line-clamp-2 text-white group-hover:text-blue-200 transition-colors duration-200">
+        <h3 className="font-bold text-lg mb-2 line-clamp-2 text-oryzo-cream group-hover:text-oryzo-ember transition-colors duration-200">
           {post.title}
         </h3>
 
         {/* Description */}
-        <p className="text-white/70 text-sm mb-4 line-clamp-1 leading-relaxed">
+        <p className="text-oryzo-muted text-sm mb-4 line-clamp-1 leading-relaxed">
           {post.subtitle}
         </p>
 
         {/* Footer */}
-        <div className="flex items-center justify-between text-xs text-white/60">
+        <div className="flex items-center justify-between text-xs text-oryzo-muted">
           <div className="flex items-center gap-2">
             <span>{formatDate(post.publishedDate)}</span>
             {post.claps && (
@@ -170,7 +170,7 @@ export default function BlogCard({ post, index }: BlogCardProps) {
             )}
           </div>
 
-          <div className="flex items-center linktree-text/80 group-hover:text-blue-200 transition-colors">
+          <div className="flex items-center text-oryzo-muted group-hover:text-oryzo-ember transition-colors">
             <span className="mr-1">Read</span>
             <ExternalLink className="w-3 h-3" />
           </div>

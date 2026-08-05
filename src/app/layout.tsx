@@ -6,6 +6,7 @@ import "@/lib/ssr-polyfills";
 import PageTransition from "@/components/PageTransition";
 import LenisProvider from "@/components/LenisProvider";
 import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration";
+import MonitoringInit from "@/components/MonitoringInit";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -21,6 +22,7 @@ const instrumentalSerif = Instrument_Serif({
 
 // Enhanced metadata for SEO optimization
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://lazyperfectionist.com'),
   title: {
     default: 'Lazy Perfectionist - Bedroom Instrumental Rock | Hong Kong',
     template: '%s | Lazy Perfectionist'
@@ -144,7 +146,7 @@ export default function RootLayout({
 
         {/* PWA Meta Tags */}
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#6366f1" />
+        <meta name="theme-color" content="#100904" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
@@ -163,6 +165,7 @@ export default function RootLayout({
           </PageTransition>
         </LenisProvider>
         <ServiceWorkerRegistration />
+        <MonitoringInit />
         <Toaster />
       </body>
     </html>

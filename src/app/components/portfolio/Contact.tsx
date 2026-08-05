@@ -5,6 +5,8 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import Hls from 'hls.js';
+import ContactForm from '@/components/ContactForm';
+import NewsletterForm from '@/components/NewsletterForm';
 
 // Magnetic Button Component
 interface MagneticButtonProps {
@@ -165,20 +167,24 @@ export default function Contact() {
               READY TO COLLABORATE?
             </h2>
 
-            <p className="text-oryzo-body text-oryzo-muted mb-12 max-w-2xl mx-auto font-oryzo-body">
+            <p className="text-oryzo-body text-oryzo-muted mb-10 max-w-2xl mx-auto font-oryzo-body">
               Open for commissions, collaborations, and interesting conversations about music, creativity, and pushing creative boundaries.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-              <MagneticButton
-                href="mailto:hello@lazyperfectionist.com"
-                className="relative rounded-full bg-oryzo-ember text-oryzo-canvas text-base px-8 py-4 overflow-hidden font-oryzo-display"
-                data-testid="contact-email-button"
-              >
-                <span className="relative z-10">GET IN TOUCH</span>
-                <div className="absolute inset-0 bg-oryzo-canvas opacity-0 group-hover:opacity-100 transition-opacity" />
-              </MagneticButton>
+            {/* Contact form */}
+            <div className="max-w-2xl mx-auto text-left mb-10">
+              <ContactForm />
+            </div>
 
+            {/* Newsletter signup */}
+            <div className="max-w-xl mx-auto">
+              <p className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-oryzo-display mb-4">
+                Or join the mailing list
+              </p>
+              <NewsletterForm />
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-10">
               <MagneticButton
                 href="https://open.spotify.com/artist/6RQ7kwJQj3Ph9RlzF6V5bO"
                 target="_blank"

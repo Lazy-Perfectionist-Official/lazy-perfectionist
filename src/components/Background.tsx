@@ -11,8 +11,8 @@ export default function Background() {
 
       {/* Static background blobs */}
       <div className="fixed inset-0 -z-20 pointer-events-none">
-        <div className="absolute top-20 left-10 w-64 h-64 bg-indigo-500/5 rounded-full blur-xl" />
-        <div className="absolute bottom-20 right-10 w-80 h-80 bg-purple-500/5 rounded-full blur-xl" />
+        <div className="absolute top-20 left-10 w-64 h-64 bg-oryzo-ember/5 rounded-full blur-xl" />
+        <div className="absolute bottom-20 right-10 w-80 h-80 bg-driftwood/5 rounded-full blur-xl" style={{ backgroundColor: 'rgba(231, 179, 123, 0.05)' }} />
       </div>
 
       {/* Multi-layered brilliant noise texture overlay */}

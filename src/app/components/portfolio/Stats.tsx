@@ -10,9 +10,9 @@ export default function Stats() {
   const statRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const stats = [
-    { value: 50, suffix: '+', label: 'Tracks Released' },
-    { value: 1000000, suffix: 'M+', label: 'Streams Across Platforms' },
-    { value: 4, suffix: 'yr', label: 'Creating Soundscapes' },
+    { value: 1, suffix: '', label: 'Debut Single Released' },
+    { value: 1, suffix: '', label: 'Genre Fusion Project' },
+    { value: 2024, suffix: '', label: 'Year Started' },
   ];
 
   // Animated counter hook
@@ -108,11 +108,11 @@ export default function Stats() {
           </div>
 
           <h2 className="text-4xl md:text-6xl font-oryzo-display leading-tight" data-testid="stats-title">
-            BY THE NUMBERS
+            THE JOURNEY BEGINS
           </h2>
 
           <p className="text-oryzo-body text-oryzo-muted max-w-2xl font-oryzo-body">
-            The reach and resonance of Lazy Perfectionist's musical journey.
+            A bedroom studio project from Hong Kong, currently building its first chapter.
           </p>
         </motion.div>
 

@@ -1,8 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
-import { BookOpen, ExternalLink, Calendar, Clock, User, Book } from 'lucide-react'
+import { BookOpen, ExternalLink } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import BlogCard from '@/components/blog/BlogCard'
@@ -55,8 +54,8 @@ export default function BlogPage() {
       setPosts(data.data || [])
       setSortedPosts(data.data || [])
       setError(null)
-    } catch (error) {
-      console.error('Failed to fetch Medium data:', error)
+    } catch (err) {
+      console.error('Failed to fetch Medium data:', err)
       setError('Unable to load articles. Please try again later.')
       setPosts([])
       setSortedPosts([])
@@ -65,24 +64,14 @@ export default function BlogPage() {
     }
   }
 
-  const formatDate = (dateString: string) => {
-    const options: Intl.DateTimeFormatOptions = {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    }
-    return new Date(dateString).toLocaleDateString(undefined, options)
-  }
-
   return (
     <>
-      {/* Structured Data for Blog Page */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={generateStructuredData('WebSite', {
           name: 'Lazy Perfectionist Blog',
           url: 'https://lazyperfectionist.com/blog',
-          description: 'Read about Lazy Perfectionist\'s music production journey, creative process, and insights into instrumental rock composition from Hong Kong.',
+          description: "Read about Lazy Perfectionist's music production journey, creative process, and insights into instrumental rock composition from Hong Kong.",
           potentialAction: {
             '@type': 'ReadAction',
             target: 'https://medium.com/@lazyperfectist'
@@ -96,7 +85,7 @@ export default function BlogPage() {
           dangerouslySetInnerHTML={generateStructuredData('Article', {
             '@type': 'Blog',
             name: 'Lazy Perfectionist Blog Posts',
-            description: 'Creative stories and insights from Lazy Perfectionist\'s music production journey',
+            description: "Creative stories and insights from Lazy Perfectionist's music production journey",
             url: 'https://lazyperfectionist.com/blog',
             author: {
               '@type': 'Person',
@@ -113,65 +102,48 @@ export default function BlogPage() {
         />
       )}
 
-      <div className="min-h-screen linktree-gradient relative">
+      <div className="min-h-screen bg-oryzo-canvas text-oryzo-cream relative">
         <Background />
         <Navigation currentPage="blog" />
 
         {/* Hero Section */}
-        <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8">
+        <section className="pt-32 pb-12 px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
             <motion.div
-              className="text-center"
               initial={{ opacity: 0, y: 30 }}
               animate={mounted ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, ease: 'easeOut' }}
             >
-              {/* Icon */}
-              <motion.div
-                className="mb-10"
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={mounted ? { scale: 1, opacity: 1 } : {}}
-                transition={{ duration: 0.6, delay: 0.2 }}
-              >
-                <BookOpen className="w-24 h-24 linktree-text mx-auto" />
-              </motion.div>
+              <div className="flex items-center gap-8 mb-6">
+                <div className="w-8 h-px bg-oryzo-border" />
+                <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-oryzo-display">
+                  Journal
+                </span>
+              </div>
 
-              {/* Title */}
-              <motion.h1
-                className="text-5xl md:text-7xl font-bold linktree-header-text mb-6"
+              <h1 className="text-4xl md:text-6xl font-display italic text-oryzo-cream mb-4">
+                Behind the Music
+              </h1>
+
+              <p className="text-base md:text-lg text-oryzo-muted max-w-3xl leading-relaxed mb-8">
+                Stories, process notes, and creative insights from the Lazy Perfectionist journey.
+              </p>
+
+              <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={mounted ? { y: 0, opacity: 1 } : {}}
                 transition={{ duration: 0.7, delay: 0.3 }}
-              >
-                Behind the Music
-              </motion.h1>
-
-              {/* Subtitle */}
-              <motion.p
-                className="text-xl md:text-2xl linktree-text/80 mb-10 max-w-3xl mx-auto leading-relaxed"
-                initial={{ y: 20, opacity: 0 }}
-                animate={mounted ? { y: 0, opacity: 1 } : {}}
-                transition={{ duration: 0.7, delay: 0.4 }}
-              >
-                Dive into the creative journey, stories, and insights from the making of Lazy Perfectionist. Discover the process behind the music.
-              </motion.p>
-
-              {/* Sorting and CTA */}
-              <motion.div
-                initial={{ y: 20, opacity: 0 }}
-                animate={mounted ? { y: 0, opacity: 1 } : {}}
-                transition={{ duration: 0.7, delay: 0.5 }}
-                className="flex flex-col sm:flex-row items-center gap-4 justify-center"
+                className="flex flex-col sm:flex-row items-center gap-4 justify-start"
               >
                 <BlogSortSelect value={sortBy} onChange={setSortBy} />
                 <a
                   href="https://medium.com/@lazyperfectist"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="linktree-button inline-flex items-center px-8 py-4 text-lg font-semibold transition-all hover:scale-105 active:scale-95"
+                  className="liquid-glass rounded-full inline-flex items-center gap-2 px-6 py-3 text-sm font-oryzo-display text-oryzo-cream hover:scale-[1.03] transition-transform"
                 >
-                  <BookOpen className="mr-2" size={22} />
-                  Follow My Journey
+                  <BookOpen size={16} />
+                  FOLLOW ON MEDIUM
                 </a>
               </motion.div>
             </motion.div>
@@ -188,18 +160,14 @@ export default function BlogPage() {
                 className="text-center py-20"
               >
                 <div className="max-w-md mx-auto">
-                  <div className="text-orange-400 mb-4">
-                    <Book className="w-16 h-16 mx-auto" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-white mb-2">
-                    Stories Temporarily Unavailable
+                  <BookOpen className="w-12 h-12 text-oryzo-muted mx-auto mb-4" />
+                  <h3 className="text-xl font-oryzo-display text-oryzo-cream mb-2">
+                    STORIES TEMPORARILY UNAVAILABLE
                   </h3>
-                  <p className="linktree-text/80 mb-6">
-                    {error}
-                  </p>
+                  <p className="text-oryzo-muted mb-6">{error}</p>
                   <Button
                     onClick={fetchMediumData}
-                    className="linktree-button"
+                    className="rounded-full border border-oryzo-border hover:border-oryzo-cream bg-transparent text-oryzo-cream hover:bg-transparent"
                   >
                     Refresh Stories
                   </Button>
@@ -216,69 +184,56 @@ export default function BlogPage() {
                 className="text-center py-20"
               >
                 <div className="max-w-md mx-auto">
-                  <BookOpen className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-white mb-2">
-                    Stories Coming Soon
+                  <BookOpen className="w-12 h-12 text-oryzo-muted mx-auto mb-4" />
+                  <h3 className="text-xl font-oryzo-display text-oryzo-cream mb-2">
+                    STORIES COMING SOON
                   </h3>
-                  <p className="linktree-text/80 mb-6">
-                    I'm crafting new stories about the creative process. Stay tuned for fresh insights!
+                  <p className="text-oryzo-muted mb-6">
+                    New stories about the creative process are on the way.
                   </p>
                   <a
                     href="https://medium.com/@lazyperfectist"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="linktree-button inline-flex items-center px-6 py-3 font-semibold transition-all"
+                    className="liquid-glass rounded-full inline-flex items-center gap-2 px-6 py-3 font-oryzo-display text-sm text-oryzo-cream hover:scale-[1.03] transition-transform"
                   >
-                    Visit Medium Profile
-                    <ExternalLink className="ml-2" size={16} />
+                    VISIT MEDIUM PROFILE
+                    <ExternalLink size={14} />
                   </a>
                 </div>
               </motion.div>
             ) : (
               <>
-                {/* Article count */}
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="text-center mb-8"
+                  className="mb-8"
                 >
-                  <p className="linktree-text/70">
-                    Exploring {sortedPosts.length} creative stories from {posts.length} total writings
+                  <p className="text-oryzo-muted text-sm">
+                    Showing {sortedPosts.length} {sortedPosts.length === 1 ? 'story' : 'stories'}
                   </p>
                 </motion.div>
 
-                {/* Articles Grid */}
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
                   {sortedPosts.map((post, index) => (
                     <BlogCard key={post.id} post={post} index={index} />
                   ))}
                 </div>
 
-                {/* Enhanced See More Button */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="text-center"
                 >
-                  <div className="inline-flex flex-col items-center">
-                    <p className="linktree-text/70 mb-4 text-sm">
-                      Continue the journey on Medium
-                    </p>
-                    <a
-                      href="https://medium.com/@lazyperfectist"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="linktree-button inline-flex items-center px-8 py-4 font-semibold text-lg transition-all hover:scale-105 active:scale-95 group"
-                    >
-                      <span className="group-hover:text-orange-300 transition-colors">
-                        Explore Complete Story Archive
-                      </span>
-                      <ExternalLink className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
-                    </a>
-                    <p className="linktree-text/60 text-xs mt-3">
-                      Deep dive into {posts.length > 15 ? '100+' : `${posts.length}+`} creative writings
-                    </p>
-                  </div>
+                  <a
+                    href="https://medium.com/@lazyperfectist"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="liquid-glass rounded-full inline-flex items-center gap-2 px-8 py-4 font-oryzo-display text-sm text-oryzo-cream hover:scale-[1.03] transition-transform group"
+                  >
+                    EXPLORE COMPLETE ARCHIVE
+                    <ExternalLink size={16} className="group-hover:translate-x-1 transition-transform" />
+                  </a>
                 </motion.div>
               </>
             )}

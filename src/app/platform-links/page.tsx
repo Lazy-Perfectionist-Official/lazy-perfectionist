@@ -1,11 +1,12 @@
 'use client'
 
 import { useState, useEffect, use, useMemo, useCallback } from 'react'
-import { ArrowLeft, Music, ExternalLink, Clock, Album, ShoppingCart, Coffee } from 'lucide-react'
+import { ArrowLeft, Music, ExternalLink } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { analyticsService } from '@/lib/analytics-stub'
 import Background from '@/components/Background'
+import Navigation from '@/components/Navigation'
 import { generateStructuredData } from '@/components/SEO'
 
 interface Platform {
@@ -38,9 +39,10 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
     if (trackId) {
       fetchPlatformLinks()
       fetchAlbumArt()
+    } else {
+      setLoading(false)
     }
 
-    // Cleanup function to prevent memory leaks
     return () => {
       setMounted(false)
     }
@@ -67,7 +69,6 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
 
       if (data.success && data.data) {
         setPlatforms(data.data.platforms || [])
-        // Also set album art if available
         if (data.data.albumImage) {
           setAlbumArt(data.data.albumImage)
         }
@@ -80,7 +81,6 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
   }
 
   const handlePlatformClick = useCallback(async (url: string, platform: Platform) => {
-    // Track the click analytics
     if (trackId && trackName && artistName) {
       await analyticsService.trackPlatformClick({
         trackId,
@@ -92,24 +92,21 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
       })
     }
 
-    // Open in new window
     window.open(url, '_blank', 'noopener,noreferrer')
   }, [trackId, trackName, artistName])
 
-  // Memoize the ExternalLink icon to prevent re-creation on each render
   const externalLinkIcon = useMemo(() => <ExternalLink size={18} />, [])
 
   if (!mounted) {
     return (
-      <div className="min-h-screen linktree-gradient flex items-center justify-center">
+      <div className="min-h-screen bg-oryzo-canvas flex items-center justify-center text-oryzo-muted">
         <div className="animate-pulse">Loading...</div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen linktree-gradient relative">
-      {/* Structured Data for Music Platform Links */}
+    <div className="min-h-screen bg-oryzo-canvas text-oryzo-cream relative">
       {trackName && artistName && (
         <script
           type="application/ld+json"
@@ -129,33 +126,8 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
         />
       )}
       <Background />
+      <Navigation currentPage="music" />
 
-      {/* ========== NAVBAR ========== */}
-      <nav className="fixed top-4 left-4 right-4 max-w-7xl mx-auto bg-white/95 backdrop-blur-xl border-2 border-black rounded-3xl shadow-2xl z-50">
-        <div className="h-full px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <Link href="/music" className="flex items-center">
-              <ArrowLeft className="mr-3 text-black/80 hover:text-blue-600 transition-colors" size={20} />
-              <span className="text-black font-semibold text-lg font-dm-serif">
-                {trackName ? decodeURIComponent(trackName) : 'Back to Music'}
-              </span>
-            </Link>
-            <a
-              href="https://ko-fi.com/lazyperfectionist"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center text-amber-600 hover:text-amber-700 transition-colors"
-            >
-              <Coffee size={20} />
-            </a>
-            <Link href="/store" className="flex items-center text-black/80 hover:text-blue-600 transition-colors">
-              <ShoppingCart size={20} />
-            </Link>
-          </div>
-        </div>
-      </nav>
-
-      {/* Main Content */}
       <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mx-auto">
           <motion.div
@@ -170,23 +142,32 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
               animate={mounted ? { scale: 1, opacity: 1 } : {}}
               transition={{ duration: 0.7, delay: 0.2 }}
             >
-              <div className="w-32 h-32 mx-auto rounded-2xl overflow-hidden border-4 border-white/30 shadow-2xl bg-white/10 backdrop-blur-sm">
+              <div className="w-32 h-32 mx-auto rounded-2xl overflow-hidden border border-oryzo-border shadow-2xl bg-oryzo-surface/40">
                 {albumArt ? (
+                  // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={albumArt}
                     alt={`${trackName ? decodeURIComponent(trackName) : 'Track'} cover art`}
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-black/20">
-                    <Music className="w-12 h-12 text-white/60" />
+                  <div className="w-full h-full flex items-center justify-center">
+                    <Music className="w-12 h-12 text-oryzo-muted" />
                   </div>
                 )}
               </div>
             </motion.div>
 
+            <div className="flex items-center gap-8 mb-6 justify-center">
+              <div className="w-8 h-px bg-oryzo-border" />
+              <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-oryzo-display">
+                Listen
+              </span>
+              <div className="w-8 h-px bg-oryzo-border" />
+            </div>
+
             <motion.h1
-              className="text-4xl md:text-5xl font-bold linktree-header-text mb-4"
+              className="text-4xl md:text-5xl font-display italic text-oryzo-cream mb-4"
               initial={{ y: 20, opacity: 0 }}
               animate={mounted ? { y: 0, opacity: 1 } : {}}
               transition={{ duration: 0.7, delay: 0.3 }}
@@ -195,15 +176,14 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
             </motion.h1>
 
             <motion.p
-              className="text-lg md:text-xl linktree-header-text/90 mb-8"
+              className="text-base md:text-lg text-oryzo-muted mb-8"
               initial={{ y: 20, opacity: 0 }}
               animate={mounted ? { y: 0, opacity: 1 } : {}}
               transition={{ duration: 0.7, delay: 0.4 }}
             >
               {trackName && artistName
                 ? `Listen to "${decodeURIComponent(trackName)}" by ${decodeURIComponent(artistName)}`
-                : 'Select your preferred streaming platform'
-              }
+                : 'Select your preferred streaming platform'}
             </motion.p>
           </motion.div>
 
@@ -217,13 +197,13 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
             {loading ? (
               <div className="space-y-4">
                 {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className="linktree-button rounded-2xl p-6 animate-pulse">
+                  <div key={i} className="liquid-glass rounded-2xl p-6 animate-pulse">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-4">
-                        <div className="w-12 h-12 bg-black/20 rounded-xl"></div>
-                        <div className="h-5 bg-black/20 rounded w-32"></div>
+                        <div className="w-12 h-12 bg-oryzo-border/40 rounded-xl"></div>
+                        <div className="h-5 bg-oryzo-border/40 rounded w-32"></div>
                       </div>
-                      <div className="w-6 h-6 bg-black/20 rounded"></div>
+                      <div className="w-6 h-6 bg-oryzo-border/40 rounded"></div>
                     </div>
                   </div>
                 ))}
@@ -248,24 +228,24 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
                       delay: index * 0.1,
                       ease: 'easeOut'
                     }}
-                    className="linktree-button flex items-center justify-between p-6 rounded-2xl hover:shadow-xl transition-all duration-300 group"
+                    className="liquid-glass flex items-center justify-between p-6 rounded-2xl hover:border-oryzo-cream/40 transition-all duration-300 group"
                     whileHover={{ scale: 1.02, y: -2 }}
                     whileTap={{ scale: 0.98 }}
                   >
                     <div className="flex items-center space-x-4">
-                      <div className="flex items-center justify-center w-12 h-12 bg-black/20 rounded-xl text-2xl">
+                      <div className="flex items-center justify-center w-12 h-12 bg-oryzo-surface/60 rounded-xl text-2xl">
                         {platform.icon}
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold linktree-text">
+                        <h3 className="text-lg font-oryzo-display text-oryzo-cream">
                           {platform.name}
                         </h3>
-                        <p className="text-sm linktree-text/70">
+                        <p className="text-sm text-oryzo-muted">
                           Stream in {platform.name.replace('Music', '').replace('Cloud', '')}
                         </p>
                       </div>
                     </div>
-                    <div className="flex items-center space-x-2 text-linktree/60 group-hover:text-linktree transition-colors">
+                    <div className="flex items-center space-x-2 text-oryzo-muted group-hover:text-oryzo-ember transition-colors">
                       <span className="text-sm font-medium">Open</span>
                       {externalLinkIcon}
                     </div>
@@ -279,18 +259,26 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
               >
-                <div className="text-6xl mb-4">🎵</div>
-                <h3 className="text-xl font-semibold linktree-text mb-2">
-                  Platforms loading...
+                <Music className="w-12 h-12 text-oryzo-muted mx-auto mb-4" />
+                <h3 className="text-xl font-oryzo-display text-oryzo-cream mb-2">
+                  NO PLATFORM LINKS AVAILABLE
                 </h3>
-                <p className="linktree-text/70">
-                  Finding the best streaming options for you
+                <p className="text-oryzo-muted mb-6">
+                  {trackId
+                    ? 'Could not load streaming options for this track.'
+                    : 'Visit the music page to choose a track.'}
                 </p>
+                <Link
+                  href="/music"
+                  className="liquid-glass rounded-full inline-flex items-center gap-2 px-6 py-3 font-oryzo-display text-sm text-oryzo-cream hover:scale-[1.03] transition-transform"
+                >
+                  <ArrowLeft size={16} />
+                  BACK TO MUSIC
+                </Link>
               </motion.div>
             )}
           </motion.div>
 
-          {/* Footer */}
           <motion.div
             className="mt-16 text-center"
             initial={{ opacity: 0 }}
@@ -299,7 +287,7 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
           >
             <Link
               href="/music"
-              className="linktree-text/70 hover:text-linktree transition-colors inline-flex items-center gap-2"
+              className="text-oryzo-muted hover:text-oryzo-cream transition-colors inline-flex items-center gap-2 text-sm"
             >
               <ArrowLeft size={16} />
               Back to music
