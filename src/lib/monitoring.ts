@@ -224,27 +224,34 @@ export const initMonitoring = () => {
     });
   }
 
-  // Initialize Sentry (optional — only if @sentry/nextjs is installed and DSN is set)
+  // Initialize Sentry (optional — only if @sentry/nextjs is installed and DSN is set).
+  // The import is hidden behind `new Function` so webpack does not try to statically
+  // resolve an optional dependency (which would emit "Critical dependency" warnings
+  // and trigger Fast Refresh full reloads).
+  // To enable Sentry: `npm i @sentry/nextjs`, set NEXT_PUBLIC_SENTRY_DSN, and this block will run.
   if (errorTrackingConfig.enabled && errorTrackingConfig.sentryDsn) {
-    // Variable import prevents webpack from statically resolving an optional dep.
-    const sentryModule = '@sentry/nextjs';
-    import(sentryModule)
-      .then((Sentry: any) => {
-        Sentry.init({
-          dsn: errorTrackingConfig.sentryDsn,
-          environment: errorTrackingConfig.environment,
-          tracesSampleRate: errorTrackingConfig.sampleRate,
-          beforeSend(event: any) {
-            if (event.request) {
-              delete event.request.cookies;
-            }
-            return event;
-          },
+    try {
+      const loadSentry = new Function('return import("@sentry/nextjs")') as () => Promise<any>;
+      loadSentry()
+        .then((Sentry) => {
+          Sentry.init({
+            dsn: errorTrackingConfig.sentryDsn,
+            environment: errorTrackingConfig.environment,
+            tracesSampleRate: errorTrackingConfig.sampleRate,
+            beforeSend(event: any) {
+              if (event.request) {
+                delete event.request.cookies;
+              }
+              return event;
+            },
+          });
+        })
+        .catch((error: unknown) => {
+          console.warn('Failed to initialize Sentry (module not installed):', error);
         });
-      })
-      .catch((error: unknown) => {
-        console.warn('Failed to initialize Sentry (module not installed):', error);
-      });
+    } catch {
+      // new Function() can throw in CSP-restricted environments — silently skip.
+    }
   }
 
   // Track initial page view

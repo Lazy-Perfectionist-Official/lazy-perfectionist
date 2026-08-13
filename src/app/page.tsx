@@ -1,9 +1,8 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { gsap } from 'gsap';
-import LoadingScreen from '@/app/components/portfolio/LoadingScreen';
 import Hero from '@/app/components/portfolio/Hero';
 
 // Dynamic imports for code splitting and performance
@@ -54,7 +53,6 @@ if (typeof window !== 'undefined') {
 }
 
 export default function HomePage() {
-  const [isLoading, setIsLoading] = useState(true);
   const mainRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -68,17 +66,11 @@ export default function HomePage() {
 
   return (
     <div ref={mainRef} className="min-h-screen bg-oryzo-canvas text-oryzo-cream">
-      {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
-
-      {!isLoading && (
-        <>
-          <Hero />
-          <SelectedWorks />
-          <Journal />
-          <Stats />
-          <Contact />
-        </>
-      )}
+      <Hero />
+      <SelectedWorks />
+      <Journal />
+      <Stats />
+      <Contact />
     </div>
   );
 }

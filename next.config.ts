@@ -12,8 +12,7 @@ const nextConfig: NextConfig = {
   // 禁用 Next.js 热重载，由 nodemon 处理重编译
   reactStrictMode: false,
 
-  // metadataBase for resolving OG images
-  metadataBase: new URL(siteUrl),
+  // Note: metadataBase is configured in individual page metadata exports, not here
 
   // HTTP Headers for CDN caching and security
   async headers() {

@@ -94,6 +94,7 @@ export default function BlogCard({ post, index }: BlogCardProps) {
           src={post.thumbnail}
           alt={post.title}
           fill
+          priority={index === 0}
           className={`object-cover transition-opacity duration-300 ${
             imageLoaded ? 'opacity-100' : 'opacity-0'
           }`}

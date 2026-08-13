@@ -36,7 +36,6 @@ export default function BlogPage() {
 
   useEffect(() => {
     setMounted(true)
-    fetchMediumData()
   }, [])
 
   useEffect(() => {

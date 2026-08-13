@@ -9,13 +9,10 @@ import { Menu, X } from 'lucide-react';
 import SpotlightReveal from '@/app/components/portfolio/SpotlightReveal';
 
 export default function Hero() {
-  const [roleIndex, setRoleIndex] = useState(0);
   const [showShadow, setShowShadow] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navbarRef = useRef<HTMLElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
-
-  const roles = ['Creative', 'Fullstack', 'Founder', 'Scholar'];
 
   const navItems = ['Home', 'Music', 'Blog', 'Store', 'Connect'];
 
@@ -42,8 +39,7 @@ export default function Hero() {
       });
     }
 
-    // Note: CursorReveal component handles its own interactive effects
-    // Parallax effects are now handled by the cursor masking system
+    // Parallax effects are handled by the cursor masking system (SpotlightReveal)
 
     // Text content parallax - moves at different speed than background
     if (heroRef.current) {
@@ -60,40 +56,6 @@ export default function Hero() {
       });
     }
 
-    // Hero content animations - only if hero element exists
-    if (heroRef.current) {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: heroRef.current,
-          start: 'top 80%',
-        },
-      });
-
-      // Name reveal animation
-      tl.from('.name-reveal', {
-        opacity: 0,
-        y: 50,
-        duration: 1.2,
-        ease: 'power3.out',
-        delay: 0.1,
-      });
-
-      // Blur-in animations
-      tl.from('.blur-in', {
-        opacity: 0,
-        filter: 'blur(10px)',
-        y: 20,
-        duration: 1,
-        stagger: 0.1,
-        delay: 0.3,
-      });
-    }
-
-    // Role cycling
-    const roleInterval = setInterval(() => {
-      setRoleIndex((prev) => (prev + 1) % roles.length);
-    }, 2000);
-
     // Scroll detection for navbar shadow
     const handleScroll = () => {
       setShowShadow(window.scrollY > 100);
@@ -102,7 +64,6 @@ export default function Hero() {
     window.addEventListener('scroll', handleScroll);
 
     return () => {
-      clearInterval(roleInterval);
       window.removeEventListener('scroll', handleScroll);
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
       ctx.revert();
@@ -234,7 +195,7 @@ export default function Hero() {
         {/* Eyebrow */}
         <div className="mb-8 hero-anim hero-fade" style={{ animationDelay: '0.7s' }} data-testid="hero-eyebrow">
           <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em]">
-            COLLECTION '26
+            Debut Single — Orbit
           </span>
         </div>
 

@@ -250,6 +250,21 @@ export default function MusicPage() {
                           </div>
                         ))}
                       </div>
+                    ) : tracks.length === 0 ? (
+                      <div className="text-center py-12">
+                        <p className="text-oryzo-muted text-sm mb-4">
+                          Full catalog loading on streaming platforms soon.
+                        </p>
+                        <a
+                          href="https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="liquid-glass rounded-full inline-flex items-center gap-2 px-6 py-3 font-oryzo-display text-sm text-oryzo-cream hover:scale-[1.03] transition-transform"
+                        >
+                          <Play size={16} />
+                          STREAM &ldquo;ORBIT&rdquo; NOW
+                        </a>
+                      </div>
                     ) : (
                       <div className="space-y-2">
                         {tracks.map((track, index) => (
