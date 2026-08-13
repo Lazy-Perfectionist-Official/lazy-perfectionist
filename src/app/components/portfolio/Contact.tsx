@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
@@ -73,10 +73,9 @@ export default function Contact() {
   const marqueeRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const hlsRef = useRef<Hls | null>(null);
+  const [videoReady, setVideoReady] = useState(false);
 
   useEffect(() => {
-    const ctx = gsap.context();
-
     // HLS Video Setup for Contact Section
     if (typeof window !== 'undefined' && videoRef.current) {
       const hls = new Hls();
@@ -87,11 +86,13 @@ export default function Contact() {
 
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
         hls.startLoad();
+        setVideoReady(true);
       });
 
       hls.on(Hls.Events.ERROR, (event, data) => {
         if (data.fatal) {
           console.error('HLS error:', data);
+          setVideoReady(false);
           // Fallback to direct video source
           if (videoRef.current?.canPlayType('application/vnd.apple.mpegurl')) {
             videoRef.current.src = hlsSource;
@@ -102,18 +103,21 @@ export default function Contact() {
       hlsRef.current = hls;
     }
 
-    // Marquee Animation
-    if (marqueeRef.current) {
-      const marqueeText = marqueeRef.current;
+    // GSAP context wraps all animations for proper cleanup
+    const ctx = gsap.context(() => {
+      // Marquee Animation
+      if (marqueeRef.current) {
+        const marqueeText = marqueeRef.current;
 
-      // Create seamless marquee effect
-      gsap.to(marqueeText, {
-        x: '-50%',
-        ease: 'none',
-        duration: 20,
-        repeat: -1,
-      });
-    }
+        // Create seamless marquee effect
+        gsap.to(marqueeText, {
+          x: '-50%',
+          ease: 'none',
+          duration: 20,
+          repeat: -1,
+        });
+      }
+    });
 
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
@@ -129,11 +133,11 @@ export default function Contact() {
   return (
     <section ref={sectionRef} className="relative min-h-[80vh] flex items-center justify-center overflow-hidden" data-testid="contact-section">
       {/* Inverted Video Background */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 bg-oryzo-surface">
         <div className="absolute inset-0 bg-gradient-to-t from-oryzo-canvas via-oryzo-canvas/80 to-oryzo-canvas/60 z-10" />
         <video
           ref={videoRef}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full object-cover invert"
+          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full object-cover invert transition-opacity duration-700 ${videoReady ? 'opacity-100' : 'opacity-0'}`}
           autoPlay
           muted
           loop
@@ -186,7 +190,7 @@ export default function Contact() {
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-10">
               <MagneticButton
-                href="https://open.spotify.com/artist/6RQ7kwJQj3Ph9RlzF6V5bO"
+                href="https://open.spotify.com/artist/7ELTTbYXSvCIXh0W6IV3um"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="relative rounded-full border-2 border-oryzo-border bg-oryzo-canvas/80 backdrop-blur-sm text-oryzo-cream text-base px-8 py-4 overflow-hidden font-oryzo-display"

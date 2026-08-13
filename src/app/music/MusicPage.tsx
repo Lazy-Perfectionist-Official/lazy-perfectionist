@@ -3,10 +3,53 @@
 import { useState, useEffect } from 'react'
 import { Music as MusicIcon, Play, ExternalLink } from 'lucide-react'
 import { motion } from 'framer-motion'
-import PlatformButtons from '@/components/music/PlatformButtons'
 import Navigation from '@/components/Navigation'
 import Background from '@/components/Background'
 import { generateStructuredData } from '@/components/SEO'
+
+interface CatalogRelease {
+  id: string
+  title: string
+  year: string
+  type: string
+  duration: string
+  cover: string
+  spotifyUrl: string
+  preview_url: string | null
+}
+
+const CATALOG: CatalogRelease[] = [
+  {
+    id: '4RnwmBIaSuOqGEu8R2nIsU',
+    title: 'LUSG',
+    year: '2026',
+    type: 'Single',
+    duration: '5:46',
+    cover: 'https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02aa095364f6ef874ee7d6ddaf',
+    spotifyUrl: 'https://open.spotify.com/track/4RnwmBIaSuOqGEu8R2nIsU',
+    preview_url: null,
+  },
+  {
+    id: '5gQpSHmOlmQTrz2H1iznYV',
+    title: 'Cyclothymia',
+    year: '2026',
+    type: 'Single',
+    duration: '—',
+    cover: 'https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02f4434c21202aac2f3d05fd2e',
+    spotifyUrl: 'https://open.spotify.com/track/5gQpSHmOlmQTrz2H1iznYV',
+    preview_url: null,
+  },
+  {
+    id: '1XIv8JGEDU9MZT6HEFmdk8',
+    title: 'Orbit',
+    year: '2025',
+    type: 'Single',
+    duration: '—',
+    cover: '/assets/img/optimized/orbit-cover-1200.avif',
+    spotifyUrl: 'https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8',
+    preview_url: null,
+  },
+]
 
 interface SpotifyTrack {
   id: string
@@ -113,8 +156,7 @@ export default function MusicPage() {
               animate={mounted ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, ease: 'easeOut' }}
             >
-              <div className="flex items-center gap-8 mb-6">
-                <div className="w-8 h-px bg-oryzo-border" />
+              <div className="mb-6">
                 <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-oryzo-display">
                   Discography
                 </span>
@@ -141,7 +183,7 @@ export default function MusicPage() {
                     <div className="flex items-center gap-2 mb-6">
                       <div className="w-3 h-3 bg-oryzo-ember rounded-full animate-pulse" />
                       <span className="text-oryzo-muted text-sm font-oryzo-display uppercase tracking-wider">
-                        Featured Single
+                        Latest Single
                       </span>
                     </div>
 
@@ -151,20 +193,17 @@ export default function MusicPage() {
                         <div className="relative aspect-square rounded-2xl overflow-hidden bg-oryzo-canvas border border-oryzo-border">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
-                            src="/assets/img/optimized/orbit-cover-1200.avif"
-                            alt="Lazy Perfectionist - Orbit"
+                            src={CATALOG[0].cover}
+                            alt={`Lazy Perfectionist - ${CATALOG[0].title}`}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                            onError={(e) => {
-                              (e.currentTarget as HTMLImageElement).src = '/assets/img/orbit-cover.jpg'
-                            }}
                           />
                           <div className="absolute inset-0 bg-oryzo-canvas/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                             <a
-                              href="https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8"
+                              href={CATALOG[0].spotifyUrl}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="w-16 h-16 md:w-20 md:h-20 bg-oryzo-ember rounded-full flex items-center justify-center shadow-2xl transform hover:scale-110 transition-transform"
-                              aria-label="Play Orbit on Spotify"
+                              aria-label={`Play ${CATALOG[0].title} on Spotify`}
                             >
                               <Play size={28} className="text-oryzo-canvas ml-1" fill="currentColor" />
                             </a>
@@ -175,25 +214,25 @@ export default function MusicPage() {
                       {/* Track Info */}
                       <div className="space-y-4">
                         <div>
-                          <h2 className="text-3xl md:text-4xl font-display italic text-oryzo-cream mb-1">Orbit</h2>
+                          <h2 className="text-3xl md:text-4xl font-display italic text-oryzo-cream mb-1">{CATALOG[0].title}</h2>
                           <p className="text-lg text-oryzo-muted">Lazy Perfectionist</p>
                         </div>
 
                         <div className="flex items-center flex-wrap gap-3 text-oryzo-muted text-sm">
-                          <span>2024</span>
+                          <span>{CATALOG[0].year}</span>
                           <span>•</span>
                           <span>Instrumental Rock</span>
                           <span>•</span>
-                          <span>Single</span>
+                          <span>{CATALOG[0].type}</span>
                         </div>
 
                         <p className="text-oryzo-muted leading-relaxed">
-                          Debut single — an instrumental progressive rock sound walk experiment. Orchestral layers meet modern synths.
+                          Latest instrumental progressive rock release. Orchestral layers meet modern synths in a sound walk experiment.
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-3 pt-2">
                           <a
-                            href="https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8"
+                            href={CATALOG[0].spotifyUrl}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="liquid-glass rounded-full px-6 py-3 font-oryzo-display text-sm text-oryzo-cream hover:scale-[1.03] transition-transform inline-flex items-center justify-center gap-2"
@@ -225,7 +264,7 @@ export default function MusicPage() {
                       </h3>
                       <div className="flex items-center gap-2">
                         <span className="text-oryzo-muted text-sm">
-                          {tracks.length} {tracks.length === 1 ? 'track' : 'tracks'}
+                          {CATALOG.length} {CATALOG.length === 1 ? 'release' : 'releases'}
                         </span>
                         {playingTrack && (
                           <div className="flex items-center gap-1 text-oryzo-ember">
@@ -236,94 +275,54 @@ export default function MusicPage() {
                       </div>
                     </div>
 
-                    {loading ? (
-                      <div className="space-y-3">
-                        {[1, 2, 3].map((i) => (
-                          <div key={i} className="bg-oryzo-canvas/40 rounded-xl p-4 animate-pulse">
-                            <div className="flex items-center gap-4">
-                              <div className="w-12 h-12 bg-oryzo-border/40 rounded-lg" />
-                              <div className="flex-1">
-                                <div className="h-4 bg-oryzo-border/40 rounded w-3/4 mb-2" />
-                                <div className="h-3 bg-oryzo-border/40 rounded w-1/2" />
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    ) : tracks.length === 0 ? (
-                      <div className="text-center py-12">
-                        <p className="text-oryzo-muted text-sm mb-4">
-                          Full catalog loading on streaming platforms soon.
-                        </p>
+                    <div className="space-y-2">
+                      {CATALOG.map((release, index) => (
                         <a
-                          href="https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8"
+                          key={release.id}
+                          href={release.spotifyUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="liquid-glass rounded-full inline-flex items-center gap-2 px-6 py-3 font-oryzo-display text-sm text-oryzo-cream hover:scale-[1.03] transition-transform"
+                          className="group bg-oryzo-canvas/30 hover:bg-oryzo-canvas/50 rounded-xl p-4 transition-colors flex items-center gap-4"
                         >
-                          <Play size={16} />
-                          STREAM &ldquo;ORBIT&rdquo; NOW
-                        </a>
-                      </div>
-                    ) : (
-                      <div className="space-y-2">
-                        {tracks.map((track, index) => (
-                          <div
-                            key={track.id}
-                            className="group bg-oryzo-canvas/30 hover:bg-oryzo-canvas/50 rounded-xl p-4 transition-colors"
-                          >
-                            <div className="flex items-center gap-4">
-                              <div className="w-8 h-8 bg-oryzo-border/40 group-hover:bg-oryzo-ember/20 rounded-lg flex items-center justify-center transition-colors">
-                                <span className="text-oryzo-muted group-hover:text-oryzo-ember font-oryzo-display text-sm">
-                                  {index + 1}
-                                </span>
-                              </div>
+                          <div className="w-8 h-8 bg-oryzo-border/40 group-hover:bg-oryzo-ember/20 rounded-lg flex items-center justify-center transition-colors flex-shrink-0">
+                            <span className="text-oryzo-muted group-hover:text-oryzo-ember font-oryzo-display text-sm">
+                              {index + 1}
+                            </span>
+                          </div>
 
-                              <div className="relative">
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img
-                                  src={track.album.images[0]?.url || '/assets/img/optimized/orbit-cover-1200.avif'}
-                                  alt={`${track.album.name} cover art`}
-                                  width={48}
-                                  height={48}
-                                  className="w-12 h-12 rounded-lg object-cover"
-                                />
-                                {track.preview_url && (
-                                  <button
-                                    type="button"
-                                    className="absolute inset-0 bg-oryzo-canvas/70 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
-                                    onClick={() => playPreview(track)}
-                                    aria-label={`Preview ${track.name}`}
-                                  >
-                                    <Play size={16} className="text-oryzo-cream" fill="currentColor" />
-                                  </button>
-                                )}
-                              </div>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={release.cover}
+                            alt={`${release.title} cover art`}
+                            width={48}
+                            height={48}
+                            className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                          />
 
-                              <div className="flex-1 min-w-0">
-                                <h4 className="text-oryzo-cream font-oryzo-display truncate">
-                                  {track.name.toUpperCase()}
-                                </h4>
-                                <div className="flex items-center gap-3 text-oryzo-muted text-xs">
-                                  <span>{new Date(track.album.release_date).getFullYear()}</span>
+                          <div className="flex-1 min-w-0">
+                            <h4 className="text-oryzo-cream font-oryzo-display truncate group-hover:text-oryzo-ember transition-colors">
+                              {release.title.toUpperCase()}
+                            </h4>
+                            <div className="flex items-center gap-3 text-oryzo-muted text-xs">
+                              <span>{release.year}</span>
+                              <span>•</span>
+                              <span>{release.type}</span>
+                              {release.duration !== '—' && (
+                                <>
                                   <span>•</span>
-                                  <span>{formatDuration(track.duration_ms)}</span>
-                                </div>
-                              </div>
-
-                              <div className="hidden md:block">
-                                <PlatformButtons
-                                  trackId={track.id}
-                                  trackName={track.name}
-                                  artistName={track.artists[0]?.name || 'Lazy Perfectionist'}
-                                  className="scale-75"
-                                />
-                              </div>
+                                  <span>{release.duration}</span>
+                                </>
+                              )}
                             </div>
                           </div>
-                        ))}
-                      </div>
-                    )}
+
+                          <div className="flex items-center gap-2 text-oryzo-muted group-hover:text-oryzo-ember transition-colors flex-shrink-0">
+                            <Play size={16} fill="currentColor" />
+                            <span className="text-xs font-oryzo-display hidden md:inline">PLAY</span>
+                          </div>
+                        </a>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </motion.div>

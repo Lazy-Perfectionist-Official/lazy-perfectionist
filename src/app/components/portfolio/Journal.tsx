@@ -61,8 +61,7 @@ export default function Journal() {
           className="mb-12"
           data-testid="journal-header"
         >
-          <div className="flex items-center gap-8 mb-6">
-            <div className="w-8 h-px bg-oryzo-border" />
+          <div className="mb-6">
             <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-oryzo-display">
               RECENT
             </span>

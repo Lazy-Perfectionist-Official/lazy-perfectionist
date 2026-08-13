@@ -19,10 +19,9 @@ export default function SelectedWorks() {
           className="mb-12"
           data-testid="selected-works-header"
         >
-          <div className="flex items-center gap-8 mb-6">
-            <div className="w-8 h-px bg-oryzo-border" />
+          <div className="mb-6">
             <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-oryzo-display">
-              FEATURED RELEASE
+              LATEST RELEASE
             </span>
           </div>
 
@@ -44,7 +43,7 @@ export default function SelectedWorks() {
           data-testid="featured-release-card"
         >
           <Link
-            href="https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8"
+            href="https://open.spotify.com/track/4RnwmBIaSuOqGEu8R2nIsU"
             target="_blank"
             rel="noopener noreferrer"
             className="block relative aspect-[16/9] md:aspect-[21/9] rounded-3xl border border-oryzo-border overflow-hidden group cursor-pointer"
@@ -55,16 +54,13 @@ export default function SelectedWorks() {
               whileHover={{ scale: 1.05 }}
               transition={{ type: 'spring', stiffness: 200, damping: 30 }}
             >
-              {/* Orbit cover art */}
+              {/* LUSG cover art */}
               <div className="absolute inset-0 flex items-center justify-center">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/assets/img/optimized/orbit-cover-1200.avif"
-                  alt="Orbit — Lazy Perfectionist"
+                  src="https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02aa095364f6ef874ee7d6ddaf"
+                  alt="LUSG — Lazy Perfectionist"
                   className="w-full h-full object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-500"
-                  onError={(e) => {
-                    (e.currentTarget as HTMLImageElement).src = '/assets/img/orbit-cover.jpg';
-                  }}
                 />
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-oryzo-canvas via-oryzo-canvas/30 to-transparent" />
@@ -78,10 +74,10 @@ export default function SelectedWorks() {
                     <span className="text-xs text-oryzo-ember uppercase tracking-[0.3em] font-oryzo-display">
                       Single
                     </span>
-                    <span className="text-xs text-oryzo-muted">2024</span>
+                    <span className="text-xs text-oryzo-muted">2026</span>
                   </div>
                   <h3 className="text-3xl md:text-5xl font-display italic text-oryzo-cream mb-2">
-                    Orbit
+                    LUSG
                   </h3>
                   <p className="text-sm md:text-base text-oryzo-muted max-w-xl">
                     Instrumental progressive rock — orchestral layers meeting modern synths.

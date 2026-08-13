@@ -113,8 +113,7 @@ export default function BlogPage() {
               animate={mounted ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, ease: 'easeOut' }}
             >
-              <div className="flex items-center gap-8 mb-6">
-                <div className="w-8 h-px bg-oryzo-border" />
+              <div className="mb-6">
                 <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-oryzo-display">
                   Journal
                 </span>

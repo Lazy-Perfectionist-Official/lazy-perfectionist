@@ -8,7 +8,7 @@ export const CONTENT_SCHEMA = [
   {
     section: 'Homepage hero',
     fields: [
-      { key: 'hero_eyebrow', label: 'Eyebrow text', default: 'Debut Single — Orbit' },
+      { key: 'hero_eyebrow', label: 'Eyebrow text', default: 'Latest Single — LUSG' },
       {
         key: 'hero_title_line1',
         label: 'Headline line 1',

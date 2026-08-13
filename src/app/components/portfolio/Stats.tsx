@@ -33,44 +33,45 @@ export default function Stats() {
   };
 
   useEffect(() => {
-    const ctx = gsap.context();
-
     // Register ScrollTrigger
     if (typeof window !== 'undefined') {
       gsap.registerPlugin(ScrollTrigger);
     }
 
-    // Parallax effect for the entire section
-    if (sectionRef.current) {
-      gsap.to(sectionRef.current, {
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 1,
-        },
-        y: -30, // Subtle parallax movement
-        ease: 'power2.out',
-      });
-    }
+    // GSAP context wraps all animations for proper cleanup
+    const ctx = gsap.context(() => {
+      // Parallax effect for the entire section
+      if (sectionRef.current) {
+        gsap.to(sectionRef.current, {
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1,
+          },
+          y: -30, // Subtle parallax movement
+          ease: 'power2.out',
+        });
+      }
 
-    // Trigger counter animations when stats come into view
-    statRefs.current.forEach((statRef, index) => {
-      if (!statRef) return;
+      // Trigger counter animations when stats come into view
+      statRefs.current.forEach((statRef, index) => {
+        if (!statRef) return;
 
-      gsap.from(statRef, {
-        scrollTrigger: {
-          trigger: statRef,
-          start: 'top 80%',
-          end: 'bottom 20%',
-          toggleActions: 'play none none reverse',
-        },
-        opacity: 0,
-        y: 50,
-        scale: 0.8,
-        duration: 1,
-        ease: 'power3.out',
-        delay: index * 0.1,
+        gsap.from(statRef, {
+          scrollTrigger: {
+            trigger: statRef,
+            start: 'top 80%',
+            end: 'bottom 20%',
+            toggleActions: 'play none none reverse',
+          },
+          opacity: 0,
+          y: 50,
+          scale: 0.8,
+          duration: 1,
+          ease: 'power3.out',
+          delay: index * 0.1,
+        });
       });
     });
 
@@ -100,8 +101,7 @@ export default function Stats() {
           className="mb-12"
           data-testid="stats-header"
         >
-          <div className="flex items-center gap-8 mb-6">
-            <div className="w-8 h-px bg-oryzo-border" />
+          <div className="mb-6">
             <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-oryzo-display">
               IMPACT
             </span>

@@ -17,7 +17,7 @@ export default function Hero() {
     hero_title_line2: string;
     hero_description: string;
   }>({
-    hero_eyebrow: 'Debut Single — Orbit',
+    hero_eyebrow: 'Latest Single — LUSG',
     hero_title_line1: 'Where silence speaks',
     hero_title_line2: 'through the sound.',
     hero_description:
@@ -51,41 +51,41 @@ export default function Hero() {
   }, []);
 
   useEffect(() => {
-    // GSAP setup
-    const ctx = gsap.context();
-
     // Register ScrollTrigger
     if (typeof window !== 'undefined') {
       gsap.registerPlugin(ScrollTrigger);
     }
 
-    // Navbar fade-in - only if element exists
-    if (navbarRef.current) {
-      gsap.from(navbarRef.current, {
-        opacity: 0,
-        y: -20,
-        duration: 0.8,
-        ease: 'power3.out',
-        delay: 2.8,
-      });
-    }
+    // GSAP context wraps all animations for proper cleanup on unmount
+    const ctx = gsap.context(() => {
+      // Navbar fade-in - only if element exists
+      if (navbarRef.current) {
+        gsap.from(navbarRef.current, {
+          opacity: 0,
+          y: -20,
+          duration: 0.8,
+          ease: 'power3.out',
+          delay: 2.8,
+        });
+      }
 
-    // Parallax effects are handled by the cursor masking system (SpotlightReveal)
+      // Parallax effects are handled by the cursor masking system (SpotlightReveal)
 
-    // Text content parallax - moves at different speed than background
-    if (heroRef.current) {
-      gsap.to(heroRef.current, {
-        scrollTrigger: {
-          trigger: heroRef.current,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 1.5,
-        },
-        y: -50, // Text moves opposite direction
-        opacity: 0.3, // Fades as user scrolls
-        ease: 'power2.out',
-      });
-    }
+      // Text content parallax - moves at different speed than background
+      if (heroRef.current) {
+        gsap.to(heroRef.current, {
+          scrollTrigger: {
+            trigger: heroRef.current,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 1.5,
+          },
+          y: -50, // Text moves opposite direction
+          opacity: 0.3, // Fades as user scrolls
+          ease: 'power2.out',
+        });
+      }
+    });
 
     // Scroll detection for navbar shadow
     const handleScroll = () => {
@@ -110,7 +110,7 @@ export default function Hero() {
           revealImage="/assets/img/optimized/hero-background-2000.avif"
           enabled={true}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-oryzo-canvas z-40" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-oryzo-canvas z-40" />
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-oryzo-canvas to-transparent z-40" />
       </div>
 
@@ -156,7 +156,7 @@ export default function Hero() {
             animate={{ opacity: 1, x: 0 }}
           >
             <Link
-              href="https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8"
+              href="https://open.spotify.com/track/4RnwmBIaSuOqGEu8R2nIsU"
               target="_blank"
               rel="noopener noreferrer"
               className="liquid-glass rounded-full px-6 py-2.5 text-sm text-oryzo-cream hover:scale-[1.03] transition-transform inline-flex items-center shadow-lg"
@@ -204,7 +204,7 @@ export default function Hero() {
                 </Link>
               ))}
               <Link
-                href="https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8"
+                href="https://open.spotify.com/track/4RnwmBIaSuOqGEu8R2nIsU"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setIsMobileMenuOpen(false)}
@@ -258,13 +258,13 @@ export default function Hero() {
               transition={{ duration: 0.3 }}
             >
               <Link
-                href="https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8"
+                href="https://open.spotify.com/track/4RnwmBIaSuOqGEu8R2nIsU"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="liquid-glass rounded-full px-14 py-5 text-base text-oryzo-cream mt-12 transition-transform cursor-pointer inline-flex items-center justify-center relative z-10"
                 data-testid="hero-cta-button"
               >
-                Stream "Orbit" Now
+                Stream "LUSG" Now
               </Link>
               <motion.div
                 className="absolute inset-0 rounded-full bg-oryzo-ember opacity-0"

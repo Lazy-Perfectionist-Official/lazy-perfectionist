@@ -13,9 +13,18 @@ const SPOTLIGHT_R = 260;
 /**
  * Interactive cursor spotlight reveal.
  *
- * Uses a CSS radial-gradient mask that follows the cursor via direct DOM writes
- * through refs. No canvas, no toDataURL, no per-frame React state updates — just
- * a cheap style string update inside the requestAnimationFrame loop.
+ * Two layers:
+ *   - base layer (always visible)
+ *   - reveal layer (hidden at rest, spotlight-shaped by a radial-gradient mask)
+ *
+ * The mask alpha channel controls visibility:
+ *   - rgba(0,0,0,1) → opaque → that area of the reveal layer shows
+ *   - rgba(0,0,0,0) → transparent → that area is hidden, base shows through
+ *
+ * At rest the mask is a zero-radius circle off-screen so the reveal layer is
+ * fully hidden and the warm base image is what the user sees. On cursor move,
+ * the mask becomes a radial spotlight at element-relative coordinates so the
+ * cool reveal image shows through only under the cursor.
  */
 export default function SpotlightReveal({ baseImage, revealImage, enabled = true }: SpotlightRevealProps) {
   const revealLayerRef = useRef<HTMLDivElement>(null);
@@ -26,19 +35,42 @@ export default function SpotlightReveal({ baseImage, revealImage, enabled = true
   useEffect(() => {
     if (!enabled || typeof window === 'undefined') return;
 
+    // A zero-radius, off-screen mask → reveal layer fully hidden at rest.
+    const HIDDEN_MASK = 'radial-gradient(circle 0px at -100px -100px, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 0%)';
+
     const applyMask = (x: number, y: number) => {
       const el = revealLayerRef.current;
       if (!el) return;
       const off = x < 0 || y < 0;
       const mask = off
-        ? 'none'
+        ? HIDDEN_MASK
         : `radial-gradient(circle ${SPOTLIGHT_R}px at ${x}px ${y}px, rgba(0,0,0,1) 55%, rgba(0,0,0,0) 100%)`;
       el.style.maskImage = mask;
       el.style.webkitMaskImage = mask;
     };
 
+    // Initialize hidden so the base image is visible before first interaction.
+    applyMask(-999, -999);
+
+    const pointFromEvent = (clientX: number, clientY: number) => {
+      const el = revealLayerRef.current;
+      if (!el) return { x: -999, y: -999 };
+      const rect = el.getBoundingClientRect();
+      // If the pointer is outside the layer's box, treat as "off".
+      if (
+        clientX < rect.left ||
+        clientX > rect.right ||
+        clientY < rect.top ||
+        clientY > rect.bottom
+      ) {
+        return { x: -999, y: -999 };
+      }
+      // mask coordinates are relative to the element's own box origin.
+      return { x: clientX - rect.left, y: clientY - rect.top };
+    };
+
     const handleMouseMove = (e: MouseEvent) => {
-      targetRef.current = { x: e.clientX, y: e.clientY };
+      targetRef.current = pointFromEvent(e.clientX, e.clientY);
     };
 
     const handleMouseLeave = () => {
@@ -48,7 +80,7 @@ export default function SpotlightReveal({ baseImage, revealImage, enabled = true
     const handleTouchMove = (e: TouchEvent) => {
       if (e.touches.length > 0) {
         const t = e.touches[0];
-        targetRef.current = { x: t.clientX, y: t.clientY };
+        targetRef.current = pointFromEvent(t.clientX, t.clientY);
       }
     };
 
@@ -96,20 +128,22 @@ export default function SpotlightReveal({ baseImage, revealImage, enabled = true
 
   return (
     <>
-      {/* Base image layer */}
+      {/* Base image layer — always fully visible */}
       <div
         className="absolute inset-0 bg-center bg-cover bg-no-repeat z-10 hero-zoom"
         style={{ backgroundImage: `url(${baseImage})` }}
       />
 
-      {/* Spotlight reveal layer — mask follows cursor via CSS radial-gradient */}
+      {/* Spotlight reveal layer — hidden at rest, spotlight-shaped by mask on hover */}
       <div
         ref={revealLayerRef}
         className="absolute inset-0 bg-center bg-cover bg-no-repeat z-30 pointer-events-none"
         style={{
           backgroundImage: `url(${revealImage})`,
-          maskImage: 'none',
-          WebkitMaskImage: 'none',
+          maskImage:
+            'radial-gradient(circle 0px at -100px -100px, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 0%)',
+          WebkitMaskImage:
+            'radial-gradient(circle 0px at -100px -100px, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 0%)',
         }}
       />
     </>
