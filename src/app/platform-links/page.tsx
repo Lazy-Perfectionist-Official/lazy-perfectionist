@@ -261,20 +261,30 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
               >
                 <Music className="w-12 h-12 text-oryzo-muted mx-auto mb-4" />
                 <h3 className="text-xl font-oryzo-display text-oryzo-cream mb-2">
-                  NO PLATFORM LINKS AVAILABLE
+                  {trackId ? 'PLATFORM LINKS LOADING' : 'CHOOSE A TRACK FIRST'}
                 </h3>
-                <p className="text-oryzo-muted mb-6">
+                <p className="text-oryzo-muted mb-6 max-w-md mx-auto">
                   {trackId
-                    ? 'Could not load streaming options for this track.'
-                    : 'Visit the music page to choose a track.'}
+                    ? 'Streaming options are loading. Try again in a moment.'
+                    : 'Head to the music page, pick a track, and choose your favorite streaming platform.'}
                 </p>
-                <Link
-                  href="/music"
-                  className="liquid-glass rounded-full inline-flex items-center gap-2 px-6 py-3 font-oryzo-display text-sm text-oryzo-cream hover:scale-[1.03] transition-transform"
-                >
-                  <ArrowLeft size={16} />
-                  BACK TO MUSIC
-                </Link>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                  <Link
+                    href="/music"
+                    className="liquid-glass rounded-full inline-flex items-center gap-2 px-6 py-3 font-oryzo-display text-sm text-oryzo-cream hover:scale-[1.03] transition-transform"
+                  >
+                    <ArrowLeft size={16} />
+                    BROWSE MUSIC
+                  </Link>
+                  <a
+                    href="https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-full border border-oryzo-border hover:border-oryzo-cream inline-flex items-center gap-2 px-6 py-3 font-oryzo-display text-sm text-oryzo-cream transition-colors"
+                  >
+                    STREAM "ORBIT" ON SPOTIFY
+                  </a>
+                </div>
               </motion.div>
             )}
           </motion.div>

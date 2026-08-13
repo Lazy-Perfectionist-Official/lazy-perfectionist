@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { Menu, X, ExternalLink } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface NavigationProps {
@@ -12,8 +12,10 @@ interface NavigationProps {
 export default function Navigation({ currentPage = 'home' }: NavigationProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const navItems = useMemo(() => ['Home', 'Music', 'Blog', 'Store'], []);
-  const navHref = (item: string) => (item === 'Home' ? '/' : `/${item.toLowerCase()}`);
+  // Matches Hero.tsx nav items — Connect routes to internal /platform-links
+  const navItems = useMemo(() => ['Home', 'Music', 'Blog', 'Store', 'Connect'], []);
+  const navHref = (item: string) =>
+    item === 'Home' ? '/' : item === 'Connect' ? '/platform-links' : `/${item.toLowerCase()}`;
 
   return (
     <motion.nav
@@ -52,20 +54,6 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
                 </Link>
               </motion.div>
             ))}
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-            >
-              <Link
-                href="https://linktr.ee/lazyperfectionist_official"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-oryzo-muted hover:text-oryzo-cream transition-colors inline-flex items-center gap-1"
-              >
-                Connect <ExternalLink size={12} />
-              </Link>
-            </motion.div>
           </div>
 
           {/* Mobile toggle */}
@@ -103,15 +91,6 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
                     {item}
                   </Link>
                 ))}
-                <Link
-                  href="https://linktr.ee/lazyperfectionist_official"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="text-base py-2 text-oryzo-muted hover:text-oryzo-cream transition-colors inline-flex items-center gap-2"
-                >
-                  Connect <ExternalLink size={14} />
-                </Link>
               </div>
             </motion.div>
           )}

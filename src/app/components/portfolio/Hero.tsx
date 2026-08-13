@@ -11,6 +11,18 @@ import SpotlightReveal from '@/app/components/portfolio/SpotlightReveal';
 export default function Hero() {
   const [showShadow, setShowShadow] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [content, setContent] = useState<{
+    hero_eyebrow: string;
+    hero_title_line1: string;
+    hero_title_line2: string;
+    hero_description: string;
+  }>({
+    hero_eyebrow: 'Debut Single — Orbit',
+    hero_title_line1: 'Where silence speaks',
+    hero_title_line2: 'through the sound.',
+    hero_description:
+      'Instrumental progressive rock from a Hong Kong bedroom studio. Technical precision meets emotional storytelling without saying a word.',
+  });
   const navbarRef = useRef<HTMLElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
 
@@ -18,6 +30,25 @@ export default function Hero() {
 
   const navHref = (item: string) =>
     item === 'Home' ? '/' : item === 'Connect' ? '/platform-links' : `/${item.toLowerCase()}`;
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/content')
+      .then((r) => r.json())
+      .then((d) => {
+        if (cancelled || !d.success) return;
+        setContent((prev) => ({
+          hero_eyebrow: d.data.hero_eyebrow ?? prev.hero_eyebrow,
+          hero_title_line1: d.data.hero_title_line1 ?? prev.hero_title_line1,
+          hero_title_line2: d.data.hero_title_line2 ?? prev.hero_title_line2,
+          hero_description: d.data.hero_description ?? prev.hero_description,
+        }));
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     // GSAP setup
@@ -195,24 +226,23 @@ export default function Hero() {
         {/* Eyebrow */}
         <div className="mb-8 hero-anim hero-fade" style={{ animationDelay: '0.7s' }} data-testid="hero-eyebrow">
           <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em]">
-            Debut Single — Orbit
+            {content.hero_eyebrow}
           </span>
         </div>
 
         {/* Name */}
         <h1 className="text-5xl sm:text-7xl md:text-8xl leading-[0.95] tracking-[-2.46px] max-w-7xl font-normal font-display italic text-oryzo-cream mb-6" data-testid="hero-title">
           <span className="hero-anim hero-reveal block" style={{ animationDelay: '0.25s' }}>
-            Where <em className="not-italic text-oryzo-muted">silence</em> speaks{' '}
+            {content.hero_title_line1}
           </span>
           <span className="hero-anim hero-reveal block" style={{ animationDelay: '0.42s' }}>
-            <em className="not-italic text-oryzo-muted">through the sound.</em>
+            {content.hero_title_line2}
           </span>
         </h1>
 
         {/* Description */}
         <p className="text-base sm:text-lg text-oryzo-muted max-w-2xl mt-8 leading-relaxed hero-anim hero-fade" style={{ animationDelay: '0.85s' }} data-testid="hero-description">
-          Instrumental progressive rock from a Hong Kong bedroom studio. Technical precision meets emotional storytelling
-          without saying a word.
+          {content.hero_description}
         </p>
 
         {/* CTA Button with magnetic effect */}
