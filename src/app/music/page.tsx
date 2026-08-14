@@ -4,12 +4,14 @@ import MusicPage from './MusicPage';
 
 export const metadata: Metadata = generateSEOMetadata({
   title: 'Music - Instrumental Progressive Rock from Hong Kong',
-  description: 'Listen to Lazy Perfectionist instrumental progressive rock music. Featuring the debut single "Orbit" from this Hong Kong project. A blend of technical precision and emotional storytelling.',
+  description: 'Listen to Lazy Perfectionist instrumental progressive rock. Latest single "LUSG", followed by "Cyclothymia" and the debut "Orbit" — technical precision and emotional storytelling from Hong Kong.',
   keywords: [
     'Lazy Perfectionist Band',
     'Lazy Perfectionist Project',
     'instrumental progressive rock',
     'Lazy Perfectionist music',
+    'LUSG single',
+    'Cyclothymia single',
     'Orbit Band',
     'Orbit single',
     'Hong Kong rock band',
@@ -23,8 +25,8 @@ export const metadata: Metadata = generateSEOMetadata({
   canonical: 'https://lazyperfectionist.com/music',
   music: {
     artist: 'Lazy Perfectionist',
-    album: 'Orbit',
-    releaseDate: '2024',
+    album: 'LUSG',
+    releaseDate: '2026',
   }
 });
 
