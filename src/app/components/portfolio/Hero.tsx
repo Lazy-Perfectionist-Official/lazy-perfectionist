@@ -63,9 +63,9 @@ export default function Hero() {
         gsap.from(navbarRef.current, {
           opacity: 0,
           y: -20,
-          duration: 0.8,
+          duration: 0.6,
           ease: 'power3.out',
-          delay: 2.8,
+          delay: 0.3,
         });
       }
 
@@ -132,9 +132,7 @@ export default function Hero() {
               key={item}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 400, damping: 17, delay: 0.8 + index * 0.1, duration: 0.4 }}
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
               <Link
                 href={navHref(item)}
@@ -151,9 +149,7 @@ export default function Hero() {
           <motion.div
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 300, damping: 20, delay: 1.2, duration: 0.5 }}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
           >
             <Link
               href="https://open.spotify.com/track/4RnwmBIaSuOqGEu8R2nIsU"

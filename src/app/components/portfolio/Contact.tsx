@@ -210,7 +210,7 @@ export default function Contact() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-oryzo-muted">
             <div className="font-oryzo-body">© 2026 LAZY PERFECTIONIST. ALL RIGHTS RESERVED.</div>
             <div className="flex items-center gap-6">
-              <MagneticButton
+              <a
                 href="https://instagram.com/lazyperfectionist"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -218,8 +218,8 @@ export default function Contact() {
                 data-testid="contact-instagram-link"
               >
                 INSTAGRAM
-              </MagneticButton>
-              <MagneticButton
+              </a>
+              <a
                 href="https://twitter.com/lazyperfectionist"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -227,8 +227,8 @@ export default function Contact() {
                 data-testid="contact-twitter-link"
               >
                 TWITTER
-              </MagneticButton>
-              <MagneticButton
+              </a>
+              <a
                 href="https://youtube.com/@lazyperfectionist"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -236,7 +236,7 @@ export default function Contact() {
                 data-testid="contact-youtube-link"
               >
                 YOUTUBE
-              </MagneticButton>
+              </a>
             </div>
           </div>
         </div>

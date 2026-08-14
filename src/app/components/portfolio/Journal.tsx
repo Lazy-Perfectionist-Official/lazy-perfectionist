@@ -76,25 +76,15 @@ export default function Journal() {
           </p>
 
           {posts.length > 0 && (
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+            <Link
+              href="/blog"
+              className="hidden md:inline-flex items-center gap-2 text-sm rounded-full px-6 py-3 border border-oryzo-border hover:border-oryzo-cream hover:text-oryzo-cream transition-all group font-oryzo-display"
             >
-              <Link
-                href="/blog"
-                className="hidden md:inline-flex items-center gap-2 text-sm rounded-full px-6 py-3 border border-oryzo-border hover:border-oryzo-cream hover:text-oryzo-cream transition-all group font-oryzo-display"
-              >
-                VIEW ALL
-                <motion.span
-                  className="group-hover:translate-x-1"
-                  whileHover={{ x: 5 }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                >
-                  →
-                </motion.span>
-              </Link>
-            </motion.div>
+              VIEW ALL
+              <span className="group-hover:translate-x-1 transition-transform" aria-hidden>
+                →
+              </span>
+            </Link>
           )}
         </motion.div>
 
