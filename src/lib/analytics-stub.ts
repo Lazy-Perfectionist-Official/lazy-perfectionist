@@ -13,7 +13,7 @@ export interface PlatformClickEvent {
 }
 
 export const analyticsService = {
-  trackPlatformClick: async (): Promise<void> => {},
+  trackPlatformClick: async (_event: Partial<PlatformClickEvent>): Promise<void> => {},
   getClicks: (): PlatformClickEvent[] => [],
   getClicksByTrack: (): PlatformClickEvent[] => [],
   getClicksByPlatform: (): PlatformClickEvent[] => [],

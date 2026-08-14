@@ -19,11 +19,11 @@ interface Platform {
 }
 
 interface PlatformLinksPageProps {
-  searchParams: {
+  searchParams: Promise<{
     trackId?: string
     trackName?: string
     artistName?: string
-  }
+  }>
 }
 
 export default function PlatformLinksPage({ searchParams }: PlatformLinksPageProps) {
@@ -33,6 +33,7 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
   const [loading, setLoading] = useState(true)
   const [mounted, setMounted] = useState(false)
   const [albumArt, setAlbumArt] = useState<string | null>(null)
+  const [failed, setFailed] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -64,6 +65,7 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
   const fetchPlatformLinks = async () => {
     try {
       setLoading(true)
+      setFailed(false)
       const response = await fetch(`/api/platform-links?trackId=${trackId}`)
       const data = await response.json()
 
@@ -72,9 +74,12 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
         if (data.data.albumImage) {
           setAlbumArt(data.data.albumImage)
         }
+      } else {
+        setFailed(true)
       }
     } catch (error) {
       console.error('Error fetching platform links:', error)
+      setFailed(true)
     } finally {
       setLoading(false)
     }
@@ -261,12 +266,12 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
               >
                 <Music className="w-12 h-12 text-oryzo-muted mx-auto mb-4" />
                 <h3 className="text-xl font-oryzo-display text-oryzo-cream mb-2">
-                  {trackId ? 'PLATFORM LINKS LOADING' : 'CHOOSE A TRACK FIRST'}
+                  {trackId ? 'PLATFORM LINKS UNAVAILABLE' : 'START LISTENING'}
                 </h3>
                 <p className="text-oryzo-muted mb-6 max-w-md mx-auto">
                   {trackId
-                    ? 'Streaming options are loading. Try again in a moment.'
-                    : 'Head to the music page, pick a track, and choose your favorite streaming platform.'}
+                    ? 'Streaming options could not be loaded right now — the track is still one click away.'
+                    : 'Stream the latest single "LUSG" on Spotify, or browse the catalog and pick where you listen.'}
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                   <Link
@@ -277,12 +282,16 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
                     BROWSE MUSIC
                   </Link>
                   <a
-                    href="https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8"
+                    href={
+                      trackId
+                        ? `https://open.spotify.com/track/${trackId}`
+                        : 'https://open.spotify.com/track/4RnwmBIaSuOqGEu8R2nIsU'
+                    }
                     target="_blank"
                     rel="noopener noreferrer"
                     className="rounded-full border border-oryzo-border hover:border-oryzo-cream inline-flex items-center gap-2 px-6 py-3 font-oryzo-display text-sm text-oryzo-cream transition-colors"
                   >
-                    STREAM "ORBIT" ON SPOTIFY
+                    {trackId ? 'STREAM ON SPOTIFY' : 'STREAM "LUSG" ON SPOTIFY'}
                   </a>
                 </div>
               </motion.div>
