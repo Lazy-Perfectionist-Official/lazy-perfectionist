@@ -9,6 +9,8 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  // Allow dev-server access from LAN / Tailscale origins (silences cross-origin warning)
+  allowedDevOrigins: ['100.76.128.50', '192.168.2.217'],
   // 禁用 Next.js 热重载，由 nodemon 处理重编译
   reactStrictMode: false,
 

@@ -106,8 +106,8 @@ export default function Hero() {
       {/* Interactive Spotlight Reveal Background */}
       <div className="absolute inset-0 overflow-hidden">
         <SpotlightReveal
-          baseImage="/assets/img/optimized/hero-background-warm-2000.avif"
-          revealImage="/assets/img/optimized/hero-background-2000.avif"
+          baseImage="/assets/img/optimized/hero-background-2000.avif"
+          revealImage="/assets/img/optimized/hero-background-warm-2000.avif"
           enabled={true}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-oryzo-canvas z-40" />
