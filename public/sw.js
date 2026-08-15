@@ -2,21 +2,24 @@
  * Service Worker for Lazy Perfectionist PWA
  *
  * Features:
- * - Offline capability with cache-first strategy
- * - Automatic cache management
+ * - Offline capability with cache-first strategy for /assets/
  * - Stale-while-revalidate for API calls
- * - Progressive web app capabilities
+ * - Network-first for pages
+ * - v2 healing: wipes v1 caches and never serves /_next/static/ from cache,
+ *   so stale dev/prod chunks cached by v1 (or by an old immutable
+ *   Cache-Control header) can never break the app again. Production keeps
+ *   chunk caching at the HTTP layer where URLs are content-hashed.
  */
 
-const CACHE_NAME = 'lazy-perfectionist-v1';
-const RUNTIME_CACHE = 'lazy-perfectionist-runtime-v1';
+const CACHE_NAME = 'lazy-perfectionist-v2';
+const RUNTIME_CACHE = 'lazy-perfectionist-runtime-v2';
 
-// Assets to cache immediately (using optimized images)
+// Assets to cache immediately (using optimized images).
+// NOTE: no '/' (dev/prod HTML snapshots go stale) and no '/store'
+// (307-redirects off-origin to ko-fi; cache.addAll would reject on it).
 const STATIC_ASSETS = [
-  '/',
   '/music',
   '/blog',
-  '/store',
   '/manifest.json',
   '/assets/img/optimized/logo-800.avif',
   '/assets/img/optimized/logo-600.avif',
@@ -28,7 +31,10 @@ const STATIC_ASSETS = [
   '/apple-touch-icon.png',
 ];
 
-// Install event - cache static assets
+// Install event - cache static assets.
+// Cache per-asset and swallow individual failures (e.g. redirects or 404s)
+// so a single bad URL can never block installation of an update — a blocked
+// update would leave an old, possibly poisoned service worker in control.
 self.addEventListener('install', (event) => {
   console.log('[SW] Installing service worker');
 
@@ -36,7 +42,9 @@ self.addEventListener('install', (event) => {
     caches.open(CACHE_NAME)
       .then((cache) => {
         console.log('[SW] Caching static assets');
-        return cache.addAll(STATIC_ASSETS);
+        return Promise.allSettled(
+          STATIC_ASSETS.map((asset) => cache.add(asset))
+        );
       })
       .then(() => {
         console.log('[SW] Static assets cached');
@@ -85,9 +93,22 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Static assets - Cache first
-  if (url.pathname.startsWith('/assets/') || url.pathname.startsWith('/_next/static/')) {
+  // Public assets - Cache first (stable URLs, safe to cache)
+  if (url.pathname.startsWith('/assets/')) {
     event.respondWith(handleStaticAsset(request));
+    return;
+  }
+
+  // Next.js build chunks - always network with { cache: 'reload' } so both the
+  // SW cache and any poisoned immutable HTTP-cache entry are bypassed. Never
+  // cached here: in dev the URLs are stable across recompiles, so caching
+  // them would freeze stale chunks in browsers.
+  if (url.pathname.startsWith('/_next/static/')) {
+    event.respondWith(
+      fetch(request, { cache: 'reload' }).catch(
+        () => new Response('Offline', { status: 503 })
+      )
+    );
     return;
   }
 
@@ -151,7 +172,7 @@ async function handlePageRequest(request) {
   const cache = await caches.open(CACHE_NAME);
 
   try {
-    const response = await fetch(request);
+    const response = await fetch(request, { cache: 'reload' });
     if (response.ok) {
       cache.put(request, response.clone());
     }
@@ -165,7 +186,7 @@ async function handlePageRequest(request) {
 
     // Return offline page for navigation requests
     if (request.mode === 'navigate') {
-      return cache.match('/') || new Response('Offline', { status: 503 });
+      return cache.match('/music') || new Response('Offline', { status: 503 });
     }
 
     return new Response('Offline', { status: 503 });
