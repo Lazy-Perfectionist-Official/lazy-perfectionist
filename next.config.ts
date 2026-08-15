@@ -29,15 +29,6 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        source: '/_next/static/:path*',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      {
         source: '/api/:path*',
         headers: [
           {
@@ -68,6 +59,20 @@ const nextConfig: NextConfig = {
 
     // Add security headers for production
     if (isProduction) {
+      // Immutable caching for static chunks is only safe in production where
+      // URLs are content-hashed. In dev, chunk filenames are stable across
+      // recompiles, so immutable caching would serve stale webpack chunks
+      // from before each restart and break the app in cached browsers.
+      headers.push({
+        source: '/_next/static/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      });
+
       headers.push({
         source: '/(.*)',
         headers: [

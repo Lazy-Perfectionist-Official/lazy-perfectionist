@@ -8,7 +8,13 @@ import { useEffect } from 'react';
  */
 export default function ServiceWorkerRegistration() {
   useEffect(() => {
-    if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+    // Only register in production: the SW serves /_next/static/* cache-first,
+    // which would freeze stale dev chunks across server restarts in development
+    if (
+      typeof window !== 'undefined' &&
+      'serviceWorker' in navigator &&
+      process.env.NODE_ENV === 'production'
+    ) {
       // Register service worker
       navigator.serviceWorker
         .register('/sw.js')
