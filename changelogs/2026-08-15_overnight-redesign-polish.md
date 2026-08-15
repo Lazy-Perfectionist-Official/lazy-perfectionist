@@ -10,7 +10,7 @@ date: 2026-08-15
 
 # 📅 2026-08-15 - Overnight Redesign Polish
 
-**Commits**: `0c79374` → `78c350d` → `d29173a` → `337e8a7`
+**Commits**: `0c79374` → `78c350d` → `d29173a` → `337e8a7` → `1881f99` → `52358ab`
 **Author**: Samuel Lee
 **Category**: 🎨 UI/UX Design
 
@@ -86,6 +86,30 @@ the API actually returns `Track not found` (Spotify `invalid_client` cascade).
 - **Next 15 typing**: `searchParams` prop typed as
   `Promise<{ trackId?; trackName?; artistName? }>` (resolved via React `use()`),
   fixing TS2345/TS2339 in this file.
+
+### `1881f99` + `52358ab` — stale-chunk cache poisoning fix
+
+A browser that visited during the overnight run could crash on every load
+(`Cannot read properties of undefined (reading 'split')` in
+`SelectedWorks.loadableGenerated.modules`, blank page) after server restarts:
+
+- Dev chunks were served with `Cache-Control: immutable, max-age=1yr`
+  (`next.config.ts` applied the prod header rule in dev, where chunk
+  filenames are stable across recompiles) → browsers kept pre-redesign
+  `webpack.js` forever. Header now applies only in production.
+- `sw.js` was registered in dev and served `/_next/static/*` cache-first →
+  even clearing HTTP cache didn't help. Registration is now production-only
+  (`ServiceWorkerRegistration.tsx`).
+- The SW update itself was **broken**: `/store` 307-redirects off-origin to
+  ko-fi and `cache.addAll` rejects on that response, so no new SW version
+  could ever install — browsers stayed controlled by the old poisoned one.
+  Install now caches per-asset with `Promise.allSettled` (one bad URL can't
+  block an update) and drops `/store` from the precache list.
+- New SW (v2) **self-heals**: on activate it deletes all v1 caches, and the
+  fetch handler serves `/_next/static/*` with `cache: 'reload'` (bypasses
+  both SW and poisoned immutable HTTP cache entries, never caches chunks).
+  Verified end-to-end with Playwright: planted a garbage `webpack.js` into a
+  v1-style cache → page still loads clean, zero console/page errors.
 
 ## 📁 Files Modified
 
