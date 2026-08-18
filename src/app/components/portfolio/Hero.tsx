@@ -8,6 +8,20 @@ import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
 import SpotlightReveal from '@/app/components/portfolio/SpotlightReveal';
 
+// Hero background candidates (module scope → stable identity across re-renders).
+// 2752px is the native source width; 3840px is a pre-upscaled (lanczos3 +
+// unsharp) rendition served to superwide displays so the browser never has to
+// stretch the native asset.
+const HERO_VARIANT_WIDTHS = [800, 1200, 1600, 2000, 2752, 3840];
+const HERO_BASE_VARIANTS = HERO_VARIANT_WIDTHS.map((width) => ({
+  width,
+  url: `/assets/img/optimized/hero-background-${width}.avif`,
+}));
+const HERO_REVEAL_VARIANTS = HERO_VARIANT_WIDTHS.map((width) => ({
+  width,
+  url: `/assets/img/optimized/hero-background-warm-${width}.avif`,
+}));
+
 export default function Hero() {
   const [showShadow, setShowShadow] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -106,8 +120,8 @@ export default function Hero() {
       {/* Interactive Spotlight Reveal Background */}
       <div className="absolute inset-0 overflow-hidden">
         <SpotlightReveal
-          baseImage="/assets/img/optimized/hero-background-2000.avif"
-          revealImage="/assets/img/optimized/hero-background-warm-2000.avif"
+          baseVariants={HERO_BASE_VARIANTS}
+          revealVariants={HERO_REVEAL_VARIANTS}
           enabled={true}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-oryzo-canvas z-40" />

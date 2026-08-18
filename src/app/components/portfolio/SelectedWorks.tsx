@@ -4,6 +4,17 @@ import { useRef } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
+// LUSG cover art variants (self-hosted hi-res; Spotify CDN caps at 640px).
+const LUSG_SRCSET = [
+  '/assets/img/optimized/lusg-cover-400.avif 400w',
+  '/assets/img/optimized/lusg-cover-800.avif 800w',
+  '/assets/img/optimized/lusg-cover-1200.avif 1200w',
+  '/assets/img/optimized/lusg-cover-1400.avif 1400w',
+].join(', ');
+
+// Card spans the max-w-[1200px] container minus px-6/px-10/lg:px-16 gutters.
+const LUSG_SIZES = '(min-width: 1200px) 1072px, (min-width: 768px) calc(100vw - 80px), calc(100vw - 48px)';
+
 export default function SelectedWorks() {
   const sectionRef = useRef<HTMLDivElement>(null);
 
@@ -56,9 +67,10 @@ export default function SelectedWorks() {
             >
               {/* LUSG cover art */}
               <div className="absolute inset-0 flex items-center justify-center">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02aa095364f6ef874ee7d6ddaf"
+                  src="/assets/img/optimized/lusg-cover-1200.avif"
+                  srcSet={LUSG_SRCSET}
+                  sizes={LUSG_SIZES}
                   alt="LUSG — Lazy Perfectionist"
                   className="w-full h-full object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-500"
                 />

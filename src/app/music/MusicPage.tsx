@@ -8,6 +8,19 @@ import { generateStructuredData } from '@/components/SEO'
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1]
 
+// LUSG cover art variants (self-hosted hi-res; Spotify CDN caps at 640px).
+const LUSG_SRCSET = [
+  '/assets/img/optimized/lusg-cover-400.avif 400w',
+  '/assets/img/optimized/lusg-cover-800.avif 800w',
+  '/assets/img/optimized/lusg-cover-1200.avif 1200w',
+  '/assets/img/optimized/lusg-cover-1400.avif 1400w',
+].join(', ')
+
+// Featured cover fills one column of the md:grid-cols-2 layout inside the
+// max-w-6xl container (px-6/px-10/lg:px-16 gutters, gap-10/md:gap-16).
+const FEATURED_COVER_SIZES =
+  '(min-width: 1200px) 480px, (min-width: 1024px) calc((100vw - 192px) / 2), (min-width: 768px) calc(100vw - 80px), calc(100vw - 48px)'
+
 interface CatalogRelease {
   id: string
   title: string
@@ -25,7 +38,7 @@ const CATALOG: CatalogRelease[] = [
     year: '2026',
     type: 'Single',
     duration: '5:46',
-    cover: 'https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02aa095364f6ef874ee7d6ddaf',
+    cover: '/assets/img/optimized/lusg-cover-400.avif',
     spotifyUrl: 'https://open.spotify.com/track/4RnwmBIaSuOqGEu8R2nIsU',
   },
   {
@@ -119,9 +132,11 @@ export default function MusicPage() {
                 aria-label={`Play ${FEATURED.title} on Spotify`}
               >
                 <div className="aspect-square bg-oryzo-surface">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  {/* FEATURED is LUSG (CATALOG[0]); swap srcSet/src if the featured release changes */}
                   <img
-                    src={FEATURED.cover}
+                    src="/assets/img/optimized/lusg-cover-1200.avif"
+                    srcSet={LUSG_SRCSET}
+                    sizes={FEATURED_COVER_SIZES}
                     alt={`Lazy Perfectionist — ${FEATURED.title} cover art`}
                     className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700"
                   />
@@ -222,7 +237,6 @@ export default function MusicPage() {
                     </span>
 
                     <div className="w-14 h-14 md:w-16 md:h-16 rounded-xl overflow-hidden bg-oryzo-surface border border-oryzo-border flex-shrink-0">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={release.cover}
                         alt={`${release.title} cover art`}

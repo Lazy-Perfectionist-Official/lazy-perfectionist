@@ -16,6 +16,29 @@ const IMAGE_CONFIG = {
     createTiles: [100, 200], // Create seamless tiles
     formats: ['webp', 'avif'],
   },
+  // Full-bleed hero background (source lives in public/assets/img)
+  'hero-background.jpg': {
+    sourceDir: './public/assets/img',
+    // 2752 = native width; 3840 = pre-upscaled (lanczos3 + unsharp) rendition
+    // for superwide displays, sharper than an on-the-fly browser stretch.
+    sizes: [800, 1200, 1600, 2000, 2752, 3840],
+    formats: ['webp', 'avif'],
+    quality: 80,
+    upscale: true,
+  },
+  'hero-background-warm.JPG': {
+    sourceDir: './public/assets/img',
+    sizes: [800, 1200, 1600, 2000, 2752, 3840],
+    formats: ['webp', 'avif'],
+    quality: 80,
+    upscale: true,
+  },
+  // LUSG single cover art (grainy artwork: low AVIF quality keeps size sane)
+  'lusg-cover.jpg': {
+    sizes: [400, 800, 1200, 1400], // 1400 = native width
+    formats: ['webp', 'avif'],
+    quality: 62,
+  },
   'logo.png': {
     sizes: [200, 400, 600, 800], // Responsive sizes
     formats: ['webp', 'avif'],
@@ -58,14 +81,22 @@ async function createSeamlessTile(inputPath, tileSize) {
 }
 
 async function generateResponsiveImages(inputPath, basename, config) {
+  const { width: sourceWidth = 0 } = await sharp(inputPath).metadata();
+
   for (const size of config.sizes) {
     for (const format of config.formats) {
       try {
         const outputPath = path.join(OUTPUT_DIR, `${basename}-${size}.${format}`);
-        const image = sharp(inputPath).resize(size, null, {
-          withoutEnlargement: true,
-          fit: 'inside'
+        // Entries with `upscale: true` may exceed the source width; those
+        // renditions are pre-upscaled with lanczos3 plus a gentle unsharp
+        // mask so they read crisper than an on-the-fly browser stretch.
+        const isUpscaled = config.upscale && size > sourceWidth;
+        let image = sharp(inputPath).resize(size, null, {
+          withoutEnlargement: !config.upscale,
+          fit: 'inside',
+          ...(isUpscaled ? { kernel: 'lanczos3' } : {}),
         });
+        if (isUpscaled) image = image.sharpen({ sigma: 1.0, m1: 1.0, m2: 0.4 });
 
         if (format === 'webp') {
           await image.webp({ quality: config.quality }).toFile(outputPath);
@@ -91,7 +122,7 @@ async function optimizeImages() {
 
   // Process each image
   for (const [filename, config] of Object.entries(IMAGE_CONFIG)) {
-    const inputPath = path.join(SOURCE_DIR, filename);
+    const inputPath = path.join(config.sourceDir || SOURCE_DIR, filename);
     const basename = path.basename(filename, path.extname(filename));
 
     if (!fs.existsSync(inputPath)) {

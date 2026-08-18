@@ -1,14 +1,40 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
+export interface HeroImageVariant {
+  width: number;
+  url: string;
+}
 
 interface SpotlightRevealProps {
-  baseImage: string;
-  revealImage: string;
+  /** Base image candidates, ascending by width. */
+  baseVariants: HeroImageVariant[];
+  /** Reveal image candidates, ascending by width. */
+  revealVariants: HeroImageVariant[];
   enabled?: boolean;
 }
 
 const SPOTLIGHT_R = 260;
+
+/** Width used for the server-rendered background (matches the previous static asset). */
+const DEFAULT_VARIANT_WIDTH = 2000;
+
+/**
+ * Pick the URL of the smallest variant that covers `targetWidth` device pixels,
+ * falling back to the largest available. Superwide viewports upscale from the
+ * native-resolution asset instead of a heavily enlarged smaller one.
+ */
+function pickVariantUrl(variants: HeroImageVariant[], targetWidth: number): string {
+  const sorted = [...variants].sort((a, b) => a.width - b.width);
+  const match = sorted.find((v) => v.width >= targetWidth);
+  return (match ?? sorted[sorted.length - 1]).url;
+}
+
+function defaultVariantUrl(variants: HeroImageVariant[]): string {
+  const match = variants.find((v) => v.width === DEFAULT_VARIANT_WIDTH);
+  return match ? match.url : variants[variants.length - 1].url;
+}
 
 /**
  * Interactive cursor spotlight reveal.
@@ -26,11 +52,40 @@ const SPOTLIGHT_R = 260;
  * the mask becomes a radial spotlight at element-relative coordinates so the
  * cool reveal image shows through only under the cursor.
  */
-export default function SpotlightReveal({ baseImage, revealImage, enabled = true }: SpotlightRevealProps) {
+export default function SpotlightReveal({ baseVariants, revealVariants, enabled = true }: SpotlightRevealProps) {
   const revealLayerRef = useRef<HTMLDivElement>(null);
   const targetRef = useRef({ x: -999, y: -999 });
   const smoothRef = useRef({ x: -999, y: -999 });
   const rafRef = useRef<number | undefined>(undefined);
+  const [baseImage, setBaseImage] = useState(() => defaultVariantUrl(baseVariants));
+  const [revealImage, setRevealImage] = useState(() => defaultVariantUrl(revealVariants));
+
+  // Upgrade (or downscale) the background to the variant that matches the
+  // viewport width × device pixel ratio, e.g. the 2752px native asset on a
+  // 3840px-wide display instead of an upscaled 2000px one.
+  useEffect(() => {
+    if (!enabled || typeof window === 'undefined') return;
+
+    const update = () => {
+      const targetWidth = Math.ceil(window.innerWidth * (window.devicePixelRatio || 1));
+      setBaseImage(pickVariantUrl(baseVariants, targetWidth));
+      setRevealImage(pickVariantUrl(revealVariants, targetWidth));
+    };
+
+    update();
+
+    let resizeTimer: ReturnType<typeof setTimeout> | undefined;
+    const handleResize = () => {
+      if (resizeTimer) clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(update, 200);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      if (resizeTimer) clearTimeout(resizeTimer);
+    };
+  }, [enabled, baseVariants, revealVariants]);
 
   useEffect(() => {
     if (!enabled || typeof window === 'undefined') return;
