@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
 import SpotlightReveal from '@/app/components/portfolio/SpotlightReveal';
@@ -23,6 +23,7 @@ const HERO_REVEAL_VARIANTS = HERO_VARIANT_WIDTHS.map((width) => ({
 }));
 
 export default function Hero() {
+  const prefersReducedMotion = useReducedMotion();
   const [showShadow, setShowShadow] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [content, setContent] = useState<{
@@ -290,7 +291,7 @@ export default function Hero() {
       <motion.div
         className="relative z-50 mb-8"
         data-testid="scroll-indicator"
-        animate={{
+        animate={prefersReducedMotion ? undefined : {
           y: [0, 10, 0],
         }}
         transition={{
@@ -302,7 +303,7 @@ export default function Hero() {
         <div className="text-center mb-2" data-testid="scroll-text">
           <motion.span
             className="text-xs text-oryzo-muted uppercase tracking-[0.2em]"
-            animate={{
+            animate={prefersReducedMotion ? undefined : {
               opacity: [0.5, 1, 0.5],
             }}
             transition={{
@@ -317,7 +318,7 @@ export default function Hero() {
         <div className="relative w-px h-10 bg-oryzo-border mx-auto" data-testid="scroll-line">
           <motion.div
             className="absolute inset-0 bg-oryzo-cream"
-            animate={{
+            animate={prefersReducedMotion ? undefined : {
               y: ['-100%', '100%'],
               opacity: [0, 1, 0],
             }}

@@ -76,8 +76,14 @@ export default function Contact() {
   const [videoReady, setVideoReady] = useState(false);
 
   useEffect(() => {
-    // HLS Video Setup for Contact Section
-    if (typeof window !== 'undefined' && videoRef.current) {
+    const prefersReducedMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // HLS Video Setup for Contact Section (skipped under reduced motion:
+    // autoplaying video is exactly what reduced-motion users opt out of,
+    // and a paused stream keeps the section deterministic for visual tests)
+    if (!prefersReducedMotion && typeof window !== 'undefined' && videoRef.current) {
       const hls = new Hls();
       const hlsSource = 'https://stream.mux.com/Aa02T7oM1wH5Mk5EEVDYhbZ1ChcdhRsS2m1NYyx4Ua1g.m3u8';
 
@@ -105,8 +111,8 @@ export default function Contact() {
 
     // GSAP context wraps all animations for proper cleanup
     const ctx = gsap.context(() => {
-      // Marquee Animation
-      if (marqueeRef.current) {
+      // Marquee Animation (static under reduced motion)
+      if (marqueeRef.current && !prefersReducedMotion) {
         const marqueeText = marqueeRef.current;
 
         // Create seamless marquee effect
