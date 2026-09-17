@@ -97,41 +97,13 @@ test.describe('Visual Regression - Blog Page', () => {
 });
 
 test.describe('Visual Regression - Store Page', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto('/store');
-    await page.waitForLoadState('networkidle');
-  });
-
-  test('store page layout @visual', async ({ page }) => {
-    await page.waitForTimeout(1000);
-    await expect(page).toHaveScreenshot('store-page.png', {
-      fullPage: true,
-      maxDiffPixels: 400,
-    });
-  });
-
-  test('store page mobile @visual', async ({ page }) => {
-    await page.setViewportSize({ width: 375, height: 667 });
-    await page.goto('/store');
-    await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(500);
-    await expect(page).toHaveScreenshot('store-page-mobile.png', {
-      fullPage: true,
-      maxDiffPixels: 300,
-    });
-  });
-
-  test('product cards @visual', async ({ page }) => {
-    const productCards = page.locator('[data-testid="product-card"], .product-card');
-    if (await productCards.count() > 0) {
-      await productCards.first().scrollIntoViewIfNeeded();
-      await page.waitForTimeout(500);
-      await expect(productCards.first()).toHaveScreenshot('product-card.png', {
-        maxDiffPixels: 100,
-      });
-    } else {
-      test.skip();
-    }
+  // /store is a server-side redirect to the external Ko-fi shop. The external
+  // page is not our UI (and never reaches networkidle), so verify the redirect
+  // contract at the HTTP level instead of screenshotting it.
+  test('store page redirects to external shop @visual', async ({ page }) => {
+    const response = await page.request.get('/store', { maxRedirects: 0 });
+    expect(response.status()).toBe(307);
+    expect(response.headers()['location']).toBe('https://ko-fi.com/lazyperfectionist/shop');
   });
 });
 
@@ -174,7 +146,11 @@ test.describe('Visual Regression - Platform Links Page', () => {
 
 test.describe('Visual Regression - Cross-Page Consistency', () => {
   test('consistent navigation across pages @visual', async ({ page }) => {
-    const pages = ['/', '/music', '/blog', '/store'];
+    // Three sequential navigations (each waiting for networkidle) can exceed
+    // the default 30s budget when the dev server is under parallel load.
+    test.slow();
+    // /store redirects externally and has no themed navigation
+    const pages = ['/', '/music', '/blog'];
     const screenshots = [];
 
     for (const pagePath of pages) {
@@ -194,6 +170,8 @@ test.describe('Visual Regression - Cross-Page Consistency', () => {
   });
 
   test('consistent footer across pages @visual', async ({ page }) => {
+    // Same three-navigation budget concern as the navigation test above.
+    test.slow();
     const pages = ['/', '/music', '/blog'];
 
     for (const pagePath of pages) {
@@ -211,7 +189,8 @@ test.describe('Visual Regression - Cross-Page Consistency', () => {
   });
 
   test('consistent color scheme @visual', async ({ page }) => {
-    const pages = ['/', '/music', '/blog', '/store'];
+    // /store redirects externally and has no themed body
+    const pages = ['/', '/music', '/blog'];
 
     for (const pagePath of pages) {
       await page.goto(pagePath);
@@ -221,30 +200,28 @@ test.describe('Visual Regression - Cross-Page Consistency', () => {
         return window.getComputedStyle(document.body).backgroundColor;
       });
 
-      // Should maintain dark theme consistency
-      expect(backgroundColor).toMatch(/rgb\([0-2]\d, [0-2]\d, [0-2]\d\)|#[0-3][0-9a-f]/i);
+      // Should maintain dark theme consistency (components 0-29, incl. rgb(0, 0, 0))
+      expect(backgroundColor).toMatch(/rgb\([0-2]?\d, [0-2]?\d, [0-2]?\d\)|#[0-3][0-9a-f]/i);
     }
   });
 });
 
 test.describe('Visual Regression - Loading States', () => {
   test('skeleton loaders on blog page @visual', async ({ page }) => {
-    // Slow down network to see loading states
-    await page.route('**/*', (route) => {
-      setTimeout(() => route.continue(), 500);
+    // Hold the Medium API response so the skeleton state is deterministically
+    // visible at capture time (delaying all requests made the
+    // skeleton-to-content transition a race with the screenshot retries)
+    await page.route('**/api/medium**', async (route) => {
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      await route.continue();
     });
 
     await page.goto('/blog');
-    await page.waitForTimeout(600);
-
-    const skeletons = page.locator('[data-testid="loading-skeleton"], .skeleton');
-    if (await skeletons.count() > 0) {
-      await expect(skeletons.first()).toHaveScreenshot('blog-skeleton.png', {
-        maxDiffPixels: 50,
-      });
-    } else {
-      test.skip('No skeleton loaders found');
-    }
+    const skeletons = page.locator('[data-testid="loading-skeleton"]');
+    await expect(skeletons.first()).toBeVisible();
+    await expect(skeletons.first()).toHaveScreenshot('blog-skeleton.png', {
+      maxDiffPixels: 50,
+    });
   });
 
   test('loading states on music page @visual', async ({ page }) => {
@@ -281,7 +258,7 @@ test.describe('Visual Regression - Error States', () => {
       return window.getComputedStyle(document.body).backgroundColor;
     });
 
-    // Error page should maintain theme
-    expect(backgroundColor).toMatch(/rgb\([0-2]\d, [0-2]\d, [0-2]\d\)|#[0-3][0-9a-f]/i);
+    // Error page should maintain theme (components 0-29, incl. rgb(0, 0, 0))
+    expect(backgroundColor).toMatch(/rgb\([0-2]?\d, [0-2]?\d, [0-2]?\d\)|#[0-3][0-9a-f]/i);
   });
 });
