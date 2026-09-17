@@ -22,11 +22,13 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-oryzo-canvas text-oryzo-cream">
       <Hero />
-      <SelectedWorks />
-      <Journal />
-      <Stats />
-      <Finale />
-      <Contact />
+      <main>
+        <SelectedWorks />
+        <Journal />
+        <Stats />
+        <Finale />
+        <Contact />
+      </main>
     </div>
   );
 }

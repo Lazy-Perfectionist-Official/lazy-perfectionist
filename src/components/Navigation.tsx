@@ -49,6 +49,7 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
                   className={`text-sm transition-colors ${
                     currentPage === item.toLowerCase() ? 'text-oryzo-cream' : 'text-oryzo-muted hover:text-oryzo-cream'
                   }`}
+                  data-testid={`nav-link-${item.toLowerCase()}`}
                 >
                   {item}
                 </Link>
@@ -62,6 +63,7 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
             className="md:hidden liquid-glass rounded-full p-2.5 text-oryzo-cream"
             aria-label="Toggle menu"
             aria-expanded={isMenuOpen}
+            data-testid="nav-mobile-toggle"
           >
             {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -87,6 +89,7 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
                     className={`text-base py-2 transition-colors ${
                       currentPage === item.toLowerCase() ? 'text-oryzo-cream' : 'text-oryzo-muted hover:text-oryzo-cream'
                     }`}
+                    data-testid={`nav-mobile-link-${item.toLowerCase()}`}
                   >
                     {item}
                   </Link>

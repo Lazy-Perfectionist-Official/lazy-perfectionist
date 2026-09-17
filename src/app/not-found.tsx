@@ -13,6 +13,7 @@ export default function NotFound() {
       <Background />
       <Navigation />
 
+      <main>
       <section
         className="relative min-h-screen flex items-center justify-center px-6 md:px-10 pt-16 overflow-hidden"
         data-testid="not-found-page"
@@ -76,6 +77,7 @@ export default function NotFound() {
           </motion.div>
         </div>
       </section>
+      </main>
     </div>
   )
 }

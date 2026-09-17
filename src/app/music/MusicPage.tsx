@@ -91,6 +91,7 @@ export default function MusicPage() {
         <Background />
         <Navigation currentPage="music" />
 
+        <main>
         <section className="relative pt-36 pb-16 px-6 md:px-10 lg:px-16" data-testid="music-page">
           <div className="max-w-6xl mx-auto">
             {/* Page header */}
@@ -306,6 +307,7 @@ export default function MusicPage() {
             </motion.div>
           </div>
         </section>
+        </main>
       </div>
     </>
   )

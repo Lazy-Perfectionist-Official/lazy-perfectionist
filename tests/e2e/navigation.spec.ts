@@ -1,9 +1,32 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
 
 /**
  * E2E Navigation Tests
  * Tests core navigation flows across all pages
+ *
+ * Nav contract (Hero.tsx + components/Navigation.tsx):
+ * - Desktop links: data-testid="nav-link-{home|music|blog|store|connect}"
+ * - Mobile drawer links: data-testid="nav-mobile-link-{item}"
+ * - Mobile toggle: data-testid="nav-mobile-toggle"
+ * - "Connect" routes to /platform-links
+ * - /store redirects off-site to ko-fi
  */
+
+function navLink(page: Page, item: string) {
+  return page
+    .locator(
+      `[data-testid="nav-link-${item}"]:visible, [data-testid="nav-mobile-link-${item}"]:visible`
+    )
+    .first();
+}
+
+async function clickNavLink(page: Page, item: string) {
+  const toggle = page.getByTestId('nav-mobile-toggle');
+  if (await toggle.isVisible({ timeout: 2000 }).catch(() => false)) {
+    await toggle.click();
+  }
+  await navLink(page, item).click();
+}
 
 test.describe('Navigation Flows', () => {
   test('should load homepage successfully', async ({ page }) => {
@@ -14,41 +37,41 @@ test.describe('Navigation Flows', () => {
 
   test('should navigate to Music page', async ({ page }) => {
     await page.goto('/');
-    await page.getByRole('link', { name: /music/i }).click();
+    await clickNavLink(page, 'music');
     await expect(page).toHaveURL(/\/music/);
     await expect(page.getByRole('main')).toBeVisible();
   });
 
   test('should navigate to Blog page', async ({ page }) => {
     await page.goto('/');
-    await page.getByRole('link', { name: /blog/i }).click();
+    await clickNavLink(page, 'blog');
     await expect(page).toHaveURL(/\/blog/);
     await expect(page.getByRole('main')).toBeVisible();
   });
 
-  test('should navigate to Store page', async ({ page }) => {
+  test('should navigate to Store (ko-fi redirect)', async ({ page }) => {
     await page.goto('/');
-    await page.getByRole('link', { name: /store/i }).click();
-    await expect(page).toHaveURL(/\/store/);
-    await expect(page.getByRole('main')).toBeVisible();
+    await clickNavLink(page, 'store');
+    await expect(page).toHaveURL(/ko-fi\.com/);
   });
 
   test('should navigate to Platform Links page', async ({ page }) => {
     await page.goto('/');
-    await page.getByRole('link', { name: /platform/i }).click();
+    await clickNavLink(page, 'connect');
     await expect(page).toHaveURL(/\/platform-links/);
   });
 
   test('should navigate from homepage back to homepage', async ({ page }) => {
     await page.goto('/');
-    await page.getByRole('link', { name: /music/i }).click();
-    await page.getByRole('link', { name: /home|lazy perfectionist/i }).click();
+    await clickNavLink(page, 'music');
+    await clickNavLink(page, 'home');
     await expect(page).toHaveURL('/');
   });
 
   test('should handle browser back button navigation', async ({ page }) => {
     await page.goto('/');
-    await page.getByRole('link', { name: /music/i }).click();
+    await clickNavLink(page, 'music');
+    await expect(page).toHaveURL(/\/music/);
     await page.goBack();
     await expect(page).toHaveURL('/');
     await page.goForward();
@@ -91,29 +114,29 @@ test.describe('Mobile Navigation', () => {
 
   test('should show mobile menu on small screens', async ({ page }) => {
     await page.goto('/');
-    const mobileMenu = page.getByRole('button', { name: /menu|hamburger/i });
+    const mobileMenu = page.getByTestId('nav-mobile-toggle');
     if (await mobileMenu.isVisible({ timeout: 3000 }).catch(() => false)) {
       await mobileMenu.click();
-      await expect(page.getByRole('navigation')).toBeVisible();
+      await expect(page.getByRole('navigation').first()).toBeVisible();
     }
   });
 
   test('should navigate using mobile menu', async ({ page }) => {
     await page.goto('/');
-    const mobileMenu = page.getByRole('button', { name: /menu|hamburger/i });
+    const mobileMenu = page.getByTestId('nav-mobile-toggle');
     if (await mobileMenu.isVisible({ timeout: 3000 }).catch(() => false)) {
       await mobileMenu.click();
-      await page.getByRole('link', { name: /music/i }).click();
+      await page.getByTestId('nav-mobile-link-music').click();
       await expect(page).toHaveURL(/\/music/);
     }
   });
 
   test('should close mobile menu after navigation', async ({ page }) => {
     await page.goto('/');
-    const mobileMenu = page.getByRole('button', { name: /menu|hamburger/i });
+    const mobileMenu = page.getByTestId('nav-mobile-toggle');
     if (await mobileMenu.isVisible({ timeout: 3000 }).catch(() => false)) {
       await mobileMenu.click();
-      await page.getByRole('link', { name: /music/i }).click();
+      await page.getByTestId('nav-mobile-link-music').click();
       await page.waitForLoadState('networkidle');
       await expect(mobileMenu).not.toHaveAttribute('aria-expanded', 'true');
     }
@@ -123,10 +146,10 @@ test.describe('Mobile Navigation', () => {
 test.describe('Accessibility Navigation', () => {
   test('should have proper ARIA labels on navigation', async ({ page }) => {
     await page.goto('/');
+    // getByRole('navigation') resolves via the implicit nav landmark role
     const nav = page.getByRole('navigation');
     if (await nav.count() > 0) {
       await expect(nav.first()).toBeVisible();
-      await expect(nav.first()).toHaveAttribute('role', 'navigation');
     }
   });
 

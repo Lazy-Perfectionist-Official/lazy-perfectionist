@@ -133,6 +133,7 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
       <Background />
       <Navigation currentPage="music" />
 
+      <main>
       <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mx-auto">
           <motion.div
@@ -314,6 +315,7 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
           </motion.div>
         </div>
       </section>
+      </main>
     </div>
   )
 }
