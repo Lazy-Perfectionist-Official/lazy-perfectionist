@@ -30,16 +30,24 @@ function cleanText(text: string): string {
     .trim()
 }
 
+const MEDIUM_FALLBACK_THUMBNAIL = 'https://miro.medium.com/v2/resize:fit:800/1*Kp77tzjwdHidXpZ0lYMadw.png'
+
 function extractThumbnailFromContent(content: string): string {
-  const imgMatch = content.match(/<img[^>]+src="([^"]+)"[^>]*>/i)
-  if (imgMatch && imgMatch[1]) {
-    const imageUrl = imgMatch[1]
+  // Medium injects tracking pixels (e.g. medium.com/_/stat?...) as the first
+  // <img> in RSS content. Only accept Medium CDN image URLs — anything else
+  // would crash next/image with an unconfigured-host error.
+  const imgMatches = content.match(/<img[^>]+src="([^"]+)"[^>]*>/gi) || []
+  for (const match of imgMatches) {
+    const imageUrl = match.match(/src="([^"]+)"/i)?.[1]
+    if (!imageUrl) continue
     if (imageUrl.includes('miro.medium.com')) {
       return imageUrl.replace(/v2\/resize:\w+/, 'v2/resize:fit:800')
     }
-    return imageUrl
+    if (imageUrl.includes('cdn-images-1.medium.com')) {
+      return imageUrl
+    }
   }
-  return 'https://miro.medium.com/v2/resize:fit:800/1*Kp77tzjwdHidXpZ0lYMadw.png'
+  return MEDIUM_FALLBACK_THUMBNAIL
 }
 
 function extractTagsFromItem(item: string): string[] {
