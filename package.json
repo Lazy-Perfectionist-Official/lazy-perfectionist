@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "lint:css": "stylelint 'src/**/*.css'",
     "db:push": "prisma db push",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
@@ -31,7 +32,7 @@
     "lighthouse": "lhci autorun",
     "lighthouse:collect": "lhci collect",
     "lighthouse:assert": "lhci assert",
-    "test:pipeline": "npm run test:functional:cross-browser && playwright test tests/e2e/navigation.spec.ts --project=chromium-desktop && npm run test:visual",
+    "test:pipeline": "npm run lint:css && npm run test:functional:cross-browser && playwright test tests/e2e/navigation.spec.ts --project=chromium-desktop && npm run test:visual",
     "test:all": "npm run test:e2e && npm run lighthouse:assert"
   },
   "dependencies": {
@@ -133,6 +134,8 @@
     "eslint-config-next": "15.3.5",
     "nodemon": "^3.1.10",
     "playwright-lighthouse": "^4.0.0",
+    "stylelint": "^17.15.0",
+    "stylelint-declaration-strict-value": "^1.12.1",
     "tailwindcss": "^4",
     "tw-animate-css": "^1.3.5",
     "typescript": "^5"

@@ -1,0 +1,35 @@
+{
+  "plugins": ["stylelint-declaration-strict-value"],
+  "rules": {
+    "scale-unlimited/declaration-strict-value": [
+      [
+        "/^color$/",
+        "/^background$/",
+        "background-color",
+        "/^border$/",
+        "border-color",
+        "/^outline$/",
+        "outline-color",
+        "fill",
+        "stroke",
+        "box-shadow",
+        "caret-color",
+        "text-decoration-color",
+        "mask",
+        "-webkit-mask"
+      ],
+      {
+        "ignoreValues": [
+          "var(--*)",
+          "currentColor",
+          "transparent",
+          "inherit",
+          "initial",
+          "unset",
+          "none",
+          "/^@/"
+        ]
+      }
+    ]
+  }
+}

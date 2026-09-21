@@ -21,6 +21,25 @@
   --color-ember-accent: #dc5000;
   --color-pure-black: #000000;
 
+  /* Effect tokens — liquid-glass whites, ember glow, noise, accent ramp.
+     Whole-value tokens by design: gradients and shadows are named design
+     decisions (lint-enforced: no raw color values outside this block). */
+  --glass-tint: rgba(255, 255, 255, 0.01);
+  --glass-inset-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  --glass-edge-gradient: linear-gradient(180deg,
+    rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.15) 20%,
+    rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0) 60%,
+    rgba(255, 255, 255, 0.15) 80%, rgba(255, 255, 255, 0.45) 100%);
+  --mask-solid-gradient: linear-gradient(#fff 0 0);
+  --glass-mask: var(--mask-solid-gradient) content-box, var(--mask-solid-gradient);
+  --gradient-accent: linear-gradient(90deg, var(--color-warm-cream) 0%, var(--color-ember-accent) 100%);
+  --glow-ember: 0 0 10px rgba(237, 135, 52, 0.5);
+  --glow-ember-strong: 0 0 20px rgba(237, 135, 52, 0.8), 0 0 30px rgba(237, 135, 52, 0.4);
+  --noise-texture-gradient:
+    radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 40% 20%, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
+
   /* Typography — Font Families */
   --font-inter: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-arial: 'Arial', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -179,7 +198,7 @@
 
 /* Global black canvas (prevents white flash on pinch-zoom) */
 html, body {
-  background-color: #000 !important;
+  background-color: var(--color-pure-black) !important;
   min-height: 100vh;
   font-family: var(--font-body);
 }
@@ -198,12 +217,12 @@ html, body {
 /* ============================================================ */
 
 .liquid-glass {
-  background: rgba(255, 255, 255, 0.01);
+  background: var(--glass-tint);
   background-blend-mode: luminosity;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   border: none;
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  box-shadow: var(--glass-inset-shadow);
   position: relative;
   overflow: hidden;
 }
@@ -214,11 +233,8 @@ html, body {
   inset: 0;
   border-radius: inherit;
   padding: 1.4px;
-  background: linear-gradient(180deg,
-    rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.15) 20%,
-    rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%,
-    rgba(255,255,255,0.15) 80%, rgba(255,255,255,0.45) 100%);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  background: var(--glass-edge-gradient);
+  -webkit-mask: var(--glass-mask);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   pointer-events: none;
@@ -353,7 +369,7 @@ html, body {
 }
 
 .accent-gradient {
-  background: linear-gradient(90deg, #ffedd7 0%, #dc5000 100%);
+  background: var(--gradient-accent);
   background-size: 200% 200%;
   animation: gradient-shift 6s ease infinite;
 }
@@ -470,8 +486,8 @@ html, body {
   }
 
   @keyframes glow {
-    from { box-shadow: 0 0 10px rgba(237, 135, 52, 0.5); }
-    to { box-shadow: 0 0 20px rgba(237, 135, 52, 0.8), 0 0 30px rgba(237, 135, 52, 0.4); }
+    from { box-shadow: var(--glow-ember); }
+    to { box-shadow: var(--glow-ember-strong); }
   }
 
   .font-dm-serif {
@@ -489,10 +505,7 @@ html, body {
     opacity: 0.15;
     pointer-events: none;
     z-index: 10;
-    background-image:
-      radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
-      radial-gradient(circle at 80% 80%, rgba(255,255,255,0.05) 0%, transparent 50%),
-      radial-gradient(circle at 40% 20%, rgba(255,255,255,0.08) 0%, transparent 50%);
+    background-image: var(--noise-texture-gradient);
     background-size: 200px 200px, 150px 150px, 100px 100px;
     background-position: 0 0, 50px 50px, 100px 100px;
     animation: noise-move 20s ease-in-out infinite;
