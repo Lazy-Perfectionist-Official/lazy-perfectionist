@@ -15,20 +15,43 @@ test.describe('Cross-Browser - Chrome', () => {
 
   test('chrome - navigation works', async ({ page }) => {
     await page.goto('/');
-    await page.getByRole('link', { name: /music/i }).click();
+    // Scope to the nav link: /music/i alone matches several links (strict
+    // mode violation). Open the mobile drawer first when there is one.
+    const toggle = page.getByTestId('nav-mobile-toggle');
+    if (await toggle.isVisible({ timeout: 1500 }).catch(() => false)) {
+      await toggle.click();
+    }
+    await page
+      .locator('[data-testid="nav-link-music"]:visible, [data-testid="nav-mobile-link-music"]:visible')
+      .first()
+      .click();
     await expect(page).toHaveURL(/\/music/);
   });
 
   test('chrome - animations perform well', async ({ page }) => {
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(500);
 
-    // Check GSAP is loaded
-    const hasGSAP = await page.evaluate(() => typeof window !== 'undefined' && 'gsap' in window);
-    expect(hasGSAP).toBe(true);
+    // gsap is bundled as an ES module and never lands on window, so observe
+    // a real scroll-reveal instead: the journal header starts transparent and
+    // animates to opaque when scrolled into view.
+    const journalHeader = page.getByTestId('journal-header');
+    const opacityBefore = await journalHeader.evaluate(
+      (el) => window.getComputedStyle(el).opacity
+    );
+    expect(Number(opacityBefore)).toBeLessThan(1);
+
+    await journalHeader.scrollIntoViewIfNeeded();
+    await expect
+      .poll(async () =>
+        Number(await journalHeader.evaluate((el) => window.getComputedStyle(el).opacity))
+      )
+      .toBe(1);
   });
 
   test('chrome - touch interactions', async ({ page }) => {
+    // Touchscreen APIs require a touch-enabled project.
+    test.skip(!(test.info().project.use as { hasTouch?: boolean } | undefined)?.hasTouch, 'touch project only');
     await page.goto('/');
     await page.waitForLoadState('networkidle');
 
@@ -144,6 +167,7 @@ test.describe('Cross-Browser - Safari/WebKit', () => {
   });
 
   test('safari - touch gestures', async ({ page }) => {
+    test.skip(!(test.info().project.use as { hasTouch?: boolean } | undefined)?.hasTouch, 'touch project only');
     await page.goto('/');
 
     // Simulate pinch zoom
@@ -213,9 +237,11 @@ test.describe('Cross-Browser - Responsive Design', () => {
           for (let i = 0; i < Math.min(buttonCount, 10); i++) {
             const box = await buttons.nth(i).boundingBox();
             if (box) {
-              // Touch targets should be at least 44x44
-              expect(box.width).toBeGreaterThanOrEqual(44);
-              expect(box.height).toBeGreaterThanOrEqual(44);
+              // Touch targets should be at least 44x44 (allow a hair of
+              // sub-pixel tolerance — engines report a computed 44px as
+              // 43.99999809265137, which is not a real size regression)
+              expect(box.width).toBeGreaterThanOrEqual(43.5);
+              expect(box.height).toBeGreaterThanOrEqual(43.5);
             }
           }
         }
@@ -433,24 +459,16 @@ test.describe('Cross-Browser - Form Interactions', () => {
   });
 
   test('form submission works', async ({ page }) => {
-    const forms = page.locator('form');
-    const formCount = await forms.count();
+    const form = page.getByTestId('contact-form');
 
-    if (formCount > 0) {
-      const form = forms.first();
-      const inputs = form.locator('input');
+    // Fill every required field validly, then the form as a whole must
+    // report itself submittable. (The old version filled only the name and
+    // then wondered why checkValidity() was false.)
+    await form.getByLabel('Your name').fill('Test User');
+    await form.getByLabel('Your email').fill('test@example.com');
+    await form.getByLabel('Your message').fill('This is a valid test message.');
 
-      if (await inputs.count() > 0) {
-        // Fill out form
-        await inputs.first().fill('test');
-
-        // Check form can be submitted (don't actually submit)
-        const canSubmit = await form.evaluate((el: HTMLFormElement) => {
-          return el.checkValidity();
-        });
-
-        expect(canSubmit).toBe(true);
-      }
-    }
+    const canSubmit = await form.evaluate((el: HTMLFormElement) => el.checkValidity());
+    expect(canSubmit).toBe(true);
   });
 });
