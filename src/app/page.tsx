@@ -53,8 +53,10 @@ export default function HomePage() {
           ],
         })}
       />
-      <Hero />
       <main>
+        {/* Hero is main content too — keeping it inside the landmark is what
+            axe's "region" rule expects (nav + hero copy were outside main). */}
+        <Hero />
         <SelectedWorks />
         <Journal />
         <Stats />

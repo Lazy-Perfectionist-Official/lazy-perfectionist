@@ -213,7 +213,7 @@ export default function Contact() {
       {/* Footer Links */}
       <div className="absolute bottom-8 left-0 right-0 z-20" data-testid="contact-footer">
         <div className="max-w-6xl mx-auto px-6 md:px-10">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-oryzo-muted">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-oryzo-cream/90">
             <div className="font-oryzo-body">© 2026 LAZY PERFECTIONIST. ALL RIGHTS RESERVED.</div>
             <div className="flex items-center gap-6">
               <a

@@ -148,6 +148,10 @@ export default function Hero() {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              // framer-motion makes gesture wrappers focusable (tabindex="0"),
+              // which puts an anonymous div in the tab order ahead of the real
+              // link. Keep the gesture, drop the extra tab stop.
+              tabIndex={-1}
             >
               <Link
                 href={navHref(item)}
@@ -165,6 +169,7 @@ export default function Hero() {
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            tabIndex={-1}
           >
             <Link
               href="https://open.spotify.com/track/4RnwmBIaSuOqGEu8R2nIsU"
@@ -181,7 +186,7 @@ export default function Hero() {
         {/* Mobile menu button */}
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="md:hidden liquid-glass rounded-full p-2.5 text-oryzo-cream"
+          className="md:hidden liquid-glass rounded-full p-3 text-oryzo-cream"
           aria-label="Toggle menu"
           aria-expanded={isMobileMenuOpen}
           data-testid="nav-mobile-toggle"
@@ -262,6 +267,9 @@ export default function Hero() {
             whileHover={{ scale: 1.05, y: -3 }}
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            // Same as the nav wrappers above: whileTap would otherwise inject
+            // tabindex="0" and create a tab stop on this anonymous div.
+            tabIndex={-1}
           >
             <motion.div
               className="relative inline-block"

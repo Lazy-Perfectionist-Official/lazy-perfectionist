@@ -43,6 +43,9 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+                // Keep the gesture without framer's implicit tabindex="0" on
+                // the wrapper — the inner link is the real tab stop.
+                tabIndex={-1}
               >
                 <Link
                   href={navHref(item)}
@@ -60,7 +63,7 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
           {/* Mobile toggle */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden liquid-glass rounded-full p-2.5 text-oryzo-cream"
+            className="md:hidden liquid-glass rounded-full p-3 text-oryzo-cream"
             aria-label="Toggle menu"
             aria-expanded={isMenuOpen}
             data-testid="nav-mobile-toggle"
