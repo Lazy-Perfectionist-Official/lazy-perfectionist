@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react'
 import { BookOpen, ExternalLink } from 'lucide-react'
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 import BlogSortSelect from '@/components/blog/BlogSortSelect'
 import Navigation from '@/components/Navigation'
 import Background from '@/components/Background'
@@ -140,13 +141,13 @@ export default function BlogPage({ initialPosts }: { initialPosts: MediumPost[] 
                         {String(index + 1).padStart(2, '0')}
                       </span>
 
-                      <div className="w-14 h-14 md:w-16 md:h-16 rounded-xl overflow-hidden bg-oryzo-surface border border-oryzo-border flex-shrink-0">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
+                      <div className="relative w-14 h-14 md:w-16 md:h-16 rounded-xl overflow-hidden bg-oryzo-surface border border-oryzo-border flex-shrink-0">
+                        <Image
                           src={post.thumbnail}
                           alt=""
-                          loading="lazy"
-                          className="w-full h-full object-cover"
+                          fill
+                          sizes="(min-width: 768px) 64px, 56px"
+                          className="object-cover"
                         />
                       </div>
 

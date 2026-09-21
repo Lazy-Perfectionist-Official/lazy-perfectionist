@@ -3,6 +3,7 @@
 import { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface MediumPost {
   id: string;
@@ -138,13 +139,14 @@ export default function Journal() {
                 className="flex items-center gap-6 p-4 bg-oryzo-surface/30 border border-oryzo-border rounded-[40px] sm:rounded-full cursor-pointer group"
                 data-testid={`journal-entry-${index}`}
               >
-                <div className="w-16 h-16 rounded-2xl overflow-hidden flex-shrink-0 bg-oryzo-border/40">
+                <div className="relative w-16 h-16 rounded-2xl overflow-hidden flex-shrink-0 bg-oryzo-border/40">
                   {entry.thumbnail ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
+                    <Image
                       src={entry.thumbnail}
                       alt=""
-                      className="w-full h-full object-cover"
+                      fill
+                      sizes="64px"
+                      className="object-cover"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-oryzo-muted text-2xl">
