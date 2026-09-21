@@ -154,17 +154,32 @@ test.describe('Visual Regression - Interactive States', () => {
   // the stationary cursor and silently un-hover the button mid-test.
   async function settleLayout(page: Page) {
     await page.evaluate(() => document.fonts.ready);
-    await page.evaluate(() =>
-      Promise.all(
-        Array.from(document.images)
-          .filter((img) => !img.complete)
-          .map((img) =>
-            new Promise((resolve) => {
-              img.addEventListener('load', resolve, { once: true });
-              img.addEventListener('error', resolve, { once: true });
-            })
-          )
-      )
+    // Only await loads that are actually in flight, and bound the wait:
+    // next/image defaults to loading="lazy", so a below-fold image with no
+    // request yet has an empty currentSrc and never fires load/error until
+    // scrolled into view (deadlocks the await in Firefox/WebKit, whose
+    // lazy thresholds are smaller than Chromium's), and a stalled response
+    // (WebKit holding the request behind the same-origin autoplay video)
+    // would hang the suite. Thumbnail containers are fixed-size, so a
+    // late-arriving image cannot shift layout after we proceed.
+    await page.evaluate(
+      () =>
+        new Promise<void>((resolve) => {
+          const pending = Array.from(document.images).filter(
+            (img) => !img.complete && img.currentSrc !== ''
+          );
+          if (pending.length === 0) return resolve();
+          let remaining = pending.length;
+          const done = () => {
+            remaining -= 1;
+            if (remaining === 0) resolve();
+          };
+          for (const img of pending) {
+            img.addEventListener('load', done, { once: true });
+            img.addEventListener('error', done, { once: true });
+          }
+          setTimeout(resolve, 5000);
+        })
     );
   }
 
