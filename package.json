@@ -23,11 +23,14 @@
     "test:a11y": "playwright test tests/e2e/a11y",
     "test:lighthouse": "playwright test tests/e2e/lighthouse",
     "test:ux": "playwright test tests/e2e/ux",
+    "test:functional": "playwright test tests/e2e/functional --project=chromium-desktop",
+    "test:functional:cross-browser": "playwright test tests/e2e/functional --project=chromium-desktop --project=firefox-desktop --project=webkit-desktop",
     "test:cross-browser": "playwright test --project=chromium-desktop --project=firefox-desktop --project=webkit-desktop",
     "test:mobile": "playwright test --project=mobile-chrome-small --project=mobile-safari",
     "lighthouse": "lhci autorun",
     "lighthouse:collect": "lhci collect",
     "lighthouse:assert": "lhci assert",
+    "test:pipeline": "npm run test:functional:cross-browser && playwright test tests/e2e/navigation.spec.ts --project=chromium-desktop && npm run test:visual",
     "test:all": "npm run test:e2e && npm run lighthouse:assert"
   },
   "dependencies": {
