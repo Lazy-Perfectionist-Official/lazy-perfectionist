@@ -1,9 +1,24 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
 
 /**
  * User Journey Tests
- * Tests complete user flows and experiences from real user perspective
+ * Tests complete user flows and experiences from real user perspective.
+ *
+ * Rule (proposal Phase 1.3): every assertion must be able to fail. No
+ * if-visible guards around expects, no vacuous scroll/tap loops, no
+ * post-click assertions weaker than "the body exists".
  */
+
+/** Resolve a nav link at any viewport: open the mobile drawer when there is one. */
+async function navLink(page: Page, item: 'music' | 'blog' | 'store') {
+  const toggle = page.getByTestId('nav-mobile-toggle');
+  if (await toggle.isVisible({ timeout: 1500 }).catch(() => false)) {
+    await toggle.click();
+  }
+  return page
+    .locator(`[data-testid="nav-link-${item}"]:visible, [data-testid="nav-mobile-link-${item}"]:visible`)
+    .first();
+}
 
 test.describe('User Journey - First Time Visitor', () => {
   test('complete homepage exploration journey', async ({ page }) => {
@@ -15,27 +30,34 @@ test.describe('User Journey - First Time Visitor', () => {
 
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
     await page.waitForTimeout(500);
+
+    // The scroll must actually land: the page moved and the contact footer
+    // (the last content) is rendered.
+    const scrollY = await page.evaluate(() => window.scrollY);
+    expect(scrollY).toBeGreaterThan(100);
+    await expect(page.getByTestId('contact-footer')).toBeVisible();
   });
 
   test('music discovery journey', async ({ page }) => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
-    await page.getByRole('link', { name: /music/i }).click();
-    await expect(page.locator('main')).toBeVisible();
+    await (await navLink(page, 'music')).click();
+    await expect(page).toHaveURL(/\/music$/, { timeout: 15000 });
   });
 
   test('blog reading journey', async ({ page }) => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
-    await page.getByRole('link', { name: /blog/i }).click();
-    await expect(page.locator('main')).toBeVisible();
+    await (await navLink(page, 'blog')).click();
+    await expect(page).toHaveURL(/\/blog$/, { timeout: 15000 });
   });
 
   test('store browsing journey', async ({ page }) => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
-    await page.getByRole('link', { name: /store/i }).click();
-    await expect(page.locator('main')).toBeVisible();
+    await (await navLink(page, 'store')).click();
+    // /store is a redirect page: the journey ends on the external Ko-fi shop.
+    await expect(page).toHaveURL(/^https:\/\/ko-fi\.com\//, { timeout: 20000 });
   });
 });
 
@@ -43,27 +65,37 @@ test.describe('User Journey - Mobile User', () => {
   test.use({ viewport: { width: 375, height: 667 } });
 
   test('mobile exploration journey', async ({ page }) => {
+    test.skip(
+      !(test.info().project.use as { hasTouch?: boolean } | undefined)?.hasTouch,
+      'touch project only'
+    );
     await page.goto('/');
     await page.waitForLoadState('networkidle');
-    await page.touchscreen.tap(200, 300);
-    await page.waitForTimeout(500);
-    await expect(page.locator('body')).toBeVisible();
+
+    // Real mobile interaction: tap the hamburger, drawer must open.
+    await page.touchscreen.tap(
+      (await page.getByTestId('nav-mobile-toggle').boundingBox())!.x + 22,
+      (await page.getByTestId('nav-mobile-toggle').boundingBox())!.y + 22
+    );
+    await expect(page.getByTestId('nav-mobile-menu')).toBeVisible();
   });
 
   test('mobile touch interactions', async ({ page }) => {
+    test.skip(
+      !(test.info().project.use as { hasTouch?: boolean } | undefined)?.hasTouch,
+      'touch project only'
+    );
     await page.goto('/');
     await page.waitForLoadState('networkidle');
 
-    const buttons = page.locator('button, a[href]');
-    const count = await buttons.count();
+    // Journey, not a size gate (sizes are the a11y suite's job): open the
+    // drawer by tapping, then navigate somewhere by tapping.
+    const toggle = page.getByTestId('nav-mobile-toggle');
+    await toggle.tap();
+    await expect(page.getByTestId('nav-mobile-menu')).toBeVisible();
 
-    for (let i = 0; i < Math.min(count, 5); i++) {
-      const target = buttons.nth(i);
-      const box = await target.boundingBox();
-      if (box) {
-        expect(box.width).toBeGreaterThanOrEqual(44);
-      }
-    }
+    await page.getByTestId('nav-mobile-link-music').tap();
+    await expect(page).toHaveURL(/\/music$/, { timeout: 15000 });
   });
 });
 
@@ -72,13 +104,24 @@ test.describe('User Journey - Accessibility User', () => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
 
+    // Every tab stop must land on a visible element — an invisible focus
+    // target is a real keyboard trap.
     for (let i = 0; i < 10; i++) {
       await page.keyboard.press('Tab');
-      await page.waitForTimeout(200);
+      await page.waitForTimeout(100);
+      const visible = await page.evaluate(() => {
+        const el = document.activeElement;
+        return el ? window.getComputedStyle(el).visibility !== 'hidden' : false;
+      });
+      expect(visible, `tab stop ${i} focused an invisible element`).toBe(true);
     }
 
+    // Deterministic keyboard action: focus the Blog nav link (drawer open
+    // when the viewport has one) and activate it with Enter.
+    const link = await navLink(page, 'blog');
+    await link.focus();
     await page.keyboard.press('Enter');
-    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL(/\/blog$/, { timeout: 15000 });
   });
 
   test('screen reader friendly journey', async ({ page }) => {
@@ -123,26 +166,34 @@ test.describe('User Journey - Content Explorer', () => {
     const sections = page.locator('section');
     const sectionCount = await sections.count();
 
+    // The homepage is a multi-section experience (hero, works, journal,
+    // stats, finale, contact…). A collapsed render must fail here.
+    expect(sectionCount).toBeGreaterThan(3);
+
     for (let i = 0; i < Math.min(sectionCount, 5); i++) {
       await sections.nth(i).scrollIntoViewIfNeeded();
       await page.waitForTimeout(500);
     }
+
+    const scrollY = await page.evaluate(() => window.scrollY);
+    expect(scrollY).toBeGreaterThan(100);
   });
 
   test('cross-page content discovery', async ({ page }) => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
 
-    await page.getByRole('link', { name: /music/i }).click();
-    await page.waitForTimeout(500);
+    await (await navLink(page, 'music')).click();
+    await expect(page).toHaveURL(/\/music$/, { timeout: 15000 });
+    await page.waitForLoadState('networkidle');
 
-    await page.getByRole('link', { name: /blog/i }).click();
-    await page.waitForTimeout(500);
+    await (await navLink(page, 'blog')).click();
+    await expect(page).toHaveURL(/\/blog$/, { timeout: 15000 });
+    await page.waitForLoadState('networkidle');
 
-    await page.getByRole('link', { name: /store/i }).click();
-    await page.waitForTimeout(500);
-
-    await expect(page.locator('main')).toBeVisible();
+    await (await navLink(page, 'store')).click();
+    // Final hop lands on the external Ko-fi shop (the /store page redirects).
+    await expect(page).toHaveURL(/^https:\/\/ko-fi\.com\//, { timeout: 20000 });
   });
 });
 
