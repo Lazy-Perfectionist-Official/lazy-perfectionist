@@ -6,6 +6,7 @@
     "dev": "nodemon --exec \"npx tsx server.ts\" --watch server.ts --watch src --ext ts,tsx,js,jsx 2>&1 | tee dev.log",
     "build": "next build",
     "start": "next start",
+    "serve:prod": "rm -rf .next/standalone/.next/static && cp -R .next/static .next/standalone/.next/static && cp -R public .next/standalone/public && node .next/standalone/server.js",
     "lint": "next lint",
     "lint:css": "stylelint 'src/**/*.css'",
     "db:push": "prisma db push",
@@ -22,7 +23,7 @@
     "test:e2e": "playwright test tests/e2e",
     "test:visual": "playwright test tests/e2e/visual",
     "test:a11y": "playwright test tests/e2e/a11y",
-    "test:lighthouse": "playwright test tests/e2e/lighthouse",
+    "test:lighthouse": "npm run build && playwright test --config=playwright.lighthouse.config.ts",
     "test:ux": "playwright test tests/e2e/ux",
     "test:judge": "tsx scripts/judge-ui.ts",
     "test:functional": "playwright test tests/e2e/functional --project=chromium-desktop",
@@ -32,7 +33,7 @@
     "lighthouse": "lhci autorun",
     "lighthouse:collect": "lhci collect",
     "lighthouse:assert": "lhci assert",
-    "test:pipeline": "npm run lint:css && npm run test:functional:cross-browser && playwright test tests/e2e/navigation.spec.ts --project=chromium-desktop && npm run test:visual",
+    "test:pipeline": "npm run lint:css && npm run test:functional:cross-browser && playwright test tests/e2e/navigation.spec.ts --project=chromium-desktop && npm run test:visual && npm run test:lighthouse",
     "test:all": "npm run test:e2e && npm run lighthouse:assert"
   },
   "dependencies": {

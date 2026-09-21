@@ -61,6 +61,8 @@ export default defineConfig({
           serviceWorkers: 'allow',
         },
       },
+      // Lighthouse needs CDP (chromium-only) and runs in its own project.
+      testIgnore: '**/lighthouse.spec.ts',
     },
 
     // Desktop Firefox
@@ -70,6 +72,7 @@ export default defineConfig({
         ...devices['Desktop Firefox'],
         viewport: { width: 1920, height: 1080 },
       },
+      testIgnore: '**/lighthouse.spec.ts',
     },
 
     // Desktop Safari (WebKit)
@@ -79,6 +82,7 @@ export default defineConfig({
         ...devices['Desktop Safari'],
         viewport: { width: 1920, height: 1080 },
       },
+      testIgnore: '**/lighthouse.spec.ts',
     },
 
     // Mobile Chrome - Small phone
@@ -93,6 +97,7 @@ export default defineConfig({
           serviceWorkers: 'allow',
         },
       },
+      testIgnore: '**/lighthouse.spec.ts',
     },
 
     // Mobile Safari - iPhone
@@ -107,6 +112,7 @@ export default defineConfig({
           serviceWorkers: 'allow',
         },
       },
+      testIgnore: '**/lighthouse.spec.ts',
     },
 
     // Tablet - iPad
@@ -121,7 +127,12 @@ export default defineConfig({
           serviceWorkers: 'allow',
         },
       },
+      testIgnore: '**/lighthouse.spec.ts',
     },
+
+    // Lighthouse runs in its own config (playwright.lighthouse.config.ts)
+    // against a production build on port 3001 — see the notes there. The
+    // testIgnore above keeps this spec out of the browser projects.
 
     // Visual Regression Project
     {

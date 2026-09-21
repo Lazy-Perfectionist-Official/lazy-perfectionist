@@ -13,7 +13,9 @@
 # testing
 /coverage
 /test-results
+/test-results-lighthouse
 /playwright-report
+/playwright-report-lighthouse
 /playwright/.cache
 /reports
 
