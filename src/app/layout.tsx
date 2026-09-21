@@ -144,6 +144,14 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="//instagram.com" />
         <link rel="dns-prefetch" href="//tiktok.com" />
 
+        {/* RSS feed autodiscovery — serves readers, AI agents, and NLWeb */}
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title="Lazy Perfectionist — Journal"
+          href="https://lazyperfectionist.com/feed.xml"
+        />
+
         {/* PWA Meta Tags */}
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#100904" />
