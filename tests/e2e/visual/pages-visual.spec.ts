@@ -207,21 +207,16 @@ test.describe('Visual Regression - Cross-Page Consistency', () => {
 });
 
 test.describe('Visual Regression - Loading States', () => {
-  test('skeleton loaders on blog page @visual', async ({ page }) => {
-    // Hold the Medium API response so the skeleton state is deterministically
-    // visible at capture time (delaying all requests made the
-    // skeleton-to-content transition a race with the screenshot retries)
-    await page.route('**/api/medium**', async (route) => {
-      await new Promise((resolve) => setTimeout(resolve, 3000));
-      await route.continue();
-    });
-
-    await page.goto('/blog');
-    const skeletons = page.locator('[data-testid="loading-skeleton"]');
-    await expect(skeletons.first()).toBeVisible();
-    await expect(skeletons.first()).toHaveScreenshot('blog-skeleton.png', {
-      maxDiffPixels: 50,
-    });
+  test('blog stories are server-rendered @visual', async ({ page }) => {
+    // The story list is rendered on the server (RSC + hourly revalidate) so
+    // crawlers and AI agents that fetch raw HTML — without executing
+    // JavaScript — see the stories. Guard that contract directly: the
+    // initial HTML must contain story cards and the structured data.
+    const response = await page.request.get('/blog');
+    expect(response.status()).toBe(200);
+    const html = await response.text();
+    expect(html).toContain('data-testid="blog-card"');
+    expect(html).toContain('application/ld+json');
   });
 
   test('loading states on music page @visual', async ({ page }) => {

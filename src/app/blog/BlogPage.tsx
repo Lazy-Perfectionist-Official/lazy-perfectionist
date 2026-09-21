@@ -1,27 +1,14 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { BookOpen, ExternalLink, RefreshCw } from 'lucide-react'
+import { useMemo, useState } from 'react'
+import { BookOpen, ExternalLink } from 'lucide-react'
 import { motion } from 'framer-motion'
 import BlogSortSelect from '@/components/blog/BlogSortSelect'
 import Navigation from '@/components/Navigation'
 import Background from '@/components/Background'
-import { generateStructuredData } from '@/components/SEO'
+import { sortMediumPosts, type MediumPost, type MediumSort } from '@/lib/medium'
 
-interface MediumPost {
-  id: string
-  title: string
-  subtitle: string
-  author: string
-  publishedDate: string
-  readTime: string
-  link: string
-  thumbnail: string
-  tags: string[]
-  claps?: number
-}
-
-type SortOption = 'latest' | 'oldest' | 'popular'
+type SortOption = MediumSort
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1]
 
@@ -34,76 +21,18 @@ const formatDate = (dateString: string) =>
     day: 'numeric'
   })
 
-export default function BlogPage() {
-  const [posts, setPosts] = useState<MediumPost[]>([])
-  const [sortedPosts, setSortedPosts] = useState<MediumPost[]>([])
-  const [loading, setLoading] = useState(true)
+// Stories are fetched on the server (see page.tsx) so crawlers and AI agents
+// see them in the initial HTML; this component only re-sorts interactively.
+export default function BlogPage({ initialPosts }: { initialPosts: MediumPost[] }) {
   const [sortBy, setSortBy] = useState<SortOption>('latest')
-  const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    fetchMediumData()
-  }, [sortBy])
-
-  const fetchMediumData = async () => {
-    try {
-      setLoading(true)
-      const response = await fetch(`/api/medium?limit=15&sort=${sortBy}`)
-      if (!response.ok) {
-        throw new Error('Failed to fetch Medium data')
-      }
-      const data = await response.json()
-      setPosts(data.data || [])
-      setSortedPosts(data.data || [])
-      setError(null)
-    } catch (err) {
-      console.error('Failed to fetch Medium data:', err)
-      setError('Unable to load articles. Please try again later.')
-      setPosts([])
-      setSortedPosts([])
-    } finally {
-      setLoading(false)
-    }
-  }
+  const sortedPosts = useMemo(
+    () => sortMediumPosts(initialPosts, sortBy),
+    [initialPosts, sortBy]
+  )
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={generateStructuredData('WebSite', {
-          name: 'Lazy Perfectionist Blog',
-          url: 'https://lazyperfectionist.com/blog',
-          description: "Read about Lazy Perfectionist's music production journey, creative process, and insights into instrumental rock composition from Hong Kong.",
-          potentialAction: {
-            '@type': 'ReadAction',
-            target: MEDIUM_PROFILE_URL
-          }
-        })}
-      />
-
-      {sortedPosts.length > 0 && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={generateStructuredData('Article', {
-            '@type': 'Blog',
-            name: 'Lazy Perfectionist Blog Posts',
-            description: "Creative stories and insights from Lazy Perfectionist's music production journey",
-            url: 'https://lazyperfectionist.com/blog',
-            author: {
-              '@type': 'Person',
-              name: 'Sammy Lee',
-              jobTitle: 'Musician, Producer'
-            },
-            publisher: {
-              '@type': 'Organization',
-              name: 'Lazy Perfectionist'
-            },
-            datePublished: sortedPosts[0]?.publishedDate || new Date().toISOString(),
-            dateModified: new Date().toISOString()
-          })}
-        />
-      )}
-
       <div className="min-h-screen bg-oryzo-canvas text-oryzo-cream relative">
         <Background />
         <Navigation currentPage="blog" />
@@ -146,55 +75,7 @@ export default function BlogPage() {
             </motion.div>
 
             {/* Stories */}
-            {error ? (
-              <motion.div
-                className="text-center py-20"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                data-testid="blog-error"
-              >
-                <div className="max-w-md mx-auto">
-                  <BookOpen className="w-12 h-12 text-oryzo-muted mx-auto mb-4" />
-                  <h2 className="text-xl font-oryzo-display text-oryzo-cream mb-2">
-                    STORIES TEMPORARILY UNAVAILABLE
-                  </h2>
-                  <p className="text-oryzo-muted font-oryzo-body mb-8">{error}</p>
-                  <button
-                    onClick={fetchMediumData}
-                    className="rounded-full border border-oryzo-border hover:border-oryzo-cream px-8 py-4 font-oryzo-display text-sm text-oryzo-cream transition-colors inline-flex items-center gap-2"
-                    data-testid="blog-retry"
-                  >
-                    <RefreshCw size={16} />
-                    TRY AGAIN
-                  </button>
-                </div>
-              </motion.div>
-            ) : loading ? (
-              <div data-testid="blog-loading">
-                <div className="mb-8 flex items-baseline justify-between">
-                  <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-oryzo-display">
-                    The Stories
-                  </span>
-                </div>
-                <div className="border-t border-oryzo-border">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div
-                      key={i}
-                      data-testid="loading-skeleton"
-                      className="grid grid-cols-[auto_1fr_auto] md:grid-cols-[3rem_auto_1fr_auto] items-center gap-4 md:gap-8 py-6 md:py-8 border-b border-oryzo-border animate-pulse"
-                    >
-                      <span className="hidden md:block h-3 w-6 bg-oryzo-cream/10 rounded" />
-                      <div className="w-14 h-14 md:w-16 md:h-16 rounded-xl bg-oryzo-cream/10" />
-                      <div className="space-y-2">
-                        <div className="h-4 bg-oryzo-cream/10 rounded w-3/4" />
-                        <div className="h-3 bg-oryzo-cream/5 rounded w-1/3" />
-                      </div>
-                      <div className="h-3 w-10 bg-oryzo-cream/10 rounded" />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ) : sortedPosts.length === 0 ? (
+            {sortedPosts.length === 0 ? (
               <motion.div
                 className="text-center py-20"
                 initial={{ opacity: 0, y: 20 }}
