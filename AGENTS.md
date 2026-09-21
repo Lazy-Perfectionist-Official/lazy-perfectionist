@@ -69,6 +69,14 @@ npm run db:reset     # Reset database
 - Check Socket.IO real-time features
 - Ensure proper error handling for API failures
 
+### UI/UX Verification Routing (docs/UI-UX-VERIFICATION-PROPOSAL.md)
+Route each judgment to the evaluator that can actually make it:
+- **Countable** (DOM facts, sizes, roles, tokens) → Playwright suites (`npm run test:pipeline`, `test:a11y`)
+- **Visual design quality** (hierarchy, spacing, affordances) → `npm run test:judge` (advisory MLLM lane; report in `reports/judge/latest.md`; never a gate, never blocks a commit)
+- **Taste** (does it look good / solve the problem) → human
+
+Judge findings are leads, not verdicts: reproduce anything real as a deterministic test before fixing.
+
 ### Common Patterns
 - **Path Aliases**: Use `@/*` imports (e.g., `@/components/ui/*`, `@/lib/utils`)
 - **Component Structure**: shadcn/ui patterns for component organization
