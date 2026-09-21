@@ -228,15 +228,33 @@ test.describe('Cross-Browser - Responsive Design', () => {
 
       test('touch targets on mobile @responsive', async ({ page, browserName }) => {
         if (viewport.width < 768) {
-          // Mobile-specific test
+          // Mobile-specific test — full coverage of every visible interactive
+          // element (the old first-10 sampling missed everything below the
+          // fold, e.g. the contact-footer social links).
           await page.goto('/');
 
-          const buttons = page.locator('button, a[href]');
+          const buttons = page.locator('a:visible, button:visible');
           const buttonCount = await buttons.count();
 
-          for (let i = 0; i < Math.min(buttonCount, 10); i++) {
+          // Skip the dev-only Next.js dev-tools button (32x32, lives in a
+          // <nextjs-portal> shadow root; never ships to production).
+          const devToolsIndices = new Set(
+            await buttons.evaluateAll((nodes) =>
+              nodes
+                .map((el, i) => {
+                  const root = el.getRootNode();
+                  return root instanceof ShadowRoot && root.host?.tagName === 'NEXTJS-PORTAL' ? i : -1;
+                })
+                .filter((i) => i >= 0)
+            )
+          );
+
+          let checked = 0;
+          for (let i = 0; i < buttonCount; i++) {
+            if (devToolsIndices.has(i)) continue;
             const box = await buttons.nth(i).boundingBox();
             if (box) {
+              checked++;
               // Touch targets should be at least 44x44 (allow a hair of
               // sub-pixel tolerance — engines report a computed 44px as
               // 43.99999809265137, which is not a real size regression)
@@ -244,6 +262,7 @@ test.describe('Cross-Browser - Responsive Design', () => {
               expect(box.height).toBeGreaterThanOrEqual(43.5);
             }
           }
+          expect(checked).toBeGreaterThan(0);
         }
       });
     });

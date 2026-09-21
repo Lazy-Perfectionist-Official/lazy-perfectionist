@@ -345,20 +345,51 @@ test.describe('Accessibility - Mobile Specific', () => {
   });
 
   test('should have touch-accessible targets', async ({ page }) => {
-    const interactiveElements = page.locator('a, button');
+    // Full coverage: check EVERY visible interactive element, not a sample.
+    // Open the mobile drawer first so its links exist in the DOM (they
+    // unmount when closed — the old first-20 sampling never saw them, nor
+    // the contact-footer social links further down the page).
+    const toggle = page.getByTestId('nav-mobile-toggle');
+    if (await toggle.isVisible({ timeout: 1500 }).catch(() => false)) {
+      await toggle.click();
+      await expect(page.getByTestId('nav-mobile-menu')).toBeVisible();
+    }
+
+    const interactiveElements = page.locator('a:visible, button:visible');
     const elementCount = await interactiveElements.count();
 
-    for (let i = 0; i < Math.min(elementCount, 20); i++) {
+    // The Next.js dev-tools button (32x32, inside a <nextjs-portal> shadow
+    // root) only exists in development — it is not site UI. Skip anything in
+    // that portal; gate only on elements the site actually ships.
+    const devToolsIndices = new Set(
+      await interactiveElements.evaluateAll((nodes) =>
+        nodes
+          .map((el, i) => {
+            const root = el.getRootNode();
+            return root instanceof ShadowRoot && root.host?.tagName === 'NEXTJS-PORTAL' ? i : -1;
+          })
+          .filter((i) => i >= 0)
+      )
+    );
+
+    let checked = 0;
+    for (let i = 0; i < elementCount; i++) {
+      if (devToolsIndices.has(i)) continue;
       const element = interactiveElements.nth(i);
       const box = await element.boundingBox();
 
       if (box) {
+        checked++;
         // Touch targets should be at least 44x44 pixels (0.5px sub-pixel
         // tolerance: engines report a computed 44px as 43.99999809265137)
-        expect(box.width).toBeGreaterThanOrEqual(43.5);
-        expect(box.height).toBeGreaterThanOrEqual(43.5);
+        const id = (await element.getAttribute('data-testid')) ?? (await element.textContent())?.trim() ?? `element ${i}`;
+        expect(box.width, `${id} width`).toBeGreaterThanOrEqual(43.5);
+        expect(box.height, `${id} height`).toBeGreaterThanOrEqual(43.5);
       }
     }
+
+    // The loop must actually check something to mean anything.
+    expect(checked).toBeGreaterThan(0);
   });
 
   test('should have appropriate text scaling', async ({ page }) => {

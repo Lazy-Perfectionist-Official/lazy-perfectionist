@@ -220,7 +220,9 @@ export default function Contact() {
                 href="https://instagram.com/lazyperfectionist"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-oryzo-cream transition-colors font-oryzo-display"
+                // py-3: text-sm links are ~20px tall on their own — tap padding
+                // brings them to the 44px touch-target minimum.
+                className="py-3 hover:text-oryzo-cream transition-colors font-oryzo-display"
                 data-testid="contact-instagram-link"
               >
                 INSTAGRAM
@@ -229,7 +231,7 @@ export default function Contact() {
                 href="https://twitter.com/lazyperfectionist"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-oryzo-cream transition-colors font-oryzo-display"
+                className="py-3 hover:text-oryzo-cream transition-colors font-oryzo-display"
                 data-testid="contact-twitter-link"
               >
                 TWITTER
@@ -238,7 +240,7 @@ export default function Contact() {
                 href="https://youtube.com/@lazyperfectionist"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-oryzo-cream transition-colors font-oryzo-display"
+                className="py-3 hover:text-oryzo-cream transition-colors font-oryzo-display"
                 data-testid="contact-youtube-link"
               >
                 YOUTUBE

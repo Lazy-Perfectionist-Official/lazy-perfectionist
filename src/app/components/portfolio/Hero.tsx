@@ -213,7 +213,9 @@ export default function Hero() {
                   key={item}
                   href={navHref(item)}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={`text-base ${item === 'Home' ? 'text-oryzo-cream' : 'text-oryzo-muted'} hover:text-oryzo-cream transition-colors py-2`}
+                  // py-3: text-base line (~24px) + padding = 48px, above the
+                  // 44px touch-target minimum (py-2 left it at ~40px).
+                  className={`text-base ${item === 'Home' ? 'text-oryzo-cream' : 'text-oryzo-muted'} hover:text-oryzo-cream transition-colors py-3`}
                   data-testid={`nav-mobile-link-${item.toLowerCase()}`}
                 >
                   {item}
