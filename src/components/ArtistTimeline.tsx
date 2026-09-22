@@ -146,7 +146,7 @@ function TimelineItem({ event, index, isInView }: TimelineItemProps) {
           <div className={`flex items-center gap-3 mb-3 ${
             index % 2 === 0 ? 'justify-end' : 'justify-start'
           }`}>
-            <h3 className="text-xl font-bold text-black font-dm-serif">
+            <h3 className="text-xl font-bold text-black font-display">
               {event.title}
             </h3>
             <div className={`p-2 rounded-lg border-2 border-black ${
@@ -241,7 +241,7 @@ export default function ArtistTimeline() {
             <span className="text-white font-medium">Musical Journey</span>
           </motion.div>
 
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 font-dm-serif">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 font-display">
             The Story So
             <span className="block bg-gradient-to-r from-indigo-300 to-purple-300 bg-clip-text text-transparent">Far</span>
           </h2>

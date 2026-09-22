@@ -119,7 +119,7 @@ export default function MobileGestureNav({ items, onItemClick }: GestureNavProps
                 </motion.div>
               )}
 
-              <h3 className="text-2xl font-oryzo-display text-oryzo-cream mb-3">
+              <h3 className="text-2xl font-display italic text-oryzo-cream mb-3">
                 {currentItem.label}
               </h3>
 

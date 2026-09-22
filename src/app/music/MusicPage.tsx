@@ -103,7 +103,7 @@ export default function MusicPage() {
               transition={{ duration: 0.8, ease: EASE }}
               data-testid="music-header"
             >
-              <span className="block text-xs text-oryzo-muted uppercase tracking-[0.3em] font-oryzo-display mb-6">
+              <span className="block text-xs text-oryzo-muted uppercase tracking-[0.3em] font-medium mb-6">
                 Discography
               </span>
               <h1 className="text-5xl md:text-7xl font-display italic text-oryzo-cream leading-[0.95] mb-6">
@@ -153,7 +153,7 @@ export default function MusicPage() {
               <div>
                 <div className="flex items-center gap-3 mb-6">
                   <span className="w-2 h-2 bg-oryzo-ember rounded-full animate-pulse" />
-                  <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-oryzo-display">
+                  <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-medium">
                     Latest Single
                   </span>
                 </div>
@@ -182,7 +182,7 @@ export default function MusicPage() {
                     href={FEATURED.spotifyUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="liquid-glass rounded-full px-8 py-4 font-oryzo-display text-sm text-oryzo-cream hover:scale-[1.03] transition-transform inline-flex items-center justify-center gap-2"
+                    className="liquid-glass rounded-full px-8 py-4 font-medium text-sm text-oryzo-cream hover:scale-[1.03] transition-transform inline-flex items-center justify-center gap-2"
                     data-testid="music-stream-button"
                   >
                     <Play size={16} />
@@ -192,7 +192,7 @@ export default function MusicPage() {
                     href="https://open.spotify.com/artist/7ELTTbYXSvCIXh0W6IV3um"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="rounded-full border border-oryzo-border hover:border-oryzo-cream px-8 py-4 font-oryzo-display text-sm text-oryzo-cream transition-colors inline-flex items-center justify-center gap-2"
+                    className="rounded-full border border-oryzo-border hover:border-oryzo-cream px-8 py-4 font-medium text-sm text-oryzo-cream transition-colors inline-flex items-center justify-center gap-2"
                     data-testid="music-follow-button"
                   >
                     FOLLOW
@@ -211,7 +211,7 @@ export default function MusicPage() {
                 transition={{ duration: 0.7, ease: EASE }}
                 data-testid="music-catalog-header"
               >
-                <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-oryzo-display">
+                <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-medium">
                   The Catalog
                 </span>
                 <span className="text-xs text-oryzo-muted font-oryzo-body">
@@ -233,7 +233,7 @@ export default function MusicPage() {
                     transition={{ duration: 0.7, ease: EASE, delay: index * 0.1 }}
                     data-testid="music-card"
                   >
-                    <span className="text-xs text-oryzo-muted font-oryzo-display hidden md:block">
+                    <span className="text-xs text-oryzo-muted font-medium hidden md:block">
                       {String(index + 1).padStart(2, '0')}
                     </span>
 
@@ -246,7 +246,7 @@ export default function MusicPage() {
                     </div>
 
                     <div className="min-w-0">
-                      <h3 className="text-xl md:text-2xl font-oryzo-display text-oryzo-cream group-hover:text-oryzo-ember transition-colors duration-300 mb-1">
+                      <h3 className="text-xl md:text-2xl font-display italic text-oryzo-cream group-hover:text-oryzo-ember transition-colors duration-300 mb-1">
                         {release.title.toUpperCase()}
                       </h3>
                       <div className="flex items-center gap-3 text-xs md:text-sm text-oryzo-muted font-oryzo-body">
@@ -262,7 +262,7 @@ export default function MusicPage() {
                       </div>
                     </div>
 
-                    <span className="text-xs text-oryzo-muted group-hover:text-oryzo-cream group-hover:translate-x-1 transition-all duration-300 font-oryzo-display whitespace-nowrap">
+                    <span className="text-xs text-oryzo-muted group-hover:text-oryzo-cream group-hover:translate-x-1 transition-all duration-300 font-medium whitespace-nowrap">
                       LISTEN →
                     </span>
                   </motion.a>
@@ -290,7 +290,7 @@ export default function MusicPage() {
                   href="https://open.spotify.com/artist/7ELTTbYXSvCIXh0W6IV3um"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="liquid-glass rounded-full px-8 py-4 font-oryzo-display text-sm text-oryzo-cream hover:scale-[1.03] transition-transform inline-flex items-center justify-center gap-2"
+                  className="liquid-glass rounded-full px-8 py-4 font-medium text-sm text-oryzo-cream hover:scale-[1.03] transition-transform inline-flex items-center justify-center gap-2"
                 >
                   FOLLOW ON SPOTIFY
                 </a>
@@ -298,7 +298,7 @@ export default function MusicPage() {
                   href="https://linktr.ee/lazyperfectionist_official"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-full border border-oryzo-border hover:border-oryzo-cream px-8 py-4 font-oryzo-display text-sm text-oryzo-cream transition-colors inline-flex items-center justify-center gap-2"
+                  className="rounded-full border border-oryzo-border hover:border-oryzo-cream px-8 py-4 font-medium text-sm text-oryzo-cream transition-colors inline-flex items-center justify-center gap-2"
                 >
                   <ExternalLink size={16} />
                   ALL LINKS

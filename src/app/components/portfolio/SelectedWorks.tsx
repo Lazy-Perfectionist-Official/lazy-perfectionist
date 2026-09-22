@@ -31,12 +31,12 @@ export default function SelectedWorks() {
           data-testid="selected-works-header"
         >
           <div className="mb-6">
-            <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-oryzo-display">
+            <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-medium">
               LATEST RELEASE
             </span>
           </div>
 
-          <h2 className="text-4xl md:text-6xl font-oryzo-display leading-tight" data-testid="selected-works-title">
+          <h2 className="text-4xl md:text-6xl font-medium uppercase tracking-[0.2em] leading-tight" data-testid="selected-works-title">
             LATEST WORK
           </h2>
 
@@ -83,7 +83,7 @@ export default function SelectedWorks() {
               <div className="flex items-end justify-between gap-6 flex-wrap">
                 <div>
                   <div className="flex items-center gap-3 mb-3">
-                    <span className="text-xs text-oryzo-ember uppercase tracking-[0.3em] font-oryzo-display">
+                    <span className="text-xs text-oryzo-ember uppercase tracking-[0.3em] font-medium">
                       Single
                     </span>
                     <span className="text-xs text-oryzo-muted">2026</span>
@@ -114,7 +114,7 @@ export default function SelectedWorks() {
         >
           <Link
             href="/music"
-            className="inline-flex items-center gap-2 text-sm rounded-full px-6 py-3 border border-oryzo-border hover:border-oryzo-cream hover:text-oryzo-cream transition-all group font-oryzo-display"
+            className="inline-flex items-center gap-2 text-sm rounded-full px-6 py-3 border border-oryzo-border hover:border-oryzo-cream hover:text-oryzo-cream transition-all group font-medium"
             data-testid="selected-works-view-all"
           >
             VIEW ALL MUSIC

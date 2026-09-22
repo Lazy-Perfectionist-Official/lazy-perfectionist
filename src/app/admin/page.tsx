@@ -63,7 +63,7 @@ function AdminLoginForm() {
           <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-oryzo-surface/60 border border-oryzo-border mb-4">
             <Lock className="w-6 h-6 text-oryzo-ember" />
           </div>
-          <h1 className="text-2xl font-oryzo-display text-oryzo-cream mb-1">Admin Portal</h1>
+          <h1 className="text-2xl font-medium uppercase text-oryzo-cream mb-1">Admin Portal</h1>
           <p className="text-sm text-oryzo-muted">Lazy Perfectionist — content management</p>
         </div>
 
@@ -72,7 +72,7 @@ function AdminLoginForm() {
           className="bg-oryzo-surface/40 border border-oryzo-border rounded-3xl p-6 md:p-8 space-y-4"
         >
           <div>
-            <label htmlFor="password" className="block text-xs uppercase tracking-[0.3em] text-oryzo-muted font-oryzo-display mb-2">
+            <label htmlFor="password" className="block text-xs uppercase tracking-[0.3em] text-oryzo-muted font-medium mb-2">
               Password
             </label>
             <input
@@ -97,7 +97,7 @@ function AdminLoginForm() {
           <button
             type="submit"
             disabled={loading || !password}
-            className="w-full liquid-glass rounded-full px-6 py-3 font-oryzo-display text-sm text-oryzo-cream hover:scale-[1.02] transition-transform inline-flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full liquid-glass rounded-full px-6 py-3 font-medium text-sm text-oryzo-cream hover:scale-[1.02] transition-transform inline-flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? (
               <>

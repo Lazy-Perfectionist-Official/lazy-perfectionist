@@ -166,7 +166,7 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
 
             <div className="flex items-center gap-8 mb-6 justify-center">
               <div className="w-8 h-px bg-oryzo-border" />
-              <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-oryzo-display">
+              <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-medium">
                 Listen
               </span>
               <div className="w-8 h-px bg-oryzo-border" />
@@ -243,7 +243,7 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
                         {platform.icon}
                       </div>
                       <div>
-                        <h3 className="text-lg font-oryzo-display text-oryzo-cream">
+                        <h3 className="text-lg font-medium uppercase text-oryzo-cream">
                           {platform.name}
                         </h3>
                         <p className="text-sm text-oryzo-muted">
@@ -266,7 +266,7 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
                 transition={{ delay: 0.5 }}
               >
                 <Music className="w-12 h-12 text-oryzo-muted mx-auto mb-4" />
-                <h3 className="text-xl font-oryzo-display text-oryzo-cream mb-2">
+                <h3 className="text-xl font-medium text-oryzo-cream mb-2">
                   {trackId ? 'PLATFORM LINKS UNAVAILABLE' : 'START LISTENING'}
                 </h3>
                 <p className="text-oryzo-muted mb-6 max-w-md mx-auto">
@@ -277,7 +277,7 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                   <Link
                     href="/music"
-                    className="liquid-glass rounded-full inline-flex items-center gap-2 px-6 py-3 font-oryzo-display text-sm text-oryzo-cream hover:scale-[1.03] transition-transform"
+                    className="liquid-glass rounded-full inline-flex items-center gap-2 px-6 py-3 font-medium text-sm text-oryzo-cream hover:scale-[1.03] transition-transform"
                   >
                     <ArrowLeft size={16} />
                     BROWSE MUSIC
@@ -290,7 +290,7 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
                     }
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="rounded-full border border-oryzo-border hover:border-oryzo-cream inline-flex items-center gap-2 px-6 py-3 font-oryzo-display text-sm text-oryzo-cream transition-colors"
+                    className="rounded-full border border-oryzo-border hover:border-oryzo-cream inline-flex items-center gap-2 px-6 py-3 font-medium text-sm text-oryzo-cream transition-colors"
                   >
                     {trackId ? 'STREAM ON SPOTIFY' : 'STREAM "LUSG" ON SPOTIFY'}
                   </a>

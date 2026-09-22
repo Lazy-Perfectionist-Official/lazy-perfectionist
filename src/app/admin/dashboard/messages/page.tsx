@@ -22,7 +22,7 @@ export default async function AdminMessagesPage() {
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
           <div className="w-8 h-px bg-oryzo-border" />
-          <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-oryzo-display">
+          <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-medium">
             Inbox
           </span>
         </div>
@@ -36,7 +36,7 @@ export default async function AdminMessagesPage() {
       <section className="mb-10">
         <div className="flex items-center gap-2 mb-4">
           <Mail className="w-4 h-4 text-oryzo-ember" />
-          <h2 className="text-sm font-oryzo-display text-oryzo-cream uppercase tracking-[0.2em]">
+          <h2 className="text-sm font-medium text-oryzo-cream uppercase tracking-[0.2em]">
             Contact messages
           </h2>
           <span className="text-xs text-oryzo-muted">({messages.length})</span>
@@ -56,7 +56,7 @@ export default async function AdminMessagesPage() {
                 <div className="flex items-start justify-between gap-3 mb-2 flex-wrap">
                   <div>
                     <div className="flex items-center gap-2">
-                      <h3 className="font-oryzo-display text-oryzo-cream">{msg.name}</h3>
+                      <h3 className="font-medium uppercase text-oryzo-cream">{msg.name}</h3>
                       {msg.responded ? (
                         <span className="inline-flex items-center gap-1 text-xs text-oryzo-ember">
                           <CheckCircle2 className="w-3 h-3" /> responded
@@ -94,7 +94,7 @@ export default async function AdminMessagesPage() {
       <section>
         <div className="flex items-center gap-2 mb-4">
           <Users className="w-4 h-4 text-oryzo-ember" />
-          <h2 className="text-sm font-oryzo-display text-oryzo-cream uppercase tracking-[0.2em]">
+          <h2 className="text-sm font-medium text-oryzo-cream uppercase tracking-[0.2em]">
             Newsletter subscribers
           </h2>
           <span className="text-xs text-oryzo-muted">({subscribers.length})</span>
@@ -109,13 +109,13 @@ export default async function AdminMessagesPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-oryzo-border text-left">
-                  <th className="px-4 py-3 font-oryzo-display text-xs uppercase tracking-wider text-oryzo-muted">
+                  <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider text-oryzo-muted">
                     Email
                   </th>
-                  <th className="px-4 py-3 font-oryzo-display text-xs uppercase tracking-wider text-oryzo-muted hidden sm:table-cell">
+                  <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider text-oryzo-muted hidden sm:table-cell">
                     Status
                   </th>
-                  <th className="px-4 py-3 font-oryzo-display text-xs uppercase tracking-wider text-oryzo-muted hidden md:table-cell">
+                  <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider text-oryzo-muted hidden md:table-cell">
                     Subscribed
                   </th>
                   <th className="px-4 py-3" />

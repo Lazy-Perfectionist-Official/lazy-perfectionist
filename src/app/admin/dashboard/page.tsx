@@ -66,7 +66,7 @@ export default async function AdminDashboardPage() {
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
           <div className="w-8 h-px bg-oryzo-border" />
-          <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-oryzo-display">
+          <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-medium">
             Dashboard
           </span>
         </div>
@@ -91,7 +91,7 @@ export default async function AdminDashboardPage() {
               </div>
               <ArrowRight className="w-4 h-4 text-oryzo-muted group-hover:text-oryzo-cream group-hover:translate-x-1 transition-all" />
             </div>
-            <div className="text-3xl md:text-4xl font-oryzo-display text-oryzo-cream mb-1">
+            <div className="text-3xl md:text-4xl font-medium text-oryzo-cream mb-1">
               {value}
             </div>
             <div className="text-sm text-oryzo-muted">{label}</div>
@@ -101,7 +101,7 @@ export default async function AdminDashboardPage() {
       </div>
 
       <div className="mt-8 bg-oryzo-surface/30 border border-oryzo-border rounded-3xl p-6">
-        <h2 className="text-lg font-oryzo-display text-oryzo-cream mb-3">Quick links</h2>
+        <h2 className="text-lg font-medium uppercase text-oryzo-cream mb-3">Quick links</h2>
         <div className="flex flex-wrap gap-2">
           <Link
             href="/admin/dashboard/music"

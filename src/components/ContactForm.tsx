@@ -100,7 +100,7 @@ export default function ContactForm({ className = '' }: { className?: string }) 
       <button
         type="submit"
         disabled={submitting}
-        className="liquid-glass rounded-full px-6 py-3 text-sm font-oryzo-display text-oryzo-cream hover:scale-[1.02] transition-transform disabled:opacity-50 disabled:hover:scale-100 inline-flex items-center justify-center gap-2 self-start"
+        className="liquid-glass rounded-full px-6 py-3 text-sm font-medium text-oryzo-cream hover:scale-[1.02] transition-transform disabled:opacity-50 disabled:hover:scale-100 inline-flex items-center justify-center gap-2 self-start"
       >
         {submitting ? (
           <>

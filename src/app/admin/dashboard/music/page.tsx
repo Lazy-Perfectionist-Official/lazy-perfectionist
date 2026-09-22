@@ -98,7 +98,7 @@ export default function AdminMusicPage() {
         <div>
           <div className="flex items-center gap-3 mb-2">
             <div className="w-8 h-px bg-oryzo-border" />
-            <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-oryzo-display">
+            <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-medium">
               Catalog
             </span>
           </div>
@@ -109,7 +109,7 @@ export default function AdminMusicPage() {
         </div>
         <button
           onClick={() => setModal({ mode: 'create' })}
-          className="liquid-glass rounded-full px-5 py-2.5 font-oryzo-display text-sm text-oryzo-cream hover:scale-[1.03] transition-transform inline-flex items-center gap-2"
+          className="liquid-glass rounded-full px-5 py-2.5 font-medium text-sm text-oryzo-cream hover:scale-[1.03] transition-transform inline-flex items-center gap-2"
         >
           <Plus className="w-4 h-4" />
           ADD TRACK
@@ -129,13 +129,13 @@ export default function AdminMusicPage() {
       ) : tracks.length === 0 ? (
         <div className="text-center py-20 bg-oryzo-surface/30 border border-oryzo-border rounded-3xl">
           <Music className="w-12 h-12 text-oryzo-muted mx-auto mb-4" />
-          <h3 className="text-xl font-oryzo-display text-oryzo-cream mb-2">NO TRACKS YET</h3>
+          <h3 className="text-xl font-medium text-oryzo-cream mb-2">NO TRACKS YET</h3>
           <p className="text-oryzo-muted mb-6 text-sm">
             Add your first track manually to populate the music page.
           </p>
           <button
             onClick={() => setModal({ mode: 'create' })}
-            className="liquid-glass rounded-full px-6 py-3 font-oryzo-display text-sm text-oryzo-cream hover:scale-[1.03] transition-transform inline-flex items-center gap-2"
+            className="liquid-glass rounded-full px-6 py-3 font-medium text-sm text-oryzo-cream hover:scale-[1.03] transition-transform inline-flex items-center gap-2"
           >
             <Plus className="w-4 h-4" />
             ADD YOUR FIRST TRACK
@@ -165,7 +165,7 @@ export default function AdminMusicPage() {
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-oryzo-display text-oryzo-cream truncate">{track.name}</h3>
+                  <h3 className="font-medium uppercase text-oryzo-cream truncate">{track.name}</h3>
                   <div className="flex items-center gap-3 text-xs text-oryzo-muted mt-1 flex-wrap">
                     {track.album?.name && <span>{track.album.name}</span>}
                     {track.isrc && <span>ISRC: {track.isrc}</span>}
@@ -281,7 +281,7 @@ function PlatformLinksEditor({
 
   return (
     <div>
-      <div className="text-xs uppercase tracking-[0.2em] text-oryzo-muted font-oryzo-display mb-3">
+      <div className="text-xs uppercase tracking-[0.2em] text-oryzo-muted font-medium mb-3">
         Platform links
       </div>
 
@@ -294,7 +294,7 @@ function PlatformLinksEditor({
               key={link.id}
               className="flex items-center gap-3 bg-oryzo-surface/40 border border-oryzo-border rounded-xl px-3 py-2"
             >
-              <span className="text-xs font-oryzo-display text-oryzo-cream uppercase tracking-wider min-w-[100px]">
+              <span className="text-xs font-medium text-oryzo-cream uppercase tracking-wider min-w-[100px]">
                 {link.platformName}
               </span>
               <a
@@ -434,7 +434,7 @@ function TrackModal({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="sticky top-0 bg-oryzo-canvas/90 backdrop-blur border-b border-oryzo-border px-6 py-4 flex items-center justify-between">
-          <h2 className="text-lg font-oryzo-display text-oryzo-cream">
+          <h2 className="text-lg font-medium uppercase text-oryzo-cream">
             {isEdit ? 'Edit track' : 'New track'}
           </h2>
           <button
@@ -521,7 +521,7 @@ function TrackModal({
           {!isEdit && (
             <div>
               <div className="flex items-center justify-between mb-2">
-                <label className="text-xs uppercase tracking-[0.2em] text-oryzo-muted font-oryzo-display">
+                <label className="text-xs uppercase tracking-[0.2em] text-oryzo-muted font-medium">
                   Platform links
                 </label>
                 <button
@@ -600,7 +600,7 @@ function TrackModal({
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-xs uppercase tracking-[0.2em] text-oryzo-muted font-oryzo-display mb-2">
+      <label className="block text-xs uppercase tracking-[0.2em] text-oryzo-muted font-medium mb-2">
         {label}
       </label>
       {children}

@@ -46,7 +46,7 @@ export default function AdminDashboardLayout({ children }: { children: React.Rea
             >
               Admin
             </span>
-            <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-oryzo-display hidden sm:inline">
+            <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-medium hidden sm:inline">
               · Lazy Perfectionist
             </span>
           </div>

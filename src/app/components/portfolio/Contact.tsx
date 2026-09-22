@@ -158,7 +158,7 @@ export default function Contact() {
         <div className="overflow-hidden whitespace-nowrap mb-16">
           <div
             ref={marqueeRef}
-            className="inline-block text-6xl md:text-8xl lg:text-9xl font-oryzo-display text-oryzo-cream/20"
+            className="inline-block text-6xl md:text-8xl lg:text-9xl font-display italic text-oryzo-cream/20"
           >
             {marqueeContent}
             {marqueeContent}
@@ -173,7 +173,7 @@ export default function Contact() {
             transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
             viewport={{ once: true, margin: '-100px' }}
           >
-            <h2 className="text-4xl md:text-6xl font-oryzo-display leading-tight mb-8" data-testid="contact-title">
+            <h2 className="text-4xl md:text-6xl font-medium uppercase tracking-[0.2em] leading-tight mb-8" data-testid="contact-title">
               READY TO COLLABORATE?
             </h2>
 
@@ -188,7 +188,7 @@ export default function Contact() {
 
             {/* Newsletter signup */}
             <div className="max-w-xl mx-auto">
-              <p className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-oryzo-display mb-4">
+              <p className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-medium mb-4">
                 Or join the mailing list
               </p>
               <NewsletterForm />
@@ -199,7 +199,7 @@ export default function Contact() {
                 href="https://open.spotify.com/artist/7ELTTbYXSvCIXh0W6IV3um"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="relative rounded-full border-2 border-oryzo-border bg-oryzo-canvas/80 backdrop-blur-sm text-oryzo-cream text-base px-8 py-4 overflow-hidden font-oryzo-display"
+                className="relative rounded-full border border-oryzo-border bg-oryzo-canvas/80 backdrop-blur-sm text-oryzo-cream text-base px-8 py-4 overflow-hidden font-medium"
                 data-testid="contact-spotify-button"
               >
                 <span className="relative z-10">STREAM ON SPOTIFY</span>
@@ -222,7 +222,7 @@ export default function Contact() {
                 rel="noopener noreferrer"
                 // py-3: text-sm links are ~20px tall on their own — tap padding
                 // brings them to the 44px touch-target minimum.
-                className="py-3 hover:text-oryzo-cream transition-colors font-oryzo-display"
+                className="py-3 hover:text-oryzo-cream transition-colors font-medium"
                 data-testid="contact-instagram-link"
               >
                 INSTAGRAM
@@ -231,7 +231,7 @@ export default function Contact() {
                 href="https://twitter.com/lazyperfectionist"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="py-3 hover:text-oryzo-cream transition-colors font-oryzo-display"
+                className="py-3 hover:text-oryzo-cream transition-colors font-medium"
                 data-testid="contact-twitter-link"
               >
                 TWITTER
@@ -240,7 +240,7 @@ export default function Contact() {
                 href="https://youtube.com/@lazyperfectionist"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="py-3 hover:text-oryzo-cream transition-colors font-oryzo-display"
+                className="py-3 hover:text-oryzo-cream transition-colors font-medium"
                 data-testid="contact-youtube-link"
               >
                 YOUTUBE

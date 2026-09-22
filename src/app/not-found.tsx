@@ -28,7 +28,7 @@ export default function NotFound() {
 
         <div className="relative text-center max-w-2xl">
           <motion.span
-            className="block text-xs text-oryzo-muted uppercase tracking-[0.3em] font-oryzo-display mb-6"
+            className="block text-xs text-oryzo-muted uppercase tracking-[0.3em] font-medium mb-6"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: EASE }}
@@ -62,14 +62,14 @@ export default function NotFound() {
           >
             <Link
               href="/"
-              className="liquid-glass rounded-full px-8 py-4 font-oryzo-display text-sm text-oryzo-cream hover:scale-[1.03] transition-transform inline-flex items-center justify-center"
+              className="liquid-glass rounded-full px-8 py-4 font-medium text-sm text-oryzo-cream hover:scale-[1.03] transition-transform inline-flex items-center justify-center"
               data-testid="not-found-home"
             >
               BACK TO HOME
             </Link>
             <Link
               href="/music"
-              className="rounded-full border border-oryzo-border hover:border-oryzo-cream px-8 py-4 font-oryzo-display text-sm text-oryzo-cream transition-colors inline-flex items-center justify-center"
+              className="rounded-full border border-oryzo-border hover:border-oryzo-cream px-8 py-4 font-medium text-sm text-oryzo-cream transition-colors inline-flex items-center justify-center"
               data-testid="not-found-music"
             >
               LISTEN INSTEAD

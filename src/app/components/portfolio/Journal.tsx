@@ -63,12 +63,12 @@ export default function Journal() {
           data-testid="journal-header"
         >
           <div className="mb-6">
-            <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-oryzo-display">
+            <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-medium">
               RECENT
             </span>
           </div>
 
-          <h2 className="text-4xl md:text-6xl font-oryzo-display leading-tight">
+          <h2 className="text-4xl md:text-6xl font-medium uppercase tracking-[0.2em] leading-tight">
             RECENT THOUGHTS
           </h2>
 
@@ -79,7 +79,7 @@ export default function Journal() {
           {posts.length > 0 && (
             <Link
               href="/blog"
-              className="hidden md:inline-flex items-center gap-2 text-sm rounded-full px-6 py-3 border border-oryzo-border hover:border-oryzo-cream hover:text-oryzo-cream transition-all group font-oryzo-display"
+              className="hidden md:inline-flex items-center gap-2 text-sm rounded-full px-6 py-3 border border-oryzo-border hover:border-oryzo-cream hover:text-oryzo-cream transition-all group font-medium"
             >
               VIEW ALL
               <span className="group-hover:translate-x-1 transition-transform" aria-hidden>
@@ -156,7 +156,7 @@ export default function Journal() {
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-base md:text-lg font-oryzo-display text-oryzo-cream mb-1 truncate">
+                  <h3 className="text-base md:text-lg font-display italic text-oryzo-cream mb-1 truncate">
                     {entry.title.toUpperCase()}
                   </h3>
                   <div className="flex items-center gap-4 text-sm text-oryzo-muted font-oryzo-body">

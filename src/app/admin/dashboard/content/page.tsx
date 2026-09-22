@@ -84,7 +84,7 @@ export default function AdminContentPage() {
         <div>
           <div className="flex items-center gap-3 mb-2">
             <div className="w-8 h-px bg-oryzo-border" />
-            <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-oryzo-display">
+            <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-medium">
               Copy
             </span>
           </div>
@@ -133,7 +133,7 @@ export default function AdminContentPage() {
             key={group.section}
             className="bg-oryzo-surface/40 border border-oryzo-border rounded-3xl p-5 md:p-6"
           >
-            <h2 className="text-sm font-oryzo-display text-oryzo-cream uppercase tracking-[0.2em] mb-4">
+            <h2 className="text-sm font-medium text-oryzo-cream uppercase tracking-[0.2em] mb-4">
               {group.section}
             </h2>
             <div className="space-y-4">
@@ -142,7 +142,7 @@ export default function AdminContentPage() {
                 const isDirty = values[field.key] !== original[field.key]
                 return (
                   <div key={field.key}>
-                    <label className="block text-xs text-oryzo-muted mb-1.5 font-oryzo-display">
+                    <label className="block text-xs text-oryzo-muted mb-1.5 font-medium uppercase">
                       {field.label}
                       {isDirty && <span className="text-oryzo-ember ml-2">● unsaved</span>}
                     </label>

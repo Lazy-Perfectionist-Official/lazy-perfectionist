@@ -24,7 +24,7 @@ export default function Finale() {
           className="mb-8"
           data-testid="finale-eyebrow"
         >
-          <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-oryzo-display">
+          <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-medium">
             ONE LAST THING
           </span>
         </motion.div>
@@ -64,7 +64,7 @@ export default function Finale() {
             href="https://open.spotify.com/track/4RnwmBIaSuOqGEu8R2nIsU"
             target="_blank"
             rel="noopener noreferrer"
-            className="liquid-glass rounded-full px-10 py-4 text-sm text-oryzo-cream hover:scale-[1.03] transition-transform inline-flex items-center gap-2 font-oryzo-display"
+            className="liquid-glass rounded-full px-10 py-4 text-sm text-oryzo-cream hover:scale-[1.03] transition-transform inline-flex items-center gap-2 font-medium"
             data-testid="finale-stream-button"
           >
             STREAM &ldquo;LUSG&rdquo;
@@ -72,7 +72,7 @@ export default function Finale() {
           </Link>
           <Link
             href="/music"
-            className="rounded-full border border-oryzo-border hover:border-oryzo-cream px-10 py-4 text-sm text-oryzo-cream transition-colors inline-flex items-center gap-2 font-oryzo-display group"
+            className="rounded-full border border-oryzo-border hover:border-oryzo-cream px-10 py-4 text-sm text-oryzo-cream transition-colors inline-flex items-center gap-2 font-medium group"
             data-testid="finale-discography-link"
           >
             EXPLORE THE MUSIC

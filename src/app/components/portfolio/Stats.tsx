@@ -39,7 +39,7 @@ export default function Stats() {
           data-testid="stats-header"
         >
           <div className="mb-6">
-            <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-oryzo-display">
+            <span className="text-xs text-oryzo-muted uppercase tracking-[0.3em] font-medium">
               THE JOURNEY SO FAR
             </span>
           </div>
@@ -67,7 +67,7 @@ export default function Stats() {
               className="group grid grid-cols-[3.5rem_1fr_auto] md:grid-cols-[5rem_1fr_auto] items-baseline gap-4 md:gap-8 py-6 md:py-8 border-b border-oryzo-border"
               data-testid={`stat-item-${index}`}
             >
-              <span className="text-sm text-oryzo-muted tabular-nums font-oryzo-display">
+              <span className="text-sm text-oryzo-muted tabular-nums font-medium">
                 {release.year}
               </span>
               <div>
@@ -80,7 +80,7 @@ export default function Stats() {
               </div>
               <span
                 aria-hidden
-                className="text-oryzo-muted group-hover:text-oryzo-cream group-hover:translate-x-1 transition-all duration-300 font-oryzo-display text-xs md:text-sm"
+                className="text-oryzo-muted group-hover:text-oryzo-cream group-hover:translate-x-1 transition-all duration-300 font-medium text-xs md:text-sm"
               >
                 LISTEN →
               </span>
