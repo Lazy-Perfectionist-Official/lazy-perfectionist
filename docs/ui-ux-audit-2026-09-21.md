@@ -32,7 +32,7 @@
 | F8 | FIGMA spec still specifies the loading screen that was deliberately removed | taste / spec-stale | **Open** |
 | F9 | Body forced `#000`; spec says canvas `#100904`, never pure black | taste / spec-divergence | **Open** |
 | F10 | `/store` same-tab server redirect to Ko-fi exits the site | taste | **Open** |
-| F11 | `lazyperfectionist.com` production origin refuses connections | real-bug (ops) | **Open** — not a build gate |
+| F11 | `lazyperfectionist.com` is parked for sale at BuyDomains — canonical URLs point at it | real-bug (ops/domain) | **Open** — not a build gate |
 | F12 | Contact-form API-failure toast has no automated test | coverage-gap (minor) | **Open** |
 
 ---
@@ -79,8 +79,8 @@ Until decided, the spec and code contradict each other, and F6 keeps producing z
 ### F10 — `/store` same-tab exit to Ko-fi (taste)
 `src/app/store/page.tsx:4` server-redirects (HTTP 307) to `ko-fi.com/lazyperfectionist/shop` in the **same tab** — the only navigation that fully leaves the site, requiring browser-back to return. This is intentional (documented, asserted by the ux journey and excluded from Lighthouse for exactly this reason) and fine for a small merch shop. If wanted later: open in a new tab, or a light interstitial preserving site nav. Not a defect.
 
-### F11 — Production origin down (real-bug, ops — not a build gate)
-`https://lazyperfectionist.com` refuses connections (curl exit 7, reproduced twice today). All gates audit the local build, so CI stays green while the live site is unreachable. Out of scope for this repo's pipeline (deployment/monitoring concern) but it is the most user-visible defect that exists right now. **Action**: check hosting/deployment (owner).
+### F11 — Domain parked for sale; canonical URLs point at it (real-bug, ops/domain — not a build gate)
+`https://lazyperfectionist.com` refuses connections on 443, and port 80 (207.148.248.143) 301s to `buydomains.com/lander/lazyperfectionist.com` — the domain is parked and listed **for sale** by BuyDomains, not serving the app. (Initially read as a hosting outage; the lander redirect is the ground truth.) The repo's `vercel.json` targets Vercel `sin1`, but DNS has never been pointed there. Meanwhile every hardcoded canonical URL — SEO metadata, JSON-LD `sameAs`, RSS autodiscovery, robots.txt sitemap assertion — references this parked domain. All gates audit the local build, so CI stays green. **Action (owner)**: reclaim/repoint the domain (Vercel or the self-hosted box), or swap the canonical URLs to a domain actually controlled — until then the site has no reachable production origin.
 
 ### F12 — Untested form-failure toast (coverage-gap, minor)
 `ContactForm.tsx` handles API failure with a toast (`catch` → error message, verified in source), but no test exercises the failure path — the press-state test pins the API at 200-delayed. The happy path and required-field prevention are covered. A one-test addition (route abort → expect toast) would close it.
