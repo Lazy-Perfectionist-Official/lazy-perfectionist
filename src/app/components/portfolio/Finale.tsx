@@ -30,7 +30,7 @@ export default function Finale() {
         </motion.div>
 
         <motion.h2
-          className="text-4xl sm:text-6xl md:text-7xl font-display italic leading-[1.05] text-oryzo-cream mb-8"
+          className="text-4xl sm:text-6xl md:text-7xl font-medium uppercase tracking-[0.2em] leading-[1.05] text-oryzo-cream mb-8"
           initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease: EASE, delay: 0.1 }}

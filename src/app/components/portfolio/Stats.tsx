@@ -45,7 +45,7 @@ export default function Stats() {
           </div>
 
           <h2
-            className="text-4xl md:text-6xl font-display italic leading-tight text-oryzo-cream"
+            className="text-4xl md:text-6xl font-medium uppercase tracking-[0.2em] leading-tight text-oryzo-cream"
             data-testid="stats-title"
           >
             Three singles, one bedroom studio.

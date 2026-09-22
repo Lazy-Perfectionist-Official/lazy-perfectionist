@@ -153,7 +153,7 @@ export default function Hero() {
             >
               <Link
                 href={navHref(item)}
-                className={`text-sm ${item === 'Home' ? 'text-oryzo-cream' : 'text-oryzo-muted hover:text-oryzo-cream'} transition-colors`}
+                className={`text-xs uppercase tracking-[0.2em] ${item === 'Home' ? 'text-oryzo-cream' : 'text-oryzo-muted hover:text-oryzo-cream'} transition-colors`}
                 data-testid={`nav-link-${item.toLowerCase()}`}
               >
                 {item}
@@ -211,9 +211,9 @@ export default function Hero() {
                   key={item}
                   href={navHref(item)}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  // py-3: text-base line (~24px) + padding = 48px, above the
-                  // 44px touch-target minimum (py-2 left it at ~40px).
-                  className={`text-base ${item === 'Home' ? 'text-oryzo-cream' : 'text-oryzo-muted'} hover:text-oryzo-cream transition-colors py-3`}
+                  // py-3: text-sm line (~20px) + padding = 44px, at the
+                  // touch-target minimum.
+                  className={`text-sm uppercase ${item === 'Home' ? 'text-oryzo-cream' : 'text-oryzo-muted'} hover:text-oryzo-cream transition-colors py-3`}
                   data-testid={`nav-mobile-link-${item.toLowerCase()}`}
                 >
                   {item}
@@ -247,7 +247,7 @@ export default function Hero() {
         </div>
 
         {/* Name */}
-        <h1 className="text-5xl sm:text-7xl md:text-8xl leading-[0.95] tracking-[-2.46px] max-w-7xl font-normal font-display italic text-oryzo-cream mb-6" data-testid="hero-title">
+        <h1 className="text-5xl sm:text-7xl md:text-8xl leading-[0.95] max-w-7xl font-normal font-display italic text-oryzo-cream mb-6" data-testid="hero-title">
           <span className="hero-anim hero-reveal block" style={{ animationDelay: '0.25s' }}>
             {content.hero_title_line1}
           </span>
@@ -280,16 +280,11 @@ export default function Hero() {
                 href="https://open.spotify.com/track/4RnwmBIaSuOqGEu8R2nIsU"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="liquid-glass rounded-full px-14 py-5 text-base text-oryzo-cream mt-12 transition-transform cursor-pointer inline-flex items-center justify-center relative z-10"
+                className="rounded-full bg-oryzo-ember text-oryzo-canvas px-14 py-5 text-base font-medium mt-12 transition-transform cursor-pointer inline-flex items-center justify-center relative z-10"
                 data-testid="hero-cta-button"
               >
                 Stream "LUSG" Now
               </Link>
-              <motion.div
-                className="absolute inset-0 rounded-full bg-oryzo-ember opacity-0"
-                whileHover={{ opacity: 0.2 }}
-                transition={{ duration: 0.3 }}
-              />
             </motion.div>
           </motion.div>
         </div>

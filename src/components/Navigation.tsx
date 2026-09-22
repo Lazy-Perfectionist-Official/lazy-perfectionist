@@ -49,7 +49,7 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
               >
                 <Link
                   href={navHref(item)}
-                  className={`text-sm transition-colors ${
+                  className={`text-xs uppercase tracking-[0.2em] transition-colors ${
                     currentPage === item.toLowerCase() ? 'text-oryzo-cream' : 'text-oryzo-muted hover:text-oryzo-cream'
                   }`}
                   data-testid={`nav-link-${item.toLowerCase()}`}
@@ -89,7 +89,7 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
                     key={item}
                     href={navHref(item)}
                     onClick={() => setIsMenuOpen(false)}
-                    className={`text-base py-2 transition-colors ${
+                    className={`text-sm uppercase py-2 transition-colors ${
                       currentPage === item.toLowerCase() ? 'text-oryzo-cream' : 'text-oryzo-muted hover:text-oryzo-cream'
                     }`}
                     data-testid={`nav-mobile-link-${item.toLowerCase()}`}

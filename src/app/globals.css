@@ -209,11 +209,17 @@
 /* Base resets                                                   */
 /* ============================================================ */
 
-/* Global black canvas (prevents white flash on pinch-zoom) */
+/* Global walnut canvas (prevents white flash on pinch-zoom; never pure
+   black — the canvas token is the warm #100904 base of the palette) */
 html, body {
-  background-color: var(--color-pure-black) !important;
+  background-color: var(--color-walnut-shadow);
   min-height: 100vh;
   font-family: var(--font-body);
+}
+
+::selection {
+  background: var(--color-warm-cream);
+  color: var(--color-walnut-shadow);
 }
 
 @layer base {

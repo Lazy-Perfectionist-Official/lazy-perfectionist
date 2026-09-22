@@ -53,7 +53,7 @@ export default function BlogPage({ initialPosts }: { initialPosts: MediumPost[] 
               <span className="block text-xs text-oryzo-muted uppercase tracking-[0.3em] font-medium mb-6">
                 Journal
               </span>
-              <h1 className="text-5xl md:text-7xl font-display italic text-oryzo-cream leading-[0.95] mb-6">
+              <h1 className="text-5xl md:text-7xl font-medium uppercase tracking-[0.2em] text-oryzo-cream leading-[0.95] mb-6">
                 Behind the Music
               </h1>
               <p className="text-oryzo-body text-oryzo-muted max-w-2xl font-oryzo-body leading-relaxed mb-10">

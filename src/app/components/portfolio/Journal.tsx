@@ -157,7 +157,7 @@ export default function Journal() {
 
                 <div className="flex-1 min-w-0">
                   <h3 className="text-base md:text-lg font-display italic text-oryzo-cream mb-1 truncate">
-                    {entry.title.toUpperCase()}
+                    {entry.title}
                   </h3>
                   <div className="flex items-center gap-4 text-sm text-oryzo-muted font-oryzo-body">
                     {entry.readTime && <span>{entry.readTime} READ</span>}

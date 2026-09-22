@@ -173,7 +173,7 @@ export default function PlatformLinksPage({ searchParams }: PlatformLinksPagePro
             </div>
 
             <motion.h1
-              className="text-4xl md:text-5xl font-display italic text-oryzo-cream mb-4"
+              className="text-4xl md:text-5xl font-medium uppercase tracking-[0.2em] text-oryzo-cream mb-4"
               initial={{ y: 20, opacity: 0 }}
               animate={mounted ? { y: 0, opacity: 1 } : {}}
               transition={{ duration: 0.7, delay: 0.3 }}

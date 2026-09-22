@@ -106,7 +106,7 @@ export default function MusicPage() {
               <span className="block text-xs text-oryzo-muted uppercase tracking-[0.3em] font-medium mb-6">
                 Discography
               </span>
-              <h1 className="text-5xl md:text-7xl font-display italic text-oryzo-cream leading-[0.95] mb-6">
+              <h1 className="text-5xl md:text-7xl font-medium uppercase tracking-[0.2em] text-oryzo-cream leading-[0.95] mb-6">
                 Music
               </h1>
               <p className="text-oryzo-body text-oryzo-muted max-w-2xl font-oryzo-body leading-relaxed">
@@ -247,7 +247,7 @@ export default function MusicPage() {
 
                     <div className="min-w-0">
                       <h3 className="text-xl md:text-2xl font-display italic text-oryzo-cream group-hover:text-oryzo-ember transition-colors duration-300 mb-1">
-                        {release.title.toUpperCase()}
+                        {release.title}
                       </h3>
                       <div className="flex items-center gap-3 text-xs md:text-sm text-oryzo-muted font-oryzo-body">
                         <span>{release.year}</span>

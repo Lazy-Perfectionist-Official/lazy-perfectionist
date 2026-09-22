@@ -37,7 +37,7 @@ export default function NotFound() {
           </motion.span>
 
           <motion.h1
-            className="text-5xl md:text-7xl font-display italic text-oryzo-cream leading-[0.95] mb-6"
+            className="text-5xl md:text-7xl font-medium uppercase tracking-[0.2em] text-oryzo-cream leading-[0.95] mb-6"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: EASE, delay: 0.1 }}
