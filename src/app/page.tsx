@@ -9,6 +9,7 @@ import Journal from '@/app/components/portfolio/Journal';
 import Stats from '@/app/components/portfolio/Stats';
 import Finale from '@/app/components/portfolio/Finale';
 import Contact from '@/app/components/portfolio/Contact';
+import LoadingScreen from '@/app/components/portfolio/LoadingScreen';
 import { generateStructuredData } from '@/components/SEO';
 
 export default function HomePage() {
@@ -53,6 +54,9 @@ export default function HomePage() {
           ],
         })}
       />
+      {/* Once-per-session intro overlay. Renders nothing on the server and
+          never gates the content below — it paints over it briefly. */}
+      <LoadingScreen />
       <main>
         {/* Hero is main content too — keeping it inside the landmark is what
             axe's "region" rule expects (nav + hero copy were outside main). */}
