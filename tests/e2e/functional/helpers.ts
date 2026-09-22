@@ -51,6 +51,7 @@ export async function expectExternalLink(
 export const SPOTIFY_ARTIST_URL = 'https://open.spotify.com/artist/7ELTTbYXSvCIXh0W6IV3um'
 export const SPOTIFY_LUSG_TRACK_URL = 'https://open.spotify.com/track/4RnwmBIaSuOqGEu8R2nIsU'
 export const MEDIUM_PROFILE_URL = 'https://medium.com/@lazyperfectist'
+export const KOFI_SHOP_URL = 'https://ko-fi.com/lazyperfectionist/shop'
 
 /** Minimal Medium post shape consumed by the Journal section. */
 export function mediumPostFixture(overrides: Partial<Record<string, string>> & { id: string; title: string }) {

@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test'
 import {
   expectExternalLink,
   isDesktopViewport,
+  KOFI_SHOP_URL,
   mediumPostFixture,
   SPOTIFY_ARTIST_URL,
   SPOTIFY_LUSG_TRACK_URL,
@@ -29,7 +30,10 @@ test.describe('Hero navigation', () => {
     await expect(page.getByTestId('nav-link-home')).toHaveAttribute('href', '/')
     await expect(page.getByTestId('nav-link-music')).toHaveAttribute('href', '/music')
     await expect(page.getByTestId('nav-link-blog')).toHaveAttribute('href', '/blog')
-    await expect(page.getByTestId('nav-link-store')).toHaveAttribute('href', '/store')
+    // Store links go straight to the external Ko-fi shop (same-tab): the
+    // internal /store route broke RSC prefetches (CORS on the 307). The
+    // /store route itself is still asserted below for direct entry.
+    await expect(page.getByTestId('nav-link-store')).toHaveAttribute('href', KOFI_SHOP_URL)
     await expect(page.getByTestId('nav-link-connect')).toHaveAttribute('href', '/platform-links')
   })
 

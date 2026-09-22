@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { navHref } from '@/lib/nav';
 
 interface NavigationProps {
   currentPage?: string;
@@ -12,10 +13,9 @@ interface NavigationProps {
 export default function Navigation({ currentPage = 'home' }: NavigationProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Matches Hero.tsx nav items — Connect routes to internal /platform-links
+  // Matches Hero.tsx nav items — Connect routes to internal /platform-links;
+  // navHref (shared via @/lib/nav) points Store straight at the Ko-fi shop.
   const navItems = useMemo(() => ['Home', 'Music', 'Blog', 'Store', 'Connect'], []);
-  const navHref = (item: string) =>
-    item === 'Home' ? '/' : item === 'Connect' ? '/platform-links' : `/${item.toLowerCase()}`;
 
   return (
     <motion.nav

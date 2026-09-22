@@ -6,6 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
+import { navHref } from '@/lib/nav';
 import SpotlightReveal from '@/app/components/portfolio/SpotlightReveal';
 
 // Hero background candidates (module scope → stable identity across re-renders).
@@ -42,9 +43,6 @@ export default function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
 
   const navItems = ['Home', 'Music', 'Blog', 'Store', 'Connect'];
-
-  const navHref = (item: string) =>
-    item === 'Home' ? '/' : item === 'Connect' ? '/platform-links' : `/${item.toLowerCase()}`;
 
   useEffect(() => {
     let cancelled = false;
