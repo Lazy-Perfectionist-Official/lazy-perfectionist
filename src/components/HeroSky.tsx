@@ -8,10 +8,12 @@
  * shooting star every ~13s.
  * Effects are motion-safe-gated (static under reduced motion). No JS.
  *
- * Composition notes: the tree stands left-of-center so it clears both
- * the artwork and the vinyl's slide path (page x < ~500); the moon
- * answers from the upper right. Values tuned after vision review — the
- * first cut's horizon was too quiet to read as a landscape.
+ * Composition notes: a crashed satellite lies nose-down left-of-center
+ * (clears both the artwork and the vinyl's slide path, page x < ~500),
+ * its tail and dish rising into the lit horizon band while a whip
+ * antenna still blinks ember; the moon answers from the upper right.
+ * The far skyline stays deliberately quiet — low amplitude, hazy
+ * value — so the wreck owns the left band.
  */
 
 type Star = { x: number; y: number; r: number; o: number; tw?: number };
@@ -21,7 +23,7 @@ type Star = { x: number; y: number; r: number; o: number; tw?: number };
 // mobile center-crop still shows sky, so touch visitors get twinkle too.
 const STARS: Star[] = [
   // Left-band cluster — the right-of-center field alone left the sky
-  // over the tree reading as empty at desktop widths.
+  // above the wreck reading as empty at desktop widths.
   { x: 120, y: 320, r: 1.1, o: 0.55 },
   { x: 150, y: 140, r: 1.3, o: 0.6, tw: 8 },
   { x: 230, y: 64, r: 1.6, o: 0.68, tw: 9 },
@@ -105,18 +107,30 @@ export default function HeroSky() {
             <stop offset="1" stopColor="#dc5000" stopOpacity="0" />
           </radialGradient>
 
+          {/* Ember light pooling at the crash site — the beacon's
+              answer on the ground. Gives the impact mound and debris
+              a faint warm field to silhouette against (dark marks on
+              #0a0605 alone sit below the grain's own modulation). */}
+          <radialGradient id="scar-glow">
+            <stop offset="0" stopColor="#dc5000" stopOpacity="0.2" />
+            <stop offset="0.5" stopColor="#dc5000" stopOpacity="0.08" />
+            <stop offset="1" stopColor="#dc5000" stopOpacity="0" />
+          </radialGradient>
+
           {/* Far ridge fades toward its base — atmospheric haze lifting
-              the crest line, the way distant ranges photograph at dusk. */}
+              the crest line, the way distant ranges photograph at dusk.
+              Kept close to the sky's own value so the range reads as
+              distance, not a bold zigzag competing with the wreck. */}
           <linearGradient
             id="far-ridge-fill"
             gradientUnits="userSpaceOnUse"
             x1="0"
-            y1={445}
+            y1={470}
             x2="0"
             y2={650}
           >
-            <stop offset="0" stopColor="#502b39" />
-            <stop offset="1" stopColor="#3a1a27" />
+            <stop offset="0" stopColor="#452232" />
+            <stop offset="1" stopColor="#331622" />
           </linearGradient>
 
           {/* Soft halo so the moon sits in the sky, not on it. */}
@@ -258,17 +272,18 @@ export default function HeroSky() {
           fill="url(#horizon-pool)"
         />
 
-        {/* Ridges in three depths. The far skyline is drawn as an actual
-            mountain range — sharp asymmetric peaks arrived-at and left
-            steeply, long climbs into wide saddles, no repeating rhythm —
-            because evenly-spaced rolling crests read as a stock vector
-            wave, not a landscape. Tallest peak stands right of the
-            artwork where the sky is open; the stretch behind the cover
-            stays low so it never competes. Far ridge: hazy plum, crest
-            lifted by haze (gradient fill). Mid: near-black plum, softer
-            forms. Near ground: melts into the canvas. */}
+        {/* Ridges in three depths. The far skyline keeps the sharp
+            asymmetric-peak technique (crests arrived-at steeply, left
+            gently) but a QUIETER voice than the first cut: lower
+            amplitude, deep saddles that let sky show between massifs,
+            and a fill close to the dusk behind it — distinct summits
+            at distance, not a bold rampart. Tallest massif stands
+            right of the artwork where the sky is open; the stretch
+            behind the cover stays low so it never competes. Mid:
+            near-black plum, soft forms. Near ground: melts into the
+            canvas and carries the crashed satellite. */}
         <path
-          d="M 0 545 C 45 528 80 495 120 480 C 135 492 150 522 165 540 C 185 556 200 556 215 552 C 245 540 265 500 300 462 C 315 480 335 530 355 548 C 375 560 395 505 420 492 C 432 500 442 512 455 515 C 472 505 488 485 505 478 C 525 490 550 535 575 556 C 605 540 630 500 660 470 C 675 492 688 520 702 542 C 718 556 738 505 760 490 C 772 500 785 525 800 538 C 825 545 845 515 870 498 C 885 505 905 540 925 550 C 945 545 968 490 1000 452 C 1015 478 1030 515 1045 532 C 1060 545 1075 512 1095 498 C 1115 508 1138 522 1162 527 C 1185 525 1205 490 1225 480 C 1240 495 1255 525 1270 540 C 1290 545 1315 500 1345 488 C 1365 495 1410 508 1440 514 L 1440 900 L 0 900 Z"
+          d="M 0 548 C 45 536 80 512 120 500 C 135 510 150 534 165 546 C 185 558 200 558 215 554 C 245 542 265 508 300 494 C 315 508 335 540 355 552 C 375 560 395 520 420 510 C 432 518 442 528 455 530 C 472 522 488 508 505 503 C 525 512 550 542 575 556 C 605 544 630 512 660 498 C 675 516 688 538 702 548 C 718 558 738 520 760 508 C 772 516 785 536 800 546 C 825 551 845 526 870 512 C 885 518 905 544 925 552 C 945 549 968 506 1000 478 C 1015 500 1030 528 1045 540 C 1060 550 1075 522 1095 510 C 1115 519 1138 530 1162 534 C 1185 532 1205 504 1225 496 C 1240 508 1255 534 1270 546 C 1290 551 1315 514 1345 502 C 1365 508 1410 518 1440 522 L 1440 900 L 0 900 Z"
           fill="url(#far-ridge-fill)"
         />
         <path
@@ -281,43 +296,119 @@ export default function HeroSky() {
           fill="#0a0605"
         />
 
-        {/* The lone tree — hand-drawn tapered strokes, left of center so
-            it clears both the artwork and the vinyl's slide path, and
-            answers the moon across the diagonal. Crown starts below the
-            "Out now" line; base plants on the near ground (~700). */}
-        <g stroke="#060302" fill="none" strokeLinecap="round">
+        {/* The crashed satellite — a machine that fell out of this sky.
+            Drawn axis-aligned in its own frame (nose at the origin,
+            hull along +x, dorsal gear at -y) and placed with one
+            rotate(-55) so it augured in nose-down: fuselage, flared
+            engine bell, dish aimed along the hull toward the moon, a
+            bent solar wing with the last cell torn off, and a whip
+            antenna whose ember beacon still blinks (motion-safe; a
+            steady ember point under reduced motion). Nose at (268,704)
+            keeps the wreck clear of both the artwork and the vinyl's
+            slide path. */}
+        <g transform="translate(268 704) rotate(-55)">
+          <g fill="#060302">
+            {/* hull — crumpled nose tapering into a straight capsule */}
+            <path d="M 0 0 C 4 -2 9 -8 14 -14 L 150 -14 L 150 14 L 14 14 C 9 8 4 2 0 0 Z" />
+            {/* flared engine bell at the tail */}
+            <path d="M 150 -12 L 168 -27 L 168 27 L 150 12 Z" />
+            {/* dish on a stalk, feed strut + dot */}
+            <path
+              d="M 122 -14 L 128 -28"
+              stroke="#060302"
+              strokeWidth={2.5}
+              fill="none"
+            />
+            <ellipse
+              cx={130}
+              cy={-30}
+              rx={12}
+              ry={4.5}
+              transform="rotate(38 130 -30)"
+            />
+            <path
+              d="M 136 -36 L 143 -45"
+              stroke="#060302"
+              strokeWidth={1.5}
+              fill="none"
+            />
+            <circle cx={144} cy={-46.5} r={1.3} />
+            {/* solar wing — three cells and a torn fourth */}
+            <path
+              d="M 88 -14 L 82 -26"
+              stroke="#060302"
+              strokeWidth={3}
+              fill="none"
+            />
+            <g transform="translate(82 -26) rotate(-35)">
+              <rect x={0} y={0} width={10.5} height={13} />
+              <rect x={12} y={0} width={10.5} height={13} />
+              <rect x={24} y={0} width={10.5} height={13} />
+              <path d="M 36 0 L 44 1 L 41 6 L 43 13 L 36 13 Z" />
+            </g>
+            {/* sheared-off ventral mounting stub */}
+            <path d="M 112 14 L 104 24 L 110 27 L 118 16 Z" />
+          </g>
+          {/* whip antenna + the beacon that still blinks. Brightness
+              lives on the dot itself (a base-opacity-only dot caps the
+              animated envelope below its own steady state); the faint
+              halo gives the pulse something to breathe through even in
+              a single static frame, and stays as a soft steady glow
+              under reduced motion. */}
           <path
-            d="M 355 706 C 357 650 351 592 356 538"
-            strokeWidth={9}
+            d="M 158 -13 L 170 -40"
+            stroke="#060302"
+            strokeWidth={2}
+            fill="none"
           />
+          <g className="motion-safe:animate-beacon">
+            <circle cx={171} cy={-44} r={5.5} fill="#dc5000" opacity={0.2} />
+            <circle cx={171} cy={-44} r={2.6} fill="#dc5000" opacity={0.7} />
+          </g>
+        </g>
+
+        {/* Crash scars in world space, along the near ground: an impact
+            mound burying the nose, a gouge trailing back up-slope, dirt
+            spray, and the torn solar cell lying in the dirt. The ember
+            pool paints first so each mark silhouettes against light —
+            without it the debris sits below the grain's own modulation
+            on the near-black ground. */}
+        <ellipse cx={268} cy={702} rx={62} ry={22} fill="url(#scar-glow)" />
+        <g fill="#060302">
+          <path d="M 232 710 Q 268 688 306 710 Z" />
           <path
-            d="M 356 538 C 358 505 354 472 361 432"
-            strokeWidth={6}
+            d="M 178 708 Q 222 699 264 704 L 260 713 Q 216 708 182 714 Z"
+            opacity={0.7}
           />
-          <path
-            d="M 356 536 C 384 512 412 500 442 486"
-            strokeWidth={4.5}
+          <rect
+            width={9}
+            height={3.5}
+            transform="translate(200 700) rotate(-16)"
+            opacity={0.9}
           />
-          <path
-            d="M 442 486 C 456 480 467 471 476 459"
-            strokeWidth={2.4}
+          <rect
+            width={7}
+            height={3}
+            transform="translate(186 694) rotate(22)"
+            opacity={0.85}
           />
-          <path d="M 355 486 C 328 471 306 469 283 454" strokeWidth={4} />
-          <path d="M 283 454 C 271 448 263 439 257 428" strokeWidth={2} />
-          <path
-            d="M 360 434 C 376 418 396 412 416 400"
-            strokeWidth={3.4}
+          <rect
+            width={11}
+            height={6}
+            transform="translate(158 702) rotate(9)"
+            opacity={0.95}
           />
-          <path
-            d="M 416 400 C 428 394 437 385 443 374"
-            strokeWidth={1.8}
-          />
-          <path d="M 360 434 C 346 417 327 411 309 398" strokeWidth={3} />
-          <path d="M 309 398 C 298 392 291 383 287 372" strokeWidth={1.6} />
-          <path
-            d="M 361 432 C 363 416 360 402 365 387"
-            strokeWidth={2.6}
-          />
+          <g
+            stroke="#060302"
+            strokeWidth={2.5}
+            strokeLinecap="round"
+            opacity={0.7}
+            fill="none"
+          >
+            <path d="M 244 692 L 228 678" />
+            <path d="M 256 688 L 246 672" />
+            <path d="M 266 690 L 262 674" />
+          </g>
         </g>
 
         {/* Occasional meteor — visible ~0.7s of every 13s cycle, first

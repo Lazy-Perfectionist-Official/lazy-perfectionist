@@ -35,6 +35,7 @@
   --animate-twinkle: twinkle 5s ease-in-out infinite;
   --animate-breathe: breathe 9s ease-in-out infinite;
   --animate-shoot: shoot 13s linear infinite;
+  --animate-beacon: beacon 7s linear infinite;
 
   @keyframes vinyl-spin {
     to {
@@ -88,6 +89,30 @@
     100% {
       transform: translate(830px, 312px);
       opacity: 0;
+    }
+  }
+
+  /* Distress beacon on the crashed satellite — a quick double pulse,
+     then ~5.5s of dark. The keyframes drive a group wrapping the dot
+     and its halo (which carry their own base opacities), so the
+     reduced-motion state keeps a steady ember point. */
+  @keyframes beacon {
+    0%,
+    26%,
+    100% {
+      opacity: 0.14;
+    }
+
+    3% {
+      opacity: 1;
+    }
+
+    9% {
+      opacity: 0.25;
+    }
+
+    15% {
+      opacity: 0.9;
     }
   }
 }
