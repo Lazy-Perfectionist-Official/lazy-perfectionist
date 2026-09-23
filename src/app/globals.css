@@ -122,21 +122,9 @@
     }
   }
 
-  /* Faint film grain over the whole page. Intervals bakes its grain
-     into artwork (backbg.png) rather than overlaying it — the hero sky
-     does both: this page-wide whisper plus a stronger layer inside the
-     scene itself. */
-  body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: 50;
-    pointer-events: none;
-    opacity: 0.04;
-    background-image: url("/assets/img/noise-tile.webp");
-    background-repeat: repeat;
-    background-size: 200px 200px;
-  }
+  /* Film grain lives inside the hero artwork (HeroSky's baked-in
+     speckle tile), the way Intervals does it — no page-wide overlay,
+     so text and imagery stay crisp. */
 }
 
 @layer components {
