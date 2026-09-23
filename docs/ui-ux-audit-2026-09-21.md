@@ -27,13 +27,13 @@
 | F3 | Lighthouse lane audited dev server with vacuous thresholds | real-bug (meta) | **Fixed today** — prod build gated in `test:pipeline`, 12/12 |
 | F4 | `settleLayout` deadlocked on lazy images (Firefox/WebKit timeouts) | coverage-gap | **Fixed today** — only in-flight loads awaited, 5s bound |
 | F5 | UX journeys used soft (vacuous) assertions | coverage-gap | **Fixed today** — real assertions restored |
-| F6 | `homepage loading screen` test targets a removed testid; 7 zombie baselines | coverage-gap | **Open** |
-| F7 | `homepage contact section` baseline captures the hero, not the contact section | coverage-gap | **Open** |
-| F8 | FIGMA spec still specifies the loading screen that was deliberately removed | taste / spec-stale | **Open** |
-| F9 | Body forced `#000`; spec says canvas `#100904`, never pure black | taste / spec-divergence | **Open** |
+| F6 | `homepage loading screen` test targets a removed testid; 7 zombie baselines | coverage-gap | **Fixed 2026-09-22** — zombie test + 7 baselines deleted; loading screen re-introduced (F8 resolution 2) with a real functional spec |
+| F7 | `homepage contact section` baseline captures the hero, not the contact section | coverage-gap | **Fixed 2026-09-22** — selector re-pointed to `[data-testid="contact-section"]`, baseline regenerated |
+| F8 | FIGMA spec still specifies the loading screen that was deliberately removed | taste / spec-stale | **Fixed 2026-09-22** — resolution 2 taken: fast non-blocking loader (≤1.6s, once per session, reduced-motion opt-out); spec now matches code |
+| F9 | Body forced `#000`; spec says canvas `#100904`, never pure black | taste / spec-divergence | **Fixed 2026-09-22** — body paints walnut-shadow `#100904` directly; ORYZO-colors test asserts it |
 | F10 | `/store` same-tab server redirect to Ko-fi exits the site | taste | **Open** |
 | F11 | `lazyperfectionist.com` is parked for sale at BuyDomains — canonical URLs point at it | real-bug (ops/domain) | **Open** — not a build gate |
-| F12 | Contact-form API-failure toast has no automated test | coverage-gap (minor) | **Open** |
+| F12 | Contact-form API-failure toast has no automated test | coverage-gap (minor) | **Closed — already covered**: `home-functions.spec.ts` "surfaces an error toast when the API rejects" (route 500 → error toast, fields retained) predates this audit item; no gap remains |
 
 ---
 
@@ -58,23 +58,21 @@ The ux journeys silently passed on missing preconditions. Restored to real asser
 
 ## Open findings
 
-### F6 — Zombie loading-screen test and baselines (coverage-gap)
-The `homepage loading screen` visual test targets `[data-testid="loading-screen"]` — an element **deleted on 2026-08-13** (commit d8005d5, "Remove LoadingScreen 2.7s blocking gate"). The selector matches nothing; `isVisible()` returns immediately, so the test **silently skips in every run** (it is part of the 47 skips). Meanwhile 7 tracked baseline PNGs (`loading-screen-*.png`) are stale, and the vision-judge lane burned a verdict on one — correctly reporting "entirely blank — solid black rectangle" — which triggered a false-alarm investigation today. Independently verified via vision: the baseline contains no content.
-**Action**: delete the test and the 7 baselines, or re-point to a real loading UI if one is re-introduced (see F8).
+### F6 — Zombie loading-screen test and baselines (coverage-gap — fixed 2026-09-22)
+The `homepage loading screen` visual test targeted `[data-testid="loading-screen"]` — an element **deleted on 2026-08-13** (commit d8005d5, "Remove LoadingScreen 2.7s blocking gate"). The selector matched nothing; `isVisible()` returned immediately, so the test silently skipped in every run, while 7 tracked baseline PNGs went stale (one burned a vision-judge verdict on a blank rectangle).
+**Resolution**: zombie test and all 7 baselines deleted; a real loader exists again (see F8), and its behaviors (fresh-visit show + self-remove, once-per-session skip, reduced-motion skip) are covered by `tests/e2e/functional/loading-screen-functions.spec.ts`.
 
-### F7 — Contact-section baseline captures the hero (coverage-gap)
-The `homepage contact section` test selects `section` filtered by `/contact|connect/i` `.first()` — which matches an earlier section. Vision verification of the committed baseline shows the **hero**: navigation, "Where *silence* speaks through the sound." headline, Stream CTA — no form fields. The real contact section exists and is testable (`data-testid="contact-section"`, `Contact.tsx:140`; form at `contact-form`; newsletter at `newsletter-form`) and its behavior is covered functionally, but there is no correctly-named visual baseline of the actual contact UI (background video, heading, form, newsletter, footer socials).
-**Action**: re-point the selector to `[data-testid="contact-section"]` and regenerate. Low risk — purely test hygiene.
+### F7 — Contact-section baseline captures the hero (coverage-gap — fixed 2026-09-22)
+The `homepage contact section` test selected `section` filtered by `/contact|connect/i` `.first()`, which matched the hero (its nav has a Connect link), so the committed baseline showed navigation + hero headline instead of the contact UI.
+**Resolution**: selector re-pointed to `[data-testid="contact-section"]`, count-guard dropped so the assertion can fail, baseline regenerated with the F8/F9 changes.
 
-### F8 — Spec still describes the removed loading screen (taste / spec-stale)
-`docs/FIGMA-DESIGN-SPEC.md` specifies a loading screen (PORTFOLIO label, rotating words, 000→100 counter, 3px progress bar). The implementation was deliberately removed as a **site-breaking regression** — a 2.7s blocking gate (commit d8005d5). Two defensible resolutions, owner's call:
-1. Accept removal (instant paint is the better UX for a 5-page portfolio) → update the spec to record the decision.
-2. Re-introduce a fast, non-blocking variant → new implementation + real test (replacing F6's zombie).
-Until decided, the spec and code contradict each other, and F6 keeps producing zombie artifacts.
+### F8 — Spec still describes the removed loading screen (taste / spec-stale — resolved 2026-09-22)
+`docs/FIGMA-DESIGN-SPEC.md` specifies a loading screen; the 2026-08-13 implementation was removed because it **gated the whole tree for 2.7s** — the removal was correct, the spec was not stale so much as awaiting a non-blocking rebuild.
+**Resolution**: option 2 taken. New `LoadingScreen.tsx` renders a fixed overlay over already-painted content (server renders `null`, never gates the tree — LCP-safe), shows once per browser session, skips under `prefers-reduced-motion`, runs `clamp(900ms, readiness, 1600ms)` with a 380ms exit fade, and carries the spec's label/rotating-words/counter/progress-bar vocabulary (words: *Create* → *Lazy Perfectionist*; label: EST. 2025 — HONG KONG). See `changelogs/2026-09-22_design-voice-tokens-loading-screen.md`.
 
-### F9 — Body background `#000` vs spec canvas `#100904` (taste / spec-divergence)
-`globals.css` forces `body` to pure `#000`; the ORYZO spec's canvas is `#100904` and its Don'ts say "never pure black." In practice the page wrappers carry `bg-oryzo-canvas`, so visitors see the intended tone — the visual suite even documents this in the ORYZO-colors test comment, and Lighthouse a11y is unaffected. The divergence is between the spec's letter and the implementation's structure.
-**Action**: either move the canvas tone onto `body` (and simplify the test's accepted-color list) or annotate the spec that `body` is a backdrop behind tone-carrying wrappers. Cosmetic either way.
+### F9 — Body background `#000` vs spec canvas `#100904` (taste / spec-divergence — fixed 2026-09-22)
+`globals.css` forced `body` to pure `#000 !important` while the ORYZO spec's canvas is `#100904` ("never pure black").
+**Resolution**: the html/body rule now paints `var(--color-walnut-shadow)` (#100904) directly, `!important` dropped, and a cream-on-walnut `::selection` was added; the ORYZO-colors test asserts the computed `rgb(16, 9, 4)`.
 
 ### F10 — `/store` same-tab exit to Ko-fi (taste)
 `src/app/store/page.tsx:4` server-redirects (HTTP 307) to `ko-fi.com/lazyperfectionist/shop` in the **same tab** — the only navigation that fully leaves the site, requiring browser-back to return. This is intentional (documented, asserted by the ux journey and excluded from Lighthouse for exactly this reason) and fine for a small merch shop. If wanted later: open in a new tab, or a light interstitial preserving site nav. Not a defect.
@@ -116,6 +114,6 @@ Until decided, the spec and code contradict each other, and F6 keeps producing z
 
 ## Verdict
 
-The shipped UI has **no open real-bug findings** from the heuristic pass — the five genuine defects found this cycle (F1–F5) are fixed and gated. What remains open is test/spec hygiene (F6, F7, F12 — mechanical fixes), a spec-vs-code decision (F8, F9), a deliberate design choice (F10), and one operational outage outside this repo's blast radius (F11). Recommended order: F7 + F6 cleanup (minutes, kills false alarms in the judge lane), F12 (one test), then the F8/F9 spec decisions, F10 only if desired.
+The shipped UI has **no open real-bug findings** from the heuristic pass — the five genuine defects found this cycle (F1–F5) are fixed and gated. The 2026-09-22 design-voice pass closed the remaining hygiene items: F6/F7 (zombie test + wrong-section baseline), F8/F9 (spec conformance — non-blocking loader rebuilt, walnut canvas on body), and F12 (verified already covered). What remains open is a deliberate design choice (F10) and one operational outage outside this repo's blast radius (F11).
 
 — *Audit performed 2026-09-21 by Claude (Phase 0 of the UI/UX verification plan). All fixed findings verified by the full pipeline: lint → functional (cross-browser) → navigation → visual → Lighthouse-on-prod.*
