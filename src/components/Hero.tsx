@@ -1,17 +1,20 @@
 import Image from "next/image";
 
+import HeroSky from "@/components/HeroSky";
 import { LINKS } from "@/lib/site";
 
 // Plini pattern: centered poster stack — eyebrow, giant display word,
 // accent subline, album art panel — with Intervals' discipline of a
-// single filled CTA.
+// single filled CTA. The twilight ridge behind it is the sky the record
+// lives under.
 export default function Hero() {
   return (
     <section
-      className="overflow-x-clip bg-[radial-gradient(ellipse_60%_45%_at_50%_0%,rgba(220,80,0,0.07),transparent)]"
+      className="relative overflow-x-clip"
       data-testid="hero-section"
     >
-      <div className="mx-auto flex max-w-5xl flex-col items-center px-6 pb-16 pt-16 text-center md:pb-24 md:pt-24">
+      <HeroSky />
+      <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center px-6 pb-16 pt-16 text-center md:pb-24 md:pt-24">
         {/* Hero-only craft cue: the eyebrow is flanked by short hairline
             rules. Section eyebrows elsewhere stay plain. */}
         <div className="flex items-center justify-center gap-4">
@@ -42,7 +45,7 @@ export default function Hero() {
             aria-hidden="true"
             className="pointer-events-none absolute inset-[6%] z-0 rounded-full transition-transform duration-[650ms] ease-[cubic-bezier(0.16,1,0.3,1)] reveal:group-hover:translate-x-[52%]"
           >
-            <div className="h-full w-full animate-vinyl rounded-full border border-cream/10 bg-[#050302] bg-[repeating-radial-gradient(circle,rgba(255,237,215,0.085)_0_1px,transparent_1px_5px)] [animation-play-state:paused] transition-shadow duration-[650ms] reveal:group-hover:[animation-play-state:running] reveal:group-hover:shadow-[0_18px_50px_rgba(0,0,0,0.55)]">
+            <div className="h-full w-full animate-vinyl rounded-full border border-cream/10 bg-[#050302] bg-[repeating-radial-gradient(circle,rgba(255,237,215,0.085)_0_1px,transparent_1px_5px)] [animation-play-state:paused] transition-shadow duration-[650ms] reveal:group-hover:[animation-play-state:running] reveal:group-hover:shadow-[0_18px_60px_rgba(0,0,0,0.7)]">
               <div className="absolute left-1/2 top-1/2 h-1/3 w-1/3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[url('/assets/img/lusg-cover-400.webp')] bg-cover bg-center">
                 <span className="absolute left-1/2 top-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-canvas" />
               </div>

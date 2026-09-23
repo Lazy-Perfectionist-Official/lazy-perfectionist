@@ -32,10 +32,62 @@
 
 @theme {
   --animate-vinyl: vinyl-spin 3.5s linear infinite;
+  --animate-twinkle: twinkle 5s ease-in-out infinite;
+  --animate-breathe: breathe 9s ease-in-out infinite;
+  --animate-shoot: shoot 13s linear infinite;
 
   @keyframes vinyl-spin {
     to {
       transform: rotate(360deg);
+    }
+  }
+
+  /* Hero sky: stars pulse around their painted opacity (the circle
+     inside the animated group keeps its own base opacity). */
+  @keyframes twinkle {
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.3;
+    }
+  }
+
+  @keyframes breathe {
+    0%,
+    100% {
+      opacity: 0.85;
+      transform: scale(1);
+    }
+
+    50% {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+  }
+
+  /* Meteor streak — position lives in the keyframes so no transform
+     attribute is overridden; visible ~0.7s of the 13s cycle. */
+  @keyframes shoot {
+    0% {
+      transform: translate(200px, 110px);
+      opacity: 0;
+    }
+
+    2% {
+      opacity: 1;
+    }
+
+    7% {
+      transform: translate(830px, 312px);
+      opacity: 0;
+    }
+
+    100% {
+      transform: translate(830px, 312px);
+      opacity: 0;
     }
   }
 }
@@ -70,7 +122,10 @@
     }
   }
 
-  /* Faint film grain over everything — the Intervals texture. */
+  /* Faint film grain over the whole page. Intervals bakes its grain
+     into artwork (backbg.png) rather than overlaying it — the hero sky
+     does both: this page-wide whisper plus a stronger layer inside the
+     scene itself. */
   body::after {
     content: "";
     position: fixed;
