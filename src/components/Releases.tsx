@@ -42,7 +42,10 @@ export default function Releases() {
                 aria-hidden="true"
                 className="mt-4 hidden text-[11px] uppercase tracking-[0.25em] text-muted transition-colors duration-200 group-hover:text-cream md:mt-0 md:block"
               >
-                Listen ↗
+                Listen{" "}
+                <span className="inline-block transition-transform duration-200 group-hover:-translate-y-[2px] group-hover:translate-x-[2px]">
+                  ↗
+                </span>
               </span>
             </a>
           ))}

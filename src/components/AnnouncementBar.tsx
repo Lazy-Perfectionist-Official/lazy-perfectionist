@@ -11,7 +11,10 @@ export default function AnnouncementBar() {
       data-testid="announcement-bar"
       className="block bg-ember px-4 py-2.5 text-center text-[11px] font-medium uppercase tracking-[0.25em] text-canvas transition-colors duration-200 hover:bg-[#f05c04]"
     >
-      LUSG — the new single · out now
+      LUSG — the new single · out now{" "}
+      <span aria-hidden="true" className="text-[9px] opacity-70">
+        ↗
+      </span>
     </a>
   );
 }

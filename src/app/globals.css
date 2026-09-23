@@ -23,6 +23,23 @@
   --font-display: var(--font-serif), ui-serif, Georgia, serif;
 }
 
+/*
+ * Vinyl reveal (hero): the disc only exists for pointers that can truly
+ * hover AND for people who haven't asked for less motion. Touch devices
+ * and prefers-reduced-motion never match, so they see nothing change.
+ */
+@custom-variant reveal (@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference));
+
+@theme {
+  --animate-vinyl: vinyl-spin 3.5s linear infinite;
+
+  @keyframes vinyl-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
