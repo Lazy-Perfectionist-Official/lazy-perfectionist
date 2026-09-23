@@ -1,9 +1,16 @@
 import { test, expect } from '@playwright/test';
+import { skipIntro } from './functional/helpers';
 
 /**
  * Portfolio Interaction Tests
  * Tests artistic elements, animations, and interactive components
  */
+
+// Fresh context per test = fresh sessionStorage: skip the once-per-session
+// intro overlay on '/' visits (covered in loading-screen-functions.spec.ts).
+test.beforeEach(async ({ page }) => {
+  await skipIntro(page);
+});
 
 test.describe('Portfolio Loading Screen', () => {
   test('should display loading screen on initial visit', async ({ page }) => {

@@ -4,6 +4,7 @@ import {
   isDesktopViewport,
   KOFI_SHOP_URL,
   mediumPostFixture,
+  skipIntro,
   SPOTIFY_ARTIST_URL,
   SPOTIFY_LUSG_TRACK_URL,
 } from './helpers'
@@ -15,6 +16,13 @@ import {
  * navigation.spec.ts; here we assert link contracts, API-driven sections,
  * and the two forms end-to-end with intercepted APIs.
  */
+
+// Fresh context per test = fresh sessionStorage: mark the intro loader as
+// shown so it never overlays the '/' visits here (loader behavior itself is
+// covered in loading-screen-functions.spec.ts).
+test.beforeEach(async ({ page }) => {
+  await skipIntro(page)
+})
 
 test.describe('Hero navigation', () => {
   test('nav logo renders the artist name', async ({ page }) => {
@@ -122,8 +130,8 @@ test.describe('Journal section (API-driven)', () => {
     await page.goto('/')
     const section = page.getByTestId('journal-section')
     await section.scrollIntoViewIfNeeded()
-    await expect(page.getByTestId('journal-entry-0')).toContainText('ALPHA POST')
-    await expect(page.getByTestId('journal-entry-1')).toContainText('BETA POST')
+    await expect(page.getByTestId('journal-entry-0')).toContainText('Alpha Post')
+    await expect(page.getByTestId('journal-entry-1')).toContainText('Beta Post')
     await expectExternalLink(
       page.getByTestId('journal-entry-0'),
       /^https:\/\/medium\.com\//,

@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { skipIntro } from '../functional/helpers';
 
 /**
  * User Journey Tests
@@ -8,6 +9,12 @@ import { test, expect, type Page } from '@playwright/test';
  * if-visible guards around expects, no vacuous scroll/tap loops, no
  * post-click assertions weaker than "the body exists".
  */
+
+// Fresh context per test = fresh sessionStorage: skip the once-per-session
+// intro overlay on '/' visits (covered in loading-screen-functions.spec.ts).
+test.beforeEach(async ({ page }) => {
+  await skipIntro(page);
+});
 
 /** Resolve a nav link at any viewport: open the mobile drawer when there is one. */
 async function navLink(page: Page, item: 'music' | 'blog' | 'store') {

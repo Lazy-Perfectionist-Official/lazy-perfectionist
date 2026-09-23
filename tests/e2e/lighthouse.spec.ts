@@ -7,6 +7,15 @@ import { playAudit } from 'playwright-lighthouse';
 // network we do not primarily ship for on the desktop lanes.
 // @ts-expect-error Lighthouse ships no types for deep config imports
 import desktopConfig from 'lighthouse/core/config/lr-desktop-config.js';
+import { skipIntro } from './functional/helpers';
+
+// Fresh context per test = fresh sessionStorage: skip the once-per-session
+// intro overlay on '/' visits (covered in loading-screen-functions.spec.ts).
+// The init script re-fires on Lighthouse's own storage-reset navigations,
+// and the loader never gates content either way, so LCP stays honest.
+test.beforeEach(async ({ page }) => {
+  await skipIntro(page);
+});
 
 /**
  * Lighthouse audits against the PRODUCTION build.

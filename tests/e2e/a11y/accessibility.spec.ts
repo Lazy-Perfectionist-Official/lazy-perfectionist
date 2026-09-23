@@ -1,10 +1,17 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { skipIntro } from '../functional/helpers';
 
 /**
  * Comprehensive Accessibility Tests
  * Tests WCAG compliance, keyboard navigation, and screen reader support
  */
+
+// Fresh context per test = fresh sessionStorage: skip the once-per-session
+// intro overlay on '/' visits (covered in loading-screen-functions.spec.ts).
+test.beforeEach(async ({ page }) => {
+  await skipIntro(page);
+});
 
 // Fail only on violations that actually block users (axe "serious"/"critical"
 // impacts); moderate/minor findings (e.g. landmark polish) stay visible in

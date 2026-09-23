@@ -9,8 +9,8 @@ import { expectExternalLink, SPOTIFY_ARTIST_URL, SPOTIFY_LUSG_TRACK_URL } from '
 
 const EXPECTED_CATALOG = [
   { title: 'LUSG', href: SPOTIFY_LUSG_TRACK_URL },
-  { title: 'CYCLOTHYMIA', href: 'https://open.spotify.com/track/5gQpSHmOlmQTrz2H1iznYV' },
-  { title: 'ORBIT', href: 'https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8' },
+  { title: 'Cyclothymia', href: 'https://open.spotify.com/track/5gQpSHmOlmQTrz2H1iznYV' },
+  { title: 'Orbit', href: 'https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8' },
 ]
 
 test.describe('Music page', () => {

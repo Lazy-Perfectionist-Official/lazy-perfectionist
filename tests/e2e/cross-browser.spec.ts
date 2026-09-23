@@ -1,9 +1,16 @@
 import { test, expect } from '@playwright/test';
+import { skipIntro } from './functional/helpers';
 
 /**
  * Cross-Browser Compatibility Tests
  * Tests functionality across Chrome, Firefox, and Safari (WebKit)
  */
+
+// Fresh context per test = fresh sessionStorage: skip the once-per-session
+// intro overlay on '/' visits (covered in loading-screen-functions.spec.ts).
+test.beforeEach(async ({ page }) => {
+  await skipIntro(page);
+});
 
 test.describe('Cross-Browser - Chrome', () => {
 

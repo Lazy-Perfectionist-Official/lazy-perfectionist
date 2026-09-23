@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { skipIntro } from './functional/helpers';
 
 /**
  * E2E Navigation Tests
@@ -11,6 +12,12 @@ import { test, expect, type Page } from '@playwright/test';
  * - "Connect" routes to /platform-links
  * - /store redirects off-site to ko-fi
  */
+
+// Fresh context per test = fresh sessionStorage: skip the once-per-session
+// intro overlay on '/' visits (covered in loading-screen-functions.spec.ts).
+test.beforeEach(async ({ page }) => {
+  await skipIntro(page);
+});
 
 function navLink(page: Page, item: string) {
   return page

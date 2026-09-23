@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { skipIntro } from '../functional/helpers';
 
 /**
  * Visual Regression Tests for Homepage
@@ -8,19 +9,17 @@ import { test, expect, type Page } from '@playwright/test';
 // Emulate prefers-reduced-motion so decorative infinite animations
 // (hero scroll indicator, contact marquee) and the autoplaying contact
 // video settle to a deterministic rest state before screenshots.
+// skipIntro: fresh context per test = fresh sessionStorage, so mark the
+// once-per-session intro overlay as shown (loader behavior is covered in
+// functional/loading-screen-functions.spec.ts).
 test.beforeEach(async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
+  await skipIntro(page);
 });
 
 test.describe('Visual Regression - Homepage', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
-    // Wait for loading screen to complete
-    try {
-      await page.waitForSelector('[data-testid="loading-screen"]', { state: 'detached', timeout: 5000 });
-    } catch {
-      // Continue if loading screen not found
-    }
     await page.waitForLoadState('networkidle');
   });
 
@@ -83,16 +82,15 @@ test.describe('Visual Regression - Homepage', () => {
   });
 
   test('homepage contact section @visual', async ({ page }) => {
-    const contactSection = page.locator('section').filter({ hasText: /contact|connect/i }).first();
-    if (await contactSection.count() > 0) {
-      await contactSection.scrollIntoViewIfNeeded();
-      await page.waitForTimeout(500);
-      await expect(contactSection).toHaveScreenshot('contact-section.png', {
-        maxDiffPixels: 100,
-      });
-    } else {
-      test.skip();
-    }
+    // F7: the old `filter({ hasText: /contact|connect/i })` matched the hero
+    // first (its nav has a Connect link), so the baseline captured the wrong
+    // section. The contact section carries its own testid.
+    const contactSection = page.getByTestId('contact-section');
+    await contactSection.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(500);
+    await expect(contactSection).toHaveScreenshot('contact-section.png', {
+      maxDiffPixels: 100,
+    });
   });
 
   test('homepage mobile viewport @visual', async ({ page }) => {
@@ -126,20 +124,6 @@ test.describe('Visual Regression - Homepage', () => {
       fullPage: true,
       maxDiffPixels: 600,
     });
-  });
-
-  test('homepage loading screen @visual', async ({ page }) => {
-    // Load fresh to catch loading screen
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
-    const loadingScreen = page.locator('[data-testid="loading-screen"]');
-    if (await loadingScreen.isVisible({ timeout: 2000 })) {
-      await page.waitForTimeout(100);
-      await expect(page).toHaveScreenshot('loading-screen.png', {
-        maxDiffPixels: 50,
-      });
-    } else {
-      test.skip('Loading screen not visible');
-    }
   });
 });
 
@@ -178,7 +162,7 @@ test.describe('Visual Regression - Interactive States', () => {
             img.addEventListener('load', done, { once: true });
             img.addEventListener('error', done, { once: true });
           }
-          setTimeout(resolve, 5000);
+          setTimeout(resolve, 300);
         })
     );
   }
@@ -304,9 +288,9 @@ test.describe('Visual Regression - Color Consistency', () => {
       return window.getComputedStyle(document.body).backgroundColor;
     });
 
-    // Should match ORYZO canvas color (body is forced to #000 in globals.css;
-    // the oryzo canvas tone lives on the page wrapper elements)
-    expect(backgroundColor).toMatch(/rgb\(0, 0, 0\)|rgb\(20, 20, 20\)|rgb\(15, 15, 15\)|#0c0c0c/i);
+    // Should match the ORYZO canvas token (walnut-shadow #100904) that the
+    // html/body rule in globals.css paints directly.
+    expect(backgroundColor).toMatch(/rgb\(16, 9, 4\)/);
 
     await expect(page).toHaveScreenshot('oryzo-colors.png', {
       fullPage: true,

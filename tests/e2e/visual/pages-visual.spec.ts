@@ -1,9 +1,17 @@
 import { test, expect } from '@playwright/test';
+import { skipIntro } from '../functional/helpers';
 
 /**
  * Visual Regression Tests for All Pages
  * Ensures design consistency across the entire site
  */
+
+// Fresh context per test = fresh sessionStorage: the cross-page journeys
+// below visit '/', so mark the once-per-session intro overlay as shown
+// (loader behavior is covered in functional/loading-screen-functions.spec.ts).
+test.beforeEach(async ({ page }) => {
+  await skipIntro(page);
+});
 
 test.describe('Visual Regression - Music Page', () => {
   test.beforeEach(async ({ page }) => {

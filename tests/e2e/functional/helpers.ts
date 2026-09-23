@@ -32,6 +32,20 @@ export async function isDesktopViewport(page: Page): Promise<boolean> {
 }
 
 /**
+ * Mark the intro loader as already shown for this session. Every test gets
+ * a fresh context (= fresh sessionStorage), so without this the '/'-visiting
+ * suites would all sit through the once-per-session intro overlay. Dedicated
+ * loader behavior is covered by loading-screen-functions.spec.ts.
+ */
+export async function skipIntro(page: Page) {
+  await page.addInitScript(() => {
+    try {
+      sessionStorage.setItem('lp-intro-shown', '1')
+    } catch {}
+  })
+}
+
+/**
  * Assert the external-link contract on an anchor: href matches pattern,
  * opens in a new tab, and is hardened with noopener/noreferrer.
  */
