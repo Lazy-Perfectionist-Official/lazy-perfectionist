@@ -1,0 +1,31 @@
+{
+  "name": "Lazy Perfectionist — Instrumental Rock",
+  "short_name": "Lazy Perf",
+  "description": "Bedroom instrumental rock from Hong Kong. Three singles — Orbit, Cyclothymia, LUSG — out now.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#100904",
+  "theme_color": "#100904",
+  "icons": [
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["music", "entertainment"],
+  "shortcuts": [
+    {
+      "name": "Listen",
+      "short_name": "Music",
+      "description": "Hear the singles",
+      "url": "/#music"
+    }
+  ]
+}
