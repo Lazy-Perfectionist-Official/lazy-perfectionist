@@ -9,10 +9,10 @@ export default function AnnouncementBar() {
       target="_blank"
       rel="noopener noreferrer"
       data-testid="announcement-bar"
-      className="block bg-ember px-4 py-2.5 text-center text-[11px] font-medium uppercase tracking-[0.25em] text-canvas transition-colors duration-200 hover:bg-[#f05c04]"
+      className="announcement block bg-ember px-4 py-3 text-center text-[11px] font-medium uppercase tracking-[0.25em] text-canvas transition-colors duration-200 hover:bg-ember-bright"
     >
       LUSG — the new single · out now{" "}
-      <span aria-hidden="true" className="text-[9px] opacity-70">
+      <span aria-hidden="true" className="text-[10px] opacity-60">
         ↗
       </span>
     </a>

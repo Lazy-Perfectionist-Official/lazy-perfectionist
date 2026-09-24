@@ -16,8 +16,9 @@
   --color-surface: #1d130b;
   --color-cream: #ffedd7;
   --color-muted: #e7b37b;
-  --color-line: #40372e;
+  --color-line: #4c4034;
   --color-ember: #dc5000;
+  --color-ember-bright: #f05c04;
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-serif), ui-serif, Georgia, serif;
@@ -120,6 +121,7 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    color-scheme: dark;
   }
 
   body {
@@ -141,6 +143,11 @@
     outline-offset: 3px;
   }
 
+  /* Ember ring is invisible on the ember bar; cream reads on both. */
+  .announcement:focus-visible {
+    outline-color: var(--color-cream);
+  }
+
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;
@@ -153,8 +160,9 @@
 }
 
 @layer components {
+  /* Link system: chrome links (nav) hover cream, content links hover ember. */
   .nav-link {
-    @apply text-[11px] font-medium uppercase tracking-[0.25em] text-muted transition-colors duration-200 hover:text-cream md:text-xs;
+    @apply inline-block py-2.5 text-[11px] font-medium uppercase tracking-[0.25em] text-muted transition-colors duration-300 hover:text-cream md:text-xs;
   }
 
   .eyebrow {
@@ -162,10 +170,10 @@
   }
 
   .ember-pill {
-    @apply inline-flex items-center rounded-full bg-ember px-8 py-3.5 text-xs font-medium uppercase tracking-[0.25em] text-canvas transition-[background-color,box-shadow] duration-200 hover:bg-[#f05c04] hover:shadow-[0_0_44px_rgba(220,80,0,0.35)];
+    @apply inline-flex items-center rounded-full bg-ember px-8 py-3.5 text-xs font-medium uppercase tracking-[0.25em] text-canvas transition-[background-color,box-shadow] duration-200 hover:bg-ember-bright hover:shadow-[0_0_20px_rgba(220,80,0,0.25)];
   }
 
   .quiet-link {
-    @apply text-[11px] font-medium uppercase tracking-[0.25em] text-muted transition-colors duration-200 hover:text-ember md:text-xs;
+    @apply inline-block py-2.5 text-[11px] font-medium uppercase tracking-[0.25em] text-muted transition-colors duration-300 hover:text-ember md:text-xs;
   }
 }

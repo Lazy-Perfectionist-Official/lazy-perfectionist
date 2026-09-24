@@ -26,7 +26,8 @@ export const RELEASES: Release[] = [
   {
     year: '2026',
     title: 'LUSG',
-    description: 'The latest single — orchestral layers meeting modern synths.',
+    // Final wording is the artist's call.
+    description: 'The bedroom at full scale — strings and synths stacked to the ceiling.',
     href: LINKS.spotifyLusg,
   },
   {

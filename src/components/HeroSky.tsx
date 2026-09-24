@@ -1,6 +1,6 @@
 /*
  * Twilight ridge behind the hero — the Intervals "backbg" pattern rebuilt
- * as pure vector. Palette-locked to the site tokens (canvas-plum sky,
+ * as pure vector. Palette-derived tints of the site tokens (canvas-plum sky,
  * ember/driftwood horizon, near-canvas ground), a fine film grain baked
  * into the artwork via a dual-polarity speckle tile (no page-wide
  * overlay — text and imagery stay crisp), and three whisper-quiet CSS
@@ -82,7 +82,7 @@ export default function HeroSky() {
             <stop offset="0.38" stopColor="#150c13" />
             <stop offset="0.55" stopColor="#281419" />
             <stop offset="0.68" stopColor="#5a2513" />
-            <stop offset="0.82" stopColor="#6e3012" />
+            <stop offset="0.80" stopColor="#6e3012" />
           </linearGradient>
 
           {/* Horizon glow — ember core fading through driftwood (the
@@ -219,7 +219,7 @@ export default function HeroSky() {
         >
           <ellipse
             cx={720}
-            cy={500}
+            cy={512}
             rx={860}
             ry={210}
             fill="url(#horizon-glow)"

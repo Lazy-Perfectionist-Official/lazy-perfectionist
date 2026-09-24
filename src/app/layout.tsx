@@ -11,7 +11,7 @@ const inter = Inter({
 
 const instrumentSerif = Instrument_Serif({
   weight: "400",
-  style: ["normal", "italic"],
+  style: ["italic"],
   subsets: ["latin"],
   variable: "--font-serif",
   display: "swap",
@@ -27,6 +27,7 @@ export const metadata: Metadata = {
   ),
   title: { default: title, template: "%s | Lazy Perfectionist" },
   description,
+  alternates: { canonical: "/" },
   keywords: [
     "Lazy Perfectionist",
     "instrumental rock",

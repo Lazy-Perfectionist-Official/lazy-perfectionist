@@ -23,9 +23,9 @@ export default function Releases() {
               target="_blank"
               rel="noopener noreferrer"
               data-testid={`release-${release.title.toLowerCase()}`}
-              className="group block border-b border-line py-7 transition-colors duration-200 hover:bg-surface/60 md:grid md:grid-cols-[5rem_1fr_auto] md:items-baseline md:gap-x-10 md:py-9"
+              className="group block border-b border-line py-7 transition-colors duration-200 hover:bg-surface/60 active:bg-surface md:grid md:grid-cols-[5rem_1fr_auto] md:items-baseline md:gap-x-10 md:py-9"
             >
-              <span className="text-xs tabular-nums tracking-[0.2em] text-muted/70">
+              <span className="text-[11px] md:text-xs tabular-nums tracking-[0.2em] text-muted/70">
                 {release.year}
               </span>
 
@@ -40,7 +40,7 @@ export default function Releases() {
 
               <span
                 aria-hidden="true"
-                className="mt-4 hidden text-[11px] uppercase tracking-[0.25em] text-muted transition-colors duration-200 group-hover:text-cream md:mt-0 md:block"
+                className="mt-4 text-[11px] font-medium uppercase tracking-[0.25em] text-muted transition-colors duration-200 group-hover:text-cream md:mt-0 md:text-xs"
               >
                 Listen{" "}
                 <span className="inline-block transition-transform duration-200 group-hover:-translate-y-[2px] group-hover:translate-x-[2px]">

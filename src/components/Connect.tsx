@@ -24,7 +24,7 @@ export default function Connect() {
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="quiet-link text-sm md:text-sm"
+                  className="quiet-link"
                 >
                   {item.label}
                 </a>
