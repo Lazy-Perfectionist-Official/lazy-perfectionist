@@ -15,10 +15,12 @@
  * The far skyline stays deliberately quiet — low amplitude, hazy
  * value — so the wreck owns the left band.
  *
- * The whole scene is drawn as LINE ART: crest lines and machine
- * outlines in driftwood over faint washes, so the dusk light reads
- * as if it traces every edge instead of filling every mass. The
- * ember beacon is the one filled thing left — the living light.
+ * The whole scene obeys one rule — DRAWN LIGHT: only light carries
+ * fill (the dusk sky, the horizon's glow, stars, moon, beacon); the
+ * world itself is pure contour. No ridge owns a wash, no debris a
+ * mass — depth reads through line weight alone (far 0.40 → mid 0.48
+ * → near 0.56, atmospheric perspective as stroke). The ember beacon
+ * is the machine's one filled mark — the living light.
  */
 
 type Star = { x: number; y: number; r: number; o: number; tw?: number };
@@ -31,17 +33,17 @@ const STARS: Star[] = [
   // above the wreck reading as empty at desktop widths.
   { x: 120, y: 320, r: 1.1, o: 0.55 },
   { x: 150, y: 140, r: 1.3, o: 0.6, tw: 8 },
-  { x: 230, y: 64, r: 1.6, o: 0.68, tw: 9 },
+  { x: 230, y: 64, r: 1.9, o: 0.75, tw: 9 },
   { x: 250, y: 330, r: 0.95, o: 0.5 },
   { x: 310, y: 228, r: 1.0, o: 0.52, tw: 10 },
   { x: 388, y: 96, r: 1.3, o: 0.6, tw: 0 },
   { x: 452, y: 210, r: 1.15, o: 0.56 },
-  { x: 540, y: 72, r: 1.6, o: 0.7, tw: 1 },
+  { x: 540, y: 72, r: 1.9, o: 0.78, tw: 1 },
   { x: 596, y: 168, r: 0.9, o: 0.46 },
   { x: 648, y: 300, r: 1.1, o: 0.54 },
   { x: 700, y: 84, r: 1.35, o: 0.62, tw: 2 },
   { x: 762, y: 236, r: 1.0, o: 0.48 },
-  { x: 830, y: 120, r: 1.7, o: 0.68, tw: 3 },
+  { x: 830, y: 120, r: 2.0, o: 0.78, tw: 3 },
   { x: 872, y: 338, r: 0.9, o: 0.38 },
   { x: 908, y: 188, r: 1.1, o: 0.52 },
   { x: 952, y: 84, r: 1.35, o: 0.62, tw: 4 },
@@ -50,7 +52,7 @@ const STARS: Star[] = [
   { x: 1035, y: 352, r: 1.1, o: 0.54 },
   { x: 1082, y: 286, r: 1.5, o: 0.62, tw: 5 },
   { x: 1120, y: 180, r: 0.9, o: 0.46 },
-  { x: 1172, y: 120, r: 1.6, o: 0.68, tw: 6 },
+  { x: 1172, y: 120, r: 1.9, o: 0.75, tw: 6 },
   { x: 1218, y: 320, r: 1.0, o: 0.48 },
   { x: 1268, y: 206, r: 1.25, o: 0.55, tw: 7 },
   { x: 1322, y: 96, r: 1.5, o: 0.6 },
@@ -113,30 +115,15 @@ export default function HeroSky() {
           </radialGradient>
 
           {/* Ember light pooling at the crash site — the beacon's
-              answer on the ground. Gives the impact mound and debris
-              a faint warm field to silhouette against (dark marks on
-              #0a0605 alone sit below the grain's own modulation). */}
+              answer on the ground. Concentrates the dusk gradient
+              into a field the ink scars can cut against (dark lines
+              on a flat ember floor sit near the grain's own
+              modulation; the pool gives them contrast). */}
           <radialGradient id="scar-glow">
             <stop offset="0" stopColor="#dc5000" stopOpacity="0.2" />
             <stop offset="0.5" stopColor="#dc5000" stopOpacity="0.08" />
             <stop offset="1" stopColor="#dc5000" stopOpacity="0" />
           </radialGradient>
-
-          {/* Far ridge wash — atmospheric haze, the way distant ranges
-              photograph at dusk. Painted at low fill-opacity under the
-              crest linework: it suggests mass without owning it, so
-              the driftwood crest line does the drawing. */}
-          <linearGradient
-            id="far-ridge-fill"
-            gradientUnits="userSpaceOnUse"
-            x1="0"
-            y1={470}
-            x2="0"
-            y2={650}
-          >
-            <stop offset="0" stopColor="#452232" />
-            <stop offset="1" stopColor="#331622" />
-          </linearGradient>
 
           {/* Soft halo so the moon sits in the sky, not on it. */}
           <radialGradient id="moon-halo">
@@ -277,81 +264,62 @@ export default function HeroSky() {
           fill="url(#horizon-pool)"
         />
 
-        {/* Ridges in three depths, drawn as line art: driftwood crest
-            strokes over faint washes, the way dusk light traces a
-            range's edge instead of filling its mass. The far skyline
-            keeps its quiet asymmetric massifs but as the faintest
-            etched line (0.32) over a 15% haze wash; mid steps up
-            (0.4 over 45%); the near ground carries the heaviest wash
-            (0.5) so the wreck and its scars stay anchored. Short form
-            accents run downhill from a few crests — etched shading,
-            three strokes per depth at most. Tallest massif stands
-            right of the artwork where the sky is open; the stretch
-            behind the cover stays low so it never competes. */}
-        <path
-          d="M 0 548 C 45 536 80 512 120 500 C 135 510 150 534 165 546 C 185 558 200 558 215 554 C 245 542 265 508 300 494 C 315 508 335 540 355 552 C 375 560 395 520 420 510 C 432 518 442 528 455 530 C 472 522 488 508 505 503 C 525 512 550 542 575 556 C 605 544 630 512 660 498 C 675 516 688 538 702 548 C 718 558 738 520 760 508 C 772 516 785 536 800 546 C 825 551 845 526 870 512 C 885 518 905 544 925 552 C 945 549 968 506 1000 478 C 1015 500 1030 528 1045 540 C 1060 550 1075 522 1095 510 C 1115 519 1138 530 1162 534 C 1185 532 1205 504 1225 496 C 1240 508 1255 534 1270 546 C 1290 551 1315 514 1345 502 C 1365 508 1410 518 1440 522 L 1440 900 L 0 900 Z"
-          fill="url(#far-ridge-fill)"
-          fillOpacity={0.15}
-        />
+        {/* Ridges in three depths, pure crest line — no ridge owns a
+            wash, so depth reads through stroke alone: far 0.40, mid
+            0.48, near 0.56, atmospheric perspective as line weight.
+            Short form accents run downhill from a few crests — etched
+            shading, three strokes per depth at most. Tallest massif
+            stands right of the artwork where the sky is open; the
+            stretch behind the cover stays low so it never competes. */}
         <path
           d="M 0 548 C 45 536 80 512 120 500 C 135 510 150 534 165 546 C 185 558 200 558 215 554 C 245 542 265 508 300 494 C 315 508 335 540 355 552 C 375 560 395 520 420 510 C 432 518 442 528 455 530 C 472 522 488 508 505 503 C 525 512 550 542 575 556 C 605 544 630 512 660 498 C 675 516 688 538 702 548 C 718 558 738 520 760 508 C 772 516 785 536 800 546 C 825 551 845 526 870 512 C 885 518 905 544 925 552 C 945 549 968 506 1000 478 C 1015 500 1030 528 1045 540 C 1060 550 1075 522 1095 510 C 1115 519 1138 530 1162 534 C 1185 532 1205 504 1225 496 C 1240 508 1255 534 1270 546 C 1290 551 1315 514 1345 502 C 1365 508 1410 518 1440 522"
           fill="none"
           stroke="#e7b37b"
-          strokeOpacity={0.32}
-          strokeWidth={1.2}
+          strokeOpacity={0.40}
+          strokeWidth={1.35}
           strokeLinejoin="round"
           strokeLinecap="round"
         />
-        <g stroke="#e7b37b" strokeWidth={1} fill="none" strokeLinecap="round">
+        <g stroke="#e7b37b" strokeWidth={1.1} fill="none" strokeLinecap="round">
           <path
             d="M 975 512 C 988 522 1002 534 1012 540"
-            strokeOpacity={0.16}
+            strokeOpacity={0.20}
           />
           <path
             d="M 1105 522 C 1118 528 1130 534 1140 536"
-            strokeOpacity={0.16}
+            strokeOpacity={0.20}
           />
           <path
             d="M 262 520 C 275 528 288 536 298 540"
-            strokeOpacity={0.14}
+            strokeOpacity={0.18}
           />
         </g>
-        <path
-          d="M 0 640 C 70 610 130 592 195 600 C 250 606 290 640 345 652 C 390 661 425 630 475 612 C 515 598 555 592 600 600 C 630 606 655 622 690 638 C 725 652 765 658 810 650 C 850 642 880 620 920 610 C 955 602 990 604 1030 616 C 1070 628 1105 650 1150 658 C 1195 665 1240 645 1285 626 C 1325 610 1370 606 1440 618 L 1440 900 L 0 900 Z"
-          fill="#170d13"
-          fillOpacity={0.45}
-        />
         <path
           d="M 0 640 C 70 610 130 592 195 600 C 250 606 290 640 345 652 C 390 661 425 630 475 612 C 515 598 555 592 600 600 C 630 606 655 622 690 638 C 725 652 765 658 810 650 C 850 642 880 620 920 610 C 955 602 990 604 1030 616 C 1070 628 1105 650 1150 658 C 1195 665 1240 645 1285 626 C 1325 610 1370 606 1440 618"
           fill="none"
           stroke="#e7b37b"
-          strokeOpacity={0.4}
-          strokeWidth={1.6}
+          strokeOpacity={0.48}
+          strokeWidth={1.7}
           strokeLinejoin="round"
           strokeLinecap="round"
         />
-        <g stroke="#e7b37b" strokeWidth={1.2} fill="none" strokeLinecap="round">
+        <g stroke="#e7b37b" strokeWidth={1.3} fill="none" strokeLinecap="round">
           <path
             d="M 160 622 C 185 616 210 615 235 620"
-            strokeOpacity={0.2}
+            strokeOpacity={0.24}
           />
           <path
             d="M 1112 672 C 1138 666 1166 664 1192 668"
-            strokeOpacity={0.2}
+            strokeOpacity={0.24}
           />
         </g>
 
         <path
-          d="M 0 705 C 180 690 340 714 520 700 C 700 687 880 712 1060 698 C 1180 689 1330 706 1440 696 L 1440 900 L 0 900 Z"
-          fill="#0a0605"
-          fillOpacity={0.5}
-        />
-        <path
           d="M 0 705 C 180 690 340 714 520 700 C 700 687 880 712 1060 698 C 1180 689 1330 706 1440 696"
           fill="none"
           stroke="#e7b37b"
-          strokeOpacity={0.48}
-          strokeWidth={1.8}
+          strokeOpacity={0.56}
+          strokeWidth={2}
           strokeLinejoin="round"
           strokeLinecap="round"
         />
@@ -380,7 +348,7 @@ export default function HeroSky() {
           <path
             d="M 0 0 C 4 -2 9 -8 14 -14 L 150 -14 L 150 14 L 14 14 C 9 8 4 2 0 0 Z"
             strokeWidth={2}
-            strokeOpacity={0.62}
+            strokeOpacity={0.68}
           />
           <path
             d="M 22 -12 C 26 -7 26 7 22 12"
@@ -398,7 +366,7 @@ export default function HeroSky() {
           <path
             d="M 150 -12 L 168 -27 L 168 27 L 150 12 Z"
             strokeWidth={2}
-            strokeOpacity={0.62}
+            strokeOpacity={0.68}
           />
           <path
             d="M 160 -21 L 160 21"
@@ -417,13 +385,13 @@ export default function HeroSky() {
             rx={12}
             ry={4.5}
             transform="rotate(38 130 -30)"
-            strokeWidth={1.6}
-            strokeOpacity={0.5}
+            strokeWidth={1.9}
+            strokeOpacity={0.6}
           />
           <path
             d="M 136 -36 L 143 -45"
             strokeWidth={1.5}
-            strokeOpacity={0.45}
+            strokeOpacity={0.52}
           />
           <circle
             cx={144}
@@ -441,8 +409,8 @@ export default function HeroSky() {
           />
           <g
             transform="translate(82 -26) rotate(-35)"
-            strokeWidth={1.1}
-            strokeOpacity={0.5}
+            strokeWidth={1.25}
+            strokeOpacity={0.6}
           >
             <rect x={0} y={0} width={10.5} height={13} />
             <rect x={12} y={0} width={10.5} height={13} />
@@ -467,18 +435,19 @@ export default function HeroSky() {
             strokeOpacity={0.55}
           />
           <g className="motion-safe:animate-beacon" stroke="none">
-            <circle cx={171} cy={-44} r={5.5} fill="#dc5000" opacity={0.2} />
-            <circle cx={171} cy={-44} r={2.6} fill="#dc5000" opacity={0.7} />
+            <circle cx={171} cy={-44} r={7} fill="#dc5000" opacity={0.24} />
+            <circle cx={171} cy={-44} r={3.2} fill="#dc5000" opacity={0.8} />
           </g>
         </g>
 
-        {/* Crash scars in world space, along the near ground, drawn as
-            ink marks: an arc for the impact mound burying the nose, a
-            gouge line trailing back up-slope, dirt spray, and debris
-            ticks (the torn solar cell among them). The ember pool
-            paints first so each dark mark cuts against light — without
-            it the ink sits below the grain's own modulation on the
-            near-black ground. */}
+        {/* Crash scars in world space, along the near ground — every
+            mark a stroke, nothing filled: an arc for the impact mound
+            burying the nose, a gouge line trailing back up-slope,
+            dirt spray, and debris ticks (the torn solar cell among
+            them) in the same ink dialect. The ember pool paints first
+            so each dark line cuts against light — without it the ink
+            sits below the grain's own modulation on the near-black
+            ground. */}
         <ellipse cx={268} cy={702} rx={62} ry={22} fill="url(#scar-glow)" />
         <g stroke="#060302" fill="none" strokeLinecap="round">
           <path
@@ -496,26 +465,9 @@ export default function HeroSky() {
             <path d="M 256 688 L 246 672" />
             <path d="M 266 690 L 262 674" />
           </g>
-        </g>
-        <g fill="#060302">
-          <rect
-            width={9}
-            height={3.5}
-            transform="translate(200 700) rotate(-16)"
-            opacity={0.9}
-          />
-          <rect
-            width={7}
-            height={3}
-            transform="translate(186 694) rotate(22)"
-            opacity={0.85}
-          />
-          <rect
-            width={11}
-            height={6}
-            transform="translate(158 702) rotate(9)"
-            opacity={0.95}
-          />
+          <path d="M 200 701 L 209 698" strokeWidth={3.5} strokeOpacity={0.9} />
+          <path d="M 186 695 L 192 698" strokeWidth={3} strokeOpacity={0.85} />
+          <path d="M 158 705 L 169 707" strokeWidth={5.5} strokeOpacity={0.95} />
         </g>
 
         {/* Occasional meteor — visible ~0.7s of every 13s cycle, first
