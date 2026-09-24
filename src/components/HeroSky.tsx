@@ -13,14 +13,21 @@
  * its tail and dish rising into the lit horizon band while a whip
  * antenna still blinks ember; the moon answers from the upper right.
  * The far skyline stays deliberately quiet — low amplitude, hazy
- * value — so the wreck owns the left band.
+ * value — so the wreck owns the left band. Crests draw ANGULAR —
+ * straight facets between sharp irregular peaks, rocky lobes on the
+ * near ground (the reference's paper-cutout hand) — and the wreck
+ * carries the scene's machined detail the way the reference's dead
+ * tree carries its branches; the desert floor wears a dash field,
+ * sparse at the crest, denser toward the viewer.
  *
- * The whole scene obeys one rule — DRAWN LIGHT: only light carries
- * fill (the dusk sky, the horizon's glow, stars, moon, beacon); the
- * world itself is pure contour. No ridge owns a wash, no debris a
- * mass — depth reads through line weight alone (far 0.40 → mid 0.48
- * → near 0.56, atmospheric perspective as stroke). The ember beacon
- * is the machine's one filled mark — the living light.
+ * The whole scene follows the backbg's own mechanism, in our dialect
+ * — MASS & ETCH: land is flat value-stepped masses, darkest nearest,
+ * each receding plane dusted toward the horizon light (atmospheric
+ * depth as fill value, never rim light), and one driftwood line
+ * etches every crest — the drawn hand on the silhouette edge. Chroma
+ * is confined to a narrow horizon band of dusty clay; nothing paints
+ * pure black (warm charcoals only) — save the ember beacon, the
+ * machine's one saturated mark, the living light.
  */
 
 type Star = { x: number; y: number; r: number; o: number; tw?: number };
@@ -59,6 +66,11 @@ const STARS: Star[] = [
   { x: 1368, y: 268, r: 1.0, o: 0.51 },
   { x: 410, y: 388, r: 1.2, o: 0.58 },
   { x: 1240, y: 400, r: 1.25, o: 0.55 },
+  // Low horizon dust — the backbg's stipple thickens toward the band.
+  { x: 520, y: 448, r: 0.8, o: 0.32 },
+  { x: 762, y: 462, r: 0.75, o: 0.3 },
+  { x: 940, y: 430, r: 0.85, o: 0.34 },
+  { x: 1305, y: 452, r: 0.8, o: 0.3 },
 ];
 
 export default function HeroSky() {
@@ -74,27 +86,35 @@ export default function HeroSky() {
         focusable="false"
       >
         <defs>
-          {/* Sky: canvas-plum into an ember-warm horizon. The horizon
-              band rides ~55% down the viewBox so it stays on-screen
-              below the 210px announcement+nav stack (a 900px-tall
-              viewport only shows viewBox y ≲ 600). Stops below ~0.45
-              stay dark — the title zone keeps its contrast. */}
+          {/* Sky: canvas-plum into a dusty-clay horizon — the backbg
+              grade. A thin bright core hugs the far-crest line
+              (offsets ~0.55–0.62; the band rides ~55% down the
+              viewBox so it stays on-screen below the 210px
+              announcement+nav stack — a 900px-tall viewport only
+              shows viewBox y ≲ 600), a long cool tail above, and a
+              steep drop below that the land masses hide. Stops above
+              ~0.5 stay dark — the title zone keeps its contrast —
+              and saturation lives only inside the narrow core. */}
           <linearGradient id="sky-band" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stopColor="#0c070a" />
-            <stop offset="0.38" stopColor="#150c13" />
-            <stop offset="0.55" stopColor="#281419" />
-            <stop offset="0.68" stopColor="#5a2513" />
-            <stop offset="0.80" stopColor="#6e3012" />
+            <stop offset="0" stopColor="#0d070b" />
+            <stop offset="0.30" stopColor="#150d14" />
+            <stop offset="0.45" stopColor="#211219" />
+            <stop offset="0.55" stopColor="#3a1d24" />
+            <stop offset="0.60" stopColor="#6e3a26" />
+            <stop offset="0.66" stopColor="#4d2818" />
+            <stop offset="0.78" stopColor="#2a150e" />
+            <stop offset="1" stopColor="#1a0e09" />
           </linearGradient>
 
-          {/* Horizon glow — ember core fading through driftwood (the
-              dusty-rose trick, in our tokens). Wide enough to read as
-              sky across the whole scene, brightest behind the artwork
-              so the cover reads as backlit by dusk. */}
+          {/* Horizon glow — a dusty-clay core fading through driftwood
+              (the backbg's dusty-rose trick, in our tokens): a narrow
+              full-width band hugging the crest line, exponential
+              falloff, no bloom — brightest behind the artwork so the
+              cover reads as backlit by dusk. */}
           <radialGradient id="horizon-glow">
-            <stop offset="0" stopColor="#dc5000" stopOpacity="0.6" />
-            <stop offset="0.3" stopColor="#dc5000" stopOpacity="0.3" />
-            <stop offset="0.6" stopColor="#e7b37b" stopOpacity="0.16" />
+            <stop offset="0" stopColor="#c4703f" stopOpacity="0.5" />
+            <stop offset="0.3" stopColor="#c4703f" stopOpacity="0.24" />
+            <stop offset="0.6" stopColor="#e7b37b" stopOpacity="0.12" />
             <stop offset="1" stopColor="#e7b37b" stopOpacity="0" />
           </radialGradient>
 
@@ -109,9 +129,9 @@ export default function HeroSky() {
               are irregular, and a single centered ellipse reads as a
               vector gradient rather than a sky. */}
           <radialGradient id="horizon-pool">
-            <stop offset="0" stopColor="#e7b37b" stopOpacity="0.3" />
-            <stop offset="0.45" stopColor="#dc5000" stopOpacity="0.16" />
-            <stop offset="1" stopColor="#dc5000" stopOpacity="0" />
+            <stop offset="0" stopColor="#e7b37b" stopOpacity="0.26" />
+            <stop offset="0.45" stopColor="#c4703f" stopOpacity="0.14" />
+            <stop offset="1" stopColor="#c4703f" stopOpacity="0" />
           </radialGradient>
 
           {/* Ember light pooling at the crash site — the beacon's
@@ -120,8 +140,8 @@ export default function HeroSky() {
               on a flat ember floor sit near the grain's own
               modulation; the pool gives them contrast). */}
           <radialGradient id="scar-glow">
-            <stop offset="0" stopColor="#dc5000" stopOpacity="0.2" />
-            <stop offset="0.5" stopColor="#dc5000" stopOpacity="0.08" />
+            <stop offset="0" stopColor="#dc5000" stopOpacity="0.24" />
+            <stop offset="0.5" stopColor="#dc5000" stopOpacity="0.11" />
             <stop offset="1" stopColor="#dc5000" stopOpacity="0" />
           </radialGradient>
 
@@ -206,9 +226,9 @@ export default function HeroSky() {
         >
           <ellipse
             cx={720}
-            cy={512}
+            cy={505}
             rx={860}
-            ry={210}
+            ry={118}
             fill="url(#horizon-glow)"
           />
         </g>
@@ -248,12 +268,13 @@ export default function HeroSky() {
         )}
 
         {/* Spill sits behind the ridges so its light shows in the sky
-            strip above each silhouette line. */}
+            strip above each mass edge — light bleeding over
+            obstacles, per the reference. */}
         <ellipse
           cx={720}
-          cy={515}
+          cy={500}
           rx={1050}
-          ry={120}
+          ry={100}
           fill="url(#horizon-spill)"
         />
         <ellipse
@@ -264,38 +285,65 @@ export default function HeroSky() {
           fill="url(#horizon-pool)"
         />
 
-        {/* Ridges in three depths, pure crest line — no ridge owns a
-            wash, so depth reads through stroke alone: far 0.40, mid
-            0.48, near 0.56, atmospheric perspective as line weight.
-            Short form accents run downhill from a few crests — etched
-            shading, three strokes per depth at most. Tallest massif
-            stands right of the artwork where the sky is open; the
-            stretch behind the cover stays low so it never competes. */}
+        {/* Ridges in three depths — the backbg mechanism: each plane
+            a FLAT mass, value stepping darker toward the viewer (far
+            #432c38 → mid #251824 → near #150e0c, atmospheric pickup
+            as fill value, never rim light), and one driftwood line
+            etches every crest edge — drawn angular: straight facet
+            segments between sharp irregular peaks, scree ticks
+            running down-slope, the near ground broken into rocky
+            lobes. Tallest massif stands right of the
+            artwork where the sky is open; the stretch behind the
+            cover stays low so it never competes. */}
+        {/* Far mass — flat hazy plum, the lightest land value, dusted
+            toward the horizon light. Hard cut at the crest; the etch
+            line rides its edge. */}
         <path
-          d="M 0 548 C 45 536 80 512 120 500 C 135 510 150 534 165 546 C 185 558 200 558 215 554 C 245 542 265 508 300 494 C 315 508 335 540 355 552 C 375 560 395 520 420 510 C 432 518 442 528 455 530 C 472 522 488 508 505 503 C 525 512 550 542 575 556 C 605 544 630 512 660 498 C 675 516 688 538 702 548 C 718 558 738 520 760 508 C 772 516 785 536 800 546 C 825 551 845 526 870 512 C 885 518 905 544 925 552 C 945 549 968 506 1000 478 C 1015 500 1030 528 1045 540 C 1060 550 1075 522 1095 510 C 1115 519 1138 530 1162 534 C 1185 532 1205 504 1225 496 C 1240 508 1255 534 1270 546 C 1290 551 1315 514 1345 502 C 1365 508 1410 518 1440 522"
+          d="M 0 548 L 55 524 L 90 534 L 128 502 L 158 544 L 200 556 L 248 514 L 292 494 L 326 540 L 368 552 L 415 506 L 452 532 L 505 502 L 548 544 L 592 518 L 638 498 L 686 542 L 732 556 L 778 514 L 826 548 L 868 512 L 922 550 L 968 510 L 1000 478 L 1042 538 L 1088 506 L 1136 534 L 1186 498 L 1236 544 L 1288 552 L 1342 504 L 1394 518 L 1440 522 L 1440 900 L 0 900 Z"
+          fill="#432c38"
+        />
+        <path
+          d="M 0 548 L 55 524 L 90 534 L 128 502 L 158 544 L 200 556 L 248 514 L 292 494 L 326 540 L 368 552 L 415 506 L 452 532 L 505 502 L 548 544 L 592 518 L 638 498 L 686 542 L 732 556 L 778 514 L 826 548 L 868 512 L 922 550 L 968 510 L 1000 478 L 1042 538 L 1088 506 L 1136 534 L 1186 498 L 1236 544 L 1288 552 L 1342 504 L 1394 518 L 1440 522"
           fill="none"
           stroke="#e7b37b"
-          strokeOpacity={0.40}
-          strokeWidth={1.35}
+          strokeOpacity={0.34}
+          strokeWidth={1.3}
           strokeLinejoin="round"
           strokeLinecap="round"
         />
         <g stroke="#e7b37b" strokeWidth={1.1} fill="none" strokeLinecap="round">
-          <path
-            d="M 975 512 C 988 522 1002 534 1012 540"
-            strokeOpacity={0.20}
-          />
-          <path
-            d="M 1105 522 C 1118 528 1130 534 1140 536"
-            strokeOpacity={0.20}
-          />
-          <path
-            d="M 262 520 C 275 528 288 536 298 540"
-            strokeOpacity={0.18}
-          />
+          <path d="M 1006 484 L 1016 498" strokeOpacity={0.16} />
+          <path d="M 1190 502 L 1200 516" strokeOpacity={0.16} />
+          <path d="M 296 498 L 306 512" strokeOpacity={0.14} />
         </g>
+        {/* Mid mass — one step darker; swallows the far fill below its
+            crest so depth reads as stacked value. */}
         <path
-          d="M 0 640 C 70 610 130 592 195 600 C 250 606 290 640 345 652 C 390 661 425 630 475 612 C 515 598 555 592 600 600 C 630 606 655 622 690 638 C 725 652 765 658 810 650 C 850 642 880 620 920 610 C 955 602 990 604 1030 616 C 1070 628 1105 650 1150 658 C 1195 665 1240 645 1285 626 C 1325 610 1370 606 1440 618"
+          d="M 0 640 L 62 612 L 124 598 L 188 612 L 246 644 L 298 656 L 348 646 L 402 628 L 468 608 L 536 600 L 598 616 L 652 640 L 706 656 L 762 648 L 826 612 L 894 604 L 958 616 L 1026 632 L 1088 652 L 1148 660 L 1206 638 L 1276 622 L 1352 610 L 1440 618 L 1440 900 L 0 900 Z"
+          fill="#251824"
+        />
+        <path
+          d="M 0 640 L 62 612 L 124 598 L 188 612 L 246 644 L 298 656 L 348 646 L 402 628 L 468 608 L 536 600 L 598 616 L 652 640 L 706 656 L 762 648 L 826 612 L 894 604 L 958 616 L 1026 632 L 1088 652 L 1148 660 L 1206 638 L 1276 622 L 1352 610 L 1440 618"
+          fill="none"
+          stroke="#e7b37b"
+          strokeOpacity={0.40}
+          strokeWidth={1.5}
+          strokeLinejoin="round"
+          strokeLinecap="round"
+        />
+        <g stroke="#e7b37b" strokeWidth={1.2} fill="none" strokeLinecap="round">
+          <path d="M 602 620 L 612 626" strokeOpacity={0.19} />
+          <path d="M 898 608 L 910 610" strokeOpacity={0.19} />
+        </g>
+
+        {/* Near ground — darkest plane, nearest viewer. The wreck,
+            scars, and drag streaks all live on this floor. */}
+        <path
+          d="M 0 705 L 62 696 L 128 710 L 196 700 L 262 714 L 336 702 L 408 694 L 482 708 L 556 698 L 628 712 L 700 702 L 772 714 L 848 700 L 922 690 L 1002 706 L 1082 712 L 1162 696 L 1244 708 L 1322 698 L 1440 696 L 1440 900 L 0 900 Z"
+          fill="#150e0c"
+        />
+        <path
+          d="M 0 705 L 62 696 L 128 710 L 196 700 L 262 714 L 336 702 L 408 694 L 482 708 L 556 698 L 628 712 L 700 702 L 772 714 L 848 700 L 922 690 L 1002 706 L 1082 712 L 1162 696 L 1244 708 L 1322 698 L 1440 696"
           fill="none"
           stroke="#e7b37b"
           strokeOpacity={0.48}
@@ -303,26 +351,54 @@ export default function HeroSky() {
           strokeLinejoin="round"
           strokeLinecap="round"
         />
-        <g stroke="#e7b37b" strokeWidth={1.3} fill="none" strokeLinecap="round">
-          <path
-            d="M 160 622 C 185 616 210 615 235 620"
-            strokeOpacity={0.24}
-          />
-          <path
-            d="M 1112 672 C 1138 666 1166 664 1192 668"
-            strokeOpacity={0.24}
-          />
+
+        {/* Ground drag — the backbg's recession texture: faint
+            horizontal driftwood streaks running with the near ground,
+            as if the horizon light drags long across the flat. */}
+        <g stroke="#e7b37b" strokeWidth={1.1} fill="none" strokeLinecap="round">
+          <path d="M 90 742 L 360 738" strokeOpacity={0.14} />
+          <path d="M 610 748 L 950 744" strokeOpacity={0.12} />
+          <path d="M 1120 736 L 1360 740" strokeOpacity={0.13} />
         </g>
 
-        <path
-          d="M 0 705 C 180 690 340 714 520 700 C 700 687 880 712 1060 698 C 1180 689 1330 706 1440 696"
-          fill="none"
-          stroke="#e7b37b"
-          strokeOpacity={0.56}
-          strokeWidth={2}
-          strokeLinejoin="round"
-          strokeLinecap="round"
-        />
+        {/* Desert floor detail — the backbg's dash field: short
+            hand-placed marks across the near ground, sparse at the
+            crest, denser toward the viewer (recession by density);
+            driftwood stubble catching the dusk, a few ink chips where
+            the pool lights the floor near the mound. */}
+        <g fill="none" strokeLinecap="round">
+          <g stroke="#e7b37b" strokeWidth={1.2}>
+            <path d="M 430 716 L 444 718" strokeOpacity={0.1} />
+            <path d="M 720 718 L 731 719" strokeOpacity={0.1} />
+            <path d="M 1180 716 L 1195 718" strokeOpacity={0.1} />
+            <path d="M 70 730 L 84 729" strokeOpacity={0.12} />
+            <path d="M 395 733 L 409 734" strokeOpacity={0.12} />
+            <path d="M 560 728 L 571 730" strokeOpacity={0.12} />
+            <path d="M 985 731 L 998 732" strokeOpacity={0.12} />
+            <path d="M 1080 735 L 1094 736" strokeOpacity={0.12} />
+            <path d="M 1250 730 L 1263 731" strokeOpacity={0.12} />
+            <path d="M 95 755 L 112 753" strokeOpacity={0.15} />
+            <path d="M 210 760 L 226 759" strokeOpacity={0.15} />
+            <path d="M 330 752 L 345 753" strokeOpacity={0.14} />
+            <path d="M 470 762 L 486 760" strokeOpacity={0.15} />
+            <path d="M 610 756 L 625 757" strokeOpacity={0.14} />
+            <path d="M 760 768 L 777 766" strokeOpacity={0.16} />
+            <path d="M 895 752 L 908 753" strokeOpacity={0.14} />
+            <path d="M 1035 764 L 1051 762" strokeOpacity={0.16} />
+            <path d="M 1160 758 L 1173 759" strokeOpacity={0.15} />
+            <path d="M 1300 766 L 1316 764" strokeOpacity={0.16} />
+            <path d="M 1385 754 L 1398 755" strokeOpacity={0.14} />
+            <path d="M 160 784 L 178 782" strokeOpacity={0.18} />
+            <path d="M 540 786 L 557 784" strokeOpacity={0.18} />
+            <path d="M 900 788 L 915 787" strokeOpacity={0.17} />
+            <path d="M 1240 786 L 1256 784" strokeOpacity={0.18} />
+          </g>
+          <g stroke="#120a06" strokeWidth={1.6} strokeOpacity={0.5}>
+            <path d="M 200 724 L 212 725" />
+            <path d="M 285 716 L 298 717" />
+            <path d="M 312 722 L 322 723" />
+          </g>
+        </g>
 
         {/* The crashed satellite — a machine that fell out of this sky,
             drawn as line art: driftwood outlines and seam lines, as if
@@ -416,6 +492,8 @@ export default function HeroSky() {
             <rect x={12} y={0} width={10.5} height={13} />
             <rect x={24} y={0} width={10.5} height={13} />
             <path d="M 36 0 L 44 1 L 41 6 L 43 13 L 36 13 Z" />
+            <path d="M 0 6.5 L 34.5 6.5" strokeWidth={0.8} strokeOpacity={0.4} />
+            <path d="M 5.25 0 L 5.25 13 M 15.75 0 L 15.75 13 M 26.25 0 L 26.25 13" strokeWidth={0.8} strokeOpacity={0.4} />
           </g>
           {/* sheared-off ventral mounting stub */}
           <path
@@ -438,6 +516,29 @@ export default function HeroSky() {
             <circle cx={171} cy={-44} r={7} fill="#dc5000" opacity={0.24} />
             <circle cx={171} cy={-44} r={3.2} fill="#dc5000" opacity={0.8} />
           </g>
+
+          {/* DETAIL PASS — the backbg's dead tree carries its scene's
+              drawn detail; here the wreck is that subject. Machined
+              density in the same driftwood line dialect, secondary
+              hierarchy (0.3-0.45) under the primary outline. */}
+          <path d="M 62 -13 L 62 13" strokeWidth={1.2} strokeOpacity={0.3} />
+          <path d="M 100 -13 L 100 13" strokeWidth={1.2} strokeOpacity={0.3} />
+          <rect x={84} y={-5} width={12} height={12} strokeWidth={1.1} strokeOpacity={0.38} />
+          <path d="M 87 -2 L 87 4 M 90 -2 L 90 4 M 93 -2 L 93 4" strokeWidth={0.9} strokeOpacity={0.3} />
+          <g stroke="none" fill="#e7b37b">
+            <circle cx={30} cy={-10.5} r={0.8} fillOpacity={0.35} />
+            <circle cx={54} cy={-10.5} r={0.8} fillOpacity={0.35} />
+            <circle cx={72} cy={-10.5} r={0.8} fillOpacity={0.35} />
+            <circle cx={106} cy={-10.5} r={0.8} fillOpacity={0.35} />
+            <circle cx={138} cy={-10.5} r={0.8} fillOpacity={0.35} />
+          </g>
+          <ellipse cx={130} cy={-30} rx={7} ry={2.6} transform="rotate(38 130 -30)" strokeWidth={1} strokeOpacity={0.4} />
+          <path d="M 127 -23 L 123 -15" strokeWidth={1.2} strokeOpacity={0.4} />
+          <path d="M 164 -18 L 164 18" strokeWidth={1} strokeOpacity={0.3} />
+          <path d="M 150 -8 L 161 -13 M 150 8 L 161 13" strokeWidth={1.1} strokeOpacity={0.4} />
+          <path d="M 162 -20 L 166 -18 M 165 -28 L 169 -26" strokeWidth={1} strokeOpacity={0.35} />
+          <path d="M 60 -14 C 54 -22 60 -29 70 -31 C 76 -32 80 -29 82 -26" strokeWidth={0.9} strokeOpacity={0.32} />
+          <path d="M 132 14 L 138 22" strokeWidth={1.6} strokeOpacity={0.45} />
         </g>
 
         {/* Crash scars in world space, along the near ground — every
@@ -448,8 +549,8 @@ export default function HeroSky() {
             so each dark line cuts against light — without it the ink
             sits below the grain's own modulation on the near-black
             ground. */}
-        <ellipse cx={268} cy={702} rx={62} ry={22} fill="url(#scar-glow)" />
-        <g stroke="#060302" fill="none" strokeLinecap="round">
+        <ellipse cx={225} cy={702} rx={115} ry={30} fill="url(#scar-glow)" />
+        <g stroke="#120a06" fill="none" strokeLinecap="round">
           <path
             d="M 232 710 Q 268 688 306 710"
             strokeWidth={2}
