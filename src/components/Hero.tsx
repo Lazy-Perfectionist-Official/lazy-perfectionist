@@ -18,13 +18,13 @@ export default function Hero() {
         {/* Hero-only craft cue: the eyebrow is flanked by short hairline
             rules. Section eyebrows elsewhere stay plain. */}
         <div className="flex items-center justify-center gap-4">
-          <span aria-hidden="true" className="h-px w-8 bg-line/60" />
+          <span aria-hidden="true" className="h-px w-8 bg-line" />
           <p className="eyebrow">The new single</p>
-          <span aria-hidden="true" className="h-px w-8 bg-line/60" />
+          <span aria-hidden="true" className="h-px w-8 bg-line" />
         </div>
 
         <h1
-          className="mt-5 font-display text-[clamp(7.5rem,16vw,9.5rem)] italic leading-[0.95] text-cream"
+          className="mt-5 font-display text-[clamp(7.5rem,16vw,9.5rem)] italic leading-[0.95] tracking-[-0.015em] text-cream"
           data-testid="hero-title"
         >
           LUSG
@@ -33,7 +33,7 @@ export default function Hero() {
         {/* Identity, not news — the announcement bar already carries
             "out now"; the fold shouldn't repeat it or spend a 4th
             permanent ember. */}
-        <p className="eyebrow mt-7">Bedroom instrumental rock · Hong Kong</p>
+        <p className="eyebrow mt-7 text-muted/70">Bedroom instrumental rock · Hong Kong</p>
 
         <a
           href={LINKS.spotifyLusg}

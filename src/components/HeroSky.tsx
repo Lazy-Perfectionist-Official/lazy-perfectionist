@@ -1,7 +1,7 @@
 /*
  * Twilight ridge behind the hero — the Intervals "backbg" pattern rebuilt
- * as pure vector. Palette-derived tints of the site tokens (canvas-plum sky,
- * ember/driftwood horizon, near-canvas ground), a fine film grain baked
+ * as pure vector. The sky's plum family is artwork-only (twilight zenith
+ * complementing the ember horizon — never used in UI chrome). A fine film grain baked
  * into the artwork via a dual-polarity speckle tile (no page-wide
  * overlay — text and imagery stay crisp), and three whisper-quiet CSS
  * effects: staggered star twinkle, a breathing horizon glow, and a

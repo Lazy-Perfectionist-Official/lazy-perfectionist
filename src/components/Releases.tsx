@@ -25,7 +25,7 @@ export default function Releases() {
               data-testid={`release-${release.title.toLowerCase()}`}
               className="group block border-b border-line py-7 transition-colors duration-200 hover:bg-surface/60 active:bg-surface md:grid md:grid-cols-[5rem_1fr_auto] md:items-baseline md:gap-x-10 md:py-9"
             >
-              <span className="text-[11px] md:text-xs tabular-nums tracking-[0.2em] text-muted/70">
+              <span className="text-[11px] md:text-xs font-medium tabular-nums tracking-[0.25em] text-muted/70">
                 {release.year}
               </span>
 
@@ -33,7 +33,7 @@ export default function Releases() {
                 <span className="font-display text-3xl italic text-cream transition-colors duration-200 group-hover:text-ember md:text-4xl">
                   {release.title}
                 </span>
-                <span className="mt-2 block max-w-md text-sm leading-relaxed text-muted">
+                <span className="mt-2 block max-w-md text-sm leading-relaxed text-cream/80">
                   {release.description}
                 </span>
               </span>

@@ -17,7 +17,7 @@ export default function Header() {
       <div className="mx-auto flex max-w-5xl flex-col items-center gap-6 px-6 py-8 md:gap-8 md:py-10">
         <a
           href="/"
-          className="font-display text-3xl italic text-cream md:text-4xl"
+          className="font-display text-2xl italic text-cream md:text-3xl"
           data-testid="wordmark"
         >
           Lazy Perfectionist

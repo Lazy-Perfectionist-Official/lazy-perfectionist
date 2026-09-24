@@ -160,17 +160,17 @@
 }
 
 @layer components {
-  /* Link system: chrome links (nav) hover cream, content links hover ember. */
+  /* Link system: chrome links (nav) hover cream; content rows hover their title to ember while the Listen label rises to cream. */
   .nav-link {
     @apply inline-block py-2.5 text-[11px] font-medium uppercase tracking-[0.25em] text-muted transition-colors duration-300 hover:text-cream md:text-xs;
   }
 
   .eyebrow {
-    @apply text-[11px] font-medium uppercase tracking-[0.3em] text-muted md:text-xs;
+    @apply text-[11px] font-medium uppercase tracking-[0.25em] text-muted md:text-xs;
   }
 
   .ember-pill {
-    @apply inline-flex items-center rounded-full bg-ember px-8 py-3.5 text-xs font-medium uppercase tracking-[0.25em] text-canvas transition-[background-color,box-shadow] duration-200 hover:bg-ember-bright hover:shadow-[0_0_20px_rgba(220,80,0,0.25)];
+    @apply inline-flex items-center rounded-full bg-ember px-8 py-3.5 text-xs font-medium uppercase tracking-[0.25em] text-canvas transition-[background-color] duration-200 hover:bg-ember-bright;
   }
 
   .quiet-link {
