@@ -1,0 +1,145 @@
+import { expect, test } from '@playwright/test';
+
+/**
+ * Minimal functional suite for the single-page site.
+ *
+ * Every assert is viewport-agnostic unless explicitly project-gated, so the
+ * same spec runs under chromium/firefox/webkit-desktop (1920x1080) and
+ * mobile-chrome-small (375x667). There is no client JS beyond the Next
+ * runtime — everything below exercises real DOM state.
+ */
+
+const TRACK_URL = 'https://open.spotify.com/track/4RnwmBIaSuOqGEu8R2nIsU';
+const ARTIST_URL = 'https://open.spotify.com/artist/7ELTTbYXSvCIXh0W6IV3um';
+const SPOTIFY_TRACK_HREF = /^https:\/\/open\.spotify\.com\/track\//;
+const RELEASE_ROW_IDS = ['release-lusg', 'release-cyclothymia', 'release-orbit'] as const;
+
+test.describe('home', () => {
+  test('loads clean: zero console errors and zero page errors', async ({ page }) => {
+    const consoleErrors: string[] = [];
+    const pageErrors: string[] = [];
+
+    page.on('console', (message) => {
+      if (message.type() === 'error') consoleErrors.push(message.text());
+    });
+    page.on('pageerror', (error) => pageErrors.push(error.message));
+
+    await page.goto('/');
+    await expect(page.getByTestId('hero-title')).toBeVisible();
+    // Bounded settle so late subresources (cover art) can surface load
+    // errors; never hangs — the wait is capped and swallowed.
+    await page.waitForLoadState('networkidle', { timeout: 5_000 }).catch(() => {});
+
+    expect(consoleErrors, 'console errors during load').toEqual([]);
+    expect(pageErrors, 'uncaught page errors during load').toEqual([]);
+  });
+
+  test('hero links are honest: CTA, artwork, and artist profile point where they claim', async ({ page }) => {
+    await page.goto('/');
+
+    const cta = page.getByTestId('hero-cta-button');
+    await expect(cta).toBeVisible();
+    await expect(cta).toHaveAttribute('href', TRACK_URL);
+    await expect(cta).toHaveAttribute('target', '_blank');
+
+    const artwork = page.getByTestId('hero-artwork');
+    await expect(artwork).toBeVisible();
+    await expect(artwork).toHaveAttribute('href', TRACK_URL);
+    await expect(artwork).toHaveAttribute('target', '_blank');
+
+    const artistProfile = page.getByRole('link', { name: /artist profile/i });
+    await expect(artistProfile).toBeVisible();
+    await expect(artistProfile).toHaveAttribute('href', ARTIST_URL);
+  });
+
+  test('announcement bar carries the news: visible and links to the LUSG track', async ({ page }) => {
+    await page.goto('/');
+
+    const bar = page.getByTestId('announcement-bar');
+    await expect(bar).toBeVisible();
+    await expect(bar).toHaveAttribute('href', TRACK_URL);
+  });
+
+  test('nav anchor scrolls to music: clicking Music brings the releases section into view', async ({ page }) => {
+    await page.goto('/');
+
+    await page.getByTestId('primary-nav').getByRole('link', { name: 'Music' }).click();
+
+    // Scrolling is smooth, so the section arrives over time — toBeInViewport
+    // polls until it settles instead of assuming an instant jump.
+    await expect(page.getByTestId('releases-section')).toBeInViewport();
+  });
+
+  test('release rows afford listening: three rows with honest targets and a visible Listen label', async ({ page }) => {
+    await page.goto('/');
+
+    for (const id of RELEASE_ROW_IDS) {
+      const row = page.getByTestId(id);
+      await expect(row).toBeVisible();
+      await expect(row).toHaveAttribute('href', SPOTIFY_TRACK_HREF);
+      await expect(row).toHaveAttribute('target', '_blank');
+    }
+
+    // The Listen label is decorative (aria-hidden) but must still be visible
+    // — on mobile too, which is why this test is not project-gated.
+    await expect(page.getByTestId('release-lusg').getByText(/listen/i)).toBeVisible();
+  });
+
+  test('no horizontal scroll on mobile: document fits the viewport width', async ({ page }, testInfo) => {
+    const viewportWidth = testInfo.project.use.viewport?.width ?? 1280;
+    test.skip(viewportWidth > 500, 'only meaningful on narrow viewports');
+
+    await page.goto('/');
+    await expect(page.getByTestId('hero-title')).toBeVisible();
+
+    const overflow = await page.evaluate(
+      () => document.documentElement.scrollWidth - window.innerWidth,
+    );
+    expect(overflow, 'documentElement.scrollWidth must not exceed window.innerWidth').toBeLessThanOrEqual(0);
+  });
+});
+
+test.describe('reduced motion', () => {
+  test.use({ contextOptions: { reducedMotion: 'reduce' } });
+
+  test('reduced motion is static: motion-safe animations compute to none', async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name !== 'chromium-desktop', 'chromium only');
+
+    await page.goto('/');
+    await expect(page.getByTestId('hero-title')).toBeVisible();
+
+    // getAttribute('class') — SVG elements expose className as an object,
+    // and the hero effects live inside the HeroSky SVG.
+    const animated = await page.evaluate(() =>
+      Array.from(document.querySelectorAll('[class*="motion-safe:animate"]')).map((element) => ({
+        classes: element.getAttribute('class') ?? '',
+        animationName: getComputedStyle(element).animationName,
+        animationDuration: getComputedStyle(element).animationDuration,
+      })),
+    );
+
+    expect(animated.length, 'site should still ship motion-safe animations for this check to mean anything').toBeGreaterThan(0);
+    for (const element of animated) {
+      expect(element.animationName, `under reduced motion these classes must not animate: ${element.classes}`).toBe('none');
+    }
+  });
+});
+
+test.describe('vinyl reveal', () => {
+  test('vinyl rests at origin: slide layer has no computed translate before any hover', async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name !== 'chromium-desktop', 'chromium-desktop only');
+
+    await page.goto('/');
+
+    // The slide layer is the aria-hidden div inside the hero artwork whose
+    // classes carry transition-transform; the hover translate is gated behind
+    // the `reveal` variant, so at rest it must compute to none.
+    const slideLayer = page.locator(
+      '[data-testid="hero-artwork"] div[aria-hidden="true"][class*="transition-transform"]',
+    );
+    await expect(slideLayer).toHaveCount(1);
+
+    const translate = await slideLayer.evaluate((element) => getComputedStyle(element).translate);
+    expect(translate, 'vinyl slide layer must sit at the origin when not hovered').toBe('none');
+  });
+});
