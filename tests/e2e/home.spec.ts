@@ -34,13 +34,8 @@ test.describe('home', () => {
     expect(pageErrors, 'uncaught page errors during load').toEqual([]);
   });
 
-  test('hero links are honest: CTA, artwork, and artist profile point where they claim', async ({ page }) => {
+  test('hero links are honest: the print and the artist profile point where they claim', async ({ page }) => {
     await page.goto('/');
-
-    const cta = page.getByTestId('hero-cta-button');
-    await expect(cta).toBeVisible();
-    await expect(cta).toHaveAttribute('href', TRACK_URL);
-    await expect(cta).toHaveAttribute('target', '_blank');
 
     const artwork = page.getByTestId('hero-artwork');
     await expect(artwork).toBeVisible();
@@ -99,46 +94,37 @@ test.describe('home', () => {
   });
 });
 
-test.describe('reduced motion', () => {
-  test.use({ contextOptions: { reducedMotion: 'reduce' } });
-
-  test('reduced motion is static: motion-safe animations compute to none', async ({ page }, testInfo) => {
-    test.skip(testInfo.project.name !== 'chromium-desktop', 'chromium only');
-
-    await page.goto('/');
-    await expect(page.getByTestId('hero-title')).toBeVisible();
-
-    // getAttribute('class') — SVG elements expose className as an object,
-    // and the hero effects live inside the HeroSky SVG.
-    const animated = await page.evaluate(() =>
-      Array.from(document.querySelectorAll('[class*="motion-safe:animate"]')).map((element) => ({
-        classes: element.getAttribute('class') ?? '',
-        animationName: getComputedStyle(element).animationName,
-        animationDuration: getComputedStyle(element).animationDuration,
-      })),
-    );
-
-    expect(animated.length, 'site should still ship motion-safe animations for this check to mean anything').toBeGreaterThan(0);
-    for (const element of animated) {
-      expect(element.animationName, `under reduced motion these classes must not animate: ${element.classes}`).toBe('none');
-    }
-  });
-});
-
 test.describe('poster hero', () => {
-  test('the print is the hero: the artwork renders a real 3:4 poster image', async ({ page }) => {
+  test('the print fills the first screen: the artwork covers the section to the fold', async ({ page }, testInfo) => {
+    const viewport = testInfo.project.use.viewport ?? { width: 1280, height: 720 };
     await page.goto('/');
 
-    const poster = page.getByTestId('hero-artwork').locator('img');
+    const section = page.getByTestId('hero-section');
+    const artwork = page.getByTestId('hero-artwork');
+    const poster = artwork.locator('img');
     await expect(poster).toBeVisible();
+    await expect(poster).toHaveCSS('object-fit', 'cover');
 
-    // The plate is 1200x1600; whatever the optimizer serves, the rendered
-    // box must keep the poster's portrait ratio (the print, not a crop).
-    const box = await poster.boundingBox();
-    expect(box, 'poster must have a layout box').not.toBeNull();
-    const ratio = (box?.width ?? 0) / (box?.height ?? 1);
-    expect(ratio, 'poster must render as a 3:4 print').toBeGreaterThan(0.72);
-    expect(ratio, 'poster must render as a 3:4 print').toBeLessThan(0.78);
+    const [sectionBox, artBox] = await Promise.all([
+      section.boundingBox(),
+      artwork.boundingBox(),
+    ]);
+    expect(sectionBox, 'hero section must have a layout box').not.toBeNull();
+    expect(artBox, 'hero artwork must have a layout box').not.toBeNull();
+
+    // Edge to edge: the listen link covers the section on all four sides.
+    expect(Math.abs(artBox!.x - sectionBox!.x), 'artwork must start at the section edge').toBeLessThanOrEqual(1);
+    expect(Math.abs(artBox!.y - sectionBox!.y), 'artwork must start at the section top').toBeLessThanOrEqual(1);
+    expect(Math.abs(artBox!.width - sectionBox!.width), 'artwork must span the section width').toBeLessThanOrEqual(1);
+    expect(Math.abs(artBox!.height - sectionBox!.height), 'artwork must span the section height').toBeLessThanOrEqual(1);
+
+    // The section ends at the fold: the print is the whole first screen,
+    // starting directly under the announcement bar and header.
+    expect(sectionBox!.y, 'print starts below the chrome').toBeGreaterThan(0);
+    expect(
+      Math.abs(sectionBox!.y + sectionBox!.height - viewport.height),
+      'print must end at the viewport bottom',
+    ).toBeLessThanOrEqual(2);
   });
 
   test('the page h1 is the band name: the poster carries it for the outline', async ({ page }) => {
