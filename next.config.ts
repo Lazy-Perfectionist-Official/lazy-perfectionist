@@ -3,8 +3,15 @@ import type { NextConfig } from "next";
 const isProduction = process.env.NODE_ENV === "production";
 
 const nextConfig: NextConfig = {
-  // Allow dev-server access from LAN / Tailscale origins
-  allowedDevOrigins: ["100.76.128.50", "192.168.2.217"],
+  // Allow dev-server access from LAN / Tailscale origins. The MagicDNS
+  // hostname is the one the browser actually sends as Origin through
+  // `tailscale serve`, so it has to be listed by name — the tailnet IP
+  // alone doesn't cover HMR's origin check.
+  allowedDevOrigins: [
+    "100.76.128.50",
+    "192.168.2.217",
+    "samuels-mac-mini.tail2bbd23.ts.net",
+  ],
 
   reactStrictMode: true,
 

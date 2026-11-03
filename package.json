@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -H 127.0.0.1",
     "build": "next build",
     "start": "next start",
     "serve:prod": "rm -rf .next/standalone/.next/static && cp -R .next/static .next/standalone/.next/static && cp -R public .next/standalone/public && node .next/standalone/server.js",
