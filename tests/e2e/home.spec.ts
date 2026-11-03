@@ -125,21 +125,25 @@ test.describe('reduced motion', () => {
   });
 });
 
-test.describe('vinyl reveal', () => {
-  test('vinyl rests at origin: slide layer has no computed translate before any hover', async ({ page }, testInfo) => {
-    test.skip(testInfo.project.name !== 'chromium-desktop', 'chromium-desktop only');
-
+test.describe('poster hero', () => {
+  test('the print is the hero: the artwork renders a real 3:4 poster image', async ({ page }) => {
     await page.goto('/');
 
-    // The slide layer is the aria-hidden div inside the hero artwork whose
-    // classes carry transition-transform; the hover translate is gated behind
-    // the `reveal` variant, so at rest it must compute to none.
-    const slideLayer = page.locator(
-      '[data-testid="hero-artwork"] div[aria-hidden="true"][class*="transition-transform"]',
-    );
-    await expect(slideLayer).toHaveCount(1);
+    const poster = page.getByTestId('hero-artwork').locator('img');
+    await expect(poster).toBeVisible();
 
-    const translate = await slideLayer.evaluate((element) => getComputedStyle(element).translate);
-    expect(translate, 'vinyl slide layer must sit at the origin when not hovered').toBe('none');
+    // The plate is 1200x1600; whatever the optimizer serves, the rendered
+    // box must keep the poster's portrait ratio (the print, not a crop).
+    const box = await poster.boundingBox();
+    expect(box, 'poster must have a layout box').not.toBeNull();
+    const ratio = (box?.width ?? 0) / (box?.height ?? 1);
+    expect(ratio, 'poster must render as a 3:4 print').toBeGreaterThan(0.72);
+    expect(ratio, 'poster must render as a 3:4 print').toBeLessThan(0.78);
+  });
+
+  test('the page h1 is the band name: the poster carries it for the outline', async ({ page }) => {
+    await page.goto('/');
+
+    await expect(page.locator('h1')).toHaveText('Lazy Perfectionist');
   });
 });

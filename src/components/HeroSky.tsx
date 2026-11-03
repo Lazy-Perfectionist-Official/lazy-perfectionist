@@ -9,9 +9,9 @@
  * Effects are motion-safe-gated (static under reduced motion). No JS.
  *
  * Composition notes: a crashed satellite lies nose-down left-of-center
- * (clears both the artwork and the vinyl's slide path, page x < ~500),
- * its tail and dish rising into the lit horizon band while a whip
- * antenna still blinks ember; the moon answers from the upper right.
+ * (clears the centered poster print, page x < ~370), its tail and dish
+ * rising into the lit horizon band while a whip antenna still blinks
+ * ember; the moon answers from the upper right.
  * The far skyline stays deliberately quiet — low amplitude, hazy
  * value — so the wreck owns the left band. Crests draw ANGULAR —
  * straight facets between sharp irregular peaks, rocky lobes on the
@@ -411,7 +411,7 @@ export default function HeroSky() {
             beacon still blinks (motion-safe; a steady ember point under
             reduced motion) — the only filled mark on the machine, the
             living light. Nose at (268,704) keeps the wreck clear of
-            both the artwork and the vinyl's slide path. */}
+            the centered poster print. */}
         <g
           transform="translate(268 704) rotate(-55)"
           stroke="#e7b37b"
