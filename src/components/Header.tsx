@@ -1,20 +1,19 @@
 import { LINKS } from "@/lib/site";
 
-// Intervals pattern: centered wordmark over a centered row of tiny text
-// links, closed by a hairline. Nav destinations are mostly external —
-// the site itself is a single page.
+// Wide chrome, narrow poster: the wordmark anchors the left edge and the
+// nav sits on the right, so the header frames the centered hero instead
+// of repeating its axis. Most destinations are off-site; the site itself
+// is a single page, so the in-page anchors come first.
 const NAV = [
   { label: "Music", href: "#music", external: false },
-  { label: "Store", href: LINKS.store, external: true },
+  { label: "Elsewhere", href: "#elsewhere", external: false },
   { label: "Spotify", href: LINKS.spotifyArtist, external: true },
-  { label: "YouTube", href: LINKS.youtube, external: true },
-  { label: "Instagram", href: LINKS.instagram, external: true },
 ];
 
 export default function Header() {
   return (
-    <header className="border-b border-line" data-testid="site-header">
-      <div className="mx-auto flex max-w-5xl flex-col items-center gap-6 px-6 py-8 md:gap-8 md:py-10">
+    <header id="top" className="border-b border-line" data-testid="site-header">
+      <div className="mx-auto flex max-w-7xl flex-col gap-5 px-6 py-6 md:flex-row md:items-baseline md:justify-between md:gap-8 md:px-10 md:py-8">
         <a
           href="/"
           className="font-display text-2xl italic text-cream md:text-3xl"
@@ -24,7 +23,7 @@ export default function Header() {
         </a>
 
         <nav aria-label="Primary" data-testid="primary-nav">
-          <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 md:gap-x-8">
+          <ul className="flex flex-wrap items-center gap-x-5 gap-y-2 md:justify-end md:gap-x-9">
             {NAV.map((item) => (
               <li key={item.label}>
                 <a

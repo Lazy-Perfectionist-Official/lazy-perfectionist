@@ -169,8 +169,16 @@
     @apply text-[11px] font-medium uppercase tracking-[0.25em] text-muted md:text-xs;
   }
 
-  .ember-pill {
-    @apply inline-flex items-center rounded-full bg-ember px-8 py-3.5 text-xs font-medium uppercase tracking-[0.25em] text-canvas transition-[background-color] duration-200 hover:bg-ember-bright;
+  /* The single filled action. Square corners read as a record sleeve, not
+     a generic pill; the arrow drifts on hover via the parent `group`. */
+  .ember-button {
+    @apply inline-flex items-center gap-3 bg-ember px-7 py-4 text-[11px] font-medium uppercase tracking-[0.25em] text-canvas transition-colors duration-200 hover:bg-ember-bright md:text-xs;
+  }
+
+  /* Platform rows in the Elsewhere list — the row itself carries the
+     hover treatment, so this stays a type helper only. */
+  .display-link {
+    @apply font-display italic text-cream;
   }
 
   .quiet-link {

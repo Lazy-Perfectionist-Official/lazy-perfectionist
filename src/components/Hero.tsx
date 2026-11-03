@@ -3,10 +3,11 @@ import Image from "next/image";
 import HeroSky from "@/components/HeroSky";
 import { LINKS } from "@/lib/site";
 
-// Plini pattern: centered poster stack — eyebrow, giant display word,
-// identity subline, album art panel — with Intervals' discipline of a
-// single filled CTA. The twilight ridge behind it is the sky the record
-// lives under.
+// Plini pattern: centered poster stack — label, giant display word, identity
+// subline, album plate — with Intervals' discipline of a single filled CTA.
+// The twilight ridge behind it is the sky the record lives under. The fold
+// offers the action twice: the artwork is itself the listen link, and the
+// button beneath it is the explicit one.
 export default function Hero() {
   return (
     <section
@@ -14,14 +15,10 @@ export default function Hero() {
       data-testid="hero-section"
     >
       <HeroSky />
-      <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center px-6 pb-16 pt-16 text-center md:pb-24 md:pt-24">
-        {/* Hero-only craft cue: the eyebrow is flanked by short hairline
-            rules. Section eyebrows elsewhere stay plain. */}
-        <div className="flex items-center justify-center gap-4">
-          <span aria-hidden="true" className="h-px w-8 bg-line" />
-          <p className="eyebrow">The new single</p>
-          <span aria-hidden="true" className="h-px w-8 bg-line" />
-        </div>
+      <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center px-6 pb-20 pt-16 text-center md:pb-32 md:pt-24">
+        {/* Metadata, not news — the announcement bar already carries
+            "out now", so the label names the release without repeating it. */}
+        <p className="eyebrow">Single · 2026</p>
 
         <h1
           className="mt-5 font-display text-[clamp(7.5rem,16vw,9.5rem)] italic leading-[0.95] tracking-[-0.015em] text-cream"
@@ -30,10 +27,13 @@ export default function Hero() {
           LUSG
         </h1>
 
-        {/* Identity, not news — the announcement bar already carries
-            "out now"; the fold shouldn't repeat it or spend a 4th
-            permanent ember. */}
-        <p className="eyebrow mt-7 text-muted/70">Bedroom instrumental rock · Hong Kong</p>
+        {/* Two deliberate lines under 640px — the full identity at the
+            11px caps floor would wrap mid-phrase on a phone. */}
+        <p className="eyebrow mt-7 text-muted/70">
+          <span className="block sm:inline">Bedroom instrumental rock</span>
+          <span className="hidden sm:inline"> · </span>
+          <span className="block sm:inline">Hong Kong</span>
+        </p>
 
         <a
           href={LINKS.spotifyLusg}
@@ -58,6 +58,9 @@ export default function Hero() {
             </div>
           </div>
 
+          {/* A sleeve, not a card: square corners, hairline frame, no
+              drop shadow. The only shadow on the page is the vinyl's
+              directional one, which exists to explain the reveal. */}
           <Image
             src="/assets/img/lusg-cover.jpg"
             alt="LUSG — single artwork"
@@ -65,7 +68,7 @@ export default function Hero() {
             height={420}
             priority
             sizes="(min-width: 768px) 420px, 78vw"
-            className="relative z-10 h-auto w-[min(420px,78vw)] rounded-sm border border-line shadow-2xl shadow-black/60 transition-transform duration-[650ms] ease-[cubic-bezier(0.16,1,0.3,1)] reveal:group-hover:scale-[1.015]"
+            className="relative z-10 h-auto w-[min(420px,78vw)] border border-line transition-transform duration-[650ms] ease-[cubic-bezier(0.16,1,0.3,1)] reveal:group-hover:scale-[1.015]"
           />
         </a>
 
@@ -73,19 +76,16 @@ export default function Hero() {
           href={LINKS.spotifyLusg}
           target="_blank"
           rel="noopener noreferrer"
-          className="ember-pill mt-12 md:mt-16"
+          className="ember-button group mt-10 md:mt-12"
           data-testid="hero-cta-button"
         >
           Listen on Spotify
-        </a>
-
-        <a
-          href={LINKS.spotifyArtist}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="quiet-link mt-6"
-        >
-          Artist profile
+          <span
+            aria-hidden="true"
+            className="inline-block transition-transform duration-200 group-hover:-translate-y-[2px] group-hover:translate-x-[2px]"
+          >
+            ↗
+          </span>
         </a>
       </div>
     </section>
