@@ -34,6 +34,7 @@ export default function Releases() {
                 href={release.href}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`${release.title} — listen on Spotify`}
                 data-testid={`release-${release.title.toLowerCase()}`}
                 className="group grid grid-cols-[2.5rem_1fr] gap-x-4 border-b border-line py-7 transition-colors duration-200 hover:bg-surface/50 active:bg-surface md:grid-cols-[3.5rem_1fr_auto] md:gap-x-8 md:py-9"
               >

@@ -12,7 +12,11 @@ import { expect, test } from '@playwright/test';
 const TRACK_URL = 'https://open.spotify.com/track/4RnwmBIaSuOqGEu8R2nIsU';
 const ARTIST_URL = 'https://open.spotify.com/artist/7ELTTbYXSvCIXh0W6IV3um';
 const SPOTIFY_TRACK_HREF = /^https:\/\/open\.spotify\.com\/track\//;
-const RELEASE_ROW_IDS = ['release-lusg', 'release-cyclothymia', 'release-orbit'] as const;
+const RELEASE_ROWS = [
+  ['release-lusg', 'LUSG'],
+  ['release-cyclothymia', 'Cyclothymia'],
+  ['release-orbit', 'Orbit'],
+] as const;
 
 test.describe('home', () => {
   test('loads clean: zero console errors and zero page errors', async ({ page }) => {
@@ -68,11 +72,15 @@ test.describe('home', () => {
   test('release rows afford listening: three rows with honest targets and a visible Listen label', async ({ page }) => {
     await page.goto('/');
 
-    for (const id of RELEASE_ROW_IDS) {
+    for (const [id, title] of RELEASE_ROWS) {
       const row = page.getByTestId(id);
       await expect(row).toBeVisible();
       await expect(row).toHaveAttribute('href', SPOTIFY_TRACK_HREF);
       await expect(row).toHaveAttribute('target', '_blank');
+      // The row is the catalog's only listen action, so its accessible name
+      // must carry the action — the visible "Listen" label is decorative and
+      // the description alone reads as a run-on to a screen reader.
+      await expect(row).toHaveAccessibleName(`${title} — listen on Spotify`);
     }
 
     // The Listen label is decorative (aria-hidden) but must still be visible
