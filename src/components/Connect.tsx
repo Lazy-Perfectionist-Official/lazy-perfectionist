@@ -9,7 +9,6 @@ const LINK_ITEMS = [
   { label: "Spotify", meta: "Artist profile", href: LINKS.spotifyArtist },
   { label: "YouTube", meta: "Watch", href: LINKS.youtube },
   { label: "Instagram", meta: "Follow", href: LINKS.instagram },
-  { label: "Twitter", meta: "Follow", href: LINKS.twitter },
   { label: "Medium", meta: "Read", href: LINKS.medium },
   { label: "Ko-fi", meta: "Support", href: LINKS.kofi },
 ];

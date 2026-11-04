@@ -9,7 +9,6 @@ export const LINKS = {
   spotifyOrbit: 'https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8',
   youtube: 'https://youtube.com/@lazyperfectionist',
   instagram: 'https://instagram.com/lazyperfectionist',
-  twitter: 'https://twitter.com/lazyperfectionist',
   medium: 'https://medium.com/@lazyperfectist',
   kofi: 'https://ko-fi.com/lazyperfectionist',
   store: 'https://ko-fi.com/lazyperfectionist/shop',

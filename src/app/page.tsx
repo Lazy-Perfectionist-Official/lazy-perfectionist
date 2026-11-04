@@ -17,7 +17,7 @@ const structuredData = {
   genre: "Instrumental Rock",
   locationCreated: { "@type": "Place", name: "Hong Kong" },
   url: LINKS.spotifyArtist,
-  sameAs: [LINKS.youtube, LINKS.instagram, LINKS.twitter, LINKS.medium, LINKS.kofi],
+  sameAs: [LINKS.youtube, LINKS.instagram, LINKS.medium, LINKS.kofi],
 };
 
 export default function Home() {
