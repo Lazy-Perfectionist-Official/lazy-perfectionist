@@ -56,8 +56,10 @@ export default async function WritingPage({
       }}
       testId="writing-screen"
     >
-      {entries.map((post, index) => (
-        <PostRow key={post.slug} post={post} index={index} />
+      {/* The numeral is the archive position, not the result position:
+          narrowing the list must not renumber the posts it leaves. */}
+      {entries.map((post) => (
+        <PostRow key={post.slug} post={post} index={posts.posts.indexOf(post)} />
       ))}
     </CatalogPage>
   );

@@ -299,6 +299,12 @@ test.describe('home', () => {
     await expect(
       page.getByTestId('music-screen').locator('[data-testid^="release-"]'),
     ).toHaveCount(3);
+    // A filter narrows the list but does not renumber the catalog: Orbit is
+    // the third release whether or not the other two are on screen.
+    await page.goto('/music?q=orbit');
+    const orbit = page.getByTestId('release-orbit');
+    await expect(orbit).toHaveCount(1);
+    await expect(orbit.locator('span').first()).toHaveText('03');
     await page.goto('/writing');
     await expect(
       page.getByTestId('writing-screen').locator('[data-testid^="post-"]'),

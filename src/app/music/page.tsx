@@ -48,8 +48,15 @@ export default async function MusicPage({
       }}
       testId="music-screen"
     >
-      {releases.map((release, index) => (
-        <ReleaseRow key={release.title} release={release} index={index} />
+      {/* The margin numeral is the catalog position, not the result
+          position: a search that returns one song must not print 01 for
+          what is the third release. */}
+      {releases.map((release) => (
+        <ReleaseRow
+          key={release.title}
+          release={release}
+          index={RELEASES.indexOf(release)}
+        />
       ))}
     </CatalogPage>
   );
