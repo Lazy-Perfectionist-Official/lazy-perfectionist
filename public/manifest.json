@@ -5,8 +5,8 @@
   "description": "Bedroom instrumental rock from Hong Kong. Three singles — Orbit, Cyclothymia, LUSG — out now.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#100904",
-  "theme_color": "#100904",
+  "background_color": "#f2e7d5",
+  "theme_color": "#f2e7d5",
   "icons": [
     {
       "src": "/icon-512x512.png",

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Instrument_Serif } from "next/font/google";
+import { Bodoni_Moda, Courier_Prime, Inter } from "next/font/google";
 
 import "./globals.css";
 
@@ -9,11 +9,20 @@ const inter = Inter({
   display: "swap",
 });
 
-const instrumentSerif = Instrument_Serif({
-  weight: "400",
-  style: ["italic"],
+// The hero print is set in Bodoni 72 and American Typewriter; the site
+// borrows their web equivalents so the page and the poster share a voice.
+const bodoni = Bodoni_Moda({
   subsets: ["latin"],
-  variable: "--font-serif",
+  style: ["normal", "italic"],
+  variable: "--font-bodoni",
+  display: "swap",
+});
+
+const courier = Courier_Prime({
+  weight: "400",
+  style: ["normal"],
+  subsets: ["latin"],
+  variable: "--font-courier",
   display: "swap",
 });
 
@@ -65,14 +74,17 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#100904",
+  themeColor: "#f2e7d5",
 };
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${instrumentSerif.variable}`}>
+    <html
+      lang="en"
+      className={`${inter.variable} ${bodoni.variable} ${courier.variable}`}
+    >
       <body className="font-sans">{children}</body>
     </html>
   );

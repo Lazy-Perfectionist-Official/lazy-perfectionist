@@ -1,137 +1,61 @@
 @import "tailwindcss";
 
 /*
- * Lazy Perfectionist — stripped-down rebuild (Plini × Intervals reference).
+ * Lazy Perfectionist — the site is the print.
  *
- * Reference DNA both sites share, kept deliberately:
- *  - warm near-black canvas, never pure black
- *  - one accent (ember) doing triple duty: announcement bar, the single
- *    filled CTA, hover moments
- *  - near-invisible chrome: hairline rules, tiny tracked caps nav
- *  - one typographic statement per screen (Instrument Serif italic)
+ * The hero is a warm letterpress poster; everything below it continues on
+ * the same sheet. The palette is sampled from that print: its paper, its
+ * typewriter ink, the rust of its giant name. Bodoni echoes the poster's
+ * Didone, Courier its typewriter, Inter carries the reading copy.
  */
 
 @theme inline {
-  --color-canvas: #100904;
-  --color-surface: #1d130b;
-  --color-cream: #ffedd7;
-  --color-muted: #e7b37b;
-  --color-line: #4c4034;
+  --color-paper: #f2e7d5;
+  --color-paper-deep: #e9dac1;
+  --color-ink: #2a1810;
+  --color-ink-soft: #6d5442;
+  --color-press: #5e2c10;
+  --color-rust: #8a3a12;
+  --color-line: #d3c2a4;
   --color-ember: #dc5000;
   --color-ember-bright: #f05c04;
+  --color-ember-ink: #170b04;
+  --color-cream: #ffedd7;
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-serif), ui-serif, Georgia, serif;
-}
-
-@theme {
-  --animate-twinkle: twinkle 5s ease-in-out infinite;
-  --animate-breathe: breathe 9s ease-in-out infinite;
-  --animate-shoot: shoot 13s linear infinite;
-  --animate-beacon: beacon 7s linear infinite;
-
-  /* Hero sky: stars pulse around their painted opacity (the circle
-     inside the animated group keeps its own base opacity). */
-  @keyframes twinkle {
-    0%,
-    100% {
-      opacity: 1;
-    }
-
-    50% {
-      opacity: 0.3;
-    }
-  }
-
-  @keyframes breathe {
-    0%,
-    100% {
-      opacity: 0.85;
-      transform: scale(1);
-    }
-
-    50% {
-      opacity: 1;
-      transform: scale(1.05);
-    }
-  }
-
-  /* Meteor streak — position lives in the keyframes so no transform
-     attribute is overridden; visible ~0.7s of the 13s cycle. */
-  @keyframes shoot {
-    0% {
-      transform: translate(200px, 110px);
-      opacity: 0;
-    }
-
-    2% {
-      opacity: 1;
-    }
-
-    7% {
-      transform: translate(830px, 312px);
-      opacity: 0;
-    }
-
-    100% {
-      transform: translate(830px, 312px);
-      opacity: 0;
-    }
-  }
-
-  /* Distress beacon on the crashed satellite — a quick double pulse,
-     then ~5.5s of dark. The keyframes drive a group wrapping the dot
-     and its halo (which carry their own base opacities), so the
-     reduced-motion state keeps a steady ember point. */
-  @keyframes beacon {
-    0%,
-    26%,
-    100% {
-      opacity: 0.14;
-    }
-
-    3% {
-      opacity: 1;
-    }
-
-    9% {
-      opacity: 0.25;
-    }
-
-    15% {
-      opacity: 0.9;
-    }
-  }
+  --font-display: var(--font-bodoni), ui-serif, Georgia, serif;
+  --font-mono: var(--font-courier), ui-monospace, "Courier New", monospace;
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
-    color-scheme: dark;
+    color-scheme: light;
   }
 
   body {
-    background-color: var(--color-canvas);
-    color: var(--color-cream);
+    background-color: var(--color-paper);
+    color: var(--color-ink);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
 
   ::selection {
-    background-color: var(--color-ember);
-    color: var(--color-canvas);
+    background-color: var(--color-ink);
+    color: var(--color-cream);
   }
 
+  /* Rust is the print's second ink: 6.4:1 on paper, so it carries the
+     focus ring everywhere except the ember bar. */
   :focus-visible {
     outline-width: 2px;
     outline-style: solid;
-    outline-color: var(--color-ember);
+    outline-color: var(--color-rust);
     outline-offset: 3px;
   }
 
-  /* Ember ring is invisible on the ember bar; cream reads on both. */
   .announcement:focus-visible {
-    outline-color: var(--color-cream);
+    outline-color: var(--color-ember-ink);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -139,35 +63,27 @@
       scroll-behavior: auto;
     }
   }
-
-  /* Film grain lives inside the hero artwork (HeroSky's baked-in
-     speckle tile), the way Intervals does it — no page-wide overlay,
-     so text and imagery stay crisp. */
 }
 
 @layer components {
-  /* Link system: chrome links (nav) hover cream; content rows hover their title to ember while the Listen label rises to cream. */
+  /* Chrome links: ink-soft caps, pressed dark on hover. */
   .nav-link {
-    @apply inline-block py-2.5 text-[11px] font-medium uppercase tracking-[0.25em] text-muted transition-colors duration-300 hover:text-cream md:text-xs;
+    @apply inline-block py-2.5 text-[11px] font-medium uppercase tracking-[0.22em] text-ink-soft transition-colors duration-200 hover:text-press md:text-xs;
   }
 
+  /* Plate labels, years, colophon — the poster's typewriter. */
   .eyebrow {
-    @apply text-[11px] font-medium uppercase tracking-[0.25em] text-muted md:text-xs;
+    @apply font-mono text-xs uppercase tracking-[0.18em] text-ink-soft;
   }
 
-  /* The single filled action. Square corners read as a record sleeve, not
-     a generic pill; the arrow drifts on hover via the parent `group`. */
-  .ember-button {
-    @apply inline-flex items-center gap-3 bg-ember px-7 py-4 text-[11px] font-medium uppercase tracking-[0.25em] text-canvas transition-colors duration-200 hover:bg-ember-bright md:text-xs;
-  }
-
-  /* Platform rows in the Elsewhere list — the row itself carries the
-     hover treatment, so this stays a type helper only. */
-  .display-link {
-    @apply font-display italic text-cream;
-  }
-
-  .quiet-link {
-    @apply inline-block py-2.5 text-[11px] font-medium uppercase tracking-[0.25em] text-muted transition-colors duration-300 hover:text-ember md:text-xs;
+  /* A screened band, used once: the ink colophon echoes the print's dots.
+     Dots are paper on ink; the footer sets the opacity. */
+  .halftone {
+    background-image: radial-gradient(
+      circle,
+      rgb(242 231 213 / 0.7) 0.7px,
+      transparent 0.95px
+    );
+    background-size: 5px 5px;
   }
 }

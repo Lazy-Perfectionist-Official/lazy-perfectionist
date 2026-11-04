@@ -1,8 +1,9 @@
 import { LINKS } from "@/lib/site";
 
-// The closer: every off-site destination in one place, so the header can
-// stay small without hiding anything. Large serif names on hairline rows,
-// with the category as the quiet counterweight on the right.
+// Plate 02: the destinations printed on the same two-column measure. The
+// destination name sits in the content column under the heading; the
+// typewriter role ("Artist profile", "Watch"…) lives in the margin, where
+// the plate label sits above it.
 const LINK_ITEMS = [
   { label: "Spotify", meta: "Artist profile", href: LINKS.spotifyArtist },
   { label: "YouTube", meta: "Watch", href: LINKS.youtube },
@@ -13,44 +14,44 @@ const LINK_ITEMS = [
 
 export default function Connect() {
   return (
-    <section id="elsewhere" className="scroll-mt-8 border-t border-line" data-testid="connect-section">
-      <div className="mx-auto grid max-w-7xl px-6 md:grid-cols-[14rem_1fr] md:px-10">
-        <div className="flex items-baseline gap-4 border-line py-8 md:block md:border-r md:py-16 md:pr-8">
-          <p aria-hidden="true" className="font-display text-3xl italic text-muted/40 md:text-5xl">
-            02
-          </p>
-          <h2 className="eyebrow md:mt-4">Elsewhere</h2>
+    <section id="elsewhere" className="scroll-mt-8" data-testid="connect-section">
+      <div className="mx-auto max-w-[90rem] px-6 md:px-10">
+        <div className="grid gap-4 border-b border-line pb-8 pt-12 md:grid-cols-[9rem_minmax(0,1fr)] md:items-start md:gap-x-10 md:pb-10 md:pt-20">
+          <p className="eyebrow md:pt-3">Plate 02</p>
+
+          <h2 className="font-display text-5xl leading-[0.95] tracking-[-0.01em] text-press md:text-7xl">
+            Elsewhere
+          </h2>
         </div>
 
-        <div className="pb-16 md:pb-24 md:pl-12 md:pt-14">
-          <nav aria-label="Social and store links" data-testid="connect-links">
-            <ul className="border-t border-line">
-              {LINK_ITEMS.map((item) => (
-                <li key={item.label}>
-                  <a
-                    href={item.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group flex items-baseline justify-between gap-6 border-b border-line py-5 transition-colors duration-200 md:py-6"
-                  >
-                    <span className="display-link text-2xl transition-colors duration-200 group-hover:text-ember md:text-3xl">
-                      {item.label}
+        <nav aria-label="Social and store links" data-testid="connect-links">
+          <ul>
+            {LINK_ITEMS.map((item) => (
+              <li key={item.label}>
+                <a
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-baseline justify-between gap-6 border-b border-line py-5 transition-colors duration-200 hover:bg-paper-deep/50 active:bg-paper-deep md:grid md:grid-cols-[9rem_minmax(0,1fr)] md:gap-x-10 md:py-7"
+                >
+                  <span className="font-display text-3xl text-ink transition-colors duration-200 group-hover:text-rust md:col-start-2 md:row-start-1 md:text-4xl">
+                    {item.label}
+                  </span>
+
+                  <span className="flex items-baseline gap-3 whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.16em] text-ink-soft transition-colors duration-200 group-hover:text-press md:col-start-1 md:row-start-1 md:text-xs">
+                    {item.meta}
+                    <span
+                      aria-hidden="true"
+                      className="inline-block transition-transform duration-200 group-hover:-translate-y-[2px] group-hover:translate-x-[2px]"
+                    >
+                      ↗
                     </span>
-                    <span className="flex items-baseline gap-3 text-[11px] font-medium uppercase tracking-[0.25em] text-muted transition-colors duration-200 group-hover:text-cream md:text-xs">
-                      {item.meta}
-                      <span
-                        aria-hidden="true"
-                        className="inline-block transition-transform duration-200 group-hover:-translate-y-[2px] group-hover:translate-x-[2px]"
-                      >
-                        ↗
-                      </span>
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
       </div>
     </section>
   );

@@ -11,13 +11,13 @@ import { LINKS } from "@/lib/site";
 // the image, so the page's h1 is carried for the document outline, not
 // repeated.
 //
-// The height subtracts the measured chrome: announcement bar + header are
-// 174px at phone widths and 143px from md up, so `100svh` minus that is the
+// The height subtracts the measured chrome: announcement bar + masthead are
+// 166px at phone widths and 131px from md up, so `100svh` minus that is the
 // remainder the print has to fill to end exactly at the fold.
 export default function Hero() {
   return (
     <section
-      className="relative h-[calc(100svh-174px)] overflow-hidden md:h-[calc(100svh-143px)]"
+      className="relative h-[calc(100svh-166px)] overflow-hidden md:h-[calc(100svh-131px)]"
       data-testid="hero-section"
     >
       <h1 className="sr-only" data-testid="hero-title">
@@ -32,19 +32,18 @@ export default function Hero() {
         className="group absolute inset-0 block outline-none after:pointer-events-none after:absolute after:inset-1 after:border-2 after:border-ember after:opacity-0 after:content-[''] focus-visible:after:opacity-100"
         data-testid="hero-artwork"
       >
-        {/* Cover, not contain: paper to the screen edges. The 35% vertical
-            anchor keeps the name whole with the figure below it and stops
-            above the wall band at every landscape ratio (the band's top is
-            poster y 1050), so the fold never cuts its dissolve seam; tall
-            screens see nearly the whole print. The image carries its own alt
-            through the link label. */}
+        {/* Cover, not contain: the print runs to the screen edges. The 40%
+            vertical anchor keeps the name whole with the figure below it —
+            wide screens end above the wall band, squarer ones trim into it —
+            so the fold reads as the print's crop, not a seam between two
+            pictures. The image carries its own alt through the link label. */}
         <Image
           src="/assets/img/lusg-poster.jpg"
           alt=""
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[50%_35%]"
+          className="object-cover object-[50%_40%]"
         />
       </a>
     </section>
