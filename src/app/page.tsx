@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Releases from "@/components/Releases";
 import Shop from "@/components/Shop";
+import Writing from "@/components/Writing";
 
 import { LINKS } from "@/lib/site";
 
@@ -33,6 +34,7 @@ export default function Home() {
         <Hero />
         <Releases />
         <Shop />
+        <Writing />
         <Connect />
       </main>
 

@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 import shop from '../../src/lib/kofi-shop.json';
+import posts from '../../src/lib/medium-posts.json';
 
 /**
  * Minimal functional suite for the single-page site.
@@ -125,6 +126,36 @@ test.describe('home', () => {
     await page.getByTestId('primary-nav').getByRole('link', { name: 'Shop' }).click();
 
     await expect(page.getByTestId('shop-section')).toBeInViewport();
+  });
+
+  test('writing rows mirror the Medium feed: every synced post links to its canonical page', async ({ page }) => {
+    await page.goto('/');
+
+    await expect(page.getByTestId('writing-section')).toBeVisible();
+    expect(posts.posts.length, 'the synced feed must not be empty').toBeGreaterThan(0);
+
+    await expect(page.getByRole('link', { name: /all posts/i })).toHaveAttribute(
+      'href',
+      'https://medium.com/@lazyperfectist',
+    );
+
+    // Same contract as the shop: the page cannot drift from the synced data.
+    for (const post of posts.posts) {
+      const row = page.getByTestId(`post-${post.slug}`);
+      await expect(row).toBeVisible();
+      await expect(row).toHaveAttribute('href', post.url);
+      await expect(row).toHaveAttribute('target', '_blank');
+      await expect(row).toHaveAccessibleName(`${post.title} — read on Medium`);
+      await expect(row).toContainText(post.excerpt);
+    }
+  });
+
+  test('nav anchor scrolls to writing: clicking Writing brings the feed into view', async ({ page }) => {
+    await page.goto('/');
+
+    await page.getByTestId('primary-nav').getByRole('link', { name: 'Writing' }).click();
+
+    await expect(page.getByTestId('writing-section')).toBeInViewport();
   });
 
   test('elsewhere carries the writing and the tip jar', async ({ page }) => {

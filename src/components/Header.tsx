@@ -1,13 +1,12 @@
-import { LINKS } from "@/lib/site";
-
 // The masthead: Bodoni wordmark left (the poster's face), tiny tracked
-// caps right, one hairline underneath. Most destinations are off-site;
-// the site itself is a single page, so the in-page anchors come first.
+// caps right, one hairline underneath. Every nav item is an in-page
+// anchor — the site is a single page — and the off-site destinations
+// live in Elsewhere and the announcement bar.
 const NAV = [
-  { label: "Music", href: "#music", external: false },
-  { label: "Shop", href: "#shop", external: false },
-  { label: "Elsewhere", href: "#elsewhere", external: false },
-  { label: "Spotify", href: LINKS.spotifyArtist, external: true },
+  { label: "Music", href: "#music" },
+  { label: "Shop", href: "#shop" },
+  { label: "Writing", href: "#writing" },
+  { label: "Elsewhere", href: "#elsewhere" },
 ];
 
 export default function Header() {
@@ -26,13 +25,7 @@ export default function Header() {
           <ul className="flex flex-wrap items-center gap-x-5 gap-y-2 md:justify-end md:gap-x-9">
             {NAV.map((item) => (
               <li key={item.label}>
-                <a
-                  href={item.href}
-                  {...(item.external
-                    ? { target: "_blank", rel: "noopener noreferrer" }
-                    : {})}
-                  className="nav-link"
-                >
+                <a href={item.href} className="nav-link">
                   {item.label}
                 </a>
               </li>

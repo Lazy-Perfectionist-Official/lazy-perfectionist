@@ -10,6 +10,7 @@
     "lint": "next lint",
     "lint:css": "stylelint 'src/**/*.css'",
     "sync:shop": "node scripts/sync-kofi-shop.mjs",
+    "sync:medium": "node scripts/sync-medium.mjs",
     "test": "playwright test",
     "test:headed": "playwright test --headed",
     "test:debug": "playwright test --debug",

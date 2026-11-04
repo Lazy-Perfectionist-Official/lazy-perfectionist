@@ -6,10 +6,9 @@ import { LINKS } from "@/lib/site";
 // screen edge to edge and is cropped by the viewport, never letterboxed. The
 // crop is composed so the name sits whole — the couplets and the ORIGINAL
 // thumbnail belong to the print's own top margin and are what fall off a wide
-// screen. The print itself is the listen link; the announcement bar and the
-// header's Spotify entry remain the explicit ones. The giant word lives in
-// the image, so the page's h1 is carried for the document outline, not
-// repeated.
+// screen. The print itself is the listen link; the announcement bar remains
+// the explicit one. The giant word lives in the image, so the page's h1 is
+// carried for the document outline, not repeated.
 //
 // The height subtracts the measured chrome: announcement bar + masthead are
 // 166px at phone widths and 131px from md up, so `100svh` minus that is the
@@ -36,14 +35,22 @@ export default function Hero() {
             vertical anchor keeps the name whole with the figure below it —
             wide screens end above the wall band, squarer ones trim into it —
             so the fold reads as the print's crop, not a seam between two
-            pictures. The image carries its own alt through the link label. */}
+            pictures. The horizontal anchor only matters when the viewport is
+            taller than the print's 3:4 (tall phones): the cover then trims
+            the sides, and the name has to survive the trim at both ends. 50%
+            cut the last glyph; 100% kept the right margin but cut the first
+            stem at 412x915, where the crop keeps only the print's rightmost
+            1320 of 1800px. 90% leaves a margin on both sides of the word at
+            360, 375, 390, 412 and 430 wide, and still keeps 45-60px of the
+            print's own right margin. The image carries its own alt through
+            the link label. */}
         <Image
           src="/assets/img/lusg-poster.jpg"
           alt=""
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[50%_40%]"
+          className="object-cover object-[90%_40%]"
         />
       </a>
     </section>
