@@ -71,6 +71,12 @@
     @apply inline-block py-2.5 text-[11px] font-medium uppercase tracking-[0.22em] text-ink-soft transition-colors duration-200 hover:text-press md:text-xs;
   }
 
+  /* The bypass link: out of the way until it is focused, then pinned over
+     the masthead in the paper's own type so it reads as part of the print. */
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:border focus:border-line focus:bg-paper focus:px-4 focus:py-3 focus:font-mono focus:text-xs focus:uppercase focus:tracking-[0.18em] focus:text-press focus:shadow-sm;
+  }
+
   /* Plate labels, years, colophon — the poster's typewriter. */
   .eyebrow {
     @apply font-mono text-xs uppercase tracking-[0.18em] text-ink-soft;

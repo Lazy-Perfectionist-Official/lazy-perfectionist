@@ -41,6 +41,35 @@ test.describe('home', () => {
     expect(pageErrors, 'uncaught page errors during load').toEqual([]);
   });
 
+  test('the bypass link comes first and lands on the content', async ({ page, browserName }) => {
+    await page.goto('/');
+
+    // Parked until it is needed: clipped to a pixel, not display:none, so it
+    // still takes focus.
+    const skip = page.getByRole('link', { name: 'Skip to content' });
+    await expect(skip).toHaveCount(1);
+    await expect.poll(async () => (await skip.boundingBox())?.height ?? 0).toBeLessThanOrEqual(1);
+
+    // WebKit's default macOS keyboard policy does not tab to links at all,
+    // so the tab-order half of this check cannot run there.
+    test.skip(browserName === 'webkit', 'WebKit does not tab to links by default');
+
+    // Nothing precedes it in the tab order — not the bellyband, not the
+    // wordmark, not the nav.
+    await page.keyboard.press('Tab');
+    await expect(skip).toBeFocused();
+    await expect
+      .poll(async () => (await skip.boundingBox())?.height ?? 0)
+      .toBeGreaterThan(10);
+
+    // Taking it moves the reading position into the plate, past the masthead.
+    await page.keyboard.press('Enter');
+    await expect(page).toHaveURL(/#main$/);
+    await expect
+      .poll(() => page.locator('#main').evaluate((el) => Math.abs(el.getBoundingClientRect().top)))
+      .toBeLessThanOrEqual(2);
+  });
+
   test('hero links are honest: the print and the artist profile point where they claim', async ({ page }) => {
     await page.goto('/');
 

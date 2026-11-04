@@ -4,6 +4,7 @@ import AnnouncementBar from "@/components/AnnouncementBar";
 import FootRow from "@/components/FootRow";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import SkipLink from "@/components/SkipLink";
 
 // A plate's own screen: the masthead, the plate header on the print grid,
 // a search line, the full list, and the hand-off to where the catalog is
@@ -42,10 +43,11 @@ export default function CatalogPage({
 
   return (
     <>
+      <SkipLink />
       <AnnouncementBar />
       <Header />
 
-      <main className="pb-16 md:pb-24">
+      <main id="main" tabIndex={-1} className="pb-16 md:pb-24">
         <section data-testid={testId}>
           <div className="mx-auto max-w-[90rem] px-6 md:px-10">
             <div className="grid gap-4 border-b border-line px-4 pb-8 pt-12 md:grid-cols-[9rem_minmax(0,1fr)_9rem] md:items-start md:gap-x-10 md:px-6 md:pb-10 md:pt-20">
