@@ -277,6 +277,9 @@ test.describe('home', () => {
     // The search is a GET form — the query is in the URL, the server
     // filters, and no client script is involved.
     await page.getByRole('searchbox').fill('orbit');
+    // The arrow is decoration: the name is the verb alone, so voice control
+    // hears "Find", not "Find north east arrow".
+    await expect(page.getByRole('button', { name: 'Find', exact: true })).toBeVisible();
     await page.getByRole('button', { name: /find/i }).click();
     await expect(page).toHaveURL(/\/shop\?q=orbit$/);
 

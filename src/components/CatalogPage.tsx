@@ -110,7 +110,10 @@ export default function CatalogPage({
                 type="submit"
                 className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-soft transition-colors duration-200 hover:text-rust md:text-xs"
               >
-                Find ↗
+                Find{" "}
+                <span aria-hidden="true" className="inline-block">
+                  ↗
+                </span>
               </button>
             </form>
 
