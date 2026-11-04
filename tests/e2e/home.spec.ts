@@ -172,6 +172,43 @@ test.describe('home', () => {
     );
   });
 
+  test('every plate is a ruled card: rows and their labels sit inside the page measure', async ({ page }, testInfo) => {
+    const viewportWidth = testInfo.project.use.viewport?.width ?? 1280;
+    // The card's inner margin: 16px on phones, 24px from md up. The row is
+    // the card (its hover band spans the full measure); the type, art and
+    // the plate label all sit that far inside it, so a row never hugs its
+    // own edge. Padded parents rather than padded text, hence geometry.
+    const inset = viewportWidth >= 768 ? 24 : 16;
+
+    await page.goto('/');
+
+    for (const section of ['releases-section', 'shop-section', 'writing-section', 'connect-section']) {
+      const plate = page.getByTestId(section);
+      const row = plate
+        .locator('[data-testid^="release-"], [data-testid^="shop-"], [data-testid^="post-"], nav a')
+        .first();
+      const label = plate.locator('.eyebrow').first();
+
+      const [rowBox, labelBox] = await Promise.all([row.boundingBox(), label.boundingBox()]);
+      expect(rowBox, `${section} row must have a box`).not.toBeNull();
+
+      // Connections place their margin column second in the DOM, so measure
+      // the children rather than assuming document order matches the grid.
+      const { left, right } = await row.locator(':scope > *').evaluateAll((cells) => {
+        const boxes = cells.map((cell) => cell.getBoundingClientRect());
+        return {
+          left: Math.min(...boxes.map((box) => box.x)),
+          right: Math.max(...boxes.map((box) => box.right)),
+        };
+      });
+
+      expect(left - rowBox!.x, `${section} row must start ${inset}px inside its card`).toBeCloseTo(inset, 0);
+      expect(rowBox!.x + rowBox!.width - right, `${section} row must end ${inset}px inside`).toBeCloseTo(inset, 0);
+      // The plate's own label travels with the rows rather than out-denting.
+      expect(labelBox!.x, `${section} label must align with the row content`).toBeCloseTo(left, 0);
+    }
+  });
+
   test('no horizontal scroll on mobile: document fits the viewport width', async ({ page }, testInfo) => {
     const viewportWidth = testInfo.project.use.viewport?.width ?? 1280;
     test.skip(viewportWidth > 500, 'only meaningful on narrow viewports');

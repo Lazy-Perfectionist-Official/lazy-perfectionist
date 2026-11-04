@@ -10,7 +10,7 @@ export default function Releases() {
   return (
     <section id="music" className="scroll-mt-8" data-testid="releases-section">
       <div className="mx-auto max-w-[90rem] px-6 md:px-10">
-        <div className="grid gap-4 border-b border-line pb-8 pt-12 md:grid-cols-[9rem_minmax(0,1fr)_9rem] md:items-start md:gap-x-10 md:pb-10 md:pt-20">
+        <div className="grid gap-4 border-b border-line px-4 pb-8 pt-12 md:grid-cols-[9rem_minmax(0,1fr)_9rem] md:items-start md:gap-x-10 md:px-6 md:pb-10 md:pt-20">
           <p className="eyebrow md:pt-3">Plate 01</p>
 
           <div>
@@ -39,7 +39,7 @@ export default function Releases() {
               rel="noopener noreferrer"
               aria-label={`${release.title} — listen on Spotify`}
               data-testid={`release-${release.title.toLowerCase()}`}
-              className="group grid grid-cols-[2.5rem_minmax(0,1fr)] gap-x-4 border-b border-line py-7 transition-colors duration-200 hover:bg-paper-deep/50 active:bg-paper-deep md:grid-cols-[9rem_minmax(0,1fr)_9rem] md:gap-x-10 md:py-9"
+              className="group grid grid-cols-[2.5rem_minmax(0,1fr)] gap-x-4 border-b border-line px-4 py-7 transition-colors duration-200 hover:bg-paper-deep/50 active:bg-paper-deep md:grid-cols-[9rem_minmax(0,1fr)_9rem] md:gap-x-10 md:px-6 md:py-9"
             >
               <span
                 aria-hidden="true"

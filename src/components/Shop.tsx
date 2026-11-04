@@ -17,7 +17,7 @@ export default function Shop() {
   return (
     <section id="shop" className="scroll-mt-8" data-testid="shop-section">
       <div className="mx-auto max-w-[90rem] px-6 md:px-10">
-        <div className="grid gap-4 border-b border-line pb-8 pt-12 md:grid-cols-[9rem_minmax(0,1fr)_9rem] md:items-start md:gap-x-10 md:pb-10 md:pt-20">
+        <div className="grid gap-4 border-b border-line px-4 pb-8 pt-12 md:grid-cols-[9rem_minmax(0,1fr)_9rem] md:items-start md:gap-x-10 md:px-6 md:pb-10 md:pt-20">
           <p className="eyebrow md:pt-3">Plate 02</p>
 
           <div>
@@ -54,7 +54,7 @@ export default function Shop() {
               rel="noopener noreferrer"
               aria-label={`${product.name} — ${accessiblePrice(product)} on Ko-fi`}
               data-testid={`shop-${product.slug}`}
-              className="group grid grid-cols-[3.5rem_minmax(0,1fr)] gap-x-4 border-b border-line py-6 transition-colors duration-200 hover:bg-paper-deep/50 active:bg-paper-deep md:grid-cols-[9rem_minmax(0,1fr)_9rem] md:gap-x-10 md:py-8"
+              className="group grid grid-cols-[3.5rem_minmax(0,1fr)] gap-x-4 border-b border-line px-4 py-6 transition-colors duration-200 hover:bg-paper-deep/50 active:bg-paper-deep md:grid-cols-[9rem_minmax(0,1fr)_9rem] md:gap-x-10 md:px-6 md:py-8"
             >
               <span className="relative block aspect-square overflow-hidden border border-line bg-paper-deep">
                 <Image

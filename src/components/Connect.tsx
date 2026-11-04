@@ -18,7 +18,7 @@ export default function Connect() {
   return (
     <section id="elsewhere" className="scroll-mt-8" data-testid="connect-section">
       <div className="mx-auto max-w-[90rem] px-6 md:px-10">
-        <div className="grid gap-4 border-b border-line pb-8 pt-12 md:grid-cols-[9rem_minmax(0,1fr)] md:items-start md:gap-x-10 md:pb-10 md:pt-20">
+        <div className="grid gap-4 border-b border-line px-4 pb-8 pt-12 md:grid-cols-[9rem_minmax(0,1fr)] md:items-start md:gap-x-10 md:px-6 md:pb-10 md:pt-20">
           <p className="eyebrow md:pt-3">Plate 04</p>
 
           <h2 className="font-display text-5xl leading-[0.95] tracking-[-0.01em] text-press md:text-7xl">
@@ -34,7 +34,7 @@ export default function Connect() {
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-baseline justify-between gap-6 border-b border-line py-5 transition-colors duration-200 hover:bg-paper-deep/50 active:bg-paper-deep md:grid md:grid-cols-[9rem_minmax(0,1fr)] md:gap-x-10 md:py-7"
+                  className="group flex items-baseline justify-between gap-6 border-b border-line px-4 py-5 transition-colors duration-200 hover:bg-paper-deep/50 active:bg-paper-deep md:grid md:grid-cols-[9rem_minmax(0,1fr)] md:gap-x-10 md:px-6 md:py-7"
                 >
                   <span className="font-display text-3xl text-ink transition-colors duration-200 group-hover:text-rust md:col-start-2 md:row-start-1 md:text-4xl">
                     {item.label}
