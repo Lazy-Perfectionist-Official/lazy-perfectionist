@@ -27,6 +27,12 @@
       "short_name": "Music",
       "description": "Hear the singles",
       "url": "/#music"
+    },
+    {
+      "name": "Shop",
+      "short_name": "Shop",
+      "description": "Tabs, stems and jam tracks",
+      "url": "/#shop"
     }
   ]
 }

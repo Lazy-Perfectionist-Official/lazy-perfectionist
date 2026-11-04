@@ -9,6 +9,7 @@
     "serve:prod": "rm -rf .next/standalone/.next/static && cp -R .next/static .next/standalone/.next/static && cp -R public .next/standalone/public && node .next/standalone/server.js",
     "lint": "next lint",
     "lint:css": "stylelint 'src/**/*.css'",
+    "sync:shop": "node scripts/sync-kofi-shop.mjs",
     "test": "playwright test",
     "test:headed": "playwright test --headed",
     "test:debug": "playwright test --debug",

@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Releases from "@/components/Releases";
+import Shop from "@/components/Shop";
 
 import { LINKS } from "@/lib/site";
 
@@ -14,7 +15,7 @@ const structuredData = {
   genre: "Instrumental Rock",
   locationCreated: { "@type": "Place", name: "Hong Kong" },
   url: LINKS.spotifyArtist,
-  sameAs: [LINKS.youtube, LINKS.instagram, LINKS.twitter],
+  sameAs: [LINKS.youtube, LINKS.instagram, LINKS.twitter, LINKS.medium, LINKS.kofi],
 };
 
 export default function Home() {
@@ -31,6 +32,7 @@ export default function Home() {
       <main>
         <Hero />
         <Releases />
+        <Shop />
         <Connect />
       </main>
 

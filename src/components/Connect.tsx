@@ -1,15 +1,16 @@
 import { LINKS } from "@/lib/site";
 
-// Plate 02: the destinations printed on the same two-column measure. The
+// Plate 03: the destinations printed on the same two-column measure. The
 // destination name sits in the content column under the heading; the
 // typewriter role ("Artist profile", "Watch"…) lives in the margin, where
-// the plate label sits above it.
+// the plate label sits above it. The shop has its own plate above.
 const LINK_ITEMS = [
   { label: "Spotify", meta: "Artist profile", href: LINKS.spotifyArtist },
   { label: "YouTube", meta: "Watch", href: LINKS.youtube },
   { label: "Instagram", meta: "Follow", href: LINKS.instagram },
   { label: "Twitter", meta: "Follow", href: LINKS.twitter },
-  { label: "Store", meta: "Shop", href: LINKS.store },
+  { label: "Medium", meta: "Read", href: LINKS.medium },
+  { label: "Ko-fi", meta: "Support", href: LINKS.kofi },
 ];
 
 export default function Connect() {
@@ -17,14 +18,14 @@ export default function Connect() {
     <section id="elsewhere" className="scroll-mt-8" data-testid="connect-section">
       <div className="mx-auto max-w-[90rem] px-6 md:px-10">
         <div className="grid gap-4 border-b border-line pb-8 pt-12 md:grid-cols-[9rem_minmax(0,1fr)] md:items-start md:gap-x-10 md:pb-10 md:pt-20">
-          <p className="eyebrow md:pt-3">Plate 02</p>
+          <p className="eyebrow md:pt-3">Plate 03</p>
 
           <h2 className="font-display text-5xl leading-[0.95] tracking-[-0.01em] text-press md:text-7xl">
             Elsewhere
           </h2>
         </div>
 
-        <nav aria-label="Social and store links" data-testid="connect-links">
+        <nav aria-label="Social and profile links" data-testid="connect-links">
           <ul>
             {LINK_ITEMS.map((item) => (
               <li key={item.label}>

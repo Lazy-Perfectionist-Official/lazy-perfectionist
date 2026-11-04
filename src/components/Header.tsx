@@ -5,6 +5,7 @@ import { LINKS } from "@/lib/site";
 // the site itself is a single page, so the in-page anchors come first.
 const NAV = [
   { label: "Music", href: "#music", external: false },
+  { label: "Shop", href: "#shop", external: false },
   { label: "Elsewhere", href: "#elsewhere", external: false },
   { label: "Spotify", href: LINKS.spotifyArtist, external: true },
 ];

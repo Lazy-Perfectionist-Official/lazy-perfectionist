@@ -10,6 +10,8 @@ export const LINKS = {
   youtube: 'https://youtube.com/@lazyperfectionist',
   instagram: 'https://instagram.com/lazyperfectionist',
   twitter: 'https://twitter.com/lazyperfectionist',
+  medium: 'https://medium.com/@lazyperfectist',
+  kofi: 'https://ko-fi.com/lazyperfectionist',
   store: 'https://ko-fi.com/lazyperfectionist/shop',
 } as const;
 
