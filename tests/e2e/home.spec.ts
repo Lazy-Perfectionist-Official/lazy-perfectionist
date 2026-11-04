@@ -221,6 +221,29 @@ test.describe('home', () => {
     expect(await response.text()).toContain('<urlset');
   });
 
+  test('each growing plate ends with a More row to its full listing', async ({ page }) => {
+    await page.goto('/');
+
+    // The foot of the list is the action: every plate that can grow hands
+    // off to its full listing rather than ending on its last row.
+    await expect(page.getByRole('link', { name: 'More releases on Spotify' })).toHaveAttribute(
+      'href',
+      ARTIST_URL,
+    );
+    await expect(page.getByRole('link', { name: 'More items on Ko-fi' })).toHaveAttribute(
+      'href',
+      'https://ko-fi.com/lazyperfectionist/shop',
+    );
+    await expect(page.getByRole('link', { name: 'More posts on Medium' })).toHaveAttribute(
+      'href',
+      'https://medium.com/@lazyperfectist',
+    );
+    // Elsewhere is the list of destinations itself — nowhere to send a More.
+    await expect(
+      page.getByTestId('connect-section').getByRole('link', { name: /^more$/i }),
+    ).toHaveCount(0);
+  });
+
   test('no horizontal scroll on mobile: document fits the viewport width', async ({ page }, testInfo) => {
     const viewportWidth = testInfo.project.use.viewport?.width ?? 1280;
     test.skip(viewportWidth > 500, 'only meaningful on narrow viewports');

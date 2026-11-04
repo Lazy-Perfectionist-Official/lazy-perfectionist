@@ -91,6 +91,22 @@ export default function Shop() {
               </span>
             </a>
           ))}
+
+          <a
+            href={LINKS.store}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="More items on Ko-fi"
+            className="group flex justify-end border-b border-line px-4 py-5 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-soft transition-colors duration-200 hover:bg-paper-deep/50 hover:text-rust active:bg-paper-deep md:px-6 md:py-6 md:text-xs"
+          >
+            More{" "}
+            <span
+              aria-hidden="true"
+              className="ml-2 inline-block transition-transform duration-200 group-hover:-translate-y-[2px] group-hover:translate-x-[2px]"
+            >
+              ↗
+            </span>
+          </a>
         </div>
       </div>
     </section>

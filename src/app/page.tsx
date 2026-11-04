@@ -30,7 +30,9 @@ export default function Home() {
       <AnnouncementBar />
       <Header />
 
-      <main>
+      {/* Paper holds below the last plate before the ink footer: the rules
+          end, the page keeps breathing, then the back cover starts. */}
+      <main className="pb-16 md:pb-24">
         <Hero />
         <Releases />
         <Shop />
