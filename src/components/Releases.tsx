@@ -1,10 +1,56 @@
-import { LINKS, RELEASES } from "@/lib/site";
+import { RELEASES, type Release } from "@/lib/site";
+
+import FootRow from "@/components/FootRow";
 
 // Plate 01 of the print: the catalog set as a tracklist on one shared
 // three-column grid — plate label / content / year-and-listen. The row
 // index lives in the same margin column as the plate label, so the titles
 // align under the section heading instead of out-denting it.
 const LEDE = "Three songs, one bedroom.";
+
+export function ReleaseRow({ release, index }: { release: Release; index: number }) {
+  return (
+    <a
+      href={release.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`${release.title} — listen on Spotify`}
+      data-testid={`release-${release.title.toLowerCase()}`}
+      className="group grid grid-cols-[2.5rem_minmax(0,1fr)] gap-x-4 border-b border-line px-4 py-7 transition-colors duration-200 hover:bg-paper-deep/50 active:bg-paper-deep md:grid-cols-[9rem_minmax(0,1fr)_9rem] md:gap-x-10 md:px-6 md:py-9"
+    >
+      <span
+        aria-hidden="true"
+        className="pt-1 font-mono text-xs tabular-nums text-ink-soft/60 md:pt-2 md:text-sm"
+      >
+        {String(index + 1).padStart(2, "0")}
+      </span>
+
+      <span className="block">
+        <span className="block font-display text-4xl leading-[1.02] tracking-[-0.01em] text-ink transition-colors duration-200 group-hover:text-rust md:text-5xl">
+          {release.title}
+        </span>
+        <span className="mt-2 block max-w-md text-base leading-relaxed text-ink-soft">
+          {release.description}
+        </span>
+      </span>
+
+      <span className="col-span-2 mt-4 flex items-baseline justify-between md:col-span-1 md:col-start-3 md:mt-0 md:flex-col md:items-end">
+        <span className="font-mono text-xs tabular-nums text-ink-soft md:text-sm">
+          {release.year}
+        </span>
+        <span
+          aria-hidden="true"
+          className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-soft transition-colors duration-200 group-hover:text-rust md:text-xs"
+        >
+          Listen{" "}
+          <span className="inline-block transition-transform duration-200 group-hover:-translate-y-[2px] group-hover:translate-x-[2px]">
+            ↗
+          </span>
+        </span>
+      </span>
+    </a>
+  );
+}
 
 export default function Releases() {
   return (
@@ -32,63 +78,10 @@ export default function Releases() {
 
         <div>
           {RELEASES.map((release, index) => (
-            <a
-              key={release.title}
-              href={release.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`${release.title} — listen on Spotify`}
-              data-testid={`release-${release.title.toLowerCase()}`}
-              className="group grid grid-cols-[2.5rem_minmax(0,1fr)] gap-x-4 border-b border-line px-4 py-7 transition-colors duration-200 hover:bg-paper-deep/50 active:bg-paper-deep md:grid-cols-[9rem_minmax(0,1fr)_9rem] md:gap-x-10 md:px-6 md:py-9"
-            >
-              <span
-                aria-hidden="true"
-                className="pt-1 font-mono text-xs tabular-nums text-ink-soft/60 md:pt-2 md:text-sm"
-              >
-                {String(index + 1).padStart(2, "0")}
-              </span>
-
-              <span className="block">
-                <span className="block font-display text-4xl leading-[1.02] tracking-[-0.01em] text-ink transition-colors duration-200 group-hover:text-rust md:text-5xl">
-                  {release.title}
-                </span>
-                <span className="mt-2 block max-w-md text-base leading-relaxed text-ink-soft">
-                  {release.description}
-                </span>
-              </span>
-
-              <span className="col-span-2 mt-4 flex items-baseline justify-between md:col-span-1 md:col-start-3 md:mt-0 md:flex-col md:items-end">
-                <span className="font-mono text-xs tabular-nums text-ink-soft md:text-sm">
-                  {release.year}
-                </span>
-                <span
-                  aria-hidden="true"
-                  className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-soft transition-colors duration-200 group-hover:text-rust md:text-xs"
-                >
-                  Listen{" "}
-                  <span className="inline-block transition-transform duration-200 group-hover:-translate-y-[2px] group-hover:translate-x-[2px]">
-                    ↗
-                  </span>
-                </span>
-              </span>
-            </a>
+            <ReleaseRow key={release.title} release={release} index={index} />
           ))}
 
-          <a
-            href={LINKS.spotifyArtist}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="More releases on Spotify"
-            className="group flex justify-end border-b border-line px-4 py-5 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-soft transition-colors duration-200 hover:bg-paper-deep/50 hover:text-rust active:bg-paper-deep md:px-6 md:py-6 md:text-xs"
-          >
-            More{" "}
-            <span
-              aria-hidden="true"
-              className="ml-2 inline-block transition-transform duration-200 group-hover:-translate-y-[2px] group-hover:translate-x-[2px]"
-            >
-              ↗
-            </span>
-          </a>
+          <FootRow href="/music" label="More releases — open the full release list" />
         </div>
       </div>
     </section>

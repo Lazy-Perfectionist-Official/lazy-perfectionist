@@ -15,6 +15,11 @@ export const LINKS = {
   store: 'https://ko-fi.com/lazyperfectionist/shop',
 } as const;
 
+// The deploy's own host. Unset until the site has a domain, in which case
+// canonical URLs and the sitemap are omitted rather than guessing (the
+// obvious guess, lazyperfectionist.com, is parked and for sale).
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+
 // The bellyband's news. One line to change at the next release: the bar's
 // label and the link it carries live together, so the copy cannot outlive
 // the link it points at.

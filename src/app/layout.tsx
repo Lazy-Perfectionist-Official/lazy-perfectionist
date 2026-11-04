@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Bodoni_Moda, Courier_Prime, Inter } from "next/font/google";
 
+import { SITE_URL } from "@/lib/site";
+
 import "./globals.css";
 
 const inter = Inter({
@@ -30,18 +32,16 @@ const title = "Lazy Perfectionist — Bedroom Instrumental Rock | Hong Kong";
 const description =
   "Lazy Perfectionist is a bedroom instrumental rock project from Hong Kong. The new single LUSG is out now — alongside Cyclothymia and Orbit — on all streaming platforms.";
 
-// The site has no domain of its own yet (lazyperfectionist.com is parked and
-// for sale), so the canonical host comes from the deploy environment. Until
-// NEXT_PUBLIC_SITE_URL is set, no canonical or sitemap URL is emitted rather
-// than pointing crawlers at somebody else's sales page; the share card still
-// works because its image path is site-relative.
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
-
+// The site has no domain of its own yet, so the canonical host comes from
+// the deploy environment (see SITE_URL in site.ts). Until it is set, no
+// canonical is emitted rather than pointing crawlers at somebody else's
+// sales page; the share card still works because its image path is
+// site-relative.
 export const metadata: Metadata = {
-  metadataBase: siteUrl ? new URL(siteUrl) : undefined,
+  metadataBase: SITE_URL ? new URL(SITE_URL) : undefined,
   title: { default: title, template: "%s | Lazy Perfectionist" },
   description,
-  alternates: siteUrl ? { canonical: "/" } : undefined,
+  alternates: SITE_URL ? { canonical: "/" } : undefined,
   keywords: [
     "Lazy Perfectionist",
     "instrumental rock",

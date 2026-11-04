@@ -1,12 +1,14 @@
 // The masthead: Bodoni wordmark left (the poster's face), tiny tracked
-// caps right, one hairline underneath. Every nav item is an in-page
-// anchor — the site is a single page — and the off-site destinations
-// live in Elsewhere and the announcement bar.
+// caps right, one hairline underneath. The wordmark always goes back to
+// the cover. Nav items point at the cover's plates by hash — from the
+// cover itself that is a same-document jump, and from the plate screens it
+// brings you home to the right place. The off-site destinations live in
+// Elsewhere and the announcement bar.
 const NAV = [
-  { label: "Music", href: "#music" },
-  { label: "Shop", href: "#shop" },
-  { label: "Writing", href: "#writing" },
-  { label: "Elsewhere", href: "#elsewhere" },
+  { label: "Music", href: "/#music" },
+  { label: "Shop", href: "/#shop" },
+  { label: "Writing", href: "/#writing" },
+  { label: "Elsewhere", href: "/#elsewhere" },
 ];
 
 export default function Header() {
