@@ -30,13 +30,18 @@ const title = "Lazy Perfectionist — Bedroom Instrumental Rock | Hong Kong";
 const description =
   "Lazy Perfectionist is a bedroom instrumental rock project from Hong Kong. The new single LUSG is out now — alongside Cyclothymia and Orbit — on all streaming platforms.";
 
+// The site has no domain of its own yet (lazyperfectionist.com is parked and
+// for sale), so the canonical host comes from the deploy environment. Until
+// NEXT_PUBLIC_SITE_URL is set, no canonical or sitemap URL is emitted rather
+// than pointing crawlers at somebody else's sales page; the share card still
+// works because its image path is site-relative.
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://lazyperfectionist.com"
-  ),
+  metadataBase: siteUrl ? new URL(siteUrl) : undefined,
   title: { default: title, template: "%s | Lazy Perfectionist" },
   description,
-  alternates: { canonical: "/" },
+  alternates: siteUrl ? { canonical: "/" } : undefined,
   keywords: [
     "Lazy Perfectionist",
     "instrumental rock",
@@ -59,10 +64,10 @@ export const metadata: Metadata = {
     description,
     images: [
       {
-        url: "/assets/img/lusg-cover.jpg",
-        width: 1400,
-        height: 1400,
-        alt: "LUSG — single artwork",
+        url: "/assets/img/og-card.png",
+        width: 1200,
+        height: 630,
+        alt: "Lazy Perfectionist — bedroom instrumental rock from Hong Kong",
       },
     ],
   },
@@ -70,6 +75,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title,
     description,
+    images: ["/assets/img/og-card.png"],
   },
 };
 

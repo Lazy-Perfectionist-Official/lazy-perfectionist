@@ -3,8 +3,12 @@
 // Medium's RSS feed is the only public, script-friendly view of the
 // account (the post pages sit behind Cloudflare), so this reads the feed
 // with plain fetch — no browser, no API key. The site stays static; the
-// feed's newest posts are written to src/lib/medium-posts.json and
-// committed, and each row hands off to Medium for the reading.
+// posts are written to src/lib/medium-posts.json and committed, and each
+// row hands off to Medium for the reading.
+//
+// The feed shows only its newest window, so the file is merged rather than
+// replaced: a post that falls out of the feed stays in the plate. Feed
+// entries always win, so edits to a title or date still land.
 //
 // Run it with `npm run sync:medium` when a post is published, then commit.
 import { readFile, writeFile } from "node:fs/promises";
@@ -91,20 +95,19 @@ const posts = [...xml.matchAll(/<item>([\s\S]*?)<\/item>/g)].map(([, item]) => {
 if (!posts.length) throw new Error(`no posts found in ${FEED_URL}`);
 posts.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
 
-const next = `${JSON.stringify({ profileUrl: PROFILE_URL, posts }, null, 2)}\n`;
 const current = await readFile(DATA_FILE, "utf8").catch(() => null);
+const existing = current ? JSON.parse(current).posts : [];
 
-// Older posts fall out of the feed's window; a sudden shrink is more often
-// a partial feed than a real deletion, so flag it before committing.
-const previousCount = current ? JSON.parse(current).posts.length : null;
-if (previousCount !== null && posts.length < previousCount) {
-  console.warn(
-    `warning: feed dropped from ${previousCount} to ${posts.length} posts — check for a partial response before committing`,
-  );
-}
+// Union by URL: the feed wins for anything it still carries, and older
+// posts it has dropped stay in the archive.
+const byUrl = new Map(existing.map((post) => [post.url, post]));
+for (const post of posts) byUrl.set(post.url, post);
+const archive = [...byUrl.values()].sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+
+const next = `${JSON.stringify({ profileUrl: PROFILE_URL, posts: archive }, null, 2)}\n`;
 
 if (current !== next) await writeFile(DATA_FILE, next);
 
 for (const post of posts) console.log(`${post.date}  ${post.slug.padEnd(60)} ${post.url}`);
-const count = `${posts.length} post${posts.length === 1 ? "" : "s"}`;
+const count = `${archive.length} post${archive.length === 1 ? "" : "s"}`;
 console.log(current === next ? `writing unchanged (${count})` : `wrote ${path.relative(ROOT, DATA_FILE)} (${count})`);

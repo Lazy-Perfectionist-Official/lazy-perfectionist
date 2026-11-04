@@ -15,6 +15,14 @@ export const LINKS = {
   store: 'https://ko-fi.com/lazyperfectionist/shop',
 } as const;
 
+// The bellyband's news. One line to change at the next release: the bar's
+// label and the link it carries live together, so the copy cannot outlive
+// the link it points at.
+export const ANNOUNCEMENT = {
+  label: 'LUSG — the new single · out now',
+  href: LINKS.spotifyLusg,
+} as const;
+
 export interface Release {
   year: string;
   title: string;

@@ -27,7 +27,7 @@ export default function Hero() {
         href={LINKS.spotifyLusg}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Lazy Perfectionist — listen to LUSG on Spotify"
+        aria-label="Listen to LUSG on Spotify"
         className="group absolute inset-0 block outline-none after:pointer-events-none after:absolute after:inset-1 after:border-2 after:border-ember after:opacity-0 after:content-[''] focus-visible:after:opacity-100"
         data-testid="hero-artwork"
       >
@@ -52,6 +52,15 @@ export default function Hero() {
           sizes="100vw"
           className="object-cover object-[90%_40%]"
         />
+
+        {/* The print is the link, so it needs to say so: the same ember
+            stamp as the bellyband, set on the print's foot where the crop
+            leaves paper. Its text starts the link's accessible name, so
+            voice control can say what it sees. */}
+        <span className="absolute bottom-6 left-6 inline-block bg-ember px-3 py-2 font-mono text-[11px] uppercase tracking-[0.16em] text-ember-ink md:bottom-8 md:left-10 md:text-xs">
+          Listen to LUSG{" "}
+          <span aria-hidden="true">↗</span>
+        </span>
       </a>
     </section>
   );

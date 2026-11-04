@@ -1,5 +1,6 @@
 # Robots.txt for Lazy Perfectionist
-# https://lazyperfectionist.com
+# The canonical host comes from NEXT_PUBLIC_SITE_URL at build; this file is
+# served verbatim and deliberately names no domain.
 
 # Global rules for all crawlers and AI agents.
 # Note: /_next/ (JS/CSS assets) and /.well-known/ stay crawlable — renderers

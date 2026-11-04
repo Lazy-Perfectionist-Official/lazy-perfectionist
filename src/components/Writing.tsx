@@ -3,7 +3,8 @@ import posts from "@/lib/medium-posts.json";
 // Plate 03: the Medium posts printed as an index on the same measure as
 // the rest of the paper. The feed is synced and committed (`npm run
 // sync:medium`), so the site stays static and every row hands off to
-// Medium for the reading. Only the newest posts in the feed appear here.
+// Medium for the reading. The sync merges, so posts that have fallen out
+// of the feed's newest window stay in the plate.
 const LEDE = "Notes, on Medium.";
 
 const dateLabel = (iso: string) =>

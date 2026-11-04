@@ -48,6 +48,10 @@ test.describe('home', () => {
     await expect(artwork).toBeVisible();
     await expect(artwork).toHaveAttribute('href', TRACK_URL);
     await expect(artwork).toHaveAttribute('target', '_blank');
+    // The print is the link, so it has to say so: the visible stamp starts
+    // the accessible name, which is what voice control repeats back.
+    await expect(artwork).toContainText('Listen to LUSG');
+    await expect(artwork).toHaveAccessibleName('Listen to LUSG on Spotify');
 
     const artistProfile = page.getByRole('link', { name: /artist profile/i });
     await expect(artistProfile).toBeVisible();
@@ -207,6 +211,14 @@ test.describe('home', () => {
       // The plate's own label travels with the rows rather than out-denting.
       expect(labelBox!.x, `${section} label must align with the row content`).toBeCloseTo(left, 0);
     }
+  });
+
+  test('the metadata routes answer: sitemap is served as XML', async ({ page }) => {
+    const response = await page.request.get('/sitemap.xml');
+    expect(response.status()).toBe(200);
+    // Without NEXT_PUBLIC_SITE_URL the sitemap is deliberately empty rather
+    // than pointing at a host the site does not own.
+    expect(await response.text()).toContain('<urlset');
   });
 
   test('no horizontal scroll on mobile: document fits the viewport width', async ({ page }, testInfo) => {

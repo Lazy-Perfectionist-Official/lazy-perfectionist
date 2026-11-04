@@ -24,6 +24,7 @@ const CURRENCY_SYMBOL = { USD: "$", GBP: "£", EUR: "€", HKD: "HK$" };
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DATA_FILE = path.join(ROOT, "src/lib/kofi-shop.json");
+const COPY_FILE = path.join(ROOT, "src/lib/shop-copy.json");
 const IMAGE_DIR = path.join(ROOT, "public/assets/img/kofi-shop");
 
 const slugify = (name) =>
@@ -43,6 +44,11 @@ const priceLabel = (offer, payWhatYouWant) => {
 
 // First non-empty line, whitespace collapsed: the listing's own lead line.
 const summarize = (description) => (description ?? "").split("\n").map((line) => line.trim()).find(Boolean)?.replace(/\s+/g, " ") ?? "";
+
+// Ko-fi's listing copy is what the artist typed there, typos included. A
+// slug keyed override in src/lib/shop-copy.json replaces the scraped summary
+// for the few entries that need it; every other row keeps the listing's voice.
+const overrides = JSON.parse(await readFile(COPY_FILE, "utf8").catch(() => "{}"));
 
 const productFrom = (page, url) =>
   page.evaluate((productUrl) => {
@@ -101,15 +107,23 @@ try {
     const record = await productFrom(page, url);
     if (!record?.name) throw new Error(`no product data on ${url}`);
 
+    const slug = slugify(record.name);
     products.push({
-      slug: slugify(record.name),
+      slug,
       name: record.name,
-      summary: summarize(record.description),
+      summary: overrides[slug] ?? summarize(record.description),
       price: priceLabel(record.offer, record.payWhatYouWant),
       payWhatYouWant: record.payWhatYouWant,
       url: record.url,
       image: await download(record.image),
     });
+  }
+
+  // An override whose product was renamed or removed would otherwise sit in
+  // the file forever, silently doing nothing.
+  const stale = Object.keys(overrides).filter((slug) => !products.some((product) => product.slug === slug));
+  if (stale.length) {
+    console.warn(`warning: shop-copy.json has no matching product for: ${stale.join(", ")}`);
   }
 
   // Content-addressed images: drop anything the new listing no longer uses.
