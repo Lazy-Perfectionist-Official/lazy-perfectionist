@@ -4,6 +4,7 @@ import CatalogPage from "@/components/CatalogPage";
 import { ShopRow } from "@/components/Shop";
 import shop from "@/lib/kofi-shop.json";
 import { LINKS, SITE_URL } from "@/lib/site";
+import { firstParam, hasTag, tagCounts, tagSlug } from "@/lib/tags";
 
 export const metadata: Metadata = {
   title: "Shop",
@@ -12,21 +13,27 @@ export const metadata: Metadata = {
   alternates: SITE_URL ? { canonical: "/shop" } : undefined,
 };
 
-// The whole synced listing, searchable on the server from `q`.
+// The whole synced listing, narrowed by search and by tag on the server.
 export default async function ShopPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string | string[] }>;
+  searchParams: Promise<{ q?: string | string[]; tag?: string | string[] }>;
 }) {
-  const { q } = await searchParams;
-  const query = (Array.isArray(q) ? q[0] : q ?? "").trim();
+  const { q, tag } = await searchParams;
+  const query = firstParam(q);
+  const activeTag = tagSlug(firstParam(tag));
   const needle = query.toLowerCase();
 
-  const products = needle
-    ? shop.products.filter((product) =>
-        `${product.name} ${product.summary}`.toLowerCase().includes(needle),
-      )
+  const tagged = activeTag
+    ? shop.products.filter((product) => hasTag(product, activeTag))
     : shop.products;
+  const products = needle
+    ? tagged.filter((product) =>
+        `${product.name} ${product.summary} ${product.tags.join(" ")}`
+          .toLowerCase()
+          .includes(needle),
+      )
+    : tagged;
 
   return (
     <CatalogPage
@@ -35,6 +42,8 @@ export default async function ShopPage({
       lede="Tabs, stems and jam tracks."
       path="/shop"
       query={query}
+      tag={activeTag}
+      tags={tagCounts(shop.products)}
       total={shop.products.length}
       shown={products.length}
       noun="item"

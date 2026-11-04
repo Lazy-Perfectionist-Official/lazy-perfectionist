@@ -5,17 +5,21 @@ import FootRow from "@/components/FootRow";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import SkipLink from "@/components/SkipLink";
+import { filteredHref, type TagCount } from "@/lib/tags";
 
 // A plate's own screen: the masthead, the plate header on the print grid,
-// a search line, the full list, and the hand-off to where the catalog is
-// actually published. The search is a plain GET form filtered on the
-// server — zero client JS, and every query is a URL you can share.
+// a search line, a tag row when the listing carries tags, the full list,
+// and the hand-off to where the catalog is actually published. Search and
+// tags are plain GET requests filtered on the server — zero client JS, and
+// every filter is a URL you can share.
 export default function CatalogPage({
   plate,
   title,
   lede,
   path,
   query,
+  tag,
+  tags,
   total,
   shown,
   noun,
@@ -29,6 +33,8 @@ export default function CatalogPage({
   lede: string;
   path: string;
   query: string;
+  tag?: string;
+  tags?: TagCount[];
   total: number;
   shown: number;
   noun: string;
@@ -37,9 +43,19 @@ export default function CatalogPage({
   testId: string;
   children: ReactNode;
 }) {
-  const count = query
+  const filtered = Boolean(query || tag);
+  const count = filtered
     ? `${shown} of ${total}`
     : `${total} ${noun}${total === 1 ? "" : "s"}`;
+
+  // The active chip is inverted rather than only recoloured, so the state
+  // never depends on telling two browns apart.
+  const chip = (active: boolean) =>
+    `border px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.16em] transition-colors duration-200 md:text-xs ${
+      active
+        ? "border-ink bg-ink text-paper"
+        : "border-line text-ink-soft hover:border-rust hover:text-rust"
+    }`;
 
   return (
     <>
@@ -75,6 +91,9 @@ export default function CatalogPage({
               method="get"
               className="flex flex-wrap items-baseline gap-x-4 gap-y-3 border-b border-line px-4 py-5 md:px-6 md:py-6"
             >
+              {/* A search inside a tag stays inside it: the tag rides along
+                  as a hidden field rather than being reset. */}
+              {tag ? <input type="hidden" name="tag" value={tag} /> : null}
               <label htmlFor="q" className="eyebrow">
                 Search
               </label>
@@ -95,16 +114,44 @@ export default function CatalogPage({
               </button>
             </form>
 
+            {/* Tags are links, not controls: each one is a GET to the same
+                screen, carrying whatever search is already running. */}
+            {tags && tags.length > 0 ? (
+              <nav
+                aria-label="Tags"
+                className="flex flex-wrap items-center gap-x-2 gap-y-2 border-b border-line px-4 py-4 md:px-6 md:py-5"
+              >
+                <span className="eyebrow mr-1">Tags</span>
+                <a
+                  href={filteredHref(path, { q: query })}
+                  aria-current={!tag ? "true" : undefined}
+                  className={chip(!tag)}
+                >
+                  All
+                </a>
+                {tags.map((entry) => (
+                  <a
+                    key={entry.slug}
+                    href={filteredHref(path, { tag: entry.slug, q: query })}
+                    aria-current={tag === entry.slug ? "true" : undefined}
+                    className={chip(tag === entry.slug)}
+                  >
+                    {entry.label}
+                  </a>
+                ))}
+              </nav>
+            ) : null}
+
             {shown === 0 ? (
               <div className="border-b border-line px-4 py-7 md:px-6">
                 <p className="font-display text-2xl italic leading-snug text-ink-soft">
-                  Nothing matches “{query}”.
+                  {query ? `Nothing matches “${query}”.` : "Nothing under this tag yet."}
                 </p>
                 <a
-                  href={path}
+                  href={filteredHref(path, { tag: query ? tag : undefined })}
                   className="mt-4 inline-block font-mono text-[11px] uppercase tracking-[0.16em] text-ink-soft underline underline-offset-4 transition-colors duration-200 hover:text-rust md:text-xs"
                 >
-                  Clear search
+                  {query ? "Clear search" : "Show all"}
                 </a>
               </div>
             ) : (

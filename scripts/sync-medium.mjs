@@ -74,6 +74,29 @@ const canonicalUrl = (link) => {
   return url.toString();
 };
 
+// The feed carries the post's Medium tags as slugified <category> elements.
+// They are the author's own tags, so the writing screen filters on exactly
+// what was tagged on Medium; only the casing has to be restored.
+const humanizeTag = (value) =>
+  text(value)
+    .replace(/[-_]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .replace(/^[a-z]/, (letter) => letter.toUpperCase());
+
+const tagsOf = (item) => {
+  const seen = new Set();
+  const tags = [];
+  for (const [, raw] of item.matchAll(/<category(?:\s[^>]*)?>([\s\S]*?)<\/category>/g)) {
+    const label = humanizeTag(raw);
+    const key = label.toLowerCase();
+    if (!label || seen.has(key)) continue;
+    seen.add(key);
+    tags.push(label);
+  }
+  return tags;
+};
+
 const response = await fetch(FEED_URL, { headers: { "User-Agent": UA } });
 if (!response.ok) throw new Error(`feed ${FEED_URL} answered ${response.status}`);
 const xml = await response.text();
@@ -89,6 +112,7 @@ const posts = [...xml.matchAll(/<item>([\s\S]*?)<\/item>/g)].map(([, item]) => {
     excerpt: excerpt(text(firstParagraph)),
     date: pubDate.toISOString().slice(0, 10),
     url: canonicalUrl(text(pick(item, "link") ?? "")),
+    tags: tagsOf(item),
   };
 });
 
@@ -99,8 +123,9 @@ const current = await readFile(DATA_FILE, "utf8").catch(() => null);
 const existing = current ? JSON.parse(current).posts : [];
 
 // Union by URL: the feed wins for anything it still carries, and older
-// posts it has dropped stay in the archive.
-const byUrl = new Map(existing.map((post) => [post.url, post]));
+// posts it has dropped stay in the archive. Posts synced before tags were
+// read get an empty list rather than a missing key.
+const byUrl = new Map(existing.map((post) => [post.url, { tags: [], ...post }]));
 for (const post of posts) byUrl.set(post.url, post);
 const archive = [...byUrl.values()].sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
 

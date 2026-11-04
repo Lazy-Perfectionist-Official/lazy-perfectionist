@@ -5,8 +5,12 @@
 // cannot be embedded at runtime. Instead this script reads the public shop
 // once per run — same pages a visitor sees — and writes:
 //
-//   src/lib/kofi-shop.json                 the listing data
+//   src/lib/kofi-shop.json                 the listing data (tags included)
 //   public/assets/img/kofi-shop/kofi-*.ext the product art, content-addressed
+//
+// Tags come from the shop's own categories where the artist assigned one,
+// and from the product's name (Tabs / Stems / Jam track / Freebies) so the
+// filters are useful even before every product is categorised on Ko-fi.
 //
 // Run it with `npm run sync:shop` whenever the shop changes, then commit.
 // The site itself stays static: no client JS, no third-party scripts.
@@ -44,6 +48,53 @@ const priceLabel = (offer, payWhatYouWant) => {
 
 // First non-empty line, whitespace collapsed: the listing's own lead line.
 const summarize = (description) => (description ?? "").split("\n").map((line) => line.trim()).find(Boolean)?.replace(/\s+/g, " ") ?? "";
+
+// The shop's own kind, read from the product name. Ko-fi categories are
+// author-assigned and sparse (there is one today), so every product also
+// gets a tag for what it actually is; the two are merged and deduplicated.
+const KIND_TAGS = [
+  [/\btabs?\b/i, "Tabs"],
+  [/\bstems?\b/i, "Stems"],
+  [/\bjam\s*tracks?\b/i, "Jam track"],
+  [/\bfreebies?\b/i, "Freebies"],
+];
+
+const derivedTags = (name) =>
+  KIND_TAGS.filter(([pattern]) => pattern.test(name)).map(([, label]) => label);
+
+// "Jam tracks" from Ko-fi and "Jam track" derived are the same shelf: keep
+// the first wording (the author's) and drop a later tag that says the same.
+const tagKey = (label) => label.toLowerCase().replace(/[^a-z0-9]+/g, "").replace(/s$/, "");
+const tagList = (labels) => {
+  const seen = new Set();
+  return labels.filter((label) => {
+    const key = tagKey(label);
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+};
+
+// Ko-fi's filter chips are backed by its own JSON: a public category list
+// and an item list carrying ShopCategoryIds per product. Both are fetched
+// by the page while it loads, and plain requests from Node are challenged
+// by Cloudflare — so ask the page, using the IDs it was initialized with.
+const shopCategories = (page) =>
+  page.evaluate(async () => {
+    const match = document.documentElement.innerHTML.match(/initializeShop\('([^']+)',\s*'([^']+)'/);
+    if (!match) return null;
+    const [, shop, uuid] = match;
+    const read = async (url) => {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`${url} answered ${response.status}`);
+      return response.json();
+    };
+    const [categories, items] = await Promise.all([
+      read(`/api/shop/${uuid}/categories/public`),
+      read(`/shop/${shop}/items/0/100?productType=0`),
+    ]);
+    return { categories, items };
+  });
 
 // Ko-fi's listing copy is what the artist typed there, typos included. A
 // slug keyed override in src/lib/shop-copy.json replaces the scraped summary
@@ -99,6 +150,23 @@ try {
   const urls = [...new Set(productUrls)].filter((url) => PRODUCT_URL.test(url));
   if (!urls.length) throw new Error(`no products found on ${SHOP_URL}`);
 
+  // Category metadata is a bonus, not a prerequisite: if Ko-fi changes its
+  // shop markup the sync still writes the listing with derived tags.
+  const byAlias = new Map();
+  try {
+    const meta = await shopCategories(page);
+    const items = Array.isArray(meta?.items)
+      ? meta.items
+      : Object.values(meta?.items ?? {}).find(Array.isArray) ?? [];
+    const names = new Map((meta?.categories?.categories ?? []).map((category) => [category.Id, category.Name]));
+    for (const item of items) {
+      const labels = (item.ShopCategoryIds ?? []).map((id) => names.get(id)).filter(Boolean);
+      if (labels.length) byAlias.set(String(item.Alias).toLowerCase(), labels);
+    }
+  } catch (error) {
+    console.warn(`warning: could not read Ko-fi categories (${error.message}); using derived tags only`);
+  }
+
   await mkdir(IMAGE_DIR, { recursive: true });
   const products = [];
   for (const url of urls) {
@@ -108,10 +176,12 @@ try {
     if (!record?.name) throw new Error(`no product data on ${url}`);
 
     const slug = slugify(record.name);
+    const alias = url.split("/").pop().toLowerCase();
     products.push({
       slug,
       name: record.name,
       summary: overrides[slug] ?? summarize(record.description),
+      tags: tagList([...(byAlias.get(alias) ?? []), ...derivedTags(record.name)]),
       price: priceLabel(record.offer, record.payWhatYouWant),
       payWhatYouWant: record.payWhatYouWant,
       url: record.url,

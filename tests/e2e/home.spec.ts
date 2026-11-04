@@ -305,6 +305,70 @@ test.describe('home', () => {
     ).toHaveCount(posts.posts.length);
   });
 
+  test('tags narrow a screen and ride along with the search', async ({ page }) => {
+    // Every synced product carries a shelf — the Ko-fi category where the
+    // artist assigned one, otherwise the kind derived from its name — so
+    // the filter row always has something honest to show.
+    for (const product of shop.products) {
+      expect(product.tags, `${product.slug} must carry tags`).not.toHaveLength(0);
+    }
+    expect(posts.posts.some((post) => post.tags.length > 0), 'the feed must carry tags').toBe(true);
+
+    const slugOf = (label: string) => label.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+
+    await page.goto('/shop');
+    const shopScreen = page.getByTestId('shop-screen');
+    const shopRows = shopScreen.locator('[data-testid^="shop-"]');
+    const shopTags = shopScreen.getByRole('navigation', { name: 'Tags' });
+
+    // "All" is the resting state.
+    await expect(shopTags.getByRole('link', { name: 'All' })).toHaveAttribute('aria-current', 'true');
+
+    // A tag is a link, not a script: the URL says what is filtered.
+    await shopTags.getByRole('link', { name: 'Tabs', exact: true }).click();
+    await expect(page).toHaveURL(/\/shop\?tag=tabs$/);
+    const tabs = shop.products.filter((product) =>
+      product.tags.some((tag) => slugOf(tag) === 'tabs'),
+    );
+    await expect(shopRows).toHaveCount(tabs.length);
+    await expect(shopTags.getByRole('link', { name: 'Tabs', exact: true })).toHaveAttribute(
+      'aria-current',
+      'true',
+    );
+
+    // A search started inside a tag stays inside it.
+    await page.getByRole('searchbox').fill('lusg');
+    await page.getByRole('button', { name: /find/i }).click();
+    await expect(page).toHaveURL(/\/shop\?tag=tabs&q=lusg$/);
+    await expect(shopRows).toHaveCount(1);
+    await expect(page.getByTestId('shop-lusg-tabs')).toBeVisible();
+
+    // "All" drops the tag and keeps the search.
+    await shopTags.getByRole('link', { name: 'All' }).click();
+    await expect(page).toHaveURL(/\/shop\?q=lusg$/);
+    await expect(shopRows).toHaveCount(1);
+
+    // A tagged miss clears the search, not the shelf.
+    await page.goto('/shop?tag=tabs&q=zzzz');
+    await expect(page.getByText(/nothing matches/i)).toBeVisible();
+    await expect(page.getByRole('link', { name: /clear search/i })).toHaveAttribute(
+      'href',
+      '/shop?tag=tabs',
+    );
+
+    // Writing filters on the tags Medium itself carries.
+    await page.goto('/writing');
+    const writingScreen = page.getByTestId('writing-screen');
+    const writingTags = writingScreen.getByRole('navigation', { name: 'Tags' });
+    const firstTag = posts.posts.find((post) => post.tags.length > 0)!.tags[0];
+    await writingTags.getByRole('link', { name: firstTag, exact: true }).click();
+    await expect(page).toHaveURL(new RegExp(`/writing\\?tag=${slugOf(firstTag)}$`));
+    const taggedPosts = posts.posts.filter((post) =>
+      post.tags.some((tag) => slugOf(tag) === slugOf(firstTag)),
+    );
+    await expect(writingScreen.locator('[data-testid^="post-"]')).toHaveCount(taggedPosts.length);
+  });
+
   test('no horizontal scroll on mobile: document fits the viewport width', async ({ page }, testInfo) => {
     const viewportWidth = testInfo.project.use.viewport?.width ?? 1280;
     test.skip(viewportWidth > 500, 'only meaningful on narrow viewports');
