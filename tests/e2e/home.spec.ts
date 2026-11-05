@@ -393,14 +393,14 @@ test.describe('home', () => {
 });
 
 test.describe('poster hero', () => {
-  test('the whole print sits on the fold: no crop, foot on the fold, as large as fits', async ({ page }, testInfo) => {
+  test('the print is full-bleed: it fills the fold edge to edge', async ({ page }, testInfo) => {
     const viewport = testInfo.project.use.viewport ?? { width: 1280, height: 720 };
     const landscape = viewport.width > viewport.height;
     await page.goto('/');
 
     const section = page.getByTestId('hero-section');
     const artwork = page.getByTestId('hero-artwork');
-    // The anchor holds one plate per orientation; only one is displayed.
+    // The anchor holds one plate per screen shape; only one is displayed.
     const plate = artwork.locator('img:visible');
     await expect(plate).toHaveCount(1);
     await expect(plate).toHaveCSS('object-fit', 'cover');
@@ -412,44 +412,46 @@ test.describe('poster hero', () => {
     expect(sectionBox, 'hero section must have a layout box').not.toBeNull();
     expect(artBox, 'hero artwork must have a layout box').not.toBeNull();
 
-    // The whole picture: the plate is laid inside the fold at its own ratio,
-    // 3:4 on a portrait fold and 16:9 on a landscape one, so the composition
-    // — couplets, name, figure, wall — is all on screen.
-    const ratio = landscape ? 16 / 9 : 3 / 4;
-    expect(artBox!.width / artBox!.height, 'the plate keeps its own ratio').toBeCloseTo(ratio, 2);
-    expect(artBox!.width).toBeLessThanOrEqual(sectionBox!.width + 1);
-    expect(artBox!.height).toBeLessThanOrEqual(sectionBox!.height + 1);
+    // The anchor is the fold: no paper margin on any side, so the print
+    // touches the sheet's left and right edges at every width and gives up
+    // its overflow to the crop instead.
+    expect(Math.abs(artBox!.x - sectionBox!.x), 'print reaches the left edge').toBeLessThanOrEqual(1);
+    expect(Math.abs(artBox!.y - sectionBox!.y), 'print starts at the fold').toBeLessThanOrEqual(1);
+    expect(Math.abs(artBox!.width - sectionBox!.width), 'print reaches the right edge').toBeLessThanOrEqual(1);
+    expect(Math.abs(artBox!.height - sectionBox!.height), 'print fills the fold height').toBeLessThanOrEqual(1);
 
-    // The displayed plate is the one for this orientation, and the source has
-    // the same ratio as its box — cover draws every pixel of it.
+    // The plate for this screen shape — 3:4 print on a portrait screen, the
+    // 16:9 strike on a landscape one — and its source is that shape.
     const src = await plate.getAttribute('src');
     if (landscape) {
       expect(src, 'a landscape fold uses the 16:9 plate').toContain('lusg-poster-wide');
     } else {
       expect(src, 'a portrait fold uses the 3:4 print').not.toContain('wide');
     }
-    const natural = await plate.evaluate((img: HTMLImageElement) => [img.naturalWidth, img.naturalHeight]);
-    expect(natural[0] / natural[1], 'the source is uncropped by its box').toBeCloseTo(ratio, 2);
+    const natural = await plate.evaluate((img: HTMLImageElement) => [
+      img.naturalWidth,
+      img.naturalHeight,
+    ]);
+    expect(natural[0] / natural[1], 'the plate is struck at its own ratio').toBeCloseTo(
+      landscape ? 16 / 9 : 3 / 4,
+      2,
+    );
 
-    // As large as the fold allows: the plate's width or height is measured
-    // from the fold's own box, so exactly one of the two dimensions is filled.
-    expect(
-      Math.min(sectionBox!.width - artBox!.width, sectionBox!.height - artBox!.height),
-      'the plate must fill one axis of the fold',
-    ).toBeLessThanOrEqual(1);
+    // Cover trims the overflow: unless the fold happens to have the plate's
+    // exact ratio, the visible picture is a crop of it.
+    const foldRatio = sectionBox!.width / sectionBox!.height;
+    expect(Math.abs(foldRatio - natural[0] / natural[1]), 'the fold is not the plate').toBeGreaterThan(0);
 
-    // Centred across the sheet, and its foot on the fold so no paper margin
-    // sits between the plate and the plates below.
-    expect(
-      Math.abs(artBox!.x + artBox!.width / 2 - (sectionBox!.x + sectionBox!.width / 2)),
-      'plate must be centred',
-    ).toBeLessThanOrEqual(1);
-    expect(
-      Math.abs(artBox!.y + artBox!.height - (sectionBox!.y + sectionBox!.height)),
-      'plate must end on the fold',
-    ).toBeLessThanOrEqual(1);
+    // Landscape plates hug the right edge, so a narrow window trims the
+    // figure rather than the wordmark.
+    if (landscape) {
+      const position = await plate.evaluate(
+        (img) => getComputedStyle(img).objectPosition,
+      );
+      expect(position, 'the wide plate is anchored right').toMatch(/100%|\bright\b/);
+    }
 
-    // The section ends at the fold: the plate is the first screen's subject,
+    // The section ends at the fold: the print is the first screen's subject,
     // starting directly under the announcement bar and header.
     expect(sectionBox!.y, 'fold starts below the chrome').toBeGreaterThan(0);
     expect(
@@ -458,36 +460,52 @@ test.describe('poster hero', () => {
     ).toBeLessThanOrEqual(2);
   });
 
-  test('the plate follows the fold: a phone fills the width with the 3:4 print, a wide screen the height with the 16:9', async ({ page }) => {
-    // The scale follows the fold's own box, not the window's: a phone is
-    // narrower than the print at full height, so the print fills the width; a
-    // 16:9 desktop is wider than the wide plate at full height, so the plate
-    // fills the height and paper takes the sides. Both show the whole picture.
+  test('the fold crops the plate instead of letterboxing it', async ({ page }) => {
+    // Full-bleed means the plate is scaled to cover the fold and cut on the
+    // overflowing axis: a phone's fold is taller than the 3:4 print (sides
+    // trimmed), a 16:9 fold is wider than the wide plate (top and bottom
+    // trimmed). Nothing is ever letterboxed.
     const measure = async (width: number, height: number) => {
       await page.setViewportSize({ width, height });
       await page.goto('/');
+      const artwork = page.getByTestId('hero-artwork');
       const [section, art] = await Promise.all([
         page.getByTestId('hero-section').boundingBox(),
-        page.getByTestId('hero-artwork').boundingBox(),
+        artwork.boundingBox(),
       ]);
-      const plate = page.getByTestId('hero-artwork').locator('img:visible');
-      return { section: section!, art: art!, src: (await plate.getAttribute('src')) ?? '' };
+      const plate = artwork.locator('img:visible');
+      const natural = await plate.evaluate((img: HTMLImageElement) => [
+        img.naturalWidth,
+        img.naturalHeight,
+      ]);
+      const position = await plate.evaluate((img) => getComputedStyle(img).objectPosition);
+      return {
+        section: section!,
+        art: art!,
+        plateRatio: natural[0] / natural[1],
+        position,
+        src: (await plate.getAttribute('src')) ?? '',
+      };
     };
 
     const phone = await measure(390, 844);
-    expect(phone.art.width / phone.art.height, 'a phone holds the print 3:4').toBeCloseTo(3 / 4, 2);
     expect(Math.abs(phone.art.width - phone.section.width)).toBeLessThanOrEqual(1);
-    expect(phone.art.height / phone.section.height, 'a phone leaves paper above the print').toBeLessThan(0.95);
-    expect(Math.abs(phone.art.y + phone.art.height - (phone.section.y + phone.section.height))).toBeLessThanOrEqual(1);
+    expect(Math.abs(phone.art.height - phone.section.height)).toBeLessThanOrEqual(1);
     expect(phone.src).not.toContain('wide');
+    expect(
+      phone.section.width / phone.section.height,
+      'a phone fold is taller than the 3:4 print, so its sides are trimmed',
+    ).toBeLessThan(phone.plateRatio);
 
     const desktop = await measure(1920, 1080);
-    expect(desktop.art.width / desktop.art.height, 'a wide screen holds the plate 16:9').toBeCloseTo(16 / 9, 2);
+    expect(Math.abs(desktop.art.width - desktop.section.width)).toBeLessThanOrEqual(1);
     expect(Math.abs(desktop.art.height - desktop.section.height)).toBeLessThanOrEqual(1);
-    expect(desktop.art.width / desktop.section.width, 'the 16:9 plate leaves only side paper').toBeGreaterThan(0.8);
-    expect(desktop.art.width / desktop.section.width).toBeLessThanOrEqual(1);
-    expect(Math.abs(desktop.art.y + desktop.art.height - (desktop.section.y + desktop.section.height))).toBeLessThanOrEqual(1);
     expect(desktop.src).toContain('lusg-poster-wide');
+    expect(
+      desktop.section.width / desktop.section.height,
+      'a desktop fold is wider than the 16:9 plate, so its top and bottom are trimmed',
+    ).toBeGreaterThan(desktop.plateRatio);
+    expect(desktop.position, 'the wide plate is anchored right').toMatch(/100%|\bright\b/);
   });
 
   test('the page h1 is the band name: the poster carries it for the outline', async ({ page }) => {

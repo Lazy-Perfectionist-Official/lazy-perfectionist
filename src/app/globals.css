@@ -92,12 +92,4 @@
     );
     background-size: 5px 5px;
   }
-
-  /* The hero's print is sized from the fold, not the window: this makes the
-     section the size container the plates' 75cqh (3:4) and 177.78cqh (16:9)
-     widths are measured against, so a plate can be as tall as the fold allows
-     without hard-coding the chrome subtraction twice. */
-  .hero-print {
-    container-type: size;
-  }
 }
