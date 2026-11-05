@@ -6,7 +6,16 @@ import { defineConfig, devices } from '@playwright/test';
  * One spec (tests/e2e/home.spec.ts) across three desktop engines plus one
  * small-mobile Chrome project. The dev server on :3000 is reused when it is
  * already running so tests never fight an active `next dev`.
+ *
+ * The port is `PORT` when set, because :3000 is not always ours — another
+ * local app squatting it makes Next bind a different port and the run fails
+ * with "Timed out waiting from config.webServer", which reads like a broken
+ * site rather than a busy port. `PORT=3137 npm test` keeps the suite honest
+ * without editing this file.
  */
+const port = process.env.PORT ?? '3000';
+const baseURL = `http://localhost:${port}`;
+
 export default defineConfig({
   testDir: './tests/e2e',
 
@@ -25,7 +34,7 @@ export default defineConfig({
   outputDir: 'test-results',
 
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL,
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     actionTimeout: 10_000,
@@ -72,8 +81,10 @@ export default defineConfig({
   ],
 
   webServer: {
-    command: 'npm run dev',
-    url: 'http://localhost:3000',
+    // The port is passed explicitly: `url` alone does not tell the server
+    // which port to bind, and Next silently moves to the next free one.
+    command: `npm run dev -- -p ${port}`,
+    url: baseURL,
     timeout: 120_000,
     reuseExistingServer: !process.env.CI,
     stdout: 'pipe',
