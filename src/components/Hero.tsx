@@ -16,7 +16,7 @@ import { LINKS } from "@/lib/site";
 export default function Hero() {
   return (
     <section
-      className="relative h-[calc(100svh-166px)] overflow-hidden md:h-[calc(100svh-131px)]"
+      className="hero-print relative h-[calc(100svh-166px)] overflow-hidden md:h-[calc(100svh-131px)]"
       data-testid="hero-section"
     >
       <h1 className="sr-only" data-testid="hero-title">
@@ -52,6 +52,11 @@ export default function Hero() {
           sizes="100vw"
           className="object-cover object-[90%_40%]"
         />
+
+        {/* The side trim cuts the print's couplets mid-word on tall phones;
+            this is the print's own paper, shown only where that happens, so
+            the fold starts on a clean margin instead of letter tails. */}
+        <span aria-hidden="true" className="hero-crop-cover" />
 
         {/* The print is the link, so it needs to say so: the same ember
             stamp as the bellyband, set on the print's foot where the crop

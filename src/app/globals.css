@@ -92,4 +92,32 @@
     );
     background-size: 5px 5px;
   }
+
+  /* The hero's print is its own container, so the corner patch below can ask
+     how square the crop is instead of how square the window is. */
+  .hero-print {
+    container-type: size;
+    container-name: heroprint;
+  }
+
+  /* Tall phones trim the print's sides, and the trim slices the couplets in
+     its top margin: the first letters stay off-screen and the last few
+     letters sit at the fold, cut mid-word. This patch is the print's own
+     paper — the artwork samples to #f2e7d5, exactly --color-paper — so over
+     that margin it is invisible; it only drops the sliced tails. It shows
+     only when the crop actually reaches the couplets: the visible window
+     starts at 90% of the side overflow, so it enters the couplets' 7.7% left
+     edge below a 0.686 section aspect. Squarer screens show them whole and
+     keep them. 30% of the section covers the tails at every aspect in that
+     band (at its 0.686 edge they end 20% across and 19% down) and stops
+     4.2% of the print's height short of the figure's head. */
+  .hero-crop-cover {
+    @apply pointer-events-none absolute left-0 top-0 hidden h-[30%] w-[30%] bg-paper;
+  }
+
+  @container heroprint (max-aspect-ratio: 686/1000) {
+    .hero-crop-cover {
+      display: block;
+    }
+  }
 }

@@ -393,6 +393,41 @@ test.describe('home', () => {
 });
 
 test.describe('poster hero', () => {
+  test('a tall phone crop drops the couplet tails instead of cutting them', async ({ page }) => {
+    // 412x915 is taller than the print's 3:4, so cover trims the sides — and
+    // the trim slices the couplets in the print's top margin, leaving their
+    // last letters at the fold. The patch is the print's own paper (the art
+    // samples to the --color-paper value), so it has to sit exactly on the
+    // section's corner and reach past the tails at every aspect it serves:
+    // at its widest (0.686) they end 20% across and 19% down.
+    await page.setViewportSize({ width: 412, height: 915 });
+    await page.goto('/');
+
+    const section = page.getByTestId('hero-section');
+    const cover = page.locator('.hero-crop-cover');
+    await expect(cover).toBeVisible();
+    await expect(cover).toHaveCSS('background-color', 'rgb(242, 231, 213)');
+
+    const [sectionBox, coverBox] = await Promise.all([
+      section.boundingBox(),
+      cover.boundingBox(),
+    ]);
+    expect(Math.abs(coverBox!.x - sectionBox!.x)).toBeLessThanOrEqual(1);
+    expect(Math.abs(coverBox!.y - sectionBox!.y)).toBeLessThanOrEqual(1);
+    expect(coverBox!.width).toBeGreaterThanOrEqual(sectionBox!.width * 0.2);
+    expect(coverBox!.height).toBeGreaterThanOrEqual(sectionBox!.height * 0.19);
+
+    // Squarer sections show the couplets whole, so the patch must stay off:
+    // 375x667 is nearly the print's own 3:4, and 768x1024 has no side trim.
+    for (const [width, height] of [
+      [375, 667],
+      [768, 1024],
+    ]) {
+      await page.setViewportSize({ width, height });
+      await expect(cover).toBeHidden();
+    }
+  });
+
   test('the print fills the first screen: the artwork covers the section to the fold', async ({ page }, testInfo) => {
     const viewport = testInfo.project.use.viewport ?? { width: 1280, height: 720 };
     await page.goto('/');
