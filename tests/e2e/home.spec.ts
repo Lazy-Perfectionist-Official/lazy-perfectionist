@@ -393,42 +393,7 @@ test.describe('home', () => {
 });
 
 test.describe('poster hero', () => {
-  test('a tall phone crop drops the couplet tails instead of cutting them', async ({ page }) => {
-    // 412x915 is taller than the print's 3:4, so cover trims the sides — and
-    // the trim slices the couplets in the print's top margin, leaving their
-    // last letters at the fold. The patch is the print's own paper (the art
-    // samples to the --color-paper value), so it has to sit exactly on the
-    // section's corner and reach past the tails at every aspect it serves:
-    // at its widest (0.686) they end 20% across and 19% down.
-    await page.setViewportSize({ width: 412, height: 915 });
-    await page.goto('/');
-
-    const section = page.getByTestId('hero-section');
-    const cover = page.locator('.hero-crop-cover');
-    await expect(cover).toBeVisible();
-    await expect(cover).toHaveCSS('background-color', 'rgb(242, 231, 213)');
-
-    const [sectionBox, coverBox] = await Promise.all([
-      section.boundingBox(),
-      cover.boundingBox(),
-    ]);
-    expect(Math.abs(coverBox!.x - sectionBox!.x)).toBeLessThanOrEqual(1);
-    expect(Math.abs(coverBox!.y - sectionBox!.y)).toBeLessThanOrEqual(1);
-    expect(coverBox!.width).toBeGreaterThanOrEqual(sectionBox!.width * 0.2);
-    expect(coverBox!.height).toBeGreaterThanOrEqual(sectionBox!.height * 0.19);
-
-    // Squarer sections show the couplets whole, so the patch must stay off:
-    // 375x667 is nearly the print's own 3:4, and 768x1024 has no side trim.
-    for (const [width, height] of [
-      [375, 667],
-      [768, 1024],
-    ]) {
-      await page.setViewportSize({ width, height });
-      await expect(cover).toBeHidden();
-    }
-  });
-
-  test('the print fills the first screen: the artwork covers the section to the fold', async ({ page }, testInfo) => {
+  test('the whole print sits on the fold: no crop, foot on the fold, as large as fits', async ({ page }, testInfo) => {
     const viewport = testInfo.project.use.viewport ?? { width: 1280, height: 720 };
     await page.goto('/');
 
@@ -445,19 +410,63 @@ test.describe('poster hero', () => {
     expect(sectionBox, 'hero section must have a layout box').not.toBeNull();
     expect(artBox, 'hero artwork must have a layout box').not.toBeNull();
 
-    // Edge to edge: the listen link covers the section on all four sides.
-    expect(Math.abs(artBox!.x - sectionBox!.x), 'artwork must start at the section edge').toBeLessThanOrEqual(1);
-    expect(Math.abs(artBox!.y - sectionBox!.y), 'artwork must start at the section top').toBeLessThanOrEqual(1);
-    expect(Math.abs(artBox!.width - sectionBox!.width), 'artwork must span the section width').toBeLessThanOrEqual(1);
-    expect(Math.abs(artBox!.height - sectionBox!.height), 'artwork must span the section height').toBeLessThanOrEqual(1);
+    // The whole picture: the print holds its 3:4 inside the fold instead of
+    // being cover-cropped by it, so the composition — couplets, name, figure
+    // — is all on screen at every viewport.
+    expect(artBox!.width / artBox!.height, 'the print keeps its 3:4').toBeCloseTo(3 / 4, 2);
+    expect(artBox!.width).toBeLessThanOrEqual(sectionBox!.width + 1);
+    expect(artBox!.height).toBeLessThanOrEqual(sectionBox!.height + 1);
 
-    // The section ends at the fold: the print is the whole first screen,
+    // As large as the fold allows: 75cqh wide, capped by the screen width, so
+    // exactly one of the two dimensions is filled.
+    expect(
+      Math.min(sectionBox!.width - artBox!.width, sectionBox!.height - artBox!.height),
+      'the print must fill one axis of the fold',
+    ).toBeLessThanOrEqual(1);
+
+    // Centred across the sheet, and its foot on the fold so no paper margin
+    // sits between the print and the plates.
+    expect(
+      Math.abs(artBox!.x + artBox!.width / 2 - (sectionBox!.x + sectionBox!.width / 2)),
+      'print must be centred',
+    ).toBeLessThanOrEqual(1);
+    expect(
+      Math.abs(artBox!.y + artBox!.height - (sectionBox!.y + sectionBox!.height)),
+      'print must end on the fold',
+    ).toBeLessThanOrEqual(1);
+
+    // The section ends at the fold: the print is the first screen's subject,
     // starting directly under the announcement bar and header.
-    expect(sectionBox!.y, 'print starts below the chrome').toBeGreaterThan(0);
+    expect(sectionBox!.y, 'fold starts below the chrome').toBeGreaterThan(0);
     expect(
       Math.abs(sectionBox!.y + sectionBox!.height - viewport.height),
-      'print must end at the viewport bottom',
+      'fold must end at the viewport bottom',
     ).toBeLessThanOrEqual(2);
+  });
+
+  test('the print is sized from the fold: a phone shows it whole and a desktop fills the height', async ({ page }) => {
+    // The scale follows the fold's own box, not the window's: a phone is
+    // narrower than the print at full height, so the print fills the width;
+    // a 16:9 desktop is wider, so it fills the height and paper takes the
+    // sides. Both show the whole picture.
+    const measure = async (width: number, height: number) => {
+      await page.setViewportSize({ width, height });
+      await page.goto('/');
+      const [section, art] = await Promise.all([
+        page.getByTestId('hero-section').boundingBox(),
+        page.getByTestId('hero-artwork').boundingBox(),
+      ]);
+      return { section: section!, art: art! };
+    };
+
+    const phone = await measure(390, 844);
+    expect(Math.abs(phone.art.width - phone.section.width)).toBeLessThanOrEqual(1);
+    expect(phone.art.height / phone.section.height, 'a phone leaves paper above the print').toBeLessThan(0.95);
+    expect(Math.abs(phone.art.y + phone.art.height - (phone.section.y + phone.section.height))).toBeLessThanOrEqual(1);
+
+    const desktop = await measure(1920, 1080);
+    expect(Math.abs(desktop.art.height - desktop.section.height)).toBeLessThanOrEqual(1);
+    expect(desktop.art.width / desktop.section.width, 'a wide screen keeps the print 3:4').toBeLessThan(0.5);
   });
 
   test('the page h1 is the band name: the poster carries it for the outline', async ({ page }) => {
