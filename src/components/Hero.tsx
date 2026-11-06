@@ -47,7 +47,7 @@ export default function Hero() {
           fill
           priority
           sizes="(orientation: landscape) 0px, 100vw"
-          className="object-cover landscape:hidden"
+          className="hero-plate object-cover landscape:hidden"
         />
 
         {/* Landscape: the wide plate. Anchored right so the crop takes the
@@ -58,7 +58,7 @@ export default function Hero() {
           fill
           priority
           sizes="(orientation: portrait) 0px, 100vw"
-          className="hidden object-cover object-right landscape:block"
+          className="hero-plate hidden object-cover object-right landscape:block"
         />
 
         {/* The print is the link, so it needs to say so: the same ember
@@ -73,6 +73,17 @@ export default function Hero() {
             </span>
           </div>
         </div>
+
+        {/* The impression settling under the platen: a paper wash lifts off
+            the print once, on load, and the plate gives up a 2% enlarge as it
+            lands. Decorative and never a click target. Deliberately above the
+            stamp (the fold arrives whole) and below the focus ring, which is
+            the anchor's ::after. */}
+        <span
+          aria-hidden="true"
+          data-testid="hero-wash"
+          className="hero-wash pointer-events-none absolute inset-0"
+        />
       </a>
     </section>
   );

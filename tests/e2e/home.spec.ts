@@ -536,6 +536,49 @@ test.describe('poster hero', () => {
     }
   });
 
+  test('the fold develops: the wash lifts off the print and settles flush', async ({ page }) => {
+    await page.goto('/');
+
+    const wash = page.getByTestId('hero-wash');
+    const plate = page.getByTestId('hero-artwork').locator('img:visible');
+
+    // The impression settling under the platen: a paper wash over the print
+    // that lifts once, and a plate that gives up its 2% enlarge as it lands.
+    await expect(wash).toHaveCSS('animation-name', 'hero-wash');
+    await expect(wash).toHaveCSS('animation-fill-mode', 'both');
+    await expect(plate).toHaveCSS('animation-name', 'hero-settle');
+
+    // Decorative and transparent to the pointer: the fold stays one link.
+    await expect(wash).toHaveCSS('pointer-events', 'none');
+
+    // It finishes invisible and holds the plate at its true size, so the
+    // fold is exactly the print once the impression has settled.
+    await expect
+      .poll(async () => wash.evaluate((el) => Number(getComputedStyle(el).opacity)))
+      .toBe(0);
+
+    const [sectionBox, plateBox] = await Promise.all([
+      page.getByTestId('hero-section').boundingBox(),
+      plate.boundingBox(),
+    ]);
+    expect(Math.abs(plateBox!.width - sectionBox!.width), 'the plate settles flush with the fold').toBeLessThanOrEqual(1);
+    expect(Math.abs(plateBox!.height - sectionBox!.height), 'the plate settles flush with the fold').toBeLessThanOrEqual(1);
+  });
+
+  test('reduced motion holds the fold still', async ({ page }) => {
+    // The site honours "less motion" everywhere else (scroll-behavior), so the
+    // hero does too: no wash, no settle, just the print.
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/');
+
+    const wash = page.getByTestId('hero-wash');
+    await expect(wash).toHaveCSS('animation-name', 'none');
+    await expect(wash).toHaveCSS('opacity', '0');
+    await expect(
+      page.getByTestId('hero-artwork').locator('img:visible'),
+    ).toHaveCSS('animation-name', 'none');
+  });
+
   test('the page h1 is the band name: the poster carries it for the outline', async ({ page }) => {
     await page.goto('/');
 

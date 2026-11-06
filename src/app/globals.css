@@ -137,4 +137,55 @@
     );
     background-size: 5px 5px;
   }
+
+  /* The fold develops: the impression settling under the platen. A paper wash
+     lies over the plate for a second and lifts, and the plate gives up a 2%
+     enlarge as it lands — the print arrives rather than merely loading.
+     Neither touches the image's own opacity: the plate is the LCP and is
+     painted whole from the first frame, so only the wash above it moves. The
+     wash rests invisible (opacity: 0) and animates only when the reader has
+     not asked for less motion — under `reduce` the fold is simply the print. */
+  .hero-wash {
+    background-color: var(--color-paper);
+    opacity: 0;
+  }
+
+  /* The soft focus is a backdrop blur on the wash, not a filter on the plate:
+     it costs the LCP nothing and fades out with the wash itself. */
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .hero-wash {
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-wash {
+      animation: hero-wash 1.1s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+    }
+
+    .hero-plate {
+      animation: hero-settle 1.4s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+    }
+  }
+}
+
+@keyframes hero-wash {
+  from {
+    opacity: 0.88;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes hero-settle {
+  from {
+    transform: scale(1.02);
+  }
+
+  to {
+    transform: scale(1);
+  }
 }
