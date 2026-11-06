@@ -20,11 +20,43 @@ import { LINKS } from "@/lib/site";
 // The height subtracts the measured chrome: announcement bar + masthead are
 // 166px at phone widths and 131px from md up, so `100svh` minus that is the
 // remainder the fold has to fill.
+// The fold's only script: it reads the pointer and hands the position to CSS
+// as two custom properties, which the lantern's gradient is drawn at. CSS
+// cannot see a cursor, so this is the one place the site takes a few lines of
+// it — no framework, no state, no listeners on touch or under reduced motion,
+// and it stops its own frame loop when the light has caught up. Without it the
+// fold is the still print it has always been.
+const LANTERN = `
+(function () {
+  var hero = document.querySelector('[data-lantern]');
+  if (!hero) return;
+  if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var tx = 50, ty = 45, cx = 50, cy = 45, frame = 0;
+  function step() {
+    cx += (tx - cx) * 0.12;
+    cy += (ty - cy) * 0.12;
+    hero.style.setProperty('--lantern-x', cx.toFixed(2) + '%');
+    hero.style.setProperty('--lantern-y', cy.toFixed(2) + '%');
+    frame = Math.abs(tx - cx) > 0.1 || Math.abs(ty - cy) > 0.1 ? requestAnimationFrame(step) : 0;
+  }
+  hero.addEventListener('pointermove', function (event) {
+    var box = hero.getBoundingClientRect();
+    tx = ((event.clientX - box.left) / box.width) * 100;
+    ty = ((event.clientY - box.top) / box.height) * 100;
+    if (!frame) frame = requestAnimationFrame(step);
+  }, { passive: true });
+  hero.addEventListener('pointerenter', function () { hero.classList.add('lantern-lit'); });
+  hero.addEventListener('pointerleave', function () { hero.classList.remove('lantern-lit'); });
+})();
+`;
+
 export default function Hero() {
   return (
     <section
       className="relative h-[calc(100svh-166px)] overflow-hidden md:h-[calc(100svh-131px)]"
       data-testid="hero-section"
+      data-lantern=""
     >
       <h1 className="sr-only" data-testid="hero-title">
         Lazy Perfectionist
@@ -74,6 +106,16 @@ export default function Hero() {
           </div>
         </div>
 
+        {/* The lantern: a soft paper light that follows the pointer across
+            the print a beat behind it. Drawn entirely by CSS at two custom
+            properties the script below writes; under the wash, so the
+            impression still arrives whole. */}
+        <span
+          aria-hidden="true"
+          data-testid="hero-lantern"
+          className="hero-lantern pointer-events-none absolute inset-0"
+        />
+
         {/* The impression settling under the platen: a paper wash lifts off
             the print once, on load, and the plate gives up a 2% enlarge as it
             lands. Decorative and never a click target. Deliberately above the
@@ -85,6 +127,8 @@ export default function Hero() {
           className="hero-wash pointer-events-none absolute inset-0"
         />
       </a>
+
+      <script dangerouslySetInnerHTML={{ __html: LANTERN }} />
     </section>
   );
 }

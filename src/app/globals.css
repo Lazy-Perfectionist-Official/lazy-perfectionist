@@ -159,6 +159,41 @@
     }
   }
 
+  /* The lantern (see Hero.tsx): the print keeps its light where the pointer
+     is and falls a shade into the ink away from it — a lamp moving over the
+     sheet rather than a glow laid on top of it. That is why it dims the
+     distance instead of brightening the centre: the paper is nearly white,
+     so added light has nowhere to go, while a 12% ink scrim on paper reads
+     plainly and leaves the print's own tones untouched. The script eases the
+     pool toward the cursor a beat behind it; it attaches nothing on touch or
+     under reduced motion, and `lantern-lit` is what fades the pool in, so
+     without the script the fold is the still print it has always been. */
+  .hero-lantern {
+    background: radial-gradient(
+      circle clamp(340px, 42vmax, 880px) at var(--lantern-x, 50%) var(--lantern-y, 45%),
+      transparent 0,
+      transparent 38%,
+      rgb(42 24 16 / 0.045) 66%,
+      rgb(42 24 16 / 0.125) 100%
+    );
+    /* Faded out by the fold's own edges, so the sheet's paper at its border
+       stays exactly --color-paper: the print still has no frame of its own,
+       and the pool lives inside it. */
+    mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 55%, transparent 100%);
+    opacity: 0;
+    transition: opacity 600ms ease;
+  }
+
+  .lantern-lit .hero-lantern {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-lantern {
+      display: none;
+    }
+  }
+
   @media (prefers-reduced-motion: no-preference) {
     .hero-wash {
       animation: hero-wash 1.1s cubic-bezier(0.22, 0.61, 0.36, 1) both;
