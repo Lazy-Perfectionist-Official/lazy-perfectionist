@@ -21,13 +21,14 @@ import { LINKS } from "@/lib/site";
 // 166px at phone widths and 131px from md up, so `100svh` minus that is the
 // remainder the fold has to fill.
 // The fold's only script: it reads the pointer and hands the position to CSS
-// as two custom properties, which the lantern's gradient is drawn at. CSS
-// cannot see a cursor, so this is the one place the site takes a few lines of
-// it — no framework, no state, no listeners on touch or under reduced motion,
-// and it stops its own frame loop when the light has caught up. The fold's box
-// is re-read whenever the pointer or the page moves, so scrolling carries the
-// light with the print instead of leaving it at the height it was lit at.
-// Without it the fold is the still print it has always been.
+// as two custom properties, which the lens is drawn at. (The names still say
+// lantern — the light itself was taken out again; only the glass remains.)
+// CSS cannot see a cursor, so this is the one place the site takes a few
+// lines of it — no framework, no state, no listeners on touch or under
+// reduced motion, and it stops its own frame loop when the glass has caught
+// up. The fold's box is re-read whenever the pointer or the page moves, so
+// scrolling carries the lens with the print instead of leaving it at the
+// height it was lit at. Without it the fold is the print and the breeze.
 const LANTERN = `
 (function () {
   var hero = document.querySelector('[data-lantern]');
@@ -39,7 +40,7 @@ const LANTERN = `
   function step() {
     cx += (tx - cx) * 0.12;
     cy += (ty - cy) * 0.12;
-    // The light trails the pointer, so how far behind it is IS the pointer's
+    // The glass trails the pointer, so how far behind it is IS the pointer's
     // speed: the drop stretches along the travel and rounds off again at rest.
     var gx = tx - cx, gy = ty - cy;
     var gap = Math.sqrt(gx * gx + gy * gy);
@@ -61,7 +62,7 @@ const LANTERN = `
   }
   // Aim at the last known screen point. The fold's box is measured here, not
   // once: scrolling slides the fold under a pointer that has not moved, and
-  // the light has to slide with it.
+  // the lens has to slide with it.
   function aim() {
     if (px < 0) return;
     var box = hero.getBoundingClientRect();
@@ -128,6 +129,71 @@ export default function Hero() {
           className="hero-plate hidden object-cover object-right landscape:block"
         />
 
+        {/* The breeze: the print does not sit perfectly still — three more
+            copies of the plate, each masked to a soft vertical band a third
+            of a wavelength wide, each swaying a third of a cycle behind the
+            last. Where the bands crossfade the phases blend, so the phase
+            turns continuously along the width and the ripple travels across
+            the fold like cloth in a light wind. Only transforms animate —
+            the compositor's work, no repaints — and the copies share the
+            plates' src and sizes, so the wind costs no bytes either. The
+            span's own mask fades the bands out before the fold's top and
+            bottom edges, so a moving band can never open a seam against
+            the sheet. */}
+        <span
+          aria-hidden="true"
+          className="hero-wave pointer-events-none absolute inset-0 landscape:hidden"
+        >
+          <Image
+            src="/assets/img/lusg-poster.jpg"
+            alt=""
+            fill
+            sizes="(orientation: landscape) 0px, 100vw"
+            className="hero-wave-band object-cover"
+          />
+          <Image
+            src="/assets/img/lusg-poster.jpg"
+            alt=""
+            fill
+            sizes="(orientation: landscape) 0px, 100vw"
+            className="hero-wave-band hero-wave-b object-cover"
+          />
+          <Image
+            src="/assets/img/lusg-poster.jpg"
+            alt=""
+            fill
+            sizes="(orientation: landscape) 0px, 100vw"
+            className="hero-wave-band hero-wave-c object-cover"
+          />
+        </span>
+
+        <span
+          aria-hidden="true"
+          className="hero-wave pointer-events-none absolute inset-0 hidden landscape:block"
+        >
+          <Image
+            src="/assets/img/lusg-poster-wide.jpg"
+            alt=""
+            fill
+            sizes="(orientation: portrait) 0px, 100vw"
+            className="hero-wave-band object-cover object-right"
+          />
+          <Image
+            src="/assets/img/lusg-poster-wide.jpg"
+            alt=""
+            fill
+            sizes="(orientation: portrait) 0px, 100vw"
+            className="hero-wave-band hero-wave-b object-cover object-right"
+          />
+          <Image
+            src="/assets/img/lusg-poster-wide.jpg"
+            alt=""
+            fill
+            sizes="(orientation: portrait) 0px, 100vw"
+            className="hero-wave-band hero-wave-c object-cover object-right"
+          />
+        </span>
+
         {/* The lens: the same plate again, a few percent larger and turned a
             hair, masked to a feathered circle at the pointer. Magnifying a
             copy rather than filtering the plate keeps the LCP image untouched
@@ -177,16 +243,6 @@ export default function Hero() {
             </span>
           </div>
         </div>
-
-        {/* The lantern: a soft paper light that follows the pointer across
-            the print a beat behind it. Drawn entirely by CSS at two custom
-            properties the script below writes; under the wash, so the
-            impression still arrives whole. */}
-        <span
-          aria-hidden="true"
-          data-testid="hero-lantern"
-          className="hero-lantern pointer-events-none absolute inset-0"
-        />
 
         {/* The impression settling under the platen: a paper wash lifts off
             the print once, on load, and the plate gives up a 2% enlarge as it

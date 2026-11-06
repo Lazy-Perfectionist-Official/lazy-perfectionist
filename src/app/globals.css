@@ -159,46 +159,67 @@
     }
   }
 
-  /* The lantern (see Hero.tsx): the print keeps its light where the pointer
-     is and falls a shade into the ink away from it — a lamp moving over the
-     sheet rather than a glow laid on top of it. That is why it dims the
-     distance instead of brightening the centre: the paper is nearly white,
-     so added light has nowhere to go, while a 12% ink scrim on paper reads
-     plainly and leaves the print's own tones untouched. The script eases the
-     pool toward the cursor a beat behind it; it attaches nothing on touch or
-     under reduced motion, and `lantern-lit` is what fades the pool in, so
-     without the script the fold is the still print it has always been. */
-  .hero-lantern,
+  /* The breeze (see Hero.tsx): the whole print sways, very slightly, all the
+     time — a sheet catching a light wind rather than a screen. Three banded
+     copies of the plate sway a third of a cycle apart; their soft masks
+     crossfade, so at any point on the print the phases blend and the phase
+     turns continuously along the width — the ripple travels. Only transforms
+     animate (the compositor's work; nothing repaints), the copies share the
+     plates' src, and the span fades its bands out before the fold's top and
+     bottom edges, so a moving band can never open a seam against the sheet. */
+  .hero-wave {
+    mask-image: linear-gradient(
+      180deg,
+      transparent 0%,
+      #000 8%,
+      #000 92%,
+      transparent 100%
+    );
+  }
+
+  .hero-wave-band {
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      #000 33%,
+      #000 67%,
+      transparent 100%
+    );
+    -webkit-mask-size: 28vw 100%;
+    mask-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      #000 33%,
+      #000 67%,
+      transparent 100%
+    );
+    mask-size: 28vw 100%;
+    animation: hero-breeze 9s ease-in-out infinite;
+  }
+
+  /* The second and third bands sit a third of a wavelength along and sway a
+     third of a cycle behind — together the three turn one full wave across
+     the fold. */
+  .hero-wave-b {
+    mask-position: 9.33vw 0;
+    animation-delay: -3s;
+  }
+
+  .hero-wave-c {
+    mask-position: 18.67vw 0;
+    animation-delay: -6s;
+  }
+
+  /* The lens (see Hero.tsx): the drop is a circle while the pointer rests
+     and an oval along its travel while it moves — the script watches how far
+     behind the glass is (which is the pointer's speed) and writes --lens-k
+     (0..1) and --lens-angle. Everything turns about the pointer, so the
+     glass stays centred on it while its shape stretches. */
   .hero-lens {
-    /* The drop is a circle while the pointer rests and an oval along its
-       travel while it moves: the script watches how far behind the light is
-       (which is the pointer's speed) and writes --lens-k (0..1) and
-       --lens-angle. Everything turns about the pointer, so the glass and the
-       light stretch as one piece and stay centred on it. */
     transform-origin: var(--lantern-x, 50%) var(--lantern-y, 45%);
     transform: rotate(var(--lens-angle, 0deg))
       scale(calc(1 + 0.08 * var(--lens-k, 0)), calc(1 - 0.06 * var(--lens-k, 0)))
       rotate(calc(-1 * var(--lens-angle, 0deg)));
-  }
-
-  .hero-lantern {
-    background: radial-gradient(
-      circle clamp(340px, 42vmax, 880px) at var(--lantern-x, 50%) var(--lantern-y, 45%),
-      transparent 0,
-      transparent 38%,
-      rgb(42 24 16 / 0.045) 66%,
-      rgb(42 24 16 / 0.125) 100%
-    );
-    /* Faded out by the fold's own edges, so the sheet's paper at its border
-       stays exactly --color-paper: the print still has no frame of its own,
-       and the pool lives inside it. */
-    mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 55%, transparent 100%);
-    opacity: 0;
-    transition: opacity 600ms ease;
-  }
-
-  .lantern-lit .hero-lantern {
-    opacity: 1;
   }
 
   /* The lens (see Hero.tsx): the same plate, magnified a few percent and
@@ -241,8 +262,8 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-lantern,
-    .hero-lens {
+    .hero-lens,
+    .hero-wave {
       display: none;
     }
   }
@@ -252,7 +273,11 @@
       animation: hero-wash 1.1s cubic-bezier(0.22, 0.61, 0.36, 1) both;
     }
 
-    .hero-plate {
+    /* The breeze settles with the plate: the span takes the same landing
+       animation so the swaying bands are never out of step with the print
+       they ride on while the impression arrives. */
+    .hero-plate,
+    .hero-wave {
       animation: hero-settle 1.4s cubic-bezier(0.22, 0.61, 0.36, 1) both;
     }
   }
@@ -275,5 +300,20 @@
 
   to {
     transform: scale(1);
+  }
+}
+
+@keyframes hero-breeze {
+  0%,
+  100% {
+    transform: skewY(0deg) translateY(0);
+  }
+
+  25% {
+    transform: skewY(0.06deg) translateY(-0.12vmin);
+  }
+
+  75% {
+    transform: skewY(-0.06deg) translateY(0.12vmin);
   }
 }

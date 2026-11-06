@@ -9,8 +9,8 @@ import posts from '../../src/lib/medium-posts.json';
  * Every assert is viewport-agnostic unless explicitly project-gated, so the
  * same spec runs under chromium/firefox/webkit-desktop (1920x1080) and
  * mobile-chrome-small (375x667). There is no client JS beyond the Next
- * runtime and the hero's one inline lantern script (pointer position → two
- * custom properties) — everything below exercises real DOM state.
+ * runtime and the hero's one inline pointer script (cursor position → custom
+ * properties that draw the lens) — everything below exercises real DOM state.
  */
 
 const TRACK_URL = 'https://open.spotify.com/track/4RnwmBIaSuOqGEu8R2nIsU';
@@ -566,20 +566,21 @@ test.describe('poster hero', () => {
     expect(Math.abs(plateBox!.height - sectionBox!.height), 'the plate settles flush with the fold').toBeLessThanOrEqual(1);
   });
 
-  test('the lantern follows the pointer', async ({ page }, testInfo) => {
+  test('the lens follows the pointer', async ({ page }, testInfo) => {
     // Optical pointers only: on a touch screen the script never attaches.
     test.skip(testInfo.project.name === 'mobile-chrome-small', 'no fine pointer');
 
     await page.goto('/');
     const section = page.getByTestId('hero-section');
-    const lantern = page.getByTestId('hero-lantern');
+    // One lens span per orientation; only the shown one is visible.
+    const lens = page.locator('.hero-lens:visible');
     const box = (await section.boundingBox())!;
 
-    await expect(lantern).toHaveCSS('pointer-events', 'none');
-    await expect(lantern).toHaveCSS('opacity', '0');
+    await expect(lens).toHaveCSS('pointer-events', 'none');
+    await expect(lens).toHaveCSS('opacity', '0');
 
-    // Crossing the print positions the pool where the pointer is and lights
-    // it: the script writes the position as custom properties, CSS draws it.
+    // Crossing the print puts the glass where the pointer is and lights it:
+    // the script writes the position as custom properties, CSS draws it.
     await page.mouse.move(box.x + box.width * 0.25, box.y + box.height * 0.5);
     await page.mouse.move(box.x + box.width * 0.75, box.y + box.height * 0.35, { steps: 8 });
 
@@ -589,15 +590,15 @@ test.describe('poster hero', () => {
     await expect
       .poll(async () => parseFloat(await section.evaluate((el) => el.style.getPropertyValue('--lantern-y'))))
       .toBeCloseTo(35, 0);
-    await expect(lantern).toHaveCSS('opacity', '1');
+    await expect(lens).toHaveCSS('opacity', '1');
 
-    // Leaving the print lets the pool fade out.
+    // Leaving the print lets the glass fade out.
     await page.mouse.move(0, 0);
-    await expect(lantern).toHaveCSS('opacity', '0');
+    await expect(lens).toHaveCSS('opacity', '0');
   });
 
   test('the drop deforms with the pointer and rounds off at rest', async ({ page }, testInfo) => {
-    // Optical pointers only, like the lantern itself.
+    // Optical pointers only, like the lens itself.
     test.skip(testInfo.project.name === 'mobile-chrome-small', 'no fine pointer');
 
     await page.goto('/');
@@ -606,7 +607,7 @@ test.describe('poster hero', () => {
     const prop = (name: string) =>
       section.evaluate((el, n) => el.style.getPropertyValue(n), name);
 
-    // A flick across the print leaves the eased light well behind the
+    // A flick across the print leaves the eased glass well behind the
     // pointer, and that gap is the speed the drop is stretched by.
     await page.mouse.move(box.x + box.width * 0.2, box.y + box.height * 0.5, { steps: 4 });
     await page.mouse.move(box.x + box.width * 0.8, box.y + box.height * 0.5, { steps: 2 });
@@ -651,12 +652,12 @@ test.describe('poster hero', () => {
     await expect.poll(async () => parseFloat(await prop('--lens-k'))).toBeLessThan(0.05);
   });
 
-  test('the light keeps up while the page scrolls', async ({ page }, testInfo) => {
+  test('the lens keeps up while the page scrolls', async ({ page }, testInfo) => {
     test.skip(testInfo.project.name === 'mobile-chrome-small', 'no fine pointer');
 
     await page.goto('/');
     const section = page.getByTestId('hero-section');
-    const lantern = page.getByTestId('hero-lantern');
+    const lens = page.locator('.hero-lens:visible');
     const box = (await section.boundingBox())!;
     const prop = (name: string) =>
       section.evaluate((el, n) => parseFloat(el.style.getPropertyValue(n)), name);
@@ -664,16 +665,40 @@ test.describe('poster hero', () => {
     await page.mouse.move(box.x + box.width * 0.5, box.y + box.height * 0.3);
     await expect.poll(() => prop('--lantern-y')).toBeCloseTo(30, 0);
 
-    // The pointer does not move, but the fold slides up under it — the light
+    // The pointer does not move, but the fold slides up under it — the glass
     // has to slide with the print, not stay at the height it was lit at.
     await page.mouse.wheel(0, 240);
     await expect.poll(() => prop('--lantern-y')).toBeGreaterThan(45);
-    await expect(lantern).toHaveCSS('opacity', '1');
+    await expect(lens).toHaveCSS('opacity', '1');
+  });
+
+  test('the print ripples in a breeze', async ({ page }) => {
+    await page.goto('/');
+    const bands = page.locator('.hero-wave:visible .hero-wave-band');
+
+    // Three bands, a third of a wavelength apart, swaying a third of a cycle
+    // behind each other — the phase turns along the width, so the ripple
+    // travels instead of the whole sheet merely bobbing.
+    await expect(bands).toHaveCount(3);
+    const styles = await bands.evaluateAll((els) =>
+      els.map((el) => {
+        const cs = getComputedStyle(el);
+        return { name: cs.animationName, delay: cs.animationDelay, duration: cs.animationDuration };
+      }),
+    );
+    expect(styles.map((s) => s.name)).toEqual(['hero-breeze', 'hero-breeze', 'hero-breeze']);
+    expect(new Set(styles.map((s) => s.delay)).size, 'three distinct phases').toBe(3);
+    expect(new Set(styles.map((s) => s.duration))).toEqual(new Set(['9s']));
+
+    // The bands sit at different points of the same mask, and the sway runs
+    // forever: without the phase spread it would be one rigid wobble.
+    const positions = await bands.evaluateAll((els) => els.map((el) => getComputedStyle(el).maskPosition));
+    expect(new Set(positions).size, 'bands offset along the width').toBe(3);
   });
 
   test('reduced motion holds the fold still', async ({ page }) => {
     // The site honours "less motion" everywhere else (scroll-behavior), so the
-    // hero does too: no wash, no settle, no lantern, just the print.
+    // hero does too: no wash, no settle, no lens, no breeze, just the print.
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto('/');
 
@@ -683,8 +708,8 @@ test.describe('poster hero', () => {
     await expect(
       page.getByTestId('hero-artwork').locator('img[data-plate]:visible'),
     ).toHaveCSS('animation-name', 'none');
-    await expect(page.getByTestId('hero-lantern')).toHaveCSS('display', 'none');
     await expect(page.locator('.hero-lens').first()).toHaveCSS('display', 'none');
+    await expect(page.locator('.hero-wave').first()).toHaveCSS('display', 'none');
   });
 
   test('the page h1 is the band name: the poster carries it for the outline', async ({ page }) => {
