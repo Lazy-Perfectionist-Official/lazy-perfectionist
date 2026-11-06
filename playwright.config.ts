@@ -19,6 +19,11 @@ const baseURL = `http://localhost:${port}`;
 export default defineConfig({
   testDir: './tests/e2e',
 
+  // Every route is compiled once before the workers start: a route compiling
+  // under a live navigation makes Next force a full reload, which WebKit
+  // reports as an interrupted goto.
+  globalSetup: './tests/e2e/global-setup.ts',
+
   timeout: 30_000,
   expect: {
     timeout: 10_000,
