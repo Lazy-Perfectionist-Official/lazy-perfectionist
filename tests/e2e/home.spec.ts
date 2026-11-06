@@ -200,6 +200,17 @@ test.describe('home', () => {
       'href',
       'https://ko-fi.com/lazyperfectionist',
     );
+    // The creator's handles carry the _official suffix. The bare ones are
+    // someone else's account (YouTube @lazyperfectionist is "Matthew Hall"),
+    // so a link that drops the suffix sends listeners to a stranger.
+    await expect(links.getByRole('link', { name: /youtube/i })).toHaveAttribute(
+      'href',
+      'https://www.youtube.com/@lazyperfectionist_official',
+    );
+    await expect(links.getByRole('link', { name: /instagram/i })).toHaveAttribute(
+      'href',
+      'https://www.instagram.com/lazyperfectionist_official/',
+    );
   });
 
   test('every plate is a ruled card: rows and their labels sit inside the page measure', async ({ page }, testInfo) => {
