@@ -482,6 +482,7 @@ test.describe('poster hero', () => {
       return {
         section: section!,
         art: art!,
+        plateWidth: natural[0],
         plateRatio: natural[0] / natural[1],
         position,
         src: (await plate.getAttribute('src')) ?? '',
@@ -506,6 +507,22 @@ test.describe('poster hero', () => {
       'a desktop fold is wider than the 16:9 plate, so its top and bottom are trimmed',
     ).toBeGreaterThan(desktop.plateRatio);
     expect(desktop.position, 'the wide plate is anchored right').toMatch(/100%|\bright\b/);
+
+    // The plates are struck for the widest screens: a 21:9 fold gets a plate
+    // at least as wide as it is, so the halftone is never enlarged and does
+    // not come apart. Same rule everywhere — never upscaled.
+    const ultrawide = await measure(3440, 1440);
+    expect(ultrawide.src).toContain('lusg-poster-wide');
+    expect(ultrawide.art.width, 'a 21:9 fold is filled edge to edge').toBeGreaterThan(3000);
+    expect(
+      ultrawide.plateWidth,
+      'the 21:9 fold gets a plate as wide as itself, not an enlargement',
+    ).toBeGreaterThanOrEqual(ultrawide.art.width);
+    for (const shot of [phone, desktop, ultrawide]) {
+      expect(shot.plateWidth, `${shot.section.width}px fold must not enlarge its plate`).toBeGreaterThanOrEqual(
+        shot.art.width,
+      );
+    }
   });
 
   test('the page h1 is the band name: the poster carries it for the outline', async ({ page }) => {
