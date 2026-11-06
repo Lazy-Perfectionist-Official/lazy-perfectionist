@@ -213,38 +213,38 @@
      fold. Negative positions and negative delays together make the phase
      fall with x, which is what sends the wave to the right. */
   .hero-billow {
-    -webkit-mask-size: 56vw 100%;
-    mask-size: 56vw 100%;
-    animation: hero-billow 10s ease-in-out infinite;
+    -webkit-mask-size: 67.2vw 100%;
+    mask-size: 67.2vw 100%;
+    animation: hero-billow 11s ease-in-out infinite;
   }
 
   .hero-billow-b {
-    mask-position: -18.67vw 0;
-    animation-delay: -3.33s;
+    mask-position: -22.4vw 0;
+    animation-delay: -3.67s;
   }
 
   .hero-billow-c {
-    mask-position: -37.33vw 0;
-    animation-delay: -6.67s;
+    mask-position: -44.8vw 0;
+    animation-delay: -7.33s;
   }
 
   /* The shimmer: a shorter, quicker wave riding on top of the billow — wind
      is a chord, not a tone. Sheared across (skewX) rather than along, so the
      two harmonics never move in lockstep. */
   .hero-shimmer {
-    -webkit-mask-size: 24vw 100%;
-    mask-size: 24vw 100%;
-    animation: hero-shimmer 5s ease-in-out infinite;
+    -webkit-mask-size: 28.8vw 100%;
+    mask-size: 28.8vw 100%;
+    animation: hero-shimmer 5.5s ease-in-out infinite;
   }
 
   .hero-shimmer-b {
-    mask-position: -8vw 0;
-    animation-delay: -1.67s;
+    mask-position: -9.6vw 0;
+    animation-delay: -1.83s;
   }
 
   .hero-shimmer-c {
-    mask-position: -16vw 0;
-    animation-delay: -3.33s;
+    mask-position: -19.2vw 0;
+    animation-delay: -3.67s;
   }
 
   /* The lens (see Hero.tsx): the drop is a circle while the pointer rests
