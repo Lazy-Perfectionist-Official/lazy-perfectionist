@@ -612,16 +612,23 @@ test.describe('poster hero', () => {
     await page.mouse.move(box.x + box.width * 0.8, box.y + box.height * 0.5, { steps: 2 });
     await expect.poll(async () => parseFloat(await prop('--lens-k'))).toBeGreaterThan(0.3);
 
-    // The glass stretches along the travel and thins across it…
+    // The glass stretches along the travel and thins across it. The lens is
+    // rotated to that travel, so `m.a`/`m.d` are the stretch mixed with the
+    // rotation — a steep angle swaps them. The ellipse's semi-axes are the
+    // matrix's eigenvalues, which is the stretch itself, whichever way the
+    // pointer went.
     const glass = await section.evaluate((el) => {
       const lens = [...el.querySelectorAll('.hero-lens')].find(
         (node) => node.getBoundingClientRect().width > 0,
       )!;
       const m = new DOMMatrix(getComputedStyle(lens).transform);
-      return { sx: m.a, sy: m.d };
+      const trace = m.a + m.d;
+      const det = m.a * m.d - m.b * m.c;
+      const root = Math.sqrt(Math.max(0, trace * trace - 4 * det));
+      return { major: (trace + root) / 2, minor: (trace - root) / 2 };
     });
-    expect(glass.sx).toBeGreaterThan(1.02);
-    expect(glass.sy).toBeLessThan(0.99);
+    expect(glass.major).toBeGreaterThan(1.02);
+    expect(glass.minor).toBeLessThan(0.99);
 
     // …and the print under it takes the stretch straight back, so a moving
     // drop never shows the type twice: the two transforms compose to the
