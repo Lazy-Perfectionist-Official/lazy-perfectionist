@@ -129,17 +129,18 @@ export default function Hero() {
           className="hero-plate hidden object-cover object-right landscape:block"
         />
 
-        {/* The breeze: the print does not sit perfectly still — three more
-            copies of the plate, each masked to a soft vertical band a third
-            of a wavelength wide, each swaying a third of a cycle behind the
-            last. Where the bands crossfade the phases blend, so the phase
-            turns continuously along the width and the ripple travels across
-            the fold like cloth in a light wind. Only transforms animate —
-            the compositor's work, no repaints — and the copies share the
-            plates' src and sizes, so the wind costs no bytes either. The
-            span's own mask fades the bands out before the fold's top and
-            bottom edges, so a moving band can never open a seam against
-            the sheet. */}
+        {/* The breeze: the print does not sit perfectly still — the classic
+            sliced-flag effect made seamless. Two harmonics, the billow and
+            the shimmer, each three copies of the plate masked to a soft bump
+            a third of a wavelength apart and swaying a third of a cycle
+            behind the last, so a ripple travels across the fold left to
+            right at full strength everywhere — the wind enters at the
+            leading edge and the free edge moves most. Only transforms
+            animate (the compositor's work, no repaints) and every copy
+            shares the plate's src and sizes, so the wind costs no bytes.
+            The span's own mask fades the bands out before the fold's top
+            and bottom edges, so a moving band can never open a seam
+            against the sheet. */}
         <span
           aria-hidden="true"
           className="hero-wave pointer-events-none absolute inset-0 landscape:hidden"
@@ -149,21 +150,42 @@ export default function Hero() {
             alt=""
             fill
             sizes="(orientation: landscape) 0px, 100vw"
-            className="hero-wave-band object-cover"
+            className="hero-wave-band hero-billow object-cover"
           />
           <Image
             src="/assets/img/lusg-poster.jpg"
             alt=""
             fill
             sizes="(orientation: landscape) 0px, 100vw"
-            className="hero-wave-band hero-wave-b object-cover"
+            className="hero-wave-band hero-billow hero-billow-b object-cover"
           />
           <Image
             src="/assets/img/lusg-poster.jpg"
             alt=""
             fill
             sizes="(orientation: landscape) 0px, 100vw"
-            className="hero-wave-band hero-wave-c object-cover"
+            className="hero-wave-band hero-billow hero-billow-c object-cover"
+          />
+          <Image
+            src="/assets/img/lusg-poster.jpg"
+            alt=""
+            fill
+            sizes="(orientation: landscape) 0px, 100vw"
+            className="hero-wave-band hero-shimmer object-cover"
+          />
+          <Image
+            src="/assets/img/lusg-poster.jpg"
+            alt=""
+            fill
+            sizes="(orientation: landscape) 0px, 100vw"
+            className="hero-wave-band hero-shimmer hero-shimmer-b object-cover"
+          />
+          <Image
+            src="/assets/img/lusg-poster.jpg"
+            alt=""
+            fill
+            sizes="(orientation: landscape) 0px, 100vw"
+            className="hero-wave-band hero-shimmer hero-shimmer-c object-cover"
           />
         </span>
 
@@ -176,21 +198,42 @@ export default function Hero() {
             alt=""
             fill
             sizes="(orientation: portrait) 0px, 100vw"
-            className="hero-wave-band object-cover object-right"
+            className="hero-wave-band hero-billow object-cover object-right"
           />
           <Image
             src="/assets/img/lusg-poster-wide.jpg"
             alt=""
             fill
             sizes="(orientation: portrait) 0px, 100vw"
-            className="hero-wave-band hero-wave-b object-cover object-right"
+            className="hero-wave-band hero-billow hero-billow-b object-cover object-right"
           />
           <Image
             src="/assets/img/lusg-poster-wide.jpg"
             alt=""
             fill
             sizes="(orientation: portrait) 0px, 100vw"
-            className="hero-wave-band hero-wave-c object-cover object-right"
+            className="hero-wave-band hero-billow hero-billow-c object-cover object-right"
+          />
+          <Image
+            src="/assets/img/lusg-poster-wide.jpg"
+            alt=""
+            fill
+            sizes="(orientation: portrait) 0px, 100vw"
+            className="hero-wave-band hero-shimmer object-cover object-right"
+          />
+          <Image
+            src="/assets/img/lusg-poster-wide.jpg"
+            alt=""
+            fill
+            sizes="(orientation: portrait) 0px, 100vw"
+            className="hero-wave-band hero-shimmer hero-shimmer-b object-cover object-right"
+          />
+          <Image
+            src="/assets/img/lusg-poster-wide.jpg"
+            alt=""
+            fill
+            sizes="(orientation: portrait) 0px, 100vw"
+            className="hero-wave-band hero-shimmer hero-shimmer-c object-cover object-right"
           />
         </span>
 

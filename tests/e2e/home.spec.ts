@@ -672,28 +672,36 @@ test.describe('poster hero', () => {
     await expect(lens).toHaveCSS('opacity', '1');
   });
 
-  test('the print ripples in a breeze', async ({ page }) => {
+  test('the print ripples in a wind of two harmonics', async ({ page }) => {
     await page.goto('/');
     const bands = page.locator('.hero-wave:visible .hero-wave-band');
 
-    // Three bands, a third of a wavelength apart, swaying a third of a cycle
-    // behind each other — the phase turns along the width, so the ripple
-    // travels instead of the whole sheet merely bobbing.
-    await expect(bands).toHaveCount(3);
+    // Two waves — a long billow and a short shimmer — each three copies a
+    // third of a wavelength apart, swaying a third of a cycle behind each
+    // other, so the phase falls along the width and the ripple travels.
+    await expect(bands).toHaveCount(6);
     const styles = await bands.evaluateAll((els) =>
       els.map((el) => {
         const cs = getComputedStyle(el);
-        return { name: cs.animationName, delay: cs.animationDelay, duration: cs.animationDuration };
+        return { name: cs.animationName, delay: cs.animationDelay, duration: cs.animationDuration, size: cs.maskSize };
       }),
     );
-    expect(styles.map((s) => s.name)).toEqual(['hero-breeze', 'hero-breeze', 'hero-breeze']);
-    expect(new Set(styles.map((s) => s.delay)).size, 'three distinct phases').toBe(3);
-    expect(new Set(styles.map((s) => s.duration))).toEqual(new Set(['9s']));
+    const names = styles.map((s) => s.name);
+    expect(names.filter((n) => n === 'hero-billow')).toHaveLength(3);
+    expect(names.filter((n) => n === 'hero-shimmer')).toHaveLength(3);
 
-    // The bands sit at different points of the same mask, and the sway runs
-    // forever: without the phase spread it would be one rigid wobble.
-    const positions = await bands.evaluateAll((els) => els.map((el) => getComputedStyle(el).maskPosition));
-    expect(new Set(positions).size, 'bands offset along the width').toBe(3);
+    for (const harmonic of ['hero-billow', 'hero-shimmer'] as const) {
+      const phases = styles.filter((s) => s.name === harmonic);
+      expect(new Set(phases.map((s) => s.delay)).size, `${harmonic}: three distinct phases`).toBe(3);
+      expect(new Set(phases.map((s) => s.duration)).size, `${harmonic}: one duration`).toBe(1);
+      expect(new Set(phases.map((s) => s.size)).size, `${harmonic}: one wavelength`).toBe(1);
+    }
+
+    // The wavelengths differ, so the two waves drift through each other —
+    // wind is a chord, not a tone, and never repeats in lockstep.
+    const billowWidth = styles.find((s) => s.name === 'hero-billow')!.size;
+    const shimmerWidth = styles.find((s) => s.name === 'hero-shimmer')!.size;
+    expect(billowWidth).not.toBe(shimmerWidth);
   });
 
   test('reduced motion holds the fold still', async ({ page }) => {

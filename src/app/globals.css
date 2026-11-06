@@ -159,55 +159,92 @@
     }
   }
 
-  /* The breeze (see Hero.tsx): the whole print sways, very slightly, all the
-     time — a sheet catching a light wind rather than a screen. Three banded
-     copies of the plate sway a third of a cycle apart; their soft masks
-     crossfade, so at any point on the print the phases blend and the phase
-     turns continuously along the width — the ripple travels. Only transforms
-     animate (the compositor's work; nothing repaints), the copies share the
-     plates' src, and the span fades its bands out before the fold's top and
-     bottom edges, so a moving band can never open a seam against the sheet. */
+  /* The breeze (see Hero.tsx): the whole print sways, all the time — a sheet
+     catching a wind rather than a screen. This is the classic sliced-flag
+     technique (one keyframe, slices phase-delayed) made seamless: instead of
+     hard slices, each harmonic is three copies of the plate masked to a soft
+     bump a third of a wavelength apart, each swaying a third of a cycle
+     behind the last. The bump weights are max(0, cos) in disguise — the
+     phasor blend — so at every point on the print one phase dominates and
+     the blend's amplitude never collapses: the ripple TRAVELS, left to
+     right, at full strength everywhere. (The first attempt used masks whose
+     weights summed to a constant; three phases 120° apart sum to zero where
+     the weights tie, so the wave stood in dead patches. Don't go back.)
+     Only transforms animate — the compositor's work, nothing repaints — and
+     the copies share the plates' src, so the wind costs no bytes. */
   .hero-wave {
     mask-image: linear-gradient(
-      180deg,
-      transparent 0%,
-      #000 8%,
-      #000 92%,
-      transparent 100%
-    );
+        180deg,
+        transparent 0%,
+        #000 8%,
+        #000 92%,
+        transparent 100%
+      ),
+      linear-gradient(90deg, rgb(0 0 0 / 0.45) 0%, #000 55%, #000 100%);
+    mask-composite: intersect;
   }
 
+  /* A bump per tile: transparent at the tile joins, opaque at each third —
+     cos⁺, the travelling-wave weight. The flanks are steep, not gentle:
+     the crossfade zone is where two displaced copies show at once, and a
+     wide flank would read as a doubled edge on the type, so the blend is
+     allowed only a fifth of the wavelength to happen in. */
   .hero-wave-band {
     -webkit-mask-image: linear-gradient(
       90deg,
       transparent 0%,
-      #000 33%,
-      #000 67%,
+      #000 15%,
+      #000 35%,
+      transparent 50%,
       transparent 100%
     );
-    -webkit-mask-size: 28vw 100%;
     mask-image: linear-gradient(
       90deg,
       transparent 0%,
-      #000 33%,
-      #000 67%,
+      #000 15%,
+      #000 35%,
+      transparent 50%,
       transparent 100%
     );
-    mask-size: 28vw 100%;
-    animation: hero-breeze 9s ease-in-out infinite;
+    mask-repeat: repeat-x;
   }
 
-  /* The second and third bands sit a third of a wavelength along and sway a
-     third of a cycle behind — together the three turn one full wave across
-     the fold. */
-  .hero-wave-b {
-    mask-position: 9.33vw 0;
-    animation-delay: -3s;
+  /* The billow: the long slow wave, one and a half wavelengths across the
+     fold. Negative positions and negative delays together make the phase
+     fall with x, which is what sends the wave to the right. */
+  .hero-billow {
+    -webkit-mask-size: 56vw 100%;
+    mask-size: 56vw 100%;
+    animation: hero-billow 10s ease-in-out infinite;
   }
 
-  .hero-wave-c {
-    mask-position: 18.67vw 0;
-    animation-delay: -6s;
+  .hero-billow-b {
+    mask-position: -18.67vw 0;
+    animation-delay: -3.33s;
+  }
+
+  .hero-billow-c {
+    mask-position: -37.33vw 0;
+    animation-delay: -6.67s;
+  }
+
+  /* The shimmer: a shorter, quicker wave riding on top of the billow — wind
+     is a chord, not a tone. Sheared across (skewX) rather than along, so the
+     two harmonics never move in lockstep. */
+  .hero-shimmer {
+    -webkit-mask-size: 24vw 100%;
+    mask-size: 24vw 100%;
+    animation: hero-shimmer 5s ease-in-out infinite;
+  }
+
+  .hero-shimmer-b {
+    mask-position: -8vw 0;
+    animation-delay: -1.67s;
+  }
+
+  .hero-shimmer-c {
+    mask-position: -16vw 0;
+    animation-delay: -3.33s;
   }
 
   /* The lens (see Hero.tsx): the drop is a circle while the pointer rests
@@ -303,17 +340,32 @@
   }
 }
 
-@keyframes hero-breeze {
+@keyframes hero-billow {
   0%,
   100% {
     transform: skewY(0deg) translateY(0);
   }
 
   25% {
-    transform: skewY(0.06deg) translateY(-0.12vmin);
+    transform: skewY(0.14deg) translateY(-0.26vmin);
   }
 
   75% {
-    transform: skewY(-0.06deg) translateY(0.12vmin);
+    transform: skewY(-0.14deg) translateY(0.26vmin);
+  }
+}
+
+@keyframes hero-shimmer {
+  0%,
+  100% {
+    transform: skewX(0deg) translateY(0);
+  }
+
+  25% {
+    transform: skewX(0.1deg) translateY(-0.14vmin);
+  }
+
+  75% {
+    transform: skewX(-0.1deg) translateY(0.14vmin);
   }
 }
