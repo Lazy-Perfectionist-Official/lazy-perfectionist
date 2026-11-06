@@ -347,11 +347,11 @@
   }
 
   25% {
-    transform: skewY(0.14deg) translateY(-0.26vmin);
+    transform: skewY(0.15deg) translateY(-0.29vmin);
   }
 
   75% {
-    transform: skewY(-0.14deg) translateY(0.26vmin);
+    transform: skewY(-0.15deg) translateY(0.29vmin);
   }
 }
 
@@ -362,10 +362,10 @@
   }
 
   25% {
-    transform: skewX(0.1deg) translateY(-0.14vmin);
+    transform: skewX(0.11deg) translateY(-0.15vmin);
   }
 
   75% {
-    transform: skewX(-0.1deg) translateY(0.14vmin);
+    transform: skewX(-0.11deg) translateY(0.15vmin);
   }
 }
