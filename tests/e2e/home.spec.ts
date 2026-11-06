@@ -413,7 +413,7 @@ test.describe('poster hero', () => {
     const section = page.getByTestId('hero-section');
     const artwork = page.getByTestId('hero-artwork');
     // The anchor holds one plate per screen shape; only one is displayed.
-    const plate = artwork.locator('img:visible');
+    const plate = artwork.locator('img[data-plate]:visible');
     await expect(plate).toHaveCount(1);
     await expect(plate).toHaveCSS('object-fit', 'cover');
 
@@ -485,7 +485,7 @@ test.describe('poster hero', () => {
         page.getByTestId('hero-section').boundingBox(),
         artwork.boundingBox(),
       ]);
-      const plate = artwork.locator('img:visible');
+      const plate = artwork.locator('img[data-plate]:visible');
       const natural = await plate.evaluate((img: HTMLImageElement) => [
         img.naturalWidth,
         img.naturalHeight,
@@ -541,7 +541,7 @@ test.describe('poster hero', () => {
     await page.goto('/');
 
     const wash = page.getByTestId('hero-wash');
-    const plate = page.getByTestId('hero-artwork').locator('img:visible');
+    const plate = page.getByTestId('hero-artwork').locator('img[data-plate]:visible');
 
     // The impression settling under the platen: a paper wash over the print
     // that lifts once, and a plate that gives up its 2% enlarge as it lands.
@@ -596,6 +596,74 @@ test.describe('poster hero', () => {
     await expect(lantern).toHaveCSS('opacity', '0');
   });
 
+  test('the drop deforms with the pointer and rounds off at rest', async ({ page }, testInfo) => {
+    // Optical pointers only, like the lantern itself.
+    test.skip(testInfo.project.name === 'mobile-chrome-small', 'no fine pointer');
+
+    await page.goto('/');
+    const section = page.getByTestId('hero-section');
+    const box = (await section.boundingBox())!;
+    const prop = (name: string) =>
+      section.evaluate((el, n) => el.style.getPropertyValue(n), name);
+
+    // A flick across the print leaves the eased light well behind the
+    // pointer, and that gap is the speed the drop is stretched by.
+    await page.mouse.move(box.x + box.width * 0.2, box.y + box.height * 0.5, { steps: 4 });
+    await page.mouse.move(box.x + box.width * 0.8, box.y + box.height * 0.5, { steps: 2 });
+    await expect.poll(async () => parseFloat(await prop('--lens-k'))).toBeGreaterThan(0.3);
+
+    // The glass stretches along the travel and thins across it…
+    const glass = await section.evaluate((el) => {
+      const lens = [...el.querySelectorAll('.hero-lens')].find(
+        (node) => node.getBoundingClientRect().width > 0,
+      )!;
+      const m = new DOMMatrix(getComputedStyle(lens).transform);
+      return { sx: m.a, sy: m.d };
+    });
+    expect(glass.sx).toBeGreaterThan(1.02);
+    expect(glass.sy).toBeLessThan(0.99);
+
+    // …and the print under it takes the stretch straight back, so a moving
+    // drop never shows the type twice: the two transforms compose to the
+    // resting 1.2% enlarge, whatever the speed.
+    const composed = await section.evaluate((el) => {
+      const lens = [...el.querySelectorAll('.hero-lens')].find(
+        (node) => node.getBoundingClientRect().width > 0,
+      )!;
+      const plate = lens.querySelector('.hero-lens-plate')!;
+      const m = new DOMMatrix(getComputedStyle(lens).transform).multiply(
+        new DOMMatrix(getComputedStyle(plate).transform),
+      );
+      return { sx: m.a, sy: m.d, skew: Math.max(Math.abs(m.b), Math.abs(m.c)) };
+    });
+    expect(composed.sx).toBeCloseTo(1.012, 2);
+    expect(composed.sy).toBeCloseTo(1.012, 2);
+    expect(composed.skew).toBeLessThan(0.01);
+
+    // Standing still rounds the drop back off.
+    await expect.poll(async () => parseFloat(await prop('--lens-k'))).toBeLessThan(0.05);
+  });
+
+  test('the light keeps up while the page scrolls', async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name === 'mobile-chrome-small', 'no fine pointer');
+
+    await page.goto('/');
+    const section = page.getByTestId('hero-section');
+    const lantern = page.getByTestId('hero-lantern');
+    const box = (await section.boundingBox())!;
+    const prop = (name: string) =>
+      section.evaluate((el, n) => parseFloat(el.style.getPropertyValue(n)), name);
+
+    await page.mouse.move(box.x + box.width * 0.5, box.y + box.height * 0.3);
+    await expect.poll(() => prop('--lantern-y')).toBeCloseTo(30, 0);
+
+    // The pointer does not move, but the fold slides up under it — the light
+    // has to slide with the print, not stay at the height it was lit at.
+    await page.mouse.wheel(0, 240);
+    await expect.poll(() => prop('--lantern-y')).toBeGreaterThan(45);
+    await expect(lantern).toHaveCSS('opacity', '1');
+  });
+
   test('reduced motion holds the fold still', async ({ page }) => {
     // The site honours "less motion" everywhere else (scroll-behavior), so the
     // hero does too: no wash, no settle, no lantern, just the print.
@@ -606,9 +674,10 @@ test.describe('poster hero', () => {
     await expect(wash).toHaveCSS('animation-name', 'none');
     await expect(wash).toHaveCSS('opacity', '0');
     await expect(
-      page.getByTestId('hero-artwork').locator('img:visible'),
+      page.getByTestId('hero-artwork').locator('img[data-plate]:visible'),
     ).toHaveCSS('animation-name', 'none');
     await expect(page.getByTestId('hero-lantern')).toHaveCSS('display', 'none');
+    await expect(page.locator('.hero-lens').first()).toHaveCSS('display', 'none');
   });
 
   test('the page h1 is the band name: the poster carries it for the outline', async ({ page }) => {

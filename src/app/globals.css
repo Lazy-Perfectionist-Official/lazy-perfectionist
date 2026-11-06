@@ -168,6 +168,19 @@
      pool toward the cursor a beat behind it; it attaches nothing on touch or
      under reduced motion, and `lantern-lit` is what fades the pool in, so
      without the script the fold is the still print it has always been. */
+  .hero-lantern,
+  .hero-lens {
+    /* The drop is a circle while the pointer rests and an oval along its
+       travel while it moves: the script watches how far behind the light is
+       (which is the pointer's speed) and writes --lens-k (0..1) and
+       --lens-angle. Everything turns about the pointer, so the glass and the
+       light stretch as one piece and stay centred on it. */
+    transform-origin: var(--lantern-x, 50%) var(--lantern-y, 45%);
+    transform: rotate(var(--lens-angle, 0deg))
+      scale(calc(1 + 0.08 * var(--lens-k, 0)), calc(1 - 0.06 * var(--lens-k, 0)))
+      rotate(calc(-1 * var(--lens-angle, 0deg)));
+  }
+
   .hero-lantern {
     background: radial-gradient(
       circle clamp(340px, 42vmax, 880px) at var(--lantern-x, 50%) var(--lantern-y, 45%),
@@ -188,8 +201,48 @@
     opacity: 1;
   }
 
+  /* The lens (see Hero.tsx): the same plate, magnified a few percent and
+     turned a hair about the pointer — the paper puckering under the light —
+     and masked to a feathered circle so the distortion has no rim. It rides
+     the same two custom properties as the lantern, so the pool and the glass
+     are the same point. Magnifying a copy is what keeps the plate itself —
+     the LCP — untouched: nothing filters the image that paints the fold. */
+  .hero-lens {
+    opacity: 0;
+    -webkit-mask-image: radial-gradient(
+      circle clamp(180px, 20vmax, 360px) at var(--lantern-x, 50%) var(--lantern-y, 45%),
+      #000 30%,
+      rgb(0 0 0 / 0.5) 62%,
+      transparent 92%
+    );
+    mask-image: radial-gradient(
+      circle clamp(180px, 20vmax, 360px) at var(--lantern-x, 50%) var(--lantern-y, 45%),
+      #000 30%,
+      rgb(0 0 0 / 0.5) 62%,
+      transparent 92%
+    );
+    transition: opacity 500ms ease;
+  }
+
+  /* The print under the glass. The lens stretches the whole layer — mask and
+     image — so the circle deforms with the pointer's travel; this takes the
+     stretch straight back, leaving only a 1.2% enlarge about the pointer.
+     Without it a moving drop would show the type twice, a few pixels apart,
+     which reads as a smudge rather than as glass. */
+  .hero-lens-plate {
+    transform-origin: var(--lantern-x, 50%) var(--lantern-y, 45%);
+    transform: rotate(var(--lens-angle, 0deg))
+      scale(calc(1.012 * var(--lens-isx, 1)), calc(1.012 * var(--lens-isy, 1)))
+      rotate(calc(-1 * var(--lens-angle, 0deg)));
+  }
+
+  .lantern-lit .hero-lens {
+    opacity: 1;
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .hero-lantern {
+    .hero-lantern,
+    .hero-lens {
       display: none;
     }
   }

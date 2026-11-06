@@ -24,30 +24,63 @@ import { LINKS } from "@/lib/site";
 // as two custom properties, which the lantern's gradient is drawn at. CSS
 // cannot see a cursor, so this is the one place the site takes a few lines of
 // it — no framework, no state, no listeners on touch or under reduced motion,
-// and it stops its own frame loop when the light has caught up. Without it the
-// fold is the still print it has always been.
+// and it stops its own frame loop when the light has caught up. The fold's box
+// is re-read whenever the pointer or the page moves, so scrolling carries the
+// light with the print instead of leaving it at the height it was lit at.
+// Without it the fold is the still print it has always been.
 const LANTERN = `
 (function () {
   var hero = document.querySelector('[data-lantern]');
   if (!hero) return;
   if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var tx = 50, ty = 45, cx = 50, cy = 45, frame = 0;
+  var tx = 50, ty = 45, cx = 50, cy = 45, k = 0, ax = 0, ay = 0, frame = 0;
+  var px = -1, py = -1;
   function step() {
     cx += (tx - cx) * 0.12;
     cy += (ty - cy) * 0.12;
+    // The light trails the pointer, so how far behind it is IS the pointer's
+    // speed: the drop stretches along the travel and rounds off again at rest.
+    var gx = tx - cx, gy = ty - cy;
+    var gap = Math.sqrt(gx * gx + gy * gy);
+    k += (Math.min(1, gap / 9) - k) * 0.2;
+    if (gap > 0.05) {
+      ax += (gx / gap - ax) * 0.25;
+      ay += (gy / gap - ay) * 0.25;
+    }
+    // The glass stretches along the travel and thins across it; the plate
+    // inside the glass gets the exact inverse, so only the circle deforms.
+    var sx = 1 + 0.08 * k, sy = 1 - 0.06 * k;
     hero.style.setProperty('--lantern-x', cx.toFixed(2) + '%');
     hero.style.setProperty('--lantern-y', cy.toFixed(2) + '%');
-    frame = Math.abs(tx - cx) > 0.1 || Math.abs(ty - cy) > 0.1 ? requestAnimationFrame(step) : 0;
+    hero.style.setProperty('--lens-k', k.toFixed(3));
+    hero.style.setProperty('--lens-angle', (Math.atan2(ay, ax) * 57.2958).toFixed(1) + 'deg');
+    hero.style.setProperty('--lens-isx', (1 / sx).toFixed(4));
+    hero.style.setProperty('--lens-isy', (1 / sy).toFixed(4));
+    frame = gap > 0.1 || k > 0.01 ? requestAnimationFrame(step) : 0;
+  }
+  // Aim at the last known screen point. The fold's box is measured here, not
+  // once: scrolling slides the fold under a pointer that has not moved, and
+  // the light has to slide with it.
+  function aim() {
+    if (px < 0) return;
+    var box = hero.getBoundingClientRect();
+    var inside = px >= box.left && px < box.right && py >= box.top && py < box.bottom;
+    hero.classList.toggle('lantern-lit', inside);
+    if (!inside) return;
+    tx = ((px - box.left) / box.width) * 100;
+    ty = ((py - box.top) / box.height) * 100;
+    if (!frame) frame = requestAnimationFrame(step);
   }
   hero.addEventListener('pointermove', function (event) {
-    var box = hero.getBoundingClientRect();
-    tx = ((event.clientX - box.left) / box.width) * 100;
-    ty = ((event.clientY - box.top) / box.height) * 100;
-    if (!frame) frame = requestAnimationFrame(step);
+    px = event.clientX;
+    py = event.clientY;
+    aim();
   }, { passive: true });
-  hero.addEventListener('pointerenter', function () { hero.classList.add('lantern-lit'); });
-  hero.addEventListener('pointerleave', function () { hero.classList.remove('lantern-lit'); });
+  hero.addEventListener('pointerleave', function () {
+    hero.classList.remove('lantern-lit');
+  });
+  addEventListener('scroll', aim, { passive: true });
 })();
 `;
 
@@ -79,6 +112,7 @@ export default function Hero() {
           fill
           priority
           sizes="(orientation: landscape) 0px, 100vw"
+          data-plate=""
           className="hero-plate object-cover landscape:hidden"
         />
 
@@ -90,8 +124,46 @@ export default function Hero() {
           fill
           priority
           sizes="(orientation: portrait) 0px, 100vw"
+          data-plate=""
           className="hero-plate hidden object-cover object-right landscape:block"
         />
+
+        {/* The lens: the same plate again, a few percent larger and turned a
+            hair, masked to a feathered circle at the pointer. Magnifying a
+            copy rather than filtering the plate keeps the LCP image untouched
+            — the distortion is a second, invisible-until-lit layer. It shares
+            the plate's src and sizes, so it costs no extra bytes.
+
+            The span is the glass and the image is what sits under it: the
+            glass takes the pointer's deformation (the circle stretches along
+            the travel), and the image counter-transforms by the same amount,
+            so only the shape of the lens breathes — the print inside it is
+            never smeared into a second impression. */}
+        <span
+          aria-hidden="true"
+          className="hero-lens pointer-events-none absolute inset-0 landscape:hidden"
+        >
+          <Image
+            src="/assets/img/lusg-poster.jpg"
+            alt=""
+            fill
+            sizes="(orientation: landscape) 0px, 100vw"
+            className="hero-lens-plate object-cover"
+          />
+        </span>
+
+        <span
+          aria-hidden="true"
+          className="hero-lens pointer-events-none absolute inset-0 hidden landscape:block"
+        >
+          <Image
+            src="/assets/img/lusg-poster-wide.jpg"
+            alt=""
+            fill
+            sizes="(orientation: portrait) 0px, 100vw"
+            className="hero-lens-plate object-cover object-right"
+          />
+        </span>
 
         {/* The print is the link, so it needs to say so: the same ember
             stamp as the bellyband, set on the print's foot and aligned with
