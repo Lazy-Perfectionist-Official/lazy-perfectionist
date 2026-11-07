@@ -28,9 +28,9 @@ const courier = Courier_Prime({
   display: "swap",
 });
 
-const title = "Lazy Perfectionist — Bedroom Instrumental Rock | Hong Kong";
+const title = "Lazy Perfectionist — Instrumental Rock/Metal | Hong Kong";
 const description =
-  "Lazy Perfectionist is a bedroom instrumental rock project from Hong Kong. The new single LUSG is out now — alongside Cyclothymia and Orbit — on all streaming platforms.";
+  "Lazy Perfectionist is an instrumental rock/metal project from Hong Kong. The new single LUSG is out now — alongside Cyclothymia and Orbit — on all streaming platforms.";
 
 // The site has no domain of its own yet, so the canonical host comes from
 // the deploy environment (see SITE_URL in site.ts). Until it is set, no
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   keywords: [
     "Lazy Perfectionist",
     "instrumental rock",
-    "bedroom rock",
+    "instrumental metal",
     "Hong Kong music",
     "progressive rock",
     "LUSG",
@@ -65,9 +65,9 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/assets/img/og-card.png",
-        width: 1200,
-        height: 630,
-        alt: "Lazy Perfectionist — bedroom instrumental rock from Hong Kong",
+        width: 2400,
+        height: 1260,
+        alt: "Lazy Perfectionist — instrumental rock/metal from Hong Kong",
       },
     ],
   },

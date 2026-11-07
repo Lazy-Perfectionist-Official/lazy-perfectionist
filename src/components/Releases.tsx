@@ -6,7 +6,7 @@ import FootRow from "@/components/FootRow";
 // three-column grid — plate label / content / year-and-listen. The row
 // index lives in the same margin column as the plate label, so the titles
 // align under the section heading instead of out-denting it.
-const LEDE = "Three songs, one bedroom.";
+const LEDE = "Three songs.";
 
 export function ReleaseRow({ release, index }: { release: Release; index: number }) {
   return (
