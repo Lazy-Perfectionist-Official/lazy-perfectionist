@@ -132,19 +132,20 @@ test.describe('home', () => {
     await expect(page.getByTestId('release-lusg').getByText(/listen/i)).toBeVisible();
   });
 
-  test('the tracklist is titles and years: only the debut carries a line', async ({ page }) => {
+  test('each song carries one line: the EP note, or the debut', async ({ page }) => {
     await page.goto('/');
 
-    // The descriptions under the songs were swept out; the one line the
-    // catalog keeps is Orbit's debut note.
+    // The tracklist's lines are catalog facts, not flavor: the two new
+    // singles point at the EP they belong to, and the debut says so.
     await expect(page.getByTestId('release-orbit').getByText('The debut single.')).toBeVisible();
 
-    // The other rows print exactly index, title, year and the Listen label —
-    // innerText collapses whitespace (and honors the label's uppercase), so
-    // this catches any stray line.
+    // Each row prints exactly index, title, its one line, year and the
+    // Listen label — innerText collapses whitespace (and honors the
+    // label's uppercase), so any stray line fails this.
     for (const [id, row] of [
-      ['release-lusg', '01 LUSG 2026 LISTEN ↗'],
-      ['release-cyclothymia', '02 Cyclothymia 2026 LISTEN ↗'],
+      ['release-lusg', '01 LUSG Included on the upcoming EP. 2026 LISTEN ↗'],
+      ['release-cyclothymia', '02 Cyclothymia Included on the upcoming EP. 2026 LISTEN ↗'],
+      ['release-orbit', '03 Orbit The debut single. 2025 LISTEN ↗'],
     ] as const) {
       expect((await page.getByTestId(id).innerText()).replace(/\s+/g, ' ').trim()).toBe(row);
     }
