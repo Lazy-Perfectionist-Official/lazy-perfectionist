@@ -83,12 +83,14 @@ test.describe('home', () => {
 
     const artwork = page.getByTestId('hero-artwork');
     await expect(artwork).toBeVisible();
-    await expect(artwork).toHaveAttribute('href', TRACK_URL);
+    await expect(artwork).toHaveAttribute('href', ARTIST_URL);
     await expect(artwork).toHaveAttribute('target', '_blank');
     // The print is the link, so it has to say so: the visible stamp starts
-    // the accessible name, which is what voice control repeats back.
-    await expect(artwork).toContainText('Listen to LUSG');
-    await expect(artwork).toHaveAccessibleName('Listen to LUSG on Spotify');
+    // the accessible name, which is what voice control repeats back. The
+    // fold is the whole band, not the current single — it lands on the
+    // artist page.
+    await expect(artwork).toContainText('Listen on Spotify');
+    await expect(artwork).toHaveAccessibleName('Listen on Spotify — Lazy Perfectionist');
 
     const artistProfile = page.getByRole('link', { name: /artist profile/i });
     await expect(artistProfile).toBeVisible();
