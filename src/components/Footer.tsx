@@ -12,18 +12,28 @@ export default function Footer() {
         className="halftone pointer-events-none absolute inset-0 opacity-[0.14]"
       />
 
-      <div className="relative mx-auto flex max-w-[90rem] flex-col gap-3 px-6 py-9 md:flex-row md:items-baseline md:justify-between md:px-10 md:py-11">
-        <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-paper/80 md:text-xs">
-          <span className="block sm:inline">© 2026 Lazy Perfectionist</span>
-          <span className="hidden sm:inline"> · </span>
-          <span className="block sm:inline">Hong Kong</span>
+      <div className="relative mx-auto max-w-[90rem] px-6 py-9 md:px-10 md:py-11">
+        {/* The liner note: the back cover is where a record says who made it
+            — the one line on the page that answers a stranger's first
+            question. Sentence case, so it reads as notes, not as a label. */}
+        <p className="max-w-md font-mono text-xs leading-relaxed text-paper/70 md:text-sm">
+          Lazy Perfectionist is bedroom instrumental rock from Hong Kong —
+          three singles so far, all of them made in one room.
         </p>
-        <a
-          href="#top"
-          className="inline-block py-2.5 font-mono text-xs uppercase tracking-[0.18em] text-paper/80 transition-colors duration-200 hover:text-paper focus-visible:outline-paper"
-        >
-          Back to top ↑
-        </a>
+
+        <div className="mt-7 flex flex-col gap-3 md:mt-9 md:flex-row md:items-baseline md:justify-between">
+          <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-paper/80 md:text-xs">
+            <span className="block sm:inline">© 2026 Lazy Perfectionist</span>
+            <span className="hidden sm:inline"> · </span>
+            <span className="block sm:inline">Hong Kong</span>
+          </p>
+          <a
+            href="#top"
+            className="inline-block py-2.5 font-mono text-xs uppercase tracking-[0.18em] text-paper/80 transition-colors duration-200 hover:text-paper focus-visible:outline-paper"
+          >
+            Back to top ↑
+          </a>
+        </div>
       </div>
     </footer>
   );

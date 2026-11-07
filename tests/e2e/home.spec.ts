@@ -214,6 +214,21 @@ test.describe('home', () => {
     );
   });
 
+  test('the back cover answers who: a liner note sits above the colophon', async ({ page }) => {
+    await page.goto('/');
+
+    const footer = page.getByTestId('site-footer');
+    // The only on-page answer to "who and where is this?" — a record's liner
+    // notes live on the back cover, above the legal line, not in metadata.
+    const note = footer.getByText('bedroom instrumental rock from Hong Kong');
+    await expect(note).toBeVisible();
+    const [noteBox, colophonBox] = await Promise.all([
+      note.boundingBox(),
+      footer.getByText('© 2026 Lazy Perfectionist').boundingBox(),
+    ]);
+    expect(noteBox!.y).toBeLessThan(colophonBox!.y);
+  });
+
   test('every plate is a ruled card: rows and their labels sit inside the page measure', async ({ page }, testInfo) => {
     const viewportWidth = testInfo.project.use.viewport?.width ?? 1280;
     // The card's inner margin: 16px on phones, 24px from md up. The row is
@@ -257,6 +272,38 @@ test.describe('home', () => {
     // Without NEXT_PUBLIC_SITE_URL the sitemap is deliberately empty rather
     // than pointing at a host the site does not own.
     expect(await response.text()).toContain('<urlset');
+  });
+
+  test('the catalog is machine-readable: each single is a MusicRecording', async ({ page }) => {
+    await page.goto('/');
+
+    // The same graph the crawlers parse: the group, then the three singles
+    // pointing at where they play, tied together by the Spotify artist page.
+    type GraphNode = {
+      '@type'?: string;
+      '@id'?: string;
+      name?: string;
+      url?: string;
+      byArtist?: { '@id'?: string };
+    };
+    const graph = await page
+      .locator('script[type="application/ld+json"]')
+      .first()
+      .evaluate((node) => {
+        const parsed = JSON.parse(node.textContent ?? '{}') as { '@graph'?: GraphNode[] };
+        return parsed['@graph'] ?? [];
+      });
+
+    const group = graph.find((entry) => entry['@type'] === 'MusicGroup');
+    expect(group?.name).toBe('Lazy Perfectionist');
+    expect(group?.['@id']).toBe(ARTIST_URL);
+
+    const recordings = graph.filter((entry) => entry['@type'] === 'MusicRecording');
+    expect(recordings.map((rec) => rec.name)).toEqual(['LUSG', 'Cyclothymia', 'Orbit']);
+    for (const rec of recordings) {
+      expect(rec.url).toMatch(SPOTIFY_TRACK_HREF);
+      expect(rec.byArtist?.['@id']).toBe(ARTIST_URL);
+    }
   });
 
   test('each growing plate ends with a More row onto its own screen', async ({ page }) => {
