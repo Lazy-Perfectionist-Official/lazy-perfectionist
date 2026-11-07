@@ -246,7 +246,7 @@ test.describe('home', () => {
     const footer = page.getByTestId('site-footer');
     // The only on-page answer to "who and where is this?" — a record's liner
     // notes live on the back cover, above the legal line, not in metadata.
-    const note = footer.getByText('bedroom instrumental rock from Hong Kong');
+    const note = footer.getByText('Instrumental rock/metal from Hong Kong');
     await expect(note).toBeVisible();
     const [noteBox, colophonBox] = await Promise.all([
       note.boundingBox(),
