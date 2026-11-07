@@ -17,9 +17,12 @@ import { ANNOUNCEMENT } from "@/lib/site";
 // of its width — with `object-right`, a square-ish window crops the figure's
 // left edge and keeps the name whole.
 //
-// The height subtracts the measured chrome: announcement bar + masthead are
-// 166px at phone widths and 131px from md up, so `100svh` minus that is the
-// remainder the fold has to fill.
+// The height subtracts the chrome above it — the announcement bar and the
+// masthead — so `100svh` minus that is the remainder the fold has to fill.
+// The chrome is measured rather than assumed: the masthead grows a row when
+// its nav wraps, which is a property of the width and the nav's contents,
+// not a number that stays true. The values in the class are the no-script
+// fallback (166px on a phone, 131px from md up).
 // The fold's only script: it reads the pointer and hands the position to CSS
 // as two custom properties, which the lens is drawn at. (The names still say
 // lantern — the light itself was taken out again; only the glass remains.)
@@ -33,6 +36,20 @@ const LANTERN = `
 (function () {
   var hero = document.querySelector('[data-lantern]');
   if (!hero) return;
+  // The fold takes what the chrome leaves. Measured, not assumed: the
+  // masthead is a row taller whenever its nav wraps, and that depends on
+  // the width and on how many items the nav holds. The value is published
+  // as a root variable from a style element of our own — writing a style
+  // attribute onto markup React hydrates reads as a mismatch.
+  var ruler = document.createElement('style');
+  (document.head || document.documentElement).appendChild(ruler);
+  function fold() {
+    var top = hero.getBoundingClientRect().top + (window.scrollY || 0);
+    ruler.textContent = ':root{--chrome-h:' + top.toFixed(1) + 'px}';
+  }
+  fold();
+  addEventListener('resize', fold);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fold);
   if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   var tx = 50, ty = 45, cx = 50, cy = 45, k = 0, ax = 0, ay = 0, frame = 0;
@@ -88,7 +105,7 @@ const LANTERN = `
 export default function Hero() {
   return (
     <section
-      className="relative h-[calc(100svh-166px)] overflow-hidden md:h-[calc(100svh-131px)]"
+      className="relative h-[calc(100svh-var(--chrome-h,166px))] overflow-hidden md:h-[calc(100svh-var(--chrome-h,131px))]"
       data-testid="hero-section"
       data-lantern=""
     >

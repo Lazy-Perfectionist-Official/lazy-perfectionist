@@ -20,6 +20,8 @@ export default function CatalogPage({
   query,
   tag,
   tags,
+  tagsLabel = "Tags",
+  sort,
   total,
   shown,
   noun,
@@ -35,6 +37,16 @@ export default function CatalogPage({
   query: string;
   tag?: string;
   tags?: TagCount[];
+  /** What the facet row calls itself: tags on the shop and writing
+      screens, years on the discography. */
+  tagsLabel?: string;
+  /** An ordered screen's sort links. `defaultValue` keeps the default
+      order out of the URL; every other control carries it along. */
+  sort?: {
+    active: string;
+    defaultValue: string;
+    options: { value: string; label: string; href: string }[];
+  };
   total: number;
   shown: number;
   noun: string;
@@ -47,6 +59,11 @@ export default function CatalogPage({
   const count = filtered
     ? `${shown} of ${total}`
     : `${total} ${noun}${total === 1 ? "" : "s"}`;
+
+  // Only a non-default order earns a query parameter: the plain screen
+  // stays /discography, and the controls carry the order along.
+  const sortParam =
+    sort && sort.active !== sort.defaultValue ? sort.active : undefined;
 
   // The active chip is inverted rather than only recoloured, so the state
   // never depends on telling two browns apart.
@@ -94,6 +111,9 @@ export default function CatalogPage({
               {/* A search inside a tag stays inside it: the tag rides along
                   as a hidden field rather than being reset. */}
               {tag ? <input type="hidden" name="tag" value={tag} /> : null}
+              {sortParam ? (
+                <input type="hidden" name="sort" value={sortParam} />
+              ) : null}
               <label htmlFor="q" className="eyebrow">
                 Search
               </label>
@@ -121,12 +141,12 @@ export default function CatalogPage({
                 screen, carrying whatever search is already running. */}
             {tags && tags.length > 0 ? (
               <nav
-                aria-label="Tags"
+                aria-label={tagsLabel}
                 className="flex flex-wrap items-center gap-x-2 gap-y-2 border-b border-line px-4 py-4 md:px-6 md:py-5"
               >
-                <span className="eyebrow mr-1">Tags</span>
+                <span className="eyebrow mr-1">{tagsLabel}</span>
                 <a
-                  href={filteredHref(path, { q: query })}
+                  href={filteredHref(path, { q: query, sort: sortParam })}
                   aria-current={!tag ? "true" : undefined}
                   className={chip(!tag)}
                 >
@@ -135,7 +155,11 @@ export default function CatalogPage({
                 {tags.map((entry) => (
                   <a
                     key={entry.slug}
-                    href={filteredHref(path, { tag: entry.slug, q: query })}
+                    href={filteredHref(path, {
+                      tag: entry.slug,
+                      q: query,
+                      sort: sortParam,
+                    })}
                     aria-current={tag === entry.slug ? "true" : undefined}
                     className={chip(tag === entry.slug)}
                   >
@@ -145,13 +169,39 @@ export default function CatalogPage({
               </nav>
             ) : null}
 
+            {/* An ordered screen's order: links, like the facets, so the
+                chosen order is in the URL and survives a search. */}
+            {sort ? (
+              <nav
+                aria-label="Sort"
+                className="flex flex-wrap items-center gap-x-2 gap-y-2 border-b border-line px-4 py-4 md:px-6 md:py-5"
+              >
+                <span className="eyebrow mr-1">Sort</span>
+                {sort.options.map((option) => (
+                  <a
+                    key={option.value}
+                    href={option.href}
+                    aria-current={
+                      sort.active === option.value ? "true" : undefined
+                    }
+                    className={chip(sort.active === option.value)}
+                  >
+                    {option.label}
+                  </a>
+                ))}
+              </nav>
+            ) : null}
+
             {shown === 0 ? (
               <div className="border-b border-line px-4 py-7 md:px-6">
                 <p className="font-display text-2xl italic leading-snug text-ink-soft">
-                  {query ? `Nothing matches “${query}”.` : "Nothing under this tag yet."}
+                  {query ? `Nothing matches “${query}”.` : "Nothing under this filter yet."}
                 </p>
                 <a
-                  href={filteredHref(path, { tag: query ? tag : undefined })}
+                  href={filteredHref(path, {
+                    tag: query ? tag : undefined,
+                    sort: sortParam,
+                  })}
                   className="mt-4 inline-block font-mono text-[11px] uppercase tracking-[0.16em] text-ink-soft underline underline-offset-4 transition-colors duration-200 hover:text-rust md:text-xs"
                 >
                   {query ? "Clear search" : "Show all"}
