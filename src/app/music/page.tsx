@@ -40,7 +40,7 @@ export default async function MusicPage({
       total={RELEASES.length}
       shown={releases.length}
       noun="release"
-      placeholder="Title or year…"
+      placeholder="Title, description or year…"
       external={{
         href: LINKS.spotifyArtist,
         text: "Spotify",
