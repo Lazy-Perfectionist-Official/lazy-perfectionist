@@ -7,7 +7,7 @@ import { LINKS, RELEASES, SITE_URL } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Singles",
   description:
-    "Lazy Perfectionist's singles — LUSG, Cyclothymia and Orbit — with the story of each, and links to listen on Spotify.",
+    "Lazy Perfectionist's singles — LUSG, Cyclothymia and Orbit — with links to listen on Spotify.",
   alternates: SITE_URL ? { canonical: "/music" } : undefined,
 };
 
@@ -24,7 +24,7 @@ export default async function MusicPage({
 
   const releases = needle
     ? RELEASES.filter((release) =>
-        `${release.title} ${release.description} ${release.year}`
+        `${release.title} ${release.description ?? ""} ${release.year}`
           .toLowerCase()
           .includes(needle),
       )
@@ -40,7 +40,7 @@ export default async function MusicPage({
       total={RELEASES.length}
       shown={releases.length}
       noun="release"
-      placeholder="Title, description or year…"
+      placeholder="Title or year…"
       external={{
         href: LINKS.spotifyArtist,
         text: "Spotify",

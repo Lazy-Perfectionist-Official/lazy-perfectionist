@@ -29,9 +29,11 @@ export function ReleaseRow({ release, index }: { release: Release; index: number
         <span className="block font-display text-4xl leading-[1.02] tracking-[-0.01em] text-ink transition-colors duration-200 group-hover:text-rust md:text-5xl">
           {release.title}
         </span>
-        <span className="mt-2 block max-w-md text-base leading-relaxed text-ink-soft">
-          {release.description}
-        </span>
+        {release.description?.trim() ? (
+          <span className="mt-2 block max-w-md text-base leading-relaxed text-ink-soft">
+            {release.description}
+          </span>
+        ) : null}
       </span>
 
       <span className="col-span-2 mt-4 flex items-baseline justify-between md:col-span-1 md:col-start-3 md:mt-0 md:flex-col md:items-end">

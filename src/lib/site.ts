@@ -33,7 +33,10 @@ export const LINER_NOTE: string = content.linerNote;
 export interface Release {
   year: string;
   title: string;
-  description: string;
+  /** Printed under the title only when it earns its line — Orbit's debut
+      note is the one the catalog keeps. Optional in content.json and in
+      the /admin form. */
+  description?: string;
   href: string;
 }
 
