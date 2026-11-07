@@ -132,6 +132,24 @@ test.describe('home', () => {
     await expect(page.getByTestId('release-lusg').getByText(/listen/i)).toBeVisible();
   });
 
+  test('the tracklist is titles and years: only the debut carries a line', async ({ page }) => {
+    await page.goto('/');
+
+    // The descriptions under the songs were swept out; the one line the
+    // catalog keeps is Orbit's debut note.
+    await expect(page.getByTestId('release-orbit').getByText('The debut single.')).toBeVisible();
+
+    // The other rows print exactly index, title, year and the Listen label —
+    // innerText collapses whitespace (and honors the label's uppercase), so
+    // this catches any stray line.
+    for (const [id, row] of [
+      ['release-lusg', '01 LUSG 2026 LISTEN ↗'],
+      ['release-cyclothymia', '02 Cyclothymia 2026 LISTEN ↗'],
+    ] as const) {
+      expect((await page.getByTestId(id).innerText()).replace(/\s+/g, ' ').trim()).toBe(row);
+    }
+  });
+
   test('shop rows mirror the Ko-fi listing: the plate prints three, the screen prints all', async ({ page }) => {
     await page.goto('/');
 
