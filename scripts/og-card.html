@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400..700&family=Courier+Prime:wght@400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1200px; height: 630px; }
+      body {
+        background: #f2e7d5;
+        color: #2a1810;
+        font-family: "Courier Prime", monospace;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 56px 72px 0;
+        position: relative;
+        overflow: hidden;
+      }
+      .top {
+        display: flex;
+        justify-content: space-between;
+        font-size: 19px;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        color: #6d5442;
+      }
+      .top b { font-weight: 400; color: #5e2c10; }
+      .wordmark {
+        font-family: "Bodoni Moda", serif;
+        color: #5e2c10;
+        line-height: 0.86;
+        letter-spacing: -0.015em;
+        margin-top: -10px;
+      }
+      .wordmark .first { font-size: 118px; display: block; }
+      .wordmark .last { font-size: 176px; display: block; margin-left: -6px; }
+      .foot {
+        margin: 0 -72px;
+        background: #dc5000;
+        color: #170b04;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        padding: 22px 72px 26px;
+        font-size: 21px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+      .foot .releases { letter-spacing: 0.22em; }
+      .foot .action { font-weight: 700; letter-spacing: 0.2em; }
+    </style>
+  </head>
+  <body>
+    <div class="top">
+      <span>Instrumental rock / metal</span>
+      <span><b>LUSG</b> — out now</span>
+    </div>
+
+    <div class="wordmark">
+      <span class="first">Lazy</span>
+      <span class="last">Perfectionist</span>
+    </div>
+
+    <div class="foot">
+      <span class="releases">LUSG · Cyclothymia · Orbit</span>
+      <span class="action">Listen ↗</span>
+    </div>
+  </body>
+</html>

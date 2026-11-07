@@ -34,7 +34,7 @@ export default async function MusicPage({
     <CatalogPage
       plate="Plate 01"
       title="Singles"
-      lede="Three songs, one bedroom."
+      lede="Three songs."
       path="/music"
       query={query}
       total={RELEASES.length}

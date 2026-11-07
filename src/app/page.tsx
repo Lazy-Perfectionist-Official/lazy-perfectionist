@@ -21,7 +21,7 @@ const structuredData = {
       "@type": "MusicGroup",
       "@id": LINKS.spotifyArtist,
       name: "Lazy Perfectionist",
-      genre: "Instrumental Rock",
+      genre: ["Instrumental Rock", "Instrumental Metal"],
       locationCreated: { "@type": "Place", name: "Hong Kong" },
       url: LINKS.spotifyArtist,
       sameAs: [LINKS.youtube, LINKS.instagram, LINKS.medium, LINKS.kofi],
