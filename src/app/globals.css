@@ -1,247 +1,371 @@
 @import "tailwindcss";
-@import "tw-animate-css";
 
-/* Global black canvas (prevents white flash on pinch-zoom) */
-html, body {
-  background-color: #000 !important;
-  min-height: 100vh;
-}
-
-@custom-variant dark (&:is(.dark *));
+/*
+ * Lazy Perfectionist — the site is the print.
+ *
+ * The hero is a warm letterpress poster; everything below it continues on
+ * the same sheet. The palette is sampled from that print: its paper, its
+ * typewriter ink, the rust of its giant name. Bodoni echoes the poster's
+ * Didone, Courier its typewriter, Inter carries the reading copy.
+ */
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-}
+  --color-paper: #f2e7d5;
+  --color-paper-deep: #e9dac1;
+  --color-ink: #2a1810;
+  --color-ink-soft: #6d5442;
+  --color-press: #5e2c10;
+  --color-rust: #8a3a12;
+  --color-line: #d3c2a4;
+  --color-ember: #dc5000;
+  --color-ember-bright: #f05c04;
+  --color-ember-ink: #170b04;
+  --color-cream: #ffedd7;
 
-:root {
-  --radius: 1.75rem;
-  --background: oklch(0.93 0.08 65.7);
-  --foreground: oklch(0.09 0.04 280);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.09 0.04 280);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.09 0.04 280);
-  --primary: oklch(0.09 0.04 280);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.97 0.01 60);
-  --secondary-foreground: oklch(0.09 0.04 280);
-  --muted: oklch(0.97 0.01 60);
-  --muted-foreground: oklch(0.45 0.03 280);
-  --accent: oklch(0.97 0.01 60);
-  --accent-foreground: oklch(0.09 0.04 280);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.12 0.04 280);
-  --input: oklch(0.12 0.04 280);
-  --ring: oklch(0.12 0.04 280);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
-
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-bodoni), ui-serif, Georgia, serif;
+  --font-mono: var(--font-courier), ui-monospace, "Courier New", monospace;
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+  html {
+    scroll-behavior: smooth;
+    color-scheme: light;
   }
+
   body {
-    @apply bg-background text-foreground;
-  }
-}
-
-@layer utilities {
-  .line-clamp-2 {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-  }
-  
-  .line-clamp-3 {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-  }
-  
-  .delay-1000 {
-    animation-delay: 1000ms;
-  }
-  
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-  }
-  
-  @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-20px); }
-  }
-  
-  .animate-glow {
-    animation: glow 2s ease-in-out infinite alternate;
-  }
-  
-  @keyframes glow {
-    from { box-shadow: 0 0 10px rgba(237, 135, 52, 0.5); }
-    to { box-shadow: 0 0 20px rgba(237, 135, 52, 0.8), 0 0 30px rgba(237, 135, 52, 0.4); }
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
   }
 
-  .linktree-gradient {
-    background: linear-gradient(135deg, #b7621c, #cfae45, #bd7a77, #db8c14, #caab76);
+  ::selection {
+    background-color: var(--color-ink);
+    color: var(--color-cream);
   }
 
-  .linktree-button {
-    background-color: #ffffff;
-    color: #090c34;
-    border: 2px solid #1c205d;
-    box-shadow: 3px 4px 0 #1c205d;
-    border-radius: 28px;
-    transition: all 0.25s cubic-bezier(0.08, 0.59, 0.29, 0.99);
+  /* Rust is the print's second ink: 6.4:1 on paper, so it carries the
+     focus ring everywhere except the ember bar. */
+  :focus-visible {
+    outline-width: 2px;
+    outline-style: solid;
+    outline-color: var(--color-rust);
+    outline-offset: 3px;
   }
 
-  .linktree-button:hover {
-    background-color: rgba(255, 255, 255, 0.93);
-    transform: translateY(-1px);
-    box-shadow: 4px 5px 0 #1c205d;
+  .announcement:focus-visible {
+    outline-color: var(--color-ember-ink);
   }
 
-  .linktree-text {
-    color: #090c34;
-    font-family: 'Epilogue', sans-serif;
-  }
-
-  .linktree-header-text {
-    color: #fff8f0;
-    font-family: 'Epilogue', sans-serif;
-    font-weight: 600;
-  }
-
-  .linktree-header-text-blue {
-    color: #090c34;
-    font-family: 'Epilogue', sans-serif;
-    font-weight: 600;
-  }
-
-  .font-dm-serif {
-    font-family: var(--font-dm-serif), serif;
-  }
-
-  .font-dm-serif-italic {
-    font-family: var(--font-dm-serif), serif;
-    font-style: italic;
-  }
-
-  .noise-texture {
-    position: absolute;
-    inset: 0;
-    opacity: 0.15;
-    pointer-events: none;
-    z-index: 10;
-    background-image:
-      radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
-      radial-gradient(circle at 80% 80%, rgba(255,255,255,0.05) 0%, transparent 50%),
-      radial-gradient(circle at 40% 20%, rgba(255,255,255,0.08) 0%, transparent 50%);
-    background-size: 200px 200px, 150px 150px, 100px 100px;
-    background-position: 0 0, 50px 50px, 100px 100px;
-    animation: noise-move 20s ease-in-out infinite;
-  }
-
-  @keyframes noise-move {
-    0%, 100% {
-      background-position: 0 0, 50px 50px, 100px 100px;
-      transform: scale(1);
+  /* The sheet's own scrollbar: the paper as track, the print's hairline as the
+     rule along its edge, a line-coloured thumb inset from that rule, rust on
+     hover and pressed dark under the grip. Chromium and Safari get the pseudo-
+     elements; Firefox has none, so it takes the standard colours and a thin
+     bar instead (it would otherwise ignore them once ::-webkit-scrollbar is
+     matched, which is why the two branches are exclusive). */
+  @supports selector(::-webkit-scrollbar) {
+    ::-webkit-scrollbar {
+      width: 13px;
+      height: 13px;
     }
-    25% {
-      background-position: 20px 20px, 70px 70px, 120px 120px;
-      transform: scale(1.02);
+
+    ::-webkit-scrollbar-track {
+      background-color: var(--color-paper);
+      border-left: 1px solid var(--color-line);
     }
-    50% {
-      background-position: -10px -10px, 30px 30px, 80px 80px;
-      transform: scale(0.98);
+
+    ::-webkit-scrollbar-thumb {
+      background-color: var(--color-line);
+      border-width: 3px;
+      border-style: solid;
+      border-color: var(--color-paper);
+      border-radius: 7px;
     }
-    75% {
-      background-position: 15px -15px, 60px 40px, 110px 90px;
-      transform: scale(1.01);
+
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: var(--color-rust);
+    }
+
+    ::-webkit-scrollbar-thumb:active {
+      background-color: var(--color-press);
+    }
+
+    ::-webkit-scrollbar-corner {
+      background-color: var(--color-paper);
+    }
+  }
+
+  @supports not selector(::-webkit-scrollbar) {
+    html {
+      scrollbar-color: var(--color-line) var(--color-paper);
+      scrollbar-width: thin;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
     }
   }
 }
 
+@layer components {
+  /* Chrome links: ink-soft caps, pressed dark on hover. */
+  .nav-link {
+    @apply inline-block py-2.5 text-[11px] font-medium uppercase tracking-[0.22em] text-ink-soft transition-colors duration-200 hover:text-press md:text-xs;
+  }
 
+  /* The bypass link: out of the way until it is focused, then pinned over
+     the masthead in the paper's own type so it reads as part of the print. */
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:border focus:border-line focus:bg-paper focus:px-4 focus:py-3 focus:font-mono focus:text-xs focus:uppercase focus:tracking-[0.18em] focus:text-press focus:shadow-sm;
+  }
+
+  /* Plate labels, years, colophon — the poster's typewriter. */
+  .eyebrow {
+    @apply font-mono text-xs uppercase tracking-[0.18em] text-ink-soft;
+  }
+
+  /* A screened band, used once: the ink colophon echoes the print's dots.
+     Dots are paper on ink; the footer sets the opacity. */
+  .halftone {
+    background-image: radial-gradient(
+      circle,
+      rgb(242 231 213 / 0.7) 0.7px,
+      transparent 0.95px
+    );
+    background-size: 5px 5px;
+  }
+
+  /* The fold develops: the impression settling under the platen. A paper wash
+     lies over the plate for a second and lifts, and the plate gives up a 2%
+     enlarge as it lands — the print arrives rather than merely loading.
+     Neither touches the image's own opacity: the plate is the LCP and is
+     painted whole from the first frame, so only the wash above it moves. The
+     wash rests invisible (opacity: 0) and animates only when the reader has
+     not asked for less motion — under `reduce` the fold is simply the print. */
+  .hero-wash {
+    background-color: var(--color-paper);
+    opacity: 0;
+  }
+
+  /* The soft focus is a backdrop blur on the wash, not a filter on the plate:
+     it costs the LCP nothing and fades out with the wash itself. */
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .hero-wash {
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+    }
+  }
+
+  /* The breeze (see Hero.tsx): the whole print sways, all the time — a sheet
+     catching a wind rather than a screen. This is the classic sliced-flag
+     technique (one keyframe, slices phase-delayed) made seamless: instead of
+     hard slices, each harmonic is three copies of the plate masked to a soft
+     bump a third of a wavelength apart, each swaying a third of a cycle
+     behind the last. The bump weights are max(0, cos) in disguise — the
+     phasor blend — so at every point on the print one phase dominates and
+     the blend's amplitude never collapses: the ripple TRAVELS, left to
+     right, at full strength everywhere. (The first attempt used masks whose
+     weights summed to a constant; three phases 120° apart sum to zero where
+     the weights tie, so the wave stood in dead patches. Don't go back.)
+     Only transforms animate — the compositor's work, nothing repaints — and
+     the copies share the plates' src, so the wind costs no bytes. */
+  .hero-wave {
+    mask-image: linear-gradient(
+        180deg,
+        transparent 0%,
+        #000 8%,
+        #000 92%,
+        transparent 100%
+      ),
+      linear-gradient(90deg, rgb(0 0 0 / 0.45) 0%, #000 55%, #000 100%);
+    mask-composite: intersect;
+  }
+
+  /* A bump per tile: transparent at the tile joins, opaque at each third —
+     cos⁺, the travelling-wave weight. The flanks are steep, not gentle:
+     the crossfade zone is where two displaced copies show at once, and a
+     wide flank would read as a doubled edge on the type, so the blend is
+     allowed only a fifth of the wavelength to happen in. */
+  .hero-wave-band {
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      #000 15%,
+      #000 35%,
+      transparent 50%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      #000 15%,
+      #000 35%,
+      transparent 50%,
+      transparent 100%
+    );
+    mask-repeat: repeat-x;
+  }
+
+  /* The billow: the long slow wave, one and a half wavelengths across the
+     fold. Negative positions and negative delays together make the phase
+     fall with x, which is what sends the wave to the right. */
+  .hero-billow {
+    -webkit-mask-size: 67.2vw 100%;
+    mask-size: 67.2vw 100%;
+    animation: hero-billow 11s ease-in-out infinite;
+  }
+
+  .hero-billow-b {
+    mask-position: -22.4vw 0;
+    animation-delay: -3.67s;
+  }
+
+  .hero-billow-c {
+    mask-position: -44.8vw 0;
+    animation-delay: -7.33s;
+  }
+
+  /* The shimmer: a shorter, quicker wave riding on top of the billow — wind
+     is a chord, not a tone. Sheared across (skewX) rather than along, so the
+     two harmonics never move in lockstep. */
+  .hero-shimmer {
+    -webkit-mask-size: 28.8vw 100%;
+    mask-size: 28.8vw 100%;
+    animation: hero-shimmer 5.5s ease-in-out infinite;
+  }
+
+  .hero-shimmer-b {
+    mask-position: -9.6vw 0;
+    animation-delay: -1.83s;
+  }
+
+  .hero-shimmer-c {
+    mask-position: -19.2vw 0;
+    animation-delay: -3.67s;
+  }
+
+  /* The lens (see Hero.tsx): the drop is a circle while the pointer rests
+     and an oval along its travel while it moves — the script watches how far
+     behind the glass is (which is the pointer's speed) and writes --lens-k
+     (0..1) and --lens-angle. Everything turns about the pointer, so the
+     glass stays centred on it while its shape stretches. */
+  .hero-lens {
+    transform-origin: var(--lantern-x, 50%) var(--lantern-y, 45%);
+    transform: rotate(var(--lens-angle, 0deg))
+      scale(calc(1 + 0.08 * var(--lens-k, 0)), calc(1 - 0.06 * var(--lens-k, 0)))
+      rotate(calc(-1 * var(--lens-angle, 0deg)));
+  }
+
+  /* The lens (see Hero.tsx): the same plate, magnified a few percent and
+     turned a hair about the pointer — the paper puckering under the light —
+     and masked to a feathered circle so the distortion has no rim. It rides
+     the same two custom properties as the lantern, so the pool and the glass
+     are the same point. Magnifying a copy is what keeps the plate itself —
+     the LCP — untouched: nothing filters the image that paints the fold. */
+  .hero-lens {
+    opacity: 0;
+    -webkit-mask-image: radial-gradient(
+      circle clamp(180px, 20vmax, 360px) at var(--lantern-x, 50%) var(--lantern-y, 45%),
+      #000 30%,
+      rgb(0 0 0 / 0.5) 62%,
+      transparent 92%
+    );
+    mask-image: radial-gradient(
+      circle clamp(180px, 20vmax, 360px) at var(--lantern-x, 50%) var(--lantern-y, 45%),
+      #000 30%,
+      rgb(0 0 0 / 0.5) 62%,
+      transparent 92%
+    );
+    transition: opacity 500ms ease;
+  }
+
+  /* The print under the glass. The lens stretches the whole layer — mask and
+     image — so the circle deforms with the pointer's travel; this takes the
+     stretch straight back, leaving only a 1.2% enlarge about the pointer.
+     Without it a moving drop would show the type twice, a few pixels apart,
+     which reads as a smudge rather than as glass. */
+  .hero-lens-plate {
+    transform-origin: var(--lantern-x, 50%) var(--lantern-y, 45%);
+    transform: rotate(var(--lens-angle, 0deg))
+      scale(calc(1.012 * var(--lens-isx, 1)), calc(1.012 * var(--lens-isy, 1)))
+      rotate(calc(-1 * var(--lens-angle, 0deg)));
+  }
+
+  .lantern-lit .hero-lens {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-lens,
+    .hero-wave {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-wash {
+      animation: hero-wash 1.1s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+    }
+
+    /* The breeze settles with the plate: the span takes the same landing
+       animation so the swaying bands are never out of step with the print
+       they ride on while the impression arrives. */
+    .hero-plate,
+    .hero-wave {
+      animation: hero-settle 1.4s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+    }
+  }
+}
+
+@keyframes hero-wash {
+  from {
+    opacity: 0.88;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes hero-settle {
+  from {
+    transform: scale(1.02);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes hero-billow {
+  0%,
+  100% {
+    transform: skewY(0deg) translateY(0);
+  }
+
+  25% {
+    transform: skewY(0.15deg) translateY(-0.29vmin);
+  }
+
+  75% {
+    transform: skewY(-0.15deg) translateY(0.29vmin);
+  }
+}
+
+@keyframes hero-shimmer {
+  0%,
+  100% {
+    transform: skewX(0deg) translateY(0);
+  }
+
+  25% {
+    transform: skewX(0.11deg) translateY(-0.15vmin);
+  }
+
+  75% {
+    transform: skewX(-0.11deg) translateY(0.15vmin);
+  }
+}

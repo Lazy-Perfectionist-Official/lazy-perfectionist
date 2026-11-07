@@ -1,78 +1,103 @@
 import type { NextConfig } from "next";
 
+const isProduction = process.env.NODE_ENV === "production";
+
 const nextConfig: NextConfig = {
-  /* config options here */
-  typescript: {
-    ignoreBuildErrors: true,
+  // Allow dev-server access from LAN / Tailscale origins. The MagicDNS
+  // hostname is the one the browser actually sends as Origin through
+  // `tailscale serve`, so it has to be listed by name — the tailnet IP
+  // alone doesn't cover HMR's origin check.
+  allowedDevOrigins: [
+    "100.76.128.50",
+    "192.168.2.217",
+    "samuels-mac-mini.tail2bbd23.ts.net",
+  ],
+
+  reactStrictMode: true,
+
+  // Node 25 ships webstorage by default: `localStorage` exists in the SSR
+  // context but is non-functional without --localstorage-file, so the dev
+  // indicator portal crashes prerender with "localStorage.getItem is not a
+  // function". Disabling the indicator removes that code path entirely.
+  devIndicators: false,
+
+  // /admin is a static Sveltia CMS page in public/, not an App Router
+  // route; the rewrite maps the clean URL onto the file (Next serves
+  // public assets only at their literal paths).
+  async rewrites() {
+    return [
+      { source: "/admin", destination: "/admin/index.html" },
+      { source: "/admin/", destination: "/admin/index.html" },
+    ];
   },
-  // 禁用 Next.js 热重载，由 nodemon 处理重编译
-  reactStrictMode: false,
-  images: {
-    remotePatterns: [
+
+  async headers() {
+    const headers = [
       {
-        protocol: 'https',
-        hostname: 'z-cdn-media.chatglm.cn',
-        port: '',
-        pathname: '/files/**',
+        source: "/:all*(svg|jpg|jpeg|png|webp|avif|gif)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
       },
       {
-        protocol: 'https',
-        hostname: 'cdn-images-1.medium.com',
-        port: '',
-        pathname: '/**',
+        source: "/manifest.json",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=86400",
+          },
+        ],
       },
-      {
-        protocol: 'https',
-        hostname: 'miro.medium.com',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'i.scdn.co',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'mosaic.scdn.co',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'i.scdn.co',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'api.song.link',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'ko-fi.com',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'cdn.ko-fi.com',
-        port: '',
-        pathname: '/**',
-      },
-    ],
-  },
-  webpack: (config, { dev }) => {
-    if (dev) {
-      // 禁用 webpack 的热模块替换
-      config.watchOptions = {
-        ignored: ['**/*'], // 忽略所有文件变化
-      };
+    ];
+
+    if (isProduction) {
+      // Immutable caching for static chunks is only safe in production
+      // where URLs are content-hashed.
+      headers.push({
+        source: "/_next/static/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      });
+
+      headers.push({
+        source: "/(.*)",
+        headers: [
+          { key: "X-Frame-Options", value: "DENY" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          {
+            key: "Referrer-Policy",
+            value: "origin-when-cross-origin",
+          },
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=()",
+          },
+        ],
+      });
     }
-    return config;
+
+    return headers;
   },
+
+  compress: true,
+
+  // Standalone output for the tailnet deployment flow (serve:prod).
+  output: "standalone",
+
+  images: {
+    formats: ["image/avif", "image/webp"],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+  },
+
   eslint: {
-    // 构建时忽略ESLint错误
     ignoreDuringBuilds: true,
   },
 };

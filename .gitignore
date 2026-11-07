@@ -13,8 +13,11 @@
 # testing
 /coverage
 /test-results
+/test-results-lighthouse
 /playwright-report
+/playwright-report-lighthouse
 /playwright/.cache
+/reports
 
 # next.js
 /.next/
@@ -103,6 +106,7 @@ temp/
 # Claude/AI assistant files
 .claude
 .z-ai-config
+.omc/
 
 # Development files
 dev.log

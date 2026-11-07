@@ -1,0 +1,27 @@
+{
+  "announcement": {
+    "label": "LUSG · the new single · out now",
+    "href": "https://open.spotify.com/track/4RnwmBIaSuOqGEu8R2nIsU"
+  },
+  "linerNote": "Lazy Perfectionist is bedroom instrumental rock from Hong Kong: three singles, all made in one room.",
+  "releases": [
+    {
+      "year": "2026",
+      "title": "LUSG",
+      "description": "Strings and synths stacked to the ceiling: the bedroom at full scale.",
+      "href": "https://open.spotify.com/track/4RnwmBIaSuOqGEu8R2nIsU"
+    },
+    {
+      "year": "2026",
+      "title": "Cyclothymia",
+      "description": "Loud and quiet learning to live inside the same song.",
+      "href": "https://open.spotify.com/track/5gQpSHmOlmQTrz2H1iznYV"
+    },
+    {
+      "year": "2025",
+      "title": "Orbit",
+      "description": "The debut single. The catalog starts here.",
+      "href": "https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8"
+    }
+  ]
+}

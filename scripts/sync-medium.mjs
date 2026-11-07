@@ -1,0 +1,138 @@
+// Syncs the Medium feed into the site's own writing list.
+//
+// Medium's RSS feed is the only public, script-friendly view of the
+// account (the post pages sit behind Cloudflare), so this reads the feed
+// with plain fetch — no browser, no API key. The site stays static; the
+// posts are written to src/lib/medium-posts.json and committed, and each
+// row hands off to Medium for the reading.
+//
+// The feed shows only its newest window, so the file is merged rather than
+// replaced: a post that falls out of the feed stays in the plate. Feed
+// entries always win, so edits to a title or date still land.
+//
+// Run it with `npm run sync:medium` when a post is published, then commit.
+import { readFile, writeFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
+import path from "node:path";
+
+const FEED_URL = "https://medium.com/feed/@lazyperfectist";
+const PROFILE_URL = "https://medium.com/@lazyperfectist";
+const UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
+
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const DATA_FILE = path.join(ROOT, "src/lib/medium-posts.json");
+
+const decode = (value) =>
+  value
+    .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;|&#x27;/g, "'")
+    .replace(/&#x2F;/g, "/")
+    .replace(/&#x3D;/g, "=")
+    .replace(/&amp;/g, "&");
+
+// CDATA markers go before tag stripping, or the whole wrapper reads as a tag.
+const text = (html) =>
+  decode(html.replace(/<!\[CDATA\[|\]\]>/g, "").replace(/<[^>]+>/g, " "))
+    .replace(/\s+/g, " ")
+    .trim();
+
+// pick returns the raw inner XML (CDATA wrapper included); text() strips the
+// markup and decodes entities once, so callers must not decode again.
+const pick = (block, tag) => {
+  const match = block.match(new RegExp(`<${tag}(?:\\s[^>]*)?>([\\s\\S]*?)</${tag}>`));
+  return match ? match[1] : null;
+};
+
+const slugify = (title) =>
+  title
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+// The feed has no summary field; the post's own opening sentences make the
+// honest one. It keeps adding sentences until it reads ~110 characters, and
+// never goes past 220.
+const excerpt = (paragraph) => {
+  const sentences = paragraph.split(/(?<=[.!?])\s+/);
+  let out = "";
+  for (const sentence of sentences) {
+    if (out && out.length + sentence.length > 220) break;
+    out = out ? `${out} ${sentence}` : sentence;
+    if (out.length >= 110) break;
+  }
+  return out.length > 220 ? `${out.slice(0, out.lastIndexOf(" ", 220)).trim()}…` : out;
+};
+
+const canonicalUrl = (link) => {
+  const url = new URL(link);
+  url.search = "";
+  url.hash = "";
+  return url.toString();
+};
+
+// The feed carries the post's Medium tags as slugified <category> elements.
+// They are the author's own tags, so the writing screen filters on exactly
+// what was tagged on Medium; only the casing has to be restored.
+const humanizeTag = (value) =>
+  text(value)
+    .replace(/[-_]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .replace(/^[a-z]/, (letter) => letter.toUpperCase());
+
+const tagsOf = (item) => {
+  const seen = new Set();
+  const tags = [];
+  for (const [, raw] of item.matchAll(/<category(?:\s[^>]*)?>([\s\S]*?)<\/category>/g)) {
+    const label = humanizeTag(raw);
+    const key = label.toLowerCase();
+    if (!label || seen.has(key)) continue;
+    seen.add(key);
+    tags.push(label);
+  }
+  return tags;
+};
+
+const response = await fetch(FEED_URL, { headers: { "User-Agent": UA } });
+if (!response.ok) throw new Error(`feed ${FEED_URL} answered ${response.status}`);
+const xml = await response.text();
+
+const posts = [...xml.matchAll(/<item>([\s\S]*?)<\/item>/g)].map(([, item]) => {
+  const title = text(pick(item, "title") ?? "");
+  const content = pick(item, "content:encoded") ?? "";
+  const firstParagraph = content.match(/<p[^>]*>([\s\S]*?)<\/p>/)?.[1] ?? "";
+  const pubDate = new Date(text(pick(item, "pubDate") ?? ""));
+  return {
+    slug: slugify(title),
+    title,
+    excerpt: excerpt(text(firstParagraph)),
+    date: pubDate.toISOString().slice(0, 10),
+    url: canonicalUrl(text(pick(item, "link") ?? "")),
+    tags: tagsOf(item),
+  };
+});
+
+if (!posts.length) throw new Error(`no posts found in ${FEED_URL}`);
+posts.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+
+const current = await readFile(DATA_FILE, "utf8").catch(() => null);
+const existing = current ? JSON.parse(current).posts : [];
+
+// Union by URL: the feed wins for anything it still carries, and older
+// posts it has dropped stay in the archive. Posts synced before tags were
+// read get an empty list rather than a missing key.
+const byUrl = new Map(existing.map((post) => [post.url, { tags: [], ...post }]));
+for (const post of posts) byUrl.set(post.url, post);
+const archive = [...byUrl.values()].sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+
+const next = `${JSON.stringify({ profileUrl: PROFILE_URL, posts: archive }, null, 2)}\n`;
+
+if (current !== next) await writeFile(DATA_FILE, next);
+
+for (const post of posts) console.log(`${post.date}  ${post.slug.padEnd(60)} ${post.url}`);
+const count = `${archive.length} post${archive.length === 1 ? "" : "s"}`;
+console.log(current === next ? `writing unchanged (${count})` : `wrote ${path.relative(ROOT, DATA_FILE)} (${count})`);

@@ -1,157 +1,97 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono, DM_Serif_Text } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Bodoni_Moda, Courier_Prime, Inter } from "next/font/google";
+
+import { SITE_URL } from "@/lib/site";
+
 import "./globals.css";
-import { Toaster } from "@/components/ui/toaster";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
   subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+// The hero print is set in Bodoni 72 and American Typewriter; the site
+// borrows their web equivalents so the page and the poster share a voice.
+const bodoni = Bodoni_Moda({
   subsets: ["latin"],
+  style: ["normal", "italic"],
+  variable: "--font-bodoni",
+  display: "swap",
 });
 
-const dmSerif = DM_Serif_Text({
-  weight: ["400"],               // regular
-  style: ["normal", "italic"],   // both normal & italic
+const courier = Courier_Prime({
+  weight: "400",
+  style: ["normal"],
   subsets: ["latin"],
-  variable: "--font-dm-serif",   // CSS variable name
-  display: "swap",               // prevents FOIT
+  variable: "--font-courier",
+  display: "swap",
 });
 
-// Enhanced metadata for SEO optimization
+const title = "Lazy Perfectionist — Bedroom Instrumental Rock | Hong Kong";
+const description =
+  "Lazy Perfectionist is a bedroom instrumental rock project from Hong Kong. The new single LUSG is out now — alongside Cyclothymia and Orbit — on all streaming platforms.";
+
+// The site has no domain of its own yet, so the canonical host comes from
+// the deploy environment (see SITE_URL in site.ts). Until it is set, no
+// canonical is emitted rather than pointing crawlers at somebody else's
+// sales page; the share card still works because its image path is
+// site-relative.
 export const metadata: Metadata = {
-  title: {
-    default: 'Lazy Perfectionist - Bedroom Instrumental Rock | Hong Kong',
-    template: '%s | Lazy Perfectionist'
-  },
-  description: 'Lazy Perfectionist is a Hong Kong-based instrumental progressive rock project creating bedroom rock that blends technical precision with emotional storytelling. Debut single "Orbit" available now on all platforms.',
+  metadataBase: SITE_URL ? new URL(SITE_URL) : undefined,
+  title: { default: title, template: "%s | Lazy Perfectionist" },
+  description,
+  alternates: SITE_URL ? { canonical: "/" } : undefined,
   keywords: [
-    'Lazy Perfectionist',
-    'instrumental rock',
-    'bedroom rock',
-    'Hong Kong music',
-    'progressive rock',
-    'instrumental progressive',
-    'bedroom producer',
-    'DIY musician',
-    'Orbit single',
-    'Hong Kong artist',
-    'instrumental metal',
-    'progressive metal',
-    'ambient rock',
-    'experimental music',
-    'independent artist',
-    'Sammy Lee',
-    'music production',
-    'guitar instrumental',
-    'progressive rock Hong Kong'
+    "Lazy Perfectionist",
+    "instrumental rock",
+    "bedroom rock",
+    "Hong Kong music",
+    "progressive rock",
+    "LUSG",
+    "Cyclothymia",
+    "Orbit",
   ],
-  authors: [{ name: 'Sammy Lee', url: 'https://lazyperfectionist.com' }],
-  creator: 'Sammy Lee',
-  publisher: 'Lazy Perfectionist',
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
+  manifest: "/manifest.json",
   icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
-      { url: "/icon-512x512.png", sizes: "512x512", type: "image/png" },
-    ],
-    apple: [
-      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
-    ],
+    icon: [{ url: "/favicon.ico", sizes: "any" }],
+    apple: [{ url: "/apple-touch-icon.png" }],
   },
   openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    url: 'https://lazyperfectionist.com',
-    siteName: 'Lazy Perfectionist',
-    title: 'Lazy Perfectionist - Bedroom Instrumental Rock | Hong Kong',
-    description: 'Lazy Perfectionist is a Hong Kong-based instrumental progressive rock project creating bedroom rock that blends technical precision with emotional storytelling.',
+    type: "website",
+    siteName: "Lazy Perfectionist",
+    title,
+    description,
     images: [
       {
-        url: 'https://lazyperfectionist.com/assets/img/logo.png',
-        width: 1200,
-        height: 1200,
-        alt: 'Lazy Perfectionist Logo',
-      },
-      {
-        url: 'https://lazyperfectionist.com/assets/img/og-image.jpg',
+        url: "/assets/img/og-card.png",
         width: 1200,
         height: 630,
-        alt: 'Lazy Perfectionist - Bedroom Instrumental Rock',
+        alt: "Lazy Perfectionist — bedroom instrumental rock from Hong Kong",
       },
     ],
   },
   twitter: {
-    card: 'summary_large_image',
-    title: 'Lazy Perfectionist - Bedroom Instrumental Rock',
-    description: 'Hong Kong-based instrumental progressive rock project. Debut single "Orbit" available now.',
-    images: [
-      'https://lazyperfectionist.com/assets/img/logo.png',
-      'https://lazyperfectionist.com/assets/img/twitter-image.jpg',
-    ],
-    creator: '@lazyperfectist',
-    site: '@lazyperfectist',
-  },
-  alternates: {
-    canonical: 'https://lazyperfectionist.com',
-  },
-  other: {
-    'music.artist': 'Lazy Perfectionist',
-    'music.genre': 'Instrumental Progressive Rock',
-    'music.release_date': '2025-10-17',
-    'music.release_type': 'single',
-    'music.title': 'Orbit',
-    'geo.region': 'HK',
-    'geo.placename': 'Hong Kong',
+    card: "summary_large_image",
+    title,
+    description,
+    images: ["/assets/img/og-card.png"],
   },
 };
 
-// Note: Structured data is now handled at the page level to avoid conflicts
+export const viewport: Viewport = {
+  themeColor: "#f2e7d5",
+};
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        {/* Preconnect to external domains for performance */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link rel="preconnect" href="https://i.scdn.co" />
-        <link rel="preconnect" href="https://cdn.jsdelivr.net" />
-
-        {/* DNS prefetch for social media platforms */}
-        <link rel="dns-prefetch" href="//open.spotify.com" />
-        <link rel="dns-prefetch" href="//www.youtube.com" />
-        <link rel="dns-prefetch" href="//medium.com" />
-        <link rel="dns-prefetch" href="//instagram.com" />
-        <link rel="dns-prefetch" href="//tiktok.com" />
-
-        {/* Note: Structured data is now handled at the page level to avoid conflicts */}
-      </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${dmSerif.variable} antialiased bg-background text-foreground`}
-      >
-        {children}
-        <Toaster />
-      </body>
+    <html
+      lang="en"
+      className={`${inter.variable} ${bodoni.variable} ${courier.variable}`}
+    >
+      <body className="font-sans">{children}</body>
     </html>
   );
 }
