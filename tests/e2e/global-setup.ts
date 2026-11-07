@@ -8,7 +8,7 @@ import { request, type FullConfig } from '@playwright/test';
 //
 // This is a test-harness warm-up, not a site fix: the same navigations are
 // clean against a warm server, and `next build` renders every route.
-const ROUTES = ['/', '/music', '/shop', '/writing', '/sitemap.xml'];
+const ROUTES = ['/', '/music', '/discography', '/shop', '/writing', '/sitemap.xml'];
 
 export default async function globalSetup(config: FullConfig) {
   const baseURL = config.projects[0]?.use?.baseURL;

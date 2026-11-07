@@ -5,7 +5,7 @@ import { SITE_URL } from "@/lib/site";
 // The cover and the three plate screens, and only when the deploy knows
 // its own host. Without SITE_URL an empty urlset is honest; a localhost or
 // parked-domain URL in it would not be.
-const ROUTES = ["", "/music", "/shop", "/writing"];
+const ROUTES = ["", "/music", "/discography", "/shop", "/writing"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   if (!SITE_URL) return [];

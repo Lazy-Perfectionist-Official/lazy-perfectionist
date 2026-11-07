@@ -610,6 +610,32 @@ test.describe('poster hero', () => {
     }
   });
 
+  test('the fold meets the viewport bottom whatever height the chrome runs', async ({ page }) => {
+    // The masthead is taller when its nav wraps, which is a function of the
+    // width and of how many items the nav carries. The fold measures the
+    // chrome instead of subtracting a pair of hard-coded heights, so the
+    // print still lands on the fold's bottom edge at every width.
+    // 1024 is the widest width the plate needs here: the 21:9 fold has its
+    // own test, and asking for a 3840px plate twice in one run is a dev
+    // image-optimizer queue the suite does not need to build.
+    for (const [width, height] of [
+      [320, 640],
+      [375, 760],
+      [768, 900],
+      [1024, 800],
+    ] as const) {
+      await page.setViewportSize({ width, height });
+      await page.goto('/');
+
+      const box = await page.getByTestId('hero-section').boundingBox();
+      expect(box, `${width}px fold must have a box`).not.toBeNull();
+      expect(
+        Math.abs(box!.y + box!.height - height),
+        `${width}px fold must end at the viewport bottom`,
+      ).toBeLessThanOrEqual(2);
+    }
+  });
+
   test('the fold develops: the wash lifts off the print and settles flush', async ({ page }) => {
     await page.goto('/');
 

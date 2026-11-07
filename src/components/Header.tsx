@@ -6,6 +6,7 @@
 // Elsewhere and the announcement bar.
 const NAV = [
   { label: "Music", href: "/#music" },
+  { label: "Discography", href: "/discography" },
   { label: "Shop", href: "/#shop" },
   { label: "Writing", href: "/#writing" },
   { label: "Elsewhere", href: "/#elsewhere" },

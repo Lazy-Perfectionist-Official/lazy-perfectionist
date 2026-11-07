@@ -8,7 +8,17 @@ import FootRow from "@/components/FootRow";
 // align under the section heading instead of out-denting it.
 const LEDE = "Three songs.";
 
-export function ReleaseRow({ release, index }: { release: Release; index: number }) {
+export function ReleaseRow({
+  release,
+  index,
+  showYear = true,
+}: {
+  release: Release;
+  index: number;
+  /** The year lives in the row on the cover; on the discography it lives
+      in the year separator above the group, so the row omits it. */
+  showYear?: boolean;
+}) {
   return (
     <a
       href={release.href}
@@ -36,10 +46,16 @@ export function ReleaseRow({ release, index }: { release: Release; index: number
         ) : null}
       </span>
 
-      <span className="col-span-2 mt-4 flex items-baseline justify-between md:col-span-1 md:col-start-3 md:mt-0 md:flex-col md:items-end">
-        <span className="font-mono text-xs tabular-nums text-ink-soft md:text-sm">
-          {release.year}
-        </span>
+      <span
+        className={`col-span-2 mt-4 flex items-baseline gap-6 md:col-span-1 md:col-start-3 md:mt-0 md:flex-col md:items-end ${
+          showYear ? "justify-between" : "justify-end"
+        }`}
+      >
+        {showYear ? (
+          <span className="font-mono text-xs tabular-nums text-ink-soft md:text-sm">
+            {release.year}
+          </span>
+        ) : null}
         <span
           aria-hidden="true"
           className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-soft transition-colors duration-200 group-hover:text-rust md:text-xs"
