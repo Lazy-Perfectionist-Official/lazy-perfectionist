@@ -1,3 +1,5 @@
+import { LINER_NOTE } from "@/lib/site";
+
 // The back cover: the page closes on ink, screened with a faint halftone
 // so the colophon echoes the print's dots. No third wordmark — the print
 // already carries the name twice.
@@ -17,8 +19,7 @@ export default function Footer() {
             — the one line on the page that answers a stranger's first
             question. Sentence case, so it reads as notes, not as a label. */}
         <p className="max-w-md font-mono text-xs leading-relaxed text-paper/70 md:text-sm">
-          Lazy Perfectionist is bedroom instrumental rock from Hong Kong —
-          three singles so far, all of them made in one room.
+          {LINER_NOTE}
         </p>
 
         <div className="mt-7 flex flex-col gap-3 md:mt-9 md:flex-row md:items-baseline md:justify-between">

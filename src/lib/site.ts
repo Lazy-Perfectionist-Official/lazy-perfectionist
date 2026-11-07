@@ -1,12 +1,13 @@
-// Single source of truth for the stripped-down site's links and releases.
-// The old platform-links machinery (Spotify ID → per-platform URLs via API)
-// is gone; only verified URLs live here.
+// Single source of truth for the site's links and content. The old
+// platform-links machinery (Spotify ID → per-platform URLs via API) is
+// gone; only verified URLs live here. The copy — announcement, liner note,
+// the singles — lives in content.json so /admin (Sveltia, committing
+// straight to this repo) can edit it without touching code.
+
+import content from "./content.json";
 
 export const LINKS = {
   spotifyArtist: 'https://open.spotify.com/artist/7ELTTbYXSvCIXh0W6IV3um',
-  spotifyLusg: 'https://open.spotify.com/track/4RnwmBIaSuOqGEu8R2nIsU',
-  spotifyCyclothymia: 'https://open.spotify.com/track/5gQpSHmOlmQTrz2H1iznYV',
-  spotifyOrbit: 'https://open.spotify.com/track/1XIv8JGEDU9MZT6HEFmdk8',
   youtube: 'https://www.youtube.com/@lazyperfectionist_official',
   instagram: 'https://www.instagram.com/lazyperfectionist_official/',
   medium: 'https://medium.com/@lazyperfectist',
@@ -21,11 +22,13 @@ export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL?.trim();
 
 // The bellyband's news. One line to change at the next release: the bar's
 // label and the link it carries live together, so the copy cannot outlive
-// the link it points at.
-export const ANNOUNCEMENT = {
-  label: 'LUSG — the new single · out now',
-  href: LINKS.spotifyLusg,
-} as const;
+// the link it points at — the fold's stamp links through it too. Editable
+// at /admin.
+export const ANNOUNCEMENT: { label: string; href: string } =
+  content.announcement;
+
+// The back cover's one line about who and where. Editable at /admin.
+export const LINER_NOTE: string = content.linerNote;
 
 export interface Release {
   year: string;
@@ -34,26 +37,6 @@ export interface Release {
   href: string;
 }
 
-// Newest first — the hero already features LUSG, so the list reads as a
-// running catalog.
-export const RELEASES: Release[] = [
-  {
-    year: '2026',
-    title: 'LUSG',
-    // Final wording is the artist's call.
-    description: 'The bedroom at full scale — strings and synths stacked to the ceiling.',
-    href: LINKS.spotifyLusg,
-  },
-  {
-    year: '2026',
-    title: 'Cyclothymia',
-    description: 'Loud and quiet learning to live inside the same song.',
-    href: LINKS.spotifyCyclothymia,
-  },
-  {
-    year: '2025',
-    title: 'Orbit',
-    description: 'The debut single — a first orbit around a sound still taking shape.',
-    href: LINKS.spotifyOrbit,
-  },
-];
+// Newest first — the hero already features the newest single, so the list
+// reads as a running catalog. Editable at /admin.
+export const RELEASES: Release[] = content.releases;

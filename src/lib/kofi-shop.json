@@ -3,7 +3,7 @@
     {
       "slug": "lusg-tabs",
       "name": "LUSG Tabs",
-      "summary": "The tabs for LUSG — the new single, written out to play.",
+      "summary": "Tabs for the song LUSG",
       "tags": [
         "Tabs"
       ],
@@ -15,7 +15,7 @@
     {
       "slug": "cyclothymia-freebies",
       "name": "Cyclothymia Freebies",
-      "summary": "Extras for Cyclothymia — jam tracks, a Neural DSP preset, the first demo.",
+      "summary": "Freebies for the song: Cyclothymia",
       "tags": [
         "Freebies"
       ],
@@ -27,7 +27,7 @@
     {
       "slug": "orbit-tabs-guitars-bass-drums",
       "name": "Orbit Tabs (Guitars, Bass, Drums)",
-      "summary": "The tabs for Orbit, in Guitar Pro and PDF.",
+      "summary": "The tabs for the song Orbit by Lazy Perfectionist. Comes in gp and pdf.",
       "tags": [
         "Tabs"
       ],
@@ -39,7 +39,7 @@
     {
       "slug": "orbit-stems",
       "name": "Orbit (Stems)",
-      "summary": "Every track of Orbit, separated — seven buses as WAVs, ready to remix.",
+      "summary": "Stems for the song \"Orbit\".",
       "tags": [
         "Stems"
       ],
@@ -51,7 +51,7 @@
     {
       "slug": "orbit-jam-track",
       "name": "Orbit (Jam Track)",
-      "summary": "Orbit with the lead guitar taken out — the original mix, waiting for a solo.",
+      "summary": "Electric Guitar Jam Track for the song 'Orbit'.",
       "tags": [
         "Jam tracks"
       ],

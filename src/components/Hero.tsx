@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { LINKS } from "@/lib/site";
+import { ANNOUNCEMENT } from "@/lib/site";
 
 // The fold is the record's print, edge to edge. Two plates carry it: the 3:4
 // poster for portrait screens, and a 16:9 strike of the same photograph,
@@ -97,7 +97,7 @@ export default function Hero() {
       </h1>
 
       <a
-        href={LINKS.spotifyLusg}
+        href={ANNOUNCEMENT.href}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Listen to LUSG on Spotify"

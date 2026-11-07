@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 import FootRow from "@/components/FootRow";
-import shop from "@/lib/kofi-shop.json";
+import { SHOP_PRODUCTS, type Product } from "@/lib/shop";
 
 // Plate 02: the Ko-fi shop printed as a catalog. The listing is synced
 // from the public shop and committed (`npm run sync:shop`) because Ko-fi
@@ -11,8 +11,6 @@ import shop from "@/lib/kofi-shop.json";
 // the whole listing and a search.
 const LEDE = "Tabs, stems and jam tracks.";
 const HOME_LIMIT = 3;
-
-type Product = (typeof shop.products)[number];
 
 const accessiblePrice = (product: Product) =>
   product.payWhatYouWant ? "pay what you want" : product.price;
@@ -81,12 +79,12 @@ export default function Shop() {
           </div>
 
           <p className="eyebrow whitespace-nowrap md:pt-3 md:text-right">
-            {shop.products.length} items
+            {SHOP_PRODUCTS.length} items
           </p>
         </div>
 
         <div>
-          {shop.products.slice(0, HOME_LIMIT).map((product) => (
+          {SHOP_PRODUCTS.slice(0, HOME_LIMIT).map((product) => (
             <ShopRow key={product.slug} product={product} />
           ))}
 

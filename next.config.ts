@@ -21,6 +21,16 @@ const nextConfig: NextConfig = {
   // function". Disabling the indicator removes that code path entirely.
   devIndicators: false,
 
+  // /admin is a static Sveltia CMS page in public/, not an App Router
+  // route; the rewrite maps the clean URL onto the file (Next serves
+  // public assets only at their literal paths).
+  async rewrites() {
+    return [
+      { source: "/admin", destination: "/admin/index.html" },
+      { source: "/admin/", destination: "/admin/index.html" },
+    ];
+  },
+
   async headers() {
     const headers = [
       {

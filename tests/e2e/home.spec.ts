@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test';
 
 import shop from '../../src/lib/kofi-shop.json';
 import posts from '../../src/lib/medium-posts.json';
+import shopCopy from '../../src/lib/shop-copy.json';
 
 /**
  * Minimal functional suite for the single-page site.
@@ -21,6 +22,12 @@ const RELEASE_ROWS = [
   ['release-cyclothymia', 'Cyclothymia'],
   ['release-orbit', 'Orbit'],
 ] as const;
+
+// The page prints the curated summary — src/lib/shop.ts applies shop-copy
+// at render — so the expected row text is the override when one exists.
+const summaryOf = (product: (typeof shop.products)[number]) =>
+  shopCopy.summaries.find((entry) => entry.slug === product.slug)?.summary ??
+  product.summary;
 
 test.describe('home', () => {
   test('loads clean: zero console errors and zero page errors', async ({ page }) => {
@@ -145,7 +152,7 @@ test.describe('home', () => {
       await expect(row).toHaveAttribute('target', '_blank');
       await expect(row).toHaveAccessibleName(`${product.name} — ${price} on Ko-fi`);
       // The visible listing is the data too: summary, price label and art.
-      await expect(row).toContainText(product.summary);
+      await expect(row).toContainText(summaryOf(product));
       await expect(row).toContainText(product.price);
       await expect(row.locator('img')).toBeVisible();
     }
@@ -343,7 +350,7 @@ test.describe('home', () => {
     await expect(page).toHaveURL(/\/shop\?q=orbit$/);
 
     const matching = shop.products.filter((product) =>
-      `${product.name} ${product.summary}`.toLowerCase().includes('orbit'),
+      `${product.name} ${summaryOf(product)}`.toLowerCase().includes('orbit'),
     );
     expect(matching.length, 'the fixture must match something').toBeGreaterThan(0);
     await expect(shopRows).toHaveCount(matching.length);

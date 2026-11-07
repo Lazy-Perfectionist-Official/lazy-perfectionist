@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import CatalogPage from "@/components/CatalogPage";
 import { ShopRow } from "@/components/Shop";
-import shop from "@/lib/kofi-shop.json";
+import { SHOP_PRODUCTS } from "@/lib/shop";
 import { LINKS, SITE_URL } from "@/lib/site";
 import { firstParam, hasTag, tagCounts, tagSlug } from "@/lib/tags";
 
@@ -25,8 +25,8 @@ export default async function ShopPage({
   const needle = query.toLowerCase();
 
   const tagged = activeTag
-    ? shop.products.filter((product) => hasTag(product, activeTag))
-    : shop.products;
+    ? SHOP_PRODUCTS.filter((product) => hasTag(product, activeTag))
+    : SHOP_PRODUCTS;
   const products = needle
     ? tagged.filter((product) =>
         `${product.name} ${product.summary} ${product.tags.join(" ")}`
@@ -43,8 +43,8 @@ export default async function ShopPage({
       path="/shop"
       query={query}
       tag={activeTag}
-      tags={tagCounts(shop.products)}
-      total={shop.products.length}
+      tags={tagCounts(SHOP_PRODUCTS)}
+      total={SHOP_PRODUCTS.length}
       shown={products.length}
       noun="item"
       placeholder="Name or summary…"

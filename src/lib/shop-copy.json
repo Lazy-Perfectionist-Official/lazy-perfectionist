@@ -1,7 +1,24 @@
 {
-  "lusg-tabs": "The tabs for LUSG — the new single, written out to play.",
-  "cyclothymia-freebies": "Extras for Cyclothymia — jam tracks, a Neural DSP preset, the first demo.",
-  "orbit-tabs-guitars-bass-drums": "The tabs for Orbit, in Guitar Pro and PDF.",
-  "orbit-stems": "Every track of Orbit, separated — seven buses as WAVs, ready to remix.",
-  "orbit-jam-track": "Orbit with the lead guitar taken out — the original mix, waiting for a solo."
+  "summaries": [
+    {
+      "slug": "lusg-tabs",
+      "summary": "The tabs for LUSG — the new single, written out to play."
+    },
+    {
+      "slug": "cyclothymia-freebies",
+      "summary": "Extras for Cyclothymia — jam tracks, a Neural DSP preset, the first demo."
+    },
+    {
+      "slug": "orbit-tabs-guitars-bass-drums",
+      "summary": "The tabs for Orbit, in Guitar Pro and PDF."
+    },
+    {
+      "slug": "orbit-stems",
+      "summary": "Every track of Orbit, separated — seven buses as WAVs, ready to remix."
+    },
+    {
+      "slug": "orbit-jam-track",
+      "summary": "Orbit with the lead guitar taken out — the original mix, waiting for a solo."
+    }
+  ]
 }

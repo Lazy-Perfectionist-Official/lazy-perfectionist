@@ -5,7 +5,7 @@
 // cannot be embedded at runtime. Instead this script reads the public shop
 // once per run — same pages a visitor sees — and writes:
 //
-//   src/lib/kofi-shop.json                 the listing data (tags included)
+//   src/lib/kofi-shop.json                 the raw listing (tags included; summaries are curated at render by src/lib/shop.ts)
 //   public/assets/img/kofi-shop/kofi-*.ext the product art, content-addressed
 //
 // Tags come from the shop's own categories where the artist assigned one,
@@ -96,10 +96,13 @@ const shopCategories = (page) =>
     return { categories, items };
   });
 
-// Ko-fi's listing copy is what the artist typed there, typos included. A
-// slug keyed override in src/lib/shop-copy.json replaces the scraped summary
-// for the few entries that need it; every other row keeps the listing's voice.
-const overrides = JSON.parse(await readFile(COPY_FILE, "utf8").catch(() => "{}"));
+// Ko-fi's listing copy is what the artist typed there, typos included. The
+// curated summaries in src/lib/shop-copy.json are applied when the page
+// renders (src/lib/shop.ts), not here — this script writes what Ko-fi says
+// and only checks that no curated summary outlives its product.
+const curated =
+  (JSON.parse(await readFile(COPY_FILE, "utf8").catch(() => '{"summaries":[]}')) ?? {})
+    .summaries ?? [];
 
 const productFrom = (page, url) =>
   page.evaluate((productUrl) => {
@@ -180,7 +183,7 @@ try {
     products.push({
       slug,
       name: record.name,
-      summary: overrides[slug] ?? summarize(record.description),
+      summary: summarize(record.description),
       tags: tagList([...(byAlias.get(alias) ?? []), ...derivedTags(record.name)]),
       price: priceLabel(record.offer, record.payWhatYouWant),
       payWhatYouWant: record.payWhatYouWant,
@@ -189,9 +192,11 @@ try {
     });
   }
 
-  // An override whose product was renamed or removed would otherwise sit in
-  // the file forever, silently doing nothing.
-  const stale = Object.keys(overrides).filter((slug) => !products.some((product) => product.slug === slug));
+  // A curated summary whose product was renamed or removed would otherwise
+  // sit in the file forever, silently doing nothing.
+  const stale = curated
+    .filter((entry) => !products.some((product) => product.slug === entry.slug))
+    .map((entry) => entry.slug);
   if (stale.length) {
     console.warn(`warning: shop-copy.json has no matching product for: ${stale.join(", ")}`);
   }
