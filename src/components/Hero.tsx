@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { ANNOUNCEMENT } from "@/lib/site";
+import { LINKS } from "@/lib/site";
 
 // The fold is the record's print, edge to edge. Two plates carry it: the 3:4
 // poster for portrait screens, and a 16:9 strike of the same photograph,
@@ -114,10 +114,10 @@ export default function Hero() {
       </h1>
 
       <a
-        href={ANNOUNCEMENT.href}
+        href={LINKS.spotifyArtist}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Listen to LUSG on Spotify"
+        aria-label="Listen on Spotify — Lazy Perfectionist"
         className="group absolute inset-0 block outline-none after:pointer-events-none after:absolute after:inset-1 after:border-2 after:border-ember after:opacity-0 after:content-[''] focus-visible:after:opacity-100"
         data-testid="hero-artwork"
       >
@@ -298,7 +298,7 @@ export default function Hero() {
         <div className="pointer-events-none absolute inset-x-0 bottom-6 md:bottom-8">
           <div className="mx-auto flex max-w-[90rem] px-6 md:px-10">
             <span className="inline-block bg-ember px-3 py-2 font-mono text-[11px] uppercase tracking-[0.16em] text-ember-ink md:text-xs">
-              Listen to LUSG{" "}
+              Listen on Spotify{" "}
               <span aria-hidden="true">↗</span>
             </span>
           </div>
