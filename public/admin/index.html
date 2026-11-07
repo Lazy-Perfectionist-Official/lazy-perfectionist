@@ -26,106 +26,12 @@
     </style>
   </head>
   <body>
-    <!-- The catalog's back office. Sveltia talks to GitHub directly: sign in
-         with the repo's account (username + a fine-grained personal access
-         token, Contents read/write on this one repo), edit, save — the commit
-         lands on main and Vercel republishes the site. The public pages
-         never load a byte of this. -->
-    <script>
-      window.SVELTIA_CMS_CONFIG = {
-        backend: {
-          name: "github",
-          repo: "Lazy-Perfectionist-Official/lazy-perfectionist",
-          branch: "main",
-        },
-        site_url: "https://lazy-perfectionist.vercel.app",
-        media_folder: "public/assets/img/cms",
-        publish_mode: "simple",
-        collections: [
-          {
-            name: "site",
-            label: "Site",
-            editor: { preview: false },
-            files: [
-              {
-                name: "content",
-                label: "Copy & singles",
-                file: "src/lib/content.json",
-                format: "json",
-                fields: [
-                  {
-                    name: "announcement",
-                    label: "Announcement bar",
-                    widget: "object",
-                    fields: [
-                      { name: "label", label: "Text", widget: "string" },
-                      {
-                        name: "href",
-                        label: "Link (the Spotify track URL)",
-                        widget: "string",
-                      },
-                    ],
-                  },
-                  {
-                    name: "linerNote",
-                    label: "Footer liner note",
-                    widget: "text",
-                  },
-                  {
-                    name: "releases",
-                    label: "Singles",
-                    widget: "list",
-                    label_singular: "single",
-                    summary: "{{fields.title}}",
-                    fields: [
-                      { name: "year", label: "Year", widget: "string" },
-                      { name: "title", label: "Title", widget: "string" },
-                      {
-                        name: "description",
-                        label: "Description",
-                        widget: "text",
-                      },
-                      {
-                        name: "href",
-                        label: "Spotify URL",
-                        widget: "string",
-                      },
-                    ],
-                  },
-                ],
-              },
-              {
-                name: "shop-copy",
-                label: "Shop summaries",
-                file: "src/lib/shop-copy.json",
-                format: "json",
-                fields: [
-                  {
-                    name: "summaries",
-                    label: "Summaries",
-                    widget: "list",
-                    label_singular: "summary",
-                    summary: "{{fields.slug}}",
-                    fields: [
-                      {
-                        name: "slug",
-                        label: "Product slug (must match the synced Ko-fi product)",
-                        widget: "string",
-                      },
-                      {
-                        name: "summary",
-                        label: "Summary",
-                        widget: "text",
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      };
-    </script>
+    <!-- The catalog's back office. Sveltia reads its config from the static
+         config.yml beside this page (/admin/config.yml) and talks to GitHub
+         directly: sign in with the repo's account (username + a fine-grained
+         personal access token, Contents read/write on this one repo), edit,
+         save — the commit lands on main and Vercel republishes the site.
+         The public pages never load a byte of this. -->
     <script src="https://cdn.jsdelivr.net/npm/@sveltia/cms@0.261.0/dist/sveltia-cms.js"></script>
     <noscript>
       <p>The admin needs JavaScript.</p>

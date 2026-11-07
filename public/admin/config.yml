@@ -1,0 +1,59 @@
+# The catalog's back office, in the shape every Decap-family CMS expects:
+# a static config.yml beside the page. Sveltia fetches /admin/config.yml on
+# boot (it does not read an inline config object at our pinned version).
+# Sign in with the repo's GitHub account — username plus a fine-grained
+# personal access token, Contents: Read and write on this repo only — edit,
+# save: the commit lands on main and Vercel republishes the site. The public
+# pages never load a byte of this.
+backend:
+  name: github
+  repo: "Lazy-Perfectionist-Official/lazy-perfectionist"
+  branch: main
+site_url: "https://lazy-perfectionist.vercel.app"
+media_folder: public/assets/img/cms
+publish_mode: simple
+collections:
+  - name: site
+    label: "Site"
+    editor:
+      preview: false
+    files:
+      - name: content
+        label: "Copy & singles"
+        file: src/lib/content.json
+        format: json
+        fields:
+          - name: announcement
+            label: "Announcement bar"
+            widget: object
+            fields:
+              - { name: "label", label: "Text", widget: string }
+              - { name: "href", label: "Link (the Spotify track URL)", widget: string }
+          - name: linerNote
+            label: "Footer liner note"
+            widget: text
+          - name: releases
+            label: "Singles"
+            widget: list
+            label_singular: "single"
+            summary: "{{fields.title}}"
+            fields:
+              - { name: "year", label: "Year", widget: string }
+              - { name: "title", label: "Title", widget: string }
+              - { name: "description", label: "Description", widget: text }
+              - { name: "href", label: "Spotify URL", widget: string }
+      - name: shop-copy
+        label: "Shop summaries"
+        file: src/lib/shop-copy.json
+        format: json
+        fields:
+          - name: summaries
+            label: "Summaries"
+            widget: list
+            label_singular: "summary"
+            summary: "{{fields.slug}}"
+            fields:
+              - name: "slug"
+                label: "Product slug (must match the synced Ko-fi product)"
+                widget: string
+              - { name: "summary", label: "Summary", widget: text }
