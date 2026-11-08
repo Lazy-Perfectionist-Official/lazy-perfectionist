@@ -114,8 +114,10 @@ test.describe('discography', () => {
   test('the masthead offers the discography from every screen', async ({ page }) => {
     await page.goto('/');
 
-    await expect(
-      page.getByTestId('primary-nav').getByRole('link', { name: 'Discography' }),
-    ).toHaveAttribute('href', '/discography');
+    // The phone keeps the nav behind its menu; open it if it is folded.
+    const link = page.getByTestId('primary-nav').getByRole('link', { name: 'Discography' });
+    if (!(await link.isVisible())) await page.getByTestId('menu-toggle').click();
+
+    await expect(link).toHaveAttribute('href', '/discography');
   });
 });

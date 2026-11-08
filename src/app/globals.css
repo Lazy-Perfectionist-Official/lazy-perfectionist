@@ -111,18 +111,83 @@
 }
 
 @layer components {
-  /* Chrome links: ink-soft caps, pressed dark on hover. */
+  /* Chrome links: ink-soft caps, pressed dark on hover. Printed from `md`
+     up; the phone sets the same five items as a menu instead. */
   .nav-link {
     @apply inline-block py-2.5 text-[11px] font-medium uppercase tracking-[0.12em] text-ink-soft transition-colors duration-200 hover:text-press md:text-xs md:tracking-[0.22em];
   }
 
-  /* Under 768 the five nav items must hold one line down to 320, where a
-     classic scrollbar leaves WebKit 13px less than the window: 11px by 393,
-     easing to 8.5px at 320. 2.8vw alone would miss 393 by half a pixel. */
-  @media (max-width: 767px) {
-    .nav-link {
-      font-size: clamp(8.5px, calc(-2.44px + 3.42vw), 11px);
-    }
+  /* The phone's menu: MENU prints in the masthead beside the wordmark and the
+     five items drop over the fold on the sheet's own paper. It is a native
+     <details>, so it opens with no script; Header.tsx's one line of script
+     closes it after a choice, because a same-document jump would otherwise
+     leave the panel hanging over the plate it just scrolled to. */
+  .nav-toggle {
+    @apply flex cursor-pointer list-none items-center gap-2 py-2 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-soft transition-colors duration-200 hover:text-press;
+  }
+
+  .nav-toggle::-webkit-details-marker {
+    display: none;
+  }
+
+  .nav-toggle::marker {
+    content: "";
+  }
+
+  .nav-menu[open] > .nav-toggle {
+    color: var(--color-press);
+  }
+
+  /* The mark: a hairline cross that gives up its upright when open. */
+  .nav-menu-icon {
+    position: relative;
+    display: block;
+    width: 10px;
+    height: 10px;
+  }
+
+  .nav-menu-icon::before,
+  .nav-menu-icon::after {
+    content: "";
+    position: absolute;
+    background-color: currentColor;
+  }
+
+  .nav-menu-icon::before {
+    top: calc(50% - 0.5px);
+    left: 0;
+    width: 100%;
+    height: 1px;
+  }
+
+  .nav-menu-icon::after {
+    top: 0;
+    left: calc(50% - 0.5px);
+    width: 1px;
+    height: 100%;
+    transform-origin: 50% 50%;
+    transition: transform 200ms ease;
+  }
+
+  .nav-menu[open] .nav-menu-icon::after {
+    transform: rotate(90deg);
+  }
+
+  /* The panel hangs from the masthead's hairline at the press's full measure. */
+  .nav-menu-list {
+    @apply absolute inset-x-0 top-full z-50 border-b border-line bg-paper px-4 pb-2 pt-1;
+  }
+
+  .nav-menu-list li {
+    @apply border-b border-line;
+  }
+
+  .nav-menu-list li:last-child {
+    border-bottom: 0;
+  }
+
+  .nav-menu-list a {
+    @apply block py-3.5 text-xs font-medium uppercase tracking-[0.22em] text-ink transition-colors duration-200 hover:text-rust;
   }
 
   /* The bypass link: out of the way until it is focused, then pinned over

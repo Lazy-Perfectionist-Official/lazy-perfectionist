@@ -12,21 +12,38 @@ const shedImages = (page: Page) => page.route('**/_next/image**', (route) => rou
  * the plate screens, and a fold crop that keeps the wordmark whole.
  */
 test.describe('responsive', () => {
-  test('the masthead keeps its nav on one line down to 320', async ({ page }) => {
+  test('the phone folds the nav into a one-line menu', async ({ page }) => {
     await shedImages(page);
     for (const width of [320, 360, 390, 430]) {
       await page.setViewportSize({ width, height: 800 });
       await page.goto('/');
 
-      const rows = await page
-        .getByTestId('primary-nav')
-        .locator('li')
-        .evaluateAll((items) =>
-          [...new Set(items.map((item) => Math.round(item.getBoundingClientRect().top)))],
-        );
+      await expect(page.getByTestId('menu-toggle'), `${width}px needs the menu`).toBeVisible();
+      await expect(page.getByTestId('nav-inline'), `${width}px sets the nav as a row`).toBeHidden();
 
-      expect(rows, `${width}px nav must not wrap`).toHaveLength(1);
+      const overflow = await page.evaluate(
+        () => document.documentElement.scrollWidth - window.innerWidth,
+      );
+      expect(overflow, `${width}px must not scroll sideways`).toBeLessThanOrEqual(0);
     }
+
+    // Native <details>: the panel opens with no script, prints all five
+    // items, and closes itself once one is chosen (Header's one line).
+    await page.setViewportSize({ width: 393, height: 852 });
+    await page.goto('/');
+    await page.getByTestId('menu-toggle').click();
+
+    const items = page.getByTestId('menu-list').getByRole('link');
+    await expect(items).toHaveCount(5);
+    await expect(items.first(), 'the first nav item must be printed').toBeVisible();
+
+    const openOverflow = await page.evaluate(
+      () => document.documentElement.scrollWidth - window.innerWidth,
+    );
+    expect(openOverflow, 'the open menu must not scroll sideways').toBeLessThanOrEqual(0);
+
+    await items.filter({ hasText: 'Shop' }).click();
+    await expect(page.getByTestId('menu-list'), 'choosing closes the menu').toBeHidden();
   });
 
   test('the plate screens take a reading measure, not the cover’s full grid', async ({ page }) => {
@@ -104,8 +121,10 @@ test.describe('responsive', () => {
       wordmark.line,
     );
 
+    await expect(page.getByTestId('nav-inline'), 'a landscape phone keeps the row').toBeVisible();
+
     const rows = await page
-      .getByTestId('primary-nav')
+      .getByTestId('nav-inline')
       .locator('li')
       .evaluateAll((items) =>
         [...new Set(items.map((item) => Math.round(item.getBoundingClientRect().top)))],
@@ -153,16 +172,46 @@ test.describe('responsive', () => {
         return el ? parseFloat(getComputedStyle(el).fontSize) : null;
       };
       return {
-        nav: size('.nav-link'),
+        nav: size('.nav-toggle'),
         meta: size('[data-testid="release-lusg"] .font-mono'),
         field: size('#q'),
       };
     });
-    // 10.9 rather than 11: the clamp resolves to 11 at 393 and engines round
-    // the sub-pixel arithmetic slightly differently.
-    expect(sizes.nav, 'nav caps must not shrink below 11px on a phone').toBeGreaterThanOrEqual(10.9);
+    // 10.9 rather than 11: engines round the computed size slightly
+    // differently and the floor, not the fraction, is what this guards.
+    expect(sizes.nav, 'the menu must not shrink below 11px on a phone').toBeGreaterThanOrEqual(10.9);
     expect(sizes.meta, 'row meta must not shrink below 11px on a phone').toBeGreaterThanOrEqual(11);
     expect(sizes.field, 'the search field must stay at 16px').toBeGreaterThanOrEqual(16);
+  });
+
+  test('the phone cuts a writing excerpt to one preview line', async ({ page }) => {
+    await shedImages(page);
+    const rows = [320, 393];
+
+    for (const width of rows) {
+      await page.setViewportSize({ width, height: 852 });
+      await page.goto('/');
+
+      const metrics = await page.getByTestId('writing-excerpt').first().evaluate((el) => ({
+        height: el.getBoundingClientRect().height,
+        line: parseFloat(getComputedStyle(el).lineHeight),
+      }));
+
+      // The row is the index entry; the whole excerpt is on Medium.
+      expect(
+        metrics.height,
+        `${width}px must print the excerpt as one preview line`,
+      ).toBeLessThanOrEqual(metrics.line * 1.2);
+    }
+
+    // The clamp is the phone's alone: the wide sheet still prints the excerpt.
+    await page.setViewportSize({ width: 1920, height: 1080 });
+    await page.goto('/');
+    const wide = await page.getByTestId('writing-excerpt').first().evaluate((el) => ({
+      height: el.getBoundingClientRect().height,
+      line: parseFloat(getComputedStyle(el).lineHeight),
+    }));
+    expect(wide.height, 'the desktop excerpt must stay whole').toBeGreaterThan(wide.line * 2);
   });
 
   test('the plate screens fit a 320px window without scrolling sideways', async ({ page }) => {

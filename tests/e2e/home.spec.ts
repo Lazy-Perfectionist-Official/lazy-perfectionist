@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
 import shop from '../../src/lib/kofi-shop.json';
 import posts from '../../src/lib/medium-posts.json';
@@ -25,6 +25,15 @@ const RELEASE_ROWS = [
 
 // The page prints the curated summary — src/lib/shop.ts applies shop-copy
 // at render — so the expected row text is the override when one exists.
+
+// The phone folds the nav into a menu, so a nav click opens the disclosure
+// first; from `md` the link is already printed on the sheet.
+const clickNav = async (page: Page, name: string) => {
+  const link = page.getByTestId('primary-nav').getByRole('link', { name });
+  if (!(await link.isVisible())) await page.getByTestId('menu-toggle').click();
+  await link.click();
+};
+
 const summaryOf = (product: (typeof shop.products)[number]) =>
   shopCopy.summaries.find((entry) => entry.slug === product.slug)?.summary ??
   product.summary;
@@ -108,7 +117,7 @@ test.describe('home', () => {
   test('nav anchor scrolls to music: clicking Music brings the releases section into view', async ({ page }) => {
     await page.goto('/');
 
-    await page.getByTestId('primary-nav').getByRole('link', { name: 'Music' }).click();
+    await clickNav(page, 'Music');
 
     // Scrolling is smooth, so the section arrives over time — toBeInViewport
     // polls until it settles instead of assuming an instant jump.
@@ -187,7 +196,7 @@ test.describe('home', () => {
   test('nav anchor scrolls to shop: clicking Shop brings the store into view', async ({ page }) => {
     await page.goto('/');
 
-    await page.getByTestId('primary-nav').getByRole('link', { name: 'Shop' }).click();
+    await clickNav(page, 'Shop');
 
     await expect(page.getByTestId('shop-section')).toBeInViewport();
   });
@@ -212,7 +221,7 @@ test.describe('home', () => {
   test('nav anchor scrolls to writing: clicking Writing brings the feed into view', async ({ page }) => {
     await page.goto('/');
 
-    await page.getByTestId('primary-nav').getByRole('link', { name: 'Writing' }).click();
+    await clickNav(page, 'Writing');
 
     await expect(page.getByTestId('writing-section')).toBeInViewport();
   });
