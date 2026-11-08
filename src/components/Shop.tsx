@@ -45,7 +45,10 @@ export function ShopRow({ product }: { product: Product }) {
         </span>
       </span>
 
-      <span className="col-span-2 mt-3 flex items-baseline justify-between md:col-span-1 md:col-start-3 md:mt-0 md:flex-col md:items-end">
+      {/* The phone keeps the price and the action in the text column, under
+          the title and the line — the art holds the card's left edge, and
+          every word on the card prints on the one edge to the right of it. */}
+      <span className="col-start-2 mt-3 flex items-baseline justify-between md:col-span-1 md:col-start-3 md:mt-0 md:flex-col md:items-end">
         <span className="font-mono text-[10px] tabular-nums text-ink-soft md:text-sm">
           {product.price}
         </span>

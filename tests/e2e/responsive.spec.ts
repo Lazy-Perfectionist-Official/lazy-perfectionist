@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Locator, type Page } from '@playwright/test';
 
 // These tests measure geometry, not pixels: the plate's art would only put
 // the dev image optimizer — slow at phone device ratios — between the test
@@ -182,6 +182,79 @@ test.describe('responsive', () => {
     expect(sizes.nav, 'the menu must not shrink below 11px on a phone').toBeGreaterThanOrEqual(10.9);
     expect(sizes.meta, 'row meta must stay legible at 10px on a phone').toBeGreaterThanOrEqual(10);
     expect(sizes.field, 'the search field must stay at 16px').toBeGreaterThanOrEqual(16);
+  });
+
+  test('the phone prints the cards and the menu on the sheet’s one text axis', async ({
+    page,
+  }) => {
+    await shedImages(page);
+    await page.setViewportSize({ width: 393, height: 852 });
+    await page.goto('/');
+    await page.evaluate(() => document.fonts.ready);
+
+    // The text's own edge, not the box's: the menu items carry the card's
+    // inset as padding, so their rules can still run to the sheet's frame.
+    const edge = (locator: Locator) =>
+      locator.evaluate((el) => {
+        const range = document.createRange();
+        range.selectNodeContents(el);
+        return Math.round(range.getBoundingClientRect().left);
+      });
+
+    const row = page.getByTestId('release-lusg');
+    const rowBox = (await row.boundingBox())!;
+    const axis = Math.round(rowBox.x + 16); // the card's own inset (1rem)
+
+    const index = await edge(row.locator(':scope > span').nth(0));
+    const title = await edge(row.locator(':scope > span').nth(1).locator(':scope > span').nth(0));
+    const line = await edge(row.locator(':scope > span').nth(1).locator(':scope > span').nth(1));
+    const date = await edge(row.locator(':scope > span').nth(2).locator(':scope > span').nth(0));
+
+    // One edge for the whole card: the number prints above the title rather
+    // than in a margin column, so the title is not indented away from its
+    // own small print.
+    for (const [what, x] of [
+      ['index', index],
+      ['title', title],
+      ['line', line],
+      ['date', date],
+    ] as const) {
+      expect(x, `the row’s ${what} must sit on the card’s text axis`).toBe(axis);
+    }
+
+    // The shop card keeps its art in the margin, but every word on it —
+    // title, line and price — prints on the one edge to the right of it.
+    const shop = page.locator('a[data-testid^="shop-"]').first();
+    const artBox = (await shop.locator(':scope > span').nth(0).boundingBox())!;
+    const shopTitle = await edge(shop.locator(':scope > span').nth(1).locator(':scope > span').nth(0));
+    const shopLine = await edge(shop.locator(':scope > span').nth(1).locator(':scope > span').nth(1));
+    const price = await edge(shop.locator(':scope > span').nth(2).locator(':scope > span').nth(0));
+    expect(shopTitle, 'the shop price must not be stranded under the art').toBe(
+      Math.round(artBox.x + artBox.width + 12),
+    );
+    expect(shopLine).toBe(shopTitle);
+    expect(price).toBe(shopTitle);
+
+    // The masthead and the menu are on that same edge — the wordmark, the
+    // plate headings and the menu's five items all start on one line.
+    const wordmark = await edge(page.getByTestId('wordmark'));
+    const plate = await edge(page.getByRole('heading', { name: 'Singles' }));
+    expect(wordmark, 'the masthead must sit on the sheet’s text axis').toBe(plate);
+    expect(index, 'the cards must sit on the masthead’s axis').toBe(wordmark);
+
+    await page.getByTestId('menu-toggle').click();
+    const menu = await edge(page.getByTestId('menu-list').getByRole('link').first());
+    expect(menu, 'the menu must set on the same axis as the page it opens').toBe(wordmark);
+
+    // The discography's year separators held an empty margin column on the
+    // phone, stranding the year 36px in from the rows under it.
+    await page.goto('/discography');
+    const group = page.locator('[data-testid^="year-group-"]').first();
+    const year = await edge(group.locator('h2'));
+    const separator = (await group.locator(':scope > div').boundingBox())!;
+    expect(year, 'the year must print on the rows’ text axis').toBe(
+      Math.round(separator.x + 16),
+    );
   });
 
   test('the phone menu lands on the sheet rather than blinking into place', async ({ page }) => {

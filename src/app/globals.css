@@ -198,9 +198,12 @@
     transform: rotate(90deg);
   }
 
-  /* The panel hangs from the masthead's hairline at the press's full measure. */
+  /* The panel hangs from the masthead's hairline at the press's full measure.
+     Its rules run on the sheet's frame (the same 20px the card rows' rules
+     sit on) while the items themselves are inset like a card's type, so the
+     menu lands on the page's grid rather than on a margin of its own. */
   .nav-menu-list {
-    @apply absolute inset-x-0 top-full z-50 border-b border-line bg-paper px-4 pb-2 pt-1;
+    @apply absolute inset-x-0 top-full z-50 border-b border-line bg-paper px-5 pb-2 pt-1;
   }
 
   .nav-menu-list li {
@@ -212,7 +215,7 @@
   }
 
   .nav-menu-list a {
-    @apply block py-3.5 text-[11px] font-medium uppercase tracking-[0.22em] text-ink transition-colors duration-200 hover:text-rust;
+    @apply block px-4 py-3.5 text-[11px] font-medium uppercase tracking-[0.22em] text-ink transition-colors duration-200 hover:text-rust;
   }
 
   /* The panel arrives the way the fold develops: it drops out from under the

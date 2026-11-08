@@ -15,7 +15,7 @@ export default function Footer({ narrow = false }: { narrow?: boolean }) {
       />
 
       <div
-        className={`relative mx-auto px-5 py-8 md:px-10 md:py-11 ${
+        className={`relative mx-auto px-9 py-8 md:px-10 md:py-11 ${
           narrow ? "max-w-[72rem]" : "max-w-[90rem]"
         }`}
       >
