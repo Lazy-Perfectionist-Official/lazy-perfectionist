@@ -268,13 +268,21 @@ test.describe('home', () => {
 
   test('every plate is a ruled card: rows and their labels sit inside the page measure', async ({ page }, testInfo) => {
     const viewportWidth = testInfo.project.use.viewport?.width ?? 1280;
-    // The card's inner margin: 16px on phones, 24px from md up. The row is
-    // the card (its hover band spans the full measure); the type, art and
-    // the plate label all sit that far inside it, so a row never hugs its
-    // own edge. Padded parents rather than padded text, hence geometry.
-    const inset = viewportWidth >= 768 ? 24 : 16;
 
     await page.goto('/');
+
+    // The card's inner margin: one rem on phones, one and a half from md up.
+    // It is measured in rem, so it follows the sheet's own scale — which on
+    // an ordinary desktop is 80% of the browser's (16px → 19.2px here). The
+    // row is the card (its hover band spans the full measure); the type, art
+    // and the plate label all sit that far inside it.
+    const inset = await page.evaluate(
+      (wide) => {
+        const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+        return (wide ? 1.5 : 1) * rem;
+      },
+      viewportWidth >= 768,
+    );
 
     for (const section of ['releases-section', 'shop-section', 'writing-section', 'connect-section']) {
       const plate = page.getByTestId(section);

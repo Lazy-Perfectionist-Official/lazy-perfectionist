@@ -27,7 +27,32 @@
   --font-mono: var(--font-courier), ui-monospace, "Courier New", monospace;
 }
 
+/* Breakpoints are pinned in px rather than Tailwind's default rems: the sheet
+   sets its own scale below, and a rem breakpoint would move with the scale it
+   is measuring. */
+@theme {
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+}
+
 @layer base {
+  /* Four fifths is the size this print was actually being read at: on every
+     ordinary display the sheet was set 20% smaller than its own scale by a
+     reader at 80% browser zoom, and that reading — type, gutters, measures —
+     is the one that breathes. So below the ultrawide class of screen the whole
+     sheet is set at 80%, which is what the browser zoom was doing with none of
+     the browser in it. On an ultrawide and on 4K (3440px and up — 2560 stays
+     on the ordinary side, and the line sits between the common widths so no
+     engine's scrollbar can tip it) the sheet keeps its own size: a 1440px
+     column on a 3440px screen would otherwise read as a strip. Phones and
+     tablets are already their own cut and are untouched. */
+  @media (min-width: 1024px) and (max-width: 2799.98px) {
+    html {
+      font-size: 80%;
+    }
+  }
+
   html {
     scroll-behavior: smooth;
     color-scheme: light;
