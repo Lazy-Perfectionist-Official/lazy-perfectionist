@@ -149,7 +149,7 @@ export default async function DiscographyPage({
             >
               {group.year}
             </h2>
-            <p className="col-span-2 col-start-2 mt-1 font-mono text-[10px] uppercase tracking-[0.14em] text-ink-soft md:col-span-1 md:col-start-3 md:mt-0 md:self-center md:text-right md:text-xs md:tracking-[0.16em]">
+            <p className="col-span-2 col-start-2 mt-1 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-soft md:col-span-1 md:col-start-3 md:mt-0 md:self-center md:text-right md:text-xs md:tracking-[0.16em]">
               {group.entries.length}{" "}
               {group.entries.length === 1 ? "release" : "releases"}
             </p>

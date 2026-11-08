@@ -35,7 +35,7 @@ export function PostRow({ post, index }: { post: Post; index: number }) {
     >
       <span
         aria-hidden="true"
-        className="pt-1.5 font-mono text-[10px] tabular-nums text-ink-soft/60 md:pt-2 md:text-sm"
+        className="pt-1.5 font-mono text-[11px] tabular-nums text-ink-soft/60 md:pt-2 md:text-sm"
       >
         {String(index + 1).padStart(2, "0")}
       </span>
@@ -44,7 +44,7 @@ export function PostRow({ post, index }: { post: Post; index: number }) {
         <span className="block max-w-xl font-display text-[1.5rem] leading-[1.12] tracking-[-0.01em] text-ink transition-colors duration-200 group-hover:text-rust md:text-4xl md:leading-[1.08]">
           {post.title}
         </span>
-        <span className="mt-1.5 block max-w-md text-[0.9375rem] leading-relaxed text-ink-soft md:mt-2 md:text-base">
+        <span className="mt-1.5 block max-w-md text-base leading-relaxed text-ink-soft md:mt-2 md:text-base">
           {post.excerpt}
         </span>
       </span>

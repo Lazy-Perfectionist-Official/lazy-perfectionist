@@ -142,6 +142,29 @@ test.describe('responsive', () => {
     }
   });
 
+  test('the phone sets its fine print at reading size, not microprint', async ({ page }) => {
+    await shedImages(page);
+    await page.setViewportSize({ width: 393, height: 852 });
+
+    await page.goto('/music');
+    const sizes = await page.evaluate(() => {
+      const size = (selector: string) => {
+        const el = document.querySelector(selector);
+        return el ? parseFloat(getComputedStyle(el).fontSize) : null;
+      };
+      return {
+        nav: size('.nav-link'),
+        meta: size('[data-testid="release-lusg"] .font-mono'),
+        field: size('#q'),
+      };
+    });
+    // 10.9 rather than 11: the clamp resolves to 11 at 393 and engines round
+    // the sub-pixel arithmetic slightly differently.
+    expect(sizes.nav, 'nav caps must not shrink below 11px on a phone').toBeGreaterThanOrEqual(10.9);
+    expect(sizes.meta, 'row meta must not shrink below 11px on a phone').toBeGreaterThanOrEqual(11);
+    expect(sizes.field, 'the search field must stay at 16px').toBeGreaterThanOrEqual(16);
+  });
+
   test('the plate screens fit a 320px window without scrolling sideways', async ({ page }) => {
     await shedImages(page);
     await page.setViewportSize({ width: 320, height: 640 });

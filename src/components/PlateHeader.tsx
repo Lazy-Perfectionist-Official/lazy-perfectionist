@@ -30,12 +30,12 @@ export default function PlateHeader({
       <div className="col-span-2 md:col-span-1 md:col-start-2 md:row-start-1">
         <Heading
           id={id}
-          className="font-display text-[2.5rem] leading-[0.95] tracking-[-0.01em] text-press md:text-7xl"
+          className="font-display text-[2.75rem] leading-[0.95] tracking-[-0.01em] text-press md:text-7xl"
         >
           {title}
         </Heading>
         {lede ? (
-          <p className="mt-3 max-w-xl font-display text-xl italic leading-snug text-ink-soft md:mt-4 md:text-3xl">
+          <p className="mt-3 max-w-xl font-display text-[1.375rem] italic leading-snug text-ink-soft md:mt-4 md:text-3xl">
             {lede}
           </p>
         ) : null}

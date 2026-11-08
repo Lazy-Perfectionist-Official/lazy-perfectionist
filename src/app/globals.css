@@ -113,7 +113,16 @@
 @layer components {
   /* Chrome links: ink-soft caps, pressed dark on hover. */
   .nav-link {
-    @apply inline-block py-2 text-[clamp(9px,2.65vw,10px)] font-medium uppercase tracking-[0.1em] text-ink-soft transition-colors duration-200 hover:text-press md:py-2.5 md:text-xs md:tracking-[0.22em];
+    @apply inline-block py-2.5 text-[11px] font-medium uppercase tracking-[0.12em] text-ink-soft transition-colors duration-200 hover:text-press md:text-xs md:tracking-[0.22em];
+  }
+
+  /* Under 768 the five nav items must hold one line down to 320, where a
+     classic scrollbar leaves WebKit 13px less than the window: 11px by 393,
+     easing to 8.5px at 320. 2.8vw alone would miss 393 by half a pixel. */
+  @media (max-width: 767px) {
+    .nav-link {
+      font-size: clamp(8.5px, calc(-2.44px + 3.42vw), 11px);
+    }
   }
 
   /* The bypass link: out of the way until it is focused, then pinned over
