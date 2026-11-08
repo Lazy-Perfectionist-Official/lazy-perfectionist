@@ -184,77 +184,174 @@ test.describe('responsive', () => {
     expect(sizes.field, 'the search field must stay at 16px').toBeGreaterThanOrEqual(16);
   });
 
-  test('the phone prints the cards and the menu on the sheet’s one text axis', async ({
-    page,
-  }) => {
+  test('the phone prints every card on the desktop row’s one line', async ({ page }) => {
     await shedImages(page);
     await page.setViewportSize({ width: 393, height: 852 });
     await page.goto('/');
     await page.evaluate(() => document.fonts.ready);
 
-    // The text's own edge, not the box's: the menu items carry the card's
-    // inset as padding, so their rules can still run to the sheet's frame.
-    const edge = (locator: Locator) =>
+    // The ink, not the box: small type is centred on the larger type it
+    // shares a line with, so only the glyphs (font ascent and descent) tell
+    // the truth about where a line sits.
+    const ink = (locator: Locator) =>
       locator.evaluate((el) => {
+        const text =
+          el.firstChild?.nodeType === Node.TEXT_NODE && el.firstChild.textContent?.trim()
+            ? el.firstChild
+            : el;
         const range = document.createRange();
-        range.selectNodeContents(el);
-        return Math.round(range.getBoundingClientRect().left);
+        range.selectNodeContents(text);
+        const box = range.getBoundingClientRect();
+        const style = getComputedStyle(el);
+        const ctx = document.createElement('canvas').getContext('2d')!;
+        ctx.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+        const metrics = ctx.measureText((text.textContent ?? '').trim());
+        // A range's rect is the font box; the baseline is its top plus the
+        // font ascent, and the ink runs from there by the glyph metrics.
+        const baseline = box.top + metrics.fontBoundingBoxAscent;
+        const top = baseline - metrics.actualBoundingBoxAscent;
+        const bottom = baseline + metrics.actualBoundingBoxDescent;
+        return {
+          left: box.left,
+          right: box.right,
+          top,
+          bottom,
+          baseline,
+          middle: (top + bottom) / 2,
+        };
       });
+    const box = async (locator: Locator) => (await locator.boundingBox())!;
 
+    // Plate 01 keeps the desktop's three columns at phone width: the number
+    // in the margin, the title in the content column, the year on the title's
+    // own line at the right, and the Listen closing the row at its foot.
     const row = page.getByTestId('release-lusg');
-    const rowBox = (await row.boundingBox())!;
-    const axis = Math.round(rowBox.x + 16); // the card's own inset (1rem)
+    const rowBox = await box(row);
+    const parts = row.locator(':scope > span');
+    const titleBlock = parts.nth(1);
+    const line = titleBlock.locator(':scope > span').nth(1);
+    const [indexBox, indexInk, titleBox, titleInk, lineBox, yearBox, listenBox] =
+      await Promise.all([
+        box(parts.nth(0)),
+        ink(parts.nth(0)),
+        box(titleBlock),
+        ink(titleBlock.locator(':scope > span').nth(0)),
+        box(line),
+        box(parts.nth(2)),
+        box(parts.nth(3)),
+      ]);
 
-    const index = await edge(row.locator(':scope > span').nth(0));
-    const title = await edge(row.locator(':scope > span').nth(1).locator(':scope > span').nth(0));
-    const line = await edge(row.locator(':scope > span').nth(1).locator(':scope > span').nth(1));
-    const date = await edge(row.locator(':scope > span').nth(2).locator(':scope > span').nth(0));
+    expect(indexBox.y, 'the number must start on the title’s line').toBeCloseTo(titleBox.y, 0);
+    expect(
+      Math.abs(indexInk.middle - titleInk.middle),
+      'the number must be centred on the title’s caps, not sunk to its baseline',
+    ).toBeLessThan(2);
 
-    // One edge for the whole card: the number prints above the title rather
-    // than in a margin column, so the title is not indented away from its
-    // own small print.
-    for (const [what, x] of [
-      ['index', index],
-      ['title', title],
-      ['line', line],
-      ['date', date],
-    ] as const) {
-      expect(x, `the row’s ${what} must sit on the card’s text axis`).toBe(axis);
-    }
+    expect(Math.round(indexBox.x), 'the number holds the margin column').toBe(
+      Math.round(rowBox.x + 16),
+    );
+    expect(Math.round(titleBox.x), 'the title takes the content column').toBe(
+      Math.round(indexBox.x + indexBox.width + 12),
+    );
+    expect(
+      Math.round((await box(page.getByRole('heading', { name: 'Singles' }))).x),
+      'the plate heading must hang on the rows’ title column',
+    ).toBe(Math.round(titleBox.x));
 
-    // The shop card keeps its art in the margin, but every word on it —
-    // title, line and price — prints on the one edge to the right of it.
+    expect(yearBox.y, 'the year must start on the title’s line').toBeCloseTo(titleBox.y, 0);
+    expect(
+      listenBox.y,
+      'the Listen must close the row, not sit beside the description',
+    ).toBeGreaterThanOrEqual(lineBox.y + lineBox.height);
+    expect(
+      Math.round(listenBox.x + listenBox.width),
+      'the Listen must share the year’s right edge',
+    ).toBe(Math.round(yearBox.x + yearBox.width));
+
+    // Plate 02 sets the same relations around its art: the price starts on
+    // the title's line, the Get closes the row at the same right edge.
     const shop = page.locator('a[data-testid^="shop-"]').first();
-    const artBox = (await shop.locator(':scope > span').nth(0).boundingBox())!;
-    const shopTitle = await edge(shop.locator(':scope > span').nth(1).locator(':scope > span').nth(0));
-    const shopLine = await edge(shop.locator(':scope > span').nth(1).locator(':scope > span').nth(1));
-    const price = await edge(shop.locator(':scope > span').nth(2).locator(':scope > span').nth(0));
-    expect(shopTitle, 'the shop price must not be stranded under the art').toBe(
+    const shopParts = shop.locator(':scope > span');
+    const shopTitle = shopParts.nth(1).locator(':scope > span').nth(0);
+    const shopLine = shopParts.nth(1).locator(':scope > span').nth(1);
+    const [artBox, shopTitleBox, shopLineBox, priceBox, getBox] = await Promise.all([
+      box(shopParts.nth(0)),
+      box(shopTitle),
+      box(shopLine),
+      box(shopParts.nth(2)),
+      box(shopParts.nth(3)),
+    ]);
+    expect(Math.round(shopTitleBox.x), 'the shop title must clear the art').toBe(
       Math.round(artBox.x + artBox.width + 12),
     );
-    expect(shopLine).toBe(shopTitle);
-    expect(price).toBe(shopTitle);
+    expect(priceBox.y, 'the price must start on the title’s line').toBeCloseTo(shopTitleBox.y, 0);
+    expect(getBox.y, 'the Get must close the row').toBeGreaterThanOrEqual(
+      shopLineBox.y + shopLineBox.height,
+    );
+    expect(Math.round(getBox.x + getBox.width), 'the Get must share the price’s edge').toBe(
+      Math.round(priceBox.x + priceBox.width),
+    );
 
-    // The masthead and the menu are on that same edge — the wordmark, the
-    // plate headings and the menu's five items all start on one line.
-    const wordmark = await edge(page.getByTestId('wordmark'));
-    const plate = await edge(page.getByRole('heading', { name: 'Singles' }));
-    expect(wordmark, 'the masthead must sit on the sheet’s text axis').toBe(plate);
-    expect(index, 'the cards must sit on the masthead’s axis').toBe(wordmark);
+    // The writing date is the wide one: it holds its place on the title's
+    // line by setting the year under the day in a narrow column, so the
+    // title keeps its measure instead of paying for the whole date.
+    const post = page.locator('a[data-testid^="post-"]').first();
+    const postParts = post.locator(':scope > span');
+    const [postBox, postTitleBox, dateBox, dateInk] = await Promise.all([
+      box(post),
+      box(postParts.nth(1).locator(':scope > span').nth(0)),
+      box(postParts.nth(2)),
+      ink(postParts.nth(2)),
+    ]);
+    expect(dateBox.y, 'the date must start on the title’s line').toBeCloseTo(postTitleBox.y, 0);
+    expect(Math.round(dateInk.right), 'the date must hang on the sheet’s right edge').toBe(
+      Math.round(postBox.x + postBox.width - 16),
+    );
+    expect(
+      postTitleBox.width,
+      'the date must not take the title’s measure',
+    ).toBeGreaterThan(postBox.width * 0.5);
+
+    // The masthead's label is set on the wordmark's baseline, and the menu
+    // keeps the sheet's margin — chrome, but printed the same way.
+    const [wordmarkInk, menuInk] = await Promise.all([
+      ink(page.getByTestId('wordmark')),
+      ink(page.getByTestId('menu-toggle')),
+    ]);
+    expect(menuInk.baseline, 'the menu label must sit on the wordmark’s baseline').toBeCloseTo(
+      wordmarkInk.baseline,
+      0,
+    );
+    expect(Math.round(wordmarkInk.left), 'the masthead holds the sheet’s margin').toBe(
+      Math.round(rowBox.x + 16),
+    );
 
     await page.getByTestId('menu-toggle').click();
-    const menu = await edge(page.getByTestId('menu-list').getByRole('link').first());
-    expect(menu, 'the menu must set on the same axis as the page it opens').toBe(wordmark);
+    const menuInkLeft = await ink(page.getByTestId('menu-list').getByRole('link').first());
+    expect(Math.round(menuInkLeft.left), 'the menu sets on the masthead’s edge').toBe(
+      Math.round(wordmarkInk.left),
+    );
 
-    // The discography's year separators held an empty margin column on the
-    // phone, stranding the year 36px in from the rows under it.
+    // The discography's year separators hang the year on the rows' title
+    // column and centre the count against it at the sheet's right edge.
     await page.goto('/discography');
     const group = page.locator('[data-testid^="year-group-"]').first();
-    const year = await edge(group.locator('h2'));
-    const separator = (await group.locator(':scope > div').boundingBox())!;
-    expect(year, 'the year must print on the rows’ text axis').toBe(
-      Math.round(separator.x + 16),
+    const separator = group.locator(':scope > div').first();
+    const [yearHeading, count, separatorBox] = await Promise.all([
+      box(group.locator('h2')),
+      box(separator.locator('p')),
+      box(separator),
+    ]);
+    expect(Math.round(yearHeading.x), 'the year must hang on the rows’ title column').toBe(
+      Math.round(separatorBox.x + 16 + 24 + 12),
     );
+    expect(Math.round(count.x + count.width), 'the count holds the far margin').toBe(
+      Math.round(separatorBox.x + separatorBox.width - 16),
+    );
+    expect(
+      Math.abs(count.y + count.height / 2 - (yearHeading.y + yearHeading.height / 2)),
+      'the count must centre on the year',
+    ).toBeLessThan(3);
   });
 
   test('the phone menu lands on the sheet rather than blinking into place', async ({ page }) => {

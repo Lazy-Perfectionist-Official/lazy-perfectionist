@@ -2,11 +2,11 @@ import type { ReactNode } from "react";
 
 // A plate's title block, shared by the cover's plates and the plate
 // screens: the plate number in the margin, the title on the print's grid,
-// the count or date in the far margin. On phones the two margins fold into
-// the line above the title — a plate number stranded above the heading and
-// a count stranded under the lede were three separate thoughts where the
-// print has one. The count is a single element placed in both layouts, so
-// it is never read twice.
+// the count or date in the far margin. The phone keeps the same columns as
+// the rows under it, so the heading hangs on the rows' title column with
+// the plate label in the margin above it — a plate number stranded on the
+// title's own edge was a thought the print never has. The count is a
+// single element placed in both layouts, so it is never read twice.
 export default function PlateHeader({
   plate,
   title,
@@ -24,10 +24,13 @@ export default function PlateHeader({
   id?: string;
 }) {
   return (
-    <div className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-3 gap-y-3 border-b border-line px-4 pb-7 pt-11 md:grid-cols-[9rem_minmax(0,1fr)_9rem] md:items-start md:gap-x-10 md:px-6 md:pb-10 md:pt-20">
-      <p className="eyebrow md:pt-3">{plate}</p>
+    <div className="grid grid-cols-[1.5rem_minmax(0,1fr)_auto] gap-x-3 gap-y-3 border-b border-line px-4 pb-7 pt-11 md:grid-cols-[9rem_minmax(0,1fr)_9rem] md:items-start md:gap-x-10 md:px-6 md:pb-10 md:pt-20">
+      <p className="eyebrow col-start-1 row-start-1 whitespace-nowrap md:pt-3">{plate}</p>
 
-      <div className="col-span-2 md:col-span-1 md:col-start-2 md:row-start-1">
+      {/* The title hangs on the rows' title column; the lede may run into
+          the meta column on a phone — prose, not a column element — where
+          the desktop's max-w-xl leaves it narrow anyway. */}
+      <div className="col-start-2 col-end-4 row-start-2 md:col-end-3 md:row-start-1">
         <Heading
           id={id}
           className="font-display text-[2.25rem] leading-[0.95] tracking-[-0.01em] text-press md:text-7xl"
@@ -42,7 +45,7 @@ export default function PlateHeader({
       </div>
 
       {meta ? (
-        <p className="eyebrow col-start-2 row-start-1 whitespace-nowrap text-right md:col-start-3 md:row-start-1 md:pt-3">
+        <p className="eyebrow col-start-3 row-start-1 self-start justify-self-end whitespace-nowrap text-right md:pt-3">
           {meta}
         </p>
       ) : null}
