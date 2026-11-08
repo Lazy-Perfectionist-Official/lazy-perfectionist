@@ -24,18 +24,18 @@ export default function PlateHeader({
   id?: string;
 }) {
   return (
-    <div className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-3 gap-y-3 border-b border-line px-4 pb-6 pt-9 md:grid-cols-[9rem_minmax(0,1fr)_9rem] md:items-start md:gap-x-10 md:px-6 md:pb-10 md:pt-20">
+    <div className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-3 gap-y-3 border-b border-line px-4 pb-7 pt-11 md:grid-cols-[9rem_minmax(0,1fr)_9rem] md:items-start md:gap-x-10 md:px-6 md:pb-10 md:pt-20">
       <p className="eyebrow md:pt-3">{plate}</p>
 
       <div className="col-span-2 md:col-span-1 md:col-start-2 md:row-start-1">
         <Heading
           id={id}
-          className="font-display text-[2.75rem] leading-[0.95] tracking-[-0.01em] text-press md:text-7xl"
+          className="font-display text-[2.25rem] leading-[0.95] tracking-[-0.01em] text-press md:text-7xl"
         >
           {title}
         </Heading>
         {lede ? (
-          <p className="mt-3 max-w-xl font-display text-[1.375rem] italic leading-snug text-ink-soft md:mt-4 md:text-3xl">
+          <p className="mt-3 max-w-xl font-display text-[1.1875rem] italic leading-snug text-ink-soft md:mt-4 md:text-3xl">
             {lede}
           </p>
         ) : null}

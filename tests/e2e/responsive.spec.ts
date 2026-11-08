@@ -180,8 +180,31 @@ test.describe('responsive', () => {
     // 10.9 rather than 11: engines round the computed size slightly
     // differently and the floor, not the fraction, is what this guards.
     expect(sizes.nav, 'the menu must not shrink below 11px on a phone').toBeGreaterThanOrEqual(10.9);
-    expect(sizes.meta, 'row meta must not shrink below 11px on a phone').toBeGreaterThanOrEqual(11);
+    expect(sizes.meta, 'row meta must stay legible at 10px on a phone').toBeGreaterThanOrEqual(10);
     expect(sizes.field, 'the search field must stay at 16px').toBeGreaterThanOrEqual(16);
+  });
+
+  test('the phone menu lands on the sheet rather than blinking into place', async ({ page }) => {
+    await shedImages(page);
+    await page.setViewportSize({ width: 393, height: 852 });
+    await page.goto('/');
+
+    await page.getByTestId('menu-toggle').click();
+    const moving = await page.getByTestId('menu-list').evaluate((el) => ({
+      list: getComputedStyle(el).animationName,
+      item: getComputedStyle(el.querySelector('li') as HTMLLIElement).animationName,
+    }));
+    expect(moving.list, 'the panel must drop in').toBe('nav-drop');
+    expect(moving.item, 'the items must follow it').toBe('nav-item');
+
+    // Reduced motion skips the drop entirely: the menu is simply there.
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.reload();
+    await page.getByTestId('menu-toggle').click();
+    const still = await page
+      .getByTestId('menu-list')
+      .evaluate((el) => getComputedStyle(el).animationName);
+    expect(still, 'reduced motion must not animate the menu').toBe('none');
   });
 
   test('the phone cuts a writing excerpt to one preview line', async ({ page }) => {

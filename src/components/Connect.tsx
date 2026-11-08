@@ -28,13 +28,13 @@ export default function Connect() {
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-baseline justify-between gap-4 border-b border-line px-4 py-4 transition-colors duration-200 hover:bg-paper-deep/50 active:bg-paper-deep md:grid md:grid-cols-[9rem_minmax(0,1fr)] md:gap-x-10 md:px-6 md:py-7"
+                  className="group flex items-baseline justify-between gap-4 border-b border-line px-4 py-5 transition-colors duration-200 hover:bg-paper-deep/50 active:bg-paper-deep md:grid md:grid-cols-[9rem_minmax(0,1fr)] md:gap-x-10 md:px-6 md:py-7"
                 >
-                  <span className="font-display text-2xl leading-none text-ink transition-colors duration-200 group-hover:text-rust md:col-start-2 md:row-start-1 md:text-4xl">
+                  <span className="font-display text-[1.3125rem] leading-none text-ink transition-colors duration-200 group-hover:text-rust md:col-start-2 md:row-start-1 md:text-4xl">
                     {item.label}
                   </span>
 
-                  <span className="flex items-baseline gap-2 whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.14em] text-ink-soft transition-colors duration-200 group-hover:text-press md:col-start-1 md:row-start-1 md:gap-3 md:text-xs md:tracking-[0.16em]">
+                  <span className="flex items-baseline gap-2 whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.14em] text-ink-soft transition-colors duration-200 group-hover:text-press md:col-start-1 md:row-start-1 md:gap-3 md:text-xs md:tracking-[0.16em]">
                     {item.meta}
                     <span
                       aria-hidden="true"

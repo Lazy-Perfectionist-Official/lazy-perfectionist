@@ -69,7 +69,7 @@ export default function CatalogPage({
   // The active chip is inverted rather than only recoloured, so the state
   // never depends on telling two browns apart.
   const chip = (active: boolean) =>
-    `border px-2.5 py-2 font-mono text-[11px] uppercase tracking-[0.14em] transition-colors duration-200 md:text-xs md:tracking-[0.16em] ${
+    `border px-2.5 py-2 font-mono text-[10px] uppercase tracking-[0.14em] transition-colors duration-200 md:text-xs md:tracking-[0.16em] ${
       active
         ? "border-ink bg-ink text-paper"
         : "border-line text-ink-soft hover:border-rust hover:text-rust"
@@ -117,7 +117,7 @@ export default function CatalogPage({
               />
               <button
                 type="submit"
-                className="col-start-2 row-start-1 justify-self-end font-mono text-[11px] uppercase tracking-[0.14em] text-ink-soft transition-colors duration-200 hover:text-rust md:text-xs md:tracking-[0.16em]"
+                className="col-start-2 row-start-1 justify-self-end font-mono text-[10px] uppercase tracking-[0.14em] text-ink-soft transition-colors duration-200 hover:text-rust md:text-xs md:tracking-[0.16em]"
               >
                 Find{" "}
                 <span aria-hidden="true" className="inline-block">
@@ -183,7 +183,7 @@ export default function CatalogPage({
 
             {shown === 0 ? (
               <div className="border-b border-line px-4 py-6 md:px-6 md:py-7">
-                <p className="font-display text-2xl italic leading-snug text-ink-soft">
+                <p className="font-display text-[1.25rem] italic leading-snug text-ink-soft">
                   {query ? `Nothing matches “${query}”.` : "Nothing under this filter yet."}
                 </p>
                 <a
@@ -191,7 +191,7 @@ export default function CatalogPage({
                     tag: query ? tag : undefined,
                     sort: sortParam,
                   })}
-                  className="mt-4 inline-block font-mono text-[11px] uppercase tracking-[0.16em] text-ink-soft underline underline-offset-4 transition-colors duration-200 hover:text-rust md:text-xs"
+                  className="mt-4 inline-block font-mono text-[10px] uppercase tracking-[0.16em] text-ink-soft underline underline-offset-4 transition-colors duration-200 hover:text-rust md:text-xs"
                 >
                   {query ? "Clear search" : "Show all"}
                 </a>
