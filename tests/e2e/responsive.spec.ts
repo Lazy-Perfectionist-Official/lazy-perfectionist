@@ -237,6 +237,27 @@ test.describe('responsive', () => {
     expect(wide.height, 'the desktop excerpt must stay whole').toBeGreaterThan(wide.line * 2);
   });
 
+  test('the sheet sets at four fifths until the ultrawide class of screen', async ({ page }) => {
+    await shedImages(page);
+
+    const root = async () =>
+      page.evaluate(() => parseFloat(getComputedStyle(document.documentElement).fontSize));
+
+    await page.setViewportSize({ width: 1920, height: 1080 });
+    await page.goto('/');
+    expect(await root(), 'an ordinary monitor reads at 80%').toBeCloseTo(12.8, 1);
+
+    // 3440 (21:9) and 4K keep the sheet's own size; 2560 is deliberately
+    // left on the ordinary side of the line, clear of scrollbar rounding.
+    await page.setViewportSize({ width: 3440, height: 1440 });
+    await page.goto('/');
+    expect(await root(), 'an ultrawide reads at the sheet’s own size').toBe(16);
+
+    await page.setViewportSize({ width: 393, height: 852 });
+    await page.goto('/');
+    expect(await root(), 'the phone keeps its own cut').toBe(16);
+  });
+
   test('the plate screens fit a 320px window without scrolling sideways', async ({ page }) => {
     await shedImages(page);
     await page.setViewportSize({ width: 320, height: 640 });
