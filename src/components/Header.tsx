@@ -43,7 +43,7 @@ export default function Header({ narrow = false }: { narrow?: boolean }) {
         <div className="flex items-baseline justify-between gap-4 md:contents">
           <a
             href="/"
-            className="font-display text-2xl leading-none text-ink transition-colors duration-200 hover:text-press md:text-[1.75rem]"
+            className="font-display text-[1.375rem] leading-none text-ink transition-colors duration-200 hover:text-press md:text-[1.75rem]"
             data-testid="wordmark"
           >
             Lazy Perfectionist

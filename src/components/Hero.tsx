@@ -297,7 +297,7 @@ export default function Hero() {
             so voice control can say what it sees. */}
         <div className="pointer-events-none absolute inset-x-0 bottom-6 md:bottom-8">
           <div className="mx-auto flex max-w-[90rem] px-5 md:px-10">
-            <span className="inline-block bg-ember px-4 py-2.5 font-mono text-[12px] uppercase tracking-[0.16em] text-ember-ink md:text-xs">
+            <span className="inline-block bg-ember px-4 py-2.5 font-mono text-[11px] uppercase tracking-[0.16em] text-ember-ink md:text-xs">
               Listen on Spotify{" "}
               <span aria-hidden="true">↗</span>
             </span>

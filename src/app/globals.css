@@ -187,7 +187,75 @@
   }
 
   .nav-menu-list a {
-    @apply block py-3.5 text-xs font-medium uppercase tracking-[0.22em] text-ink transition-colors duration-200 hover:text-rust;
+    @apply block py-3.5 text-[11px] font-medium uppercase tracking-[0.22em] text-ink transition-colors duration-200 hover:text-rust;
+  }
+
+  /* The panel arrives the way the fold develops: it drops out from under the
+     masthead's hairline while the five items follow one another by a hair —
+     the menu is set on the sheet, so it should land on it, not blink into
+     place. Only opacity and transform animate (the compositor's work, nothing
+     repaints), and a closed <details> keeps the list unpainted, so opening
+     restarts the animation with nothing left running between visits.
+     The close is the browser's own and stays instant — a disclosure cannot
+     defer its hiding without scripting the whole toggle. */
+  @keyframes nav-drop {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes nav-item {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .nav-menu[open] .nav-menu-list {
+    animation: nav-drop 200ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  }
+
+  .nav-menu[open] .nav-menu-list li {
+    animation: nav-item 240ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  }
+
+  .nav-menu[open] .nav-menu-list li:nth-child(2) {
+    animation-delay: 30ms;
+  }
+
+  .nav-menu[open] .nav-menu-list li:nth-child(3) {
+    animation-delay: 60ms;
+  }
+
+  .nav-menu[open] .nav-menu-list li:nth-child(4) {
+    animation-delay: 90ms;
+  }
+
+  .nav-menu[open] .nav-menu-list li:nth-child(5) {
+    animation-delay: 120ms;
+  }
+
+  /* Under reduced motion the menu is simply there when it opens. */
+  @media (prefers-reduced-motion: reduce) {
+    .nav-menu[open] .nav-menu-list,
+    .nav-menu[open] .nav-menu-list li {
+      animation: none;
+    }
+
+    .nav-menu-icon::after {
+      transition: none;
+    }
   }
 
   /* The bypass link: out of the way until it is focused, then pinned over
@@ -198,7 +266,7 @@
 
   /* Plate labels, years, colophon — the poster's typewriter. */
   .eyebrow {
-    @apply font-mono text-xs uppercase tracking-[0.18em] text-ink-soft;
+    @apply font-mono text-[11px] uppercase tracking-[0.18em] text-ink-soft md:text-xs;
   }
 
   /* A screened band, used once: the ink colophon echoes the print's dots.

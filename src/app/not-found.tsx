@@ -18,10 +18,10 @@ export default function NotFound() {
               <p className="eyebrow md:pt-3">Out of print</p>
 
               <div>
-                <h1 className="font-display text-5xl leading-[0.95] tracking-[-0.01em] text-press md:text-7xl">
+                <h1 className="font-display text-[2.25rem] leading-[0.95] tracking-[-0.01em] text-press md:text-7xl">
                   Page not found
                 </h1>
-                <p className="mt-4 max-w-xl font-display text-2xl italic leading-snug text-ink-soft md:text-3xl">
+                <p className="mt-4 max-w-xl font-display text-[1.1875rem] italic leading-snug text-ink-soft md:text-3xl">
                   This pressing was never part of the issue.
                 </p>
                 <p className="mt-8">

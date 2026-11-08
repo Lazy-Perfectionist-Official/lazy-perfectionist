@@ -9,7 +9,7 @@ export default function AnnouncementBar() {
       target="_blank"
       rel="noopener noreferrer"
       data-testid="announcement-bar"
-      className="announcement block bg-ember px-4 py-2 text-center font-mono text-[11px] uppercase tracking-[0.14em] text-ember-ink transition-colors duration-200 hover:bg-ember-bright sm:py-2.5 sm:tracking-[0.2em] md:text-xs"
+      className="announcement block bg-ember px-4 py-2 text-center font-mono text-[10px] uppercase tracking-[0.14em] text-ember-ink transition-colors duration-200 hover:bg-ember-bright sm:py-2.5 sm:tracking-[0.2em] md:text-xs"
     >
       {ANNOUNCEMENT.label}{" "}
       <span aria-hidden="true">

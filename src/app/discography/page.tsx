@@ -145,11 +145,11 @@ export default async function DiscographyPage({
           <div className="grid grid-cols-[1.5rem_minmax(0,1fr)] gap-x-3 border-b border-line bg-paper-deep/40 px-4 py-4 md:grid-cols-[9rem_minmax(0,1fr)_9rem] md:gap-x-10 md:px-6 md:py-6">
             <h2
               id={`year-${group.year}`}
-              className="col-start-2 font-display text-3xl leading-[1.05] tracking-[-0.01em] text-press md:col-start-2 md:text-5xl md:leading-[0.95]"
+              className="col-start-2 font-display text-[1.5rem] leading-[1.05] tracking-[-0.01em] text-press md:col-start-2 md:text-5xl md:leading-[0.95]"
             >
               {group.year}
             </h2>
-            <p className="col-span-2 col-start-2 mt-1 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-soft md:col-span-1 md:col-start-3 md:mt-0 md:self-center md:text-right md:text-xs md:tracking-[0.16em]">
+            <p className="col-span-2 col-start-2 mt-1 font-mono text-[10px] uppercase tracking-[0.14em] text-ink-soft md:col-span-1 md:col-start-3 md:mt-0 md:self-center md:text-right md:text-xs md:tracking-[0.16em]">
               {group.entries.length}{" "}
               {group.entries.length === 1 ? "release" : "releases"}
             </p>
