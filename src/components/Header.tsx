@@ -16,7 +16,7 @@ export default function Header({ narrow = false }: { narrow?: boolean }) {
   return (
     <header id="top" className="border-b border-line" data-testid="site-header">
       <div
-        className={`mx-auto flex flex-col gap-4 px-4 py-5 md:flex-row md:items-baseline md:justify-between md:gap-8 md:px-10 md:py-7 ${
+        className={`mx-auto flex flex-col gap-4 px-4 py-5 md:gap-3 md:px-10 md:py-7 lg:flex-row lg:items-baseline lg:justify-between lg:gap-8 ${
           narrow ? "max-w-[72rem]" : "max-w-[90rem]"
         }`}
       >
