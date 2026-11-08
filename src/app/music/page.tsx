@@ -1,15 +1,15 @@
-import type { Metadata } from "next";
-
 import CatalogPage from "@/components/CatalogPage";
 import { ReleaseRow } from "@/components/Releases";
-import { LINKS, RELEASES, SITE_URL } from "@/lib/site";
+import { pageMetadata } from "@/lib/metadata";
+import { LINKS, RELEASES } from "@/lib/site";
+import { catalogGraph } from "@/lib/structured-data";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Singles",
   description:
     "Lazy Perfectionist's singles — LUSG, Cyclothymia and Orbit — with links to listen on Spotify.",
-  alternates: SITE_URL ? { canonical: "/music" } : undefined,
-};
+  path: "/music",
+});
 
 // The full release catalog, searchable. Filtering happens on the server
 // from the `q` parameter, so the result is a plain URL and no client JS.
@@ -48,6 +48,17 @@ export default async function MusicPage({
       }}
       testId="music-screen"
     >
+      {/* The catalog as a crawler reads it: the page, and the releases as an
+          ordered ItemList pointing at their Spotify pages. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            catalogGraph({ name: "Singles", path: "/music" }),
+          ),
+        }}
+      />
+
       {/* The margin numeral is the catalog position, not the result
           position: a search that returns one song must not print 01 for
           what is the third release. */}

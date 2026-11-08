@@ -2,16 +2,17 @@ import type { Metadata } from "next";
 
 import CatalogPage from "@/components/CatalogPage";
 import { ShopRow } from "@/components/Shop";
+import { pageMetadata } from "@/lib/metadata";
 import { SHOP_PRODUCTS } from "@/lib/shop";
-import { LINKS, SITE_URL } from "@/lib/site";
+import { LINKS } from "@/lib/site";
 import { firstParam, hasTag, tagCounts, tagSlug } from "@/lib/tags";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Shop",
   description:
     "Tabs, stems and jam tracks from Lazy Perfectionist — free and pay-what-you-want downloads hosted on Ko-fi.",
-  alternates: SITE_URL ? { canonical: "/shop" } : undefined,
-};
+  path: "/shop",
+});
 
 // The whole synced listing, narrowed by search and by tag on the server.
 export default async function ShopPage({

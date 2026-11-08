@@ -2,16 +2,16 @@ import type { Metadata } from "next";
 
 import CatalogPage from "@/components/CatalogPage";
 import { PostRow } from "@/components/Writing";
+import { pageMetadata } from "@/lib/metadata";
 import posts from "@/lib/medium-posts.json";
-import { SITE_URL } from "@/lib/site";
 import { firstParam, hasTag, tagCounts, tagSlug } from "@/lib/tags";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Writing",
   description:
     "Notes from Lazy Perfectionist on making the records — the writing, published on Medium.",
-  alternates: SITE_URL ? { canonical: "/writing" } : undefined,
-};
+  path: "/writing",
+});
 
 // The whole archive the sync has kept, narrowed by `q` and by the post's
 // own Medium tags — both filtered on the server.
