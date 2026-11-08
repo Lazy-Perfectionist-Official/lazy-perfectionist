@@ -92,7 +92,7 @@ export default function CatalogPage({
               role="search"
               action={path}
               method="get"
-              className="flex flex-wrap items-baseline gap-x-4 gap-y-3 border-b border-line px-4 py-4 md:px-6 md:py-6"
+              className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-4 gap-y-2 border-b border-line px-4 py-4 md:flex md:flex-wrap md:items-baseline md:gap-x-4 md:gap-y-3 md:px-6 md:py-6"
             >
               {/* A search inside a tag stays inside it: the tag rides along
                   as a hidden field rather than being reset. */}
@@ -100,7 +100,10 @@ export default function CatalogPage({
               {sortParam ? (
                 <input type="hidden" name="sort" value={sortParam} />
               ) : null}
-              <label htmlFor="q" className="eyebrow basis-full md:basis-auto">
+              <label
+                htmlFor="q"
+                className="eyebrow col-start-1 row-start-1"
+              >
                 Search
               </label>
               <input
@@ -110,11 +113,11 @@ export default function CatalogPage({
                 defaultValue={query}
                 placeholder={placeholder}
                 autoComplete="off"
-                className="min-w-0 flex-1 border-b border-line bg-transparent pb-1 font-mono text-base text-ink transition-colors duration-200 placeholder:text-ink-soft/60 focus-visible:border-rust focus-visible:outline-none md:text-sm"
+                className="col-span-2 col-start-1 row-start-2 min-w-0 border-b border-line bg-transparent pb-1 font-mono text-base text-ink transition-colors duration-200 placeholder:text-ink-soft/60 focus-visible:border-rust focus-visible:outline-none md:col-auto md:row-auto md:flex-1 md:text-sm"
               />
               <button
                 type="submit"
-                className="font-mono text-[10px] uppercase tracking-[0.14em] text-ink-soft transition-colors duration-200 hover:text-rust md:text-xs md:tracking-[0.16em]"
+                className="col-start-2 row-start-1 justify-self-end font-mono text-[10px] uppercase tracking-[0.14em] text-ink-soft transition-colors duration-200 hover:text-rust md:text-xs md:tracking-[0.16em]"
               >
                 Find{" "}
                 <span aria-hidden="true" className="inline-block">

@@ -87,6 +87,61 @@ test.describe('responsive', () => {
     expect(x, 'a centred crop cuts the name off on a phone').toBeGreaterThan(40);
   });
 
+  test('the masthead holds the phone on its side too', async ({ page }) => {
+    await shedImages(page);
+    // iPhone 16 lying down: wide enough for `md`, far too short for the
+    // desktop masthead — the row layout must wait for `lg`, or the wordmark
+    // and the nav each break onto a second line.
+    await page.setViewportSize({ width: 852, height: 393 });
+    await page.goto('/');
+
+    const wordmark = await page.getByTestId('wordmark').evaluate((a) => {
+      const rect = a.getBoundingClientRect();
+      const line = parseFloat(getComputedStyle(a).fontSize) * 1.4;
+      return { height: rect.height, line };
+    });
+    expect(wordmark.height, 'the wordmark must stay one line in landscape').toBeLessThan(
+      wordmark.line,
+    );
+
+    const rows = await page
+      .getByTestId('primary-nav')
+      .locator('li')
+      .evaluateAll((items) =>
+        [...new Set(items.map((item) => Math.round(item.getBoundingClientRect().top)))],
+      );
+    expect(rows, 'the nav must stay on one line in landscape').toHaveLength(1);
+
+    const overflow = await page.evaluate(
+      () => document.documentElement.scrollWidth - window.innerWidth,
+    );
+    expect(overflow, 'a landscape phone must not scroll sideways').toBeLessThanOrEqual(0);
+  });
+
+  test('the search field prints its placeholder whole on a phone', async ({ page }) => {
+    await page.setViewportSize({ width: 393, height: 852 });
+
+    for (const path of ['/discography', '/music', '/shop', '/writing']) {
+      await page.goto(path);
+      await page.evaluate(() => document.fonts.ready);
+
+      const fit = await page.getByRole('searchbox').evaluate(async (input) => {
+        const box = input as HTMLInputElement;
+        const cs = getComputedStyle(box);
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d')!;
+        ctx.font = `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+        // Typed text scrolls; a placeholder cannot, so it simply ends.
+        return {
+          text: ctx.measureText(box.placeholder).width,
+          room: box.clientWidth,
+        };
+      });
+
+      expect(fit.text, `${path} placeholder must not be cut off`).toBeLessThan(fit.room);
+    }
+  });
+
   test('the plate screens fit a 320px window without scrolling sideways', async ({ page }) => {
     await shedImages(page);
     await page.setViewportSize({ width: 320, height: 640 });
