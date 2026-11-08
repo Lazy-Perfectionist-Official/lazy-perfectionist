@@ -113,7 +113,7 @@
 @layer components {
   /* Chrome links: ink-soft caps, pressed dark on hover. */
   .nav-link {
-    @apply inline-block py-2.5 text-[11px] font-medium uppercase tracking-[0.22em] text-ink-soft transition-colors duration-200 hover:text-press md:text-xs;
+    @apply inline-block py-2 text-[clamp(9px,2.65vw,10px)] font-medium uppercase tracking-[0.1em] text-ink-soft transition-colors duration-200 hover:text-press md:py-2.5 md:text-xs md:tracking-[0.22em];
   }
 
   /* The bypass link: out of the way until it is focused, then pinned over
@@ -296,6 +296,18 @@
 
   .lantern-lit .hero-lens {
     opacity: 1;
+  }
+
+  /* The tall plate is 3:4 and a phone's fold is taller still, so a centred
+     cover crop cuts the name off at the right edge. Shifting the window
+     past centre keeps the wordmark whole and takes the slack from the
+     silhouette's left, where the print has air to spare. */
+  @media (orientation: portrait) {
+    .hero-plate,
+    .hero-wave-band,
+    .hero-lens-plate {
+      object-position: 56% 50%;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {

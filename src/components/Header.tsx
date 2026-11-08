@@ -12,20 +12,24 @@ const NAV = [
   { label: "Elsewhere", href: "/#elsewhere" },
 ];
 
-export default function Header() {
+export default function Header({ narrow = false }: { narrow?: boolean }) {
   return (
     <header id="top" className="border-b border-line" data-testid="site-header">
-      <div className="mx-auto flex max-w-[90rem] flex-col gap-5 px-6 py-6 md:flex-row md:items-baseline md:justify-between md:gap-8 md:px-10 md:py-7">
+      <div
+        className={`mx-auto flex flex-col gap-4 px-4 py-5 md:flex-row md:items-baseline md:justify-between md:gap-8 md:px-10 md:py-7 ${
+          narrow ? "max-w-[72rem]" : "max-w-[90rem]"
+        }`}
+      >
         <a
           href="/"
-          className="font-display text-2xl leading-none text-ink transition-colors duration-200 hover:text-press md:text-[1.75rem]"
+          className="font-display text-xl leading-none text-ink transition-colors duration-200 hover:text-press md:text-[1.75rem]"
           data-testid="wordmark"
         >
           Lazy Perfectionist
         </a>
 
         <nav aria-label="Primary" data-testid="primary-nav">
-          <ul className="flex flex-wrap items-center gap-x-5 gap-y-2 md:justify-end md:gap-x-9">
+          <ul className="flex flex-wrap items-center gap-x-1.5 gap-y-2 sm:gap-x-3 md:justify-end md:gap-x-9">
             {NAV.map((item) => (
               <li key={item.label}>
                 <a href={item.href} className="nav-link">

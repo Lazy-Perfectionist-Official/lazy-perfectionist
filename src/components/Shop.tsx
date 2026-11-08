@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 import FootRow from "@/components/FootRow";
+import PlateHeader from "@/components/PlateHeader";
 import { SHOP_PRODUCTS, type Product } from "@/lib/shop";
 
 // Plate 02: the Ko-fi shop printed as a catalog. The listing is synced
@@ -23,29 +24,29 @@ export function ShopRow({ product }: { product: Product }) {
       rel="noopener noreferrer"
       aria-label={`${product.name} — ${accessiblePrice(product)} on Ko-fi`}
       data-testid={`shop-${product.slug}`}
-      className="group grid grid-cols-[3.5rem_minmax(0,1fr)] gap-x-4 border-b border-line px-4 py-6 transition-colors duration-200 hover:bg-paper-deep/50 active:bg-paper-deep md:grid-cols-[9rem_minmax(0,1fr)_9rem] md:gap-x-10 md:px-6 md:py-8"
+      className="group grid grid-cols-[3rem_minmax(0,1fr)] gap-x-3 border-b border-line px-4 py-5 transition-colors duration-200 hover:bg-paper-deep/50 active:bg-paper-deep md:grid-cols-[9rem_minmax(0,1fr)_9rem] md:gap-x-10 md:px-6 md:py-8"
     >
       <span className="relative block aspect-square overflow-hidden border border-line bg-paper-deep">
         <Image
           src={product.image}
           alt=""
           fill
-          sizes="(min-width: 768px) 9rem, 3.5rem"
+          sizes="(min-width: 768px) 9rem, 3rem"
           className="object-cover"
         />
       </span>
 
       <span className="block">
-        <span className="block font-display text-3xl leading-[1.02] tracking-[-0.01em] text-ink transition-colors duration-200 group-hover:text-rust md:text-4xl">
+        <span className="block font-display text-[1.5rem] leading-[1.05] tracking-[-0.01em] text-ink transition-colors duration-200 group-hover:text-rust md:text-4xl md:leading-[1.02]">
           {product.name}
         </span>
-        <span className="mt-2 block max-w-md text-base leading-relaxed text-ink-soft">
+        <span className="mt-1.5 block max-w-md text-[0.9375rem] leading-relaxed text-ink-soft md:mt-2 md:text-base">
           {product.summary}
         </span>
       </span>
 
-      <span className="col-span-2 mt-4 flex items-baseline justify-between md:col-span-1 md:col-start-3 md:mt-0 md:flex-col md:items-end">
-        <span className="font-mono text-xs tabular-nums text-ink-soft md:text-sm">
+      <span className="col-span-2 mt-3 flex items-baseline justify-between md:col-span-1 md:col-start-3 md:mt-0 md:flex-col md:items-end">
+        <span className="font-mono text-[11px] tabular-nums text-ink-soft md:text-sm">
           {product.price}
         </span>
         <span
@@ -65,23 +66,13 @@ export function ShopRow({ product }: { product: Product }) {
 export default function Shop() {
   return (
     <section id="shop" className="scroll-mt-8" data-testid="shop-section">
-      <div className="mx-auto max-w-[90rem] px-6 md:px-10">
-        <div className="grid gap-4 border-b border-line px-4 pb-8 pt-12 md:grid-cols-[9rem_minmax(0,1fr)_9rem] md:items-start md:gap-x-10 md:px-6 md:pb-10 md:pt-20">
-          <p className="eyebrow md:pt-3">Plate 02</p>
-
-          <div>
-            <h2 className="font-display text-5xl leading-[0.95] tracking-[-0.01em] text-press md:text-7xl">
-              Shop
-            </h2>
-            <p className="mt-4 max-w-xl font-display text-2xl italic leading-snug text-ink-soft md:text-3xl">
-              {LEDE}
-            </p>
-          </div>
-
-          <p className="eyebrow whitespace-nowrap md:pt-3 md:text-right">
-            {SHOP_PRODUCTS.length} items
-          </p>
-        </div>
+      <div className="mx-auto max-w-[90rem] px-5 md:px-10">
+        <PlateHeader
+          plate="Plate 02"
+          title="Shop"
+          lede={LEDE}
+          meta={`${SHOP_PRODUCTS.length} items`}
+        />
 
         <div>
           {SHOP_PRODUCTS.slice(0, HOME_LIMIT).map((product) => (

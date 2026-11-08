@@ -3,7 +3,7 @@ import { LINER_NOTE } from "@/lib/site";
 // The back cover: the page closes on ink, screened with a faint halftone
 // so the colophon echoes the print's dots. No third wordmark — the print
 // already carries the name twice.
-export default function Footer() {
+export default function Footer({ narrow = false }: { narrow?: boolean }) {
   return (
     <footer
       className="relative overflow-hidden bg-ink text-paper"
@@ -14,7 +14,11 @@ export default function Footer() {
         className="halftone pointer-events-none absolute inset-0 opacity-[0.14]"
       />
 
-      <div className="relative mx-auto max-w-[90rem] px-6 py-9 md:px-10 md:py-11">
+      <div
+        className={`relative mx-auto px-5 py-8 md:px-10 md:py-11 ${
+          narrow ? "max-w-[72rem]" : "max-w-[90rem]"
+        }`}
+      >
         {/* The liner note: the back cover is where a record says who made it
             — the one line on the page that answers a stranger's first
             question. Sentence case, so it reads as notes, not as a label. */}

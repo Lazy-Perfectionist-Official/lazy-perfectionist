@@ -552,6 +552,17 @@ test.describe('poster hero', () => {
     // overflowing axis: a phone's fold is taller than the 3:4 print (sides
     // trimmed), a 16:9 fold is wider than the wide plate (top and bottom
     // trimmed). Nothing is ever letterboxed.
+    //
+    // The plate is fetched from its own file rather than through the dev
+    // optimizer: this test needs the plate's real dimensions, not its
+    // optimized bytes, and the optimizer is slow enough at these widths to
+    // time the navigation out.
+    await page.route('**/_next/image**', (route) => {
+      const target = new URL(route.request().url());
+      const asset = target.searchParams.get('url');
+      if (!asset) return route.abort();
+      return route.continue({ url: `${target.origin}${asset}` });
+    });
     const measure = async (width: number, height: number) => {
       await page.setViewportSize({ width, height });
       await page.goto('/');
@@ -620,6 +631,11 @@ test.describe('poster hero', () => {
     // 1024 is the widest width the plate needs here: the 21:9 fold has its
     // own test, and asking for a 3840px plate twice in one run is a dev
     // image-optimizer queue the suite does not need to build.
+    // The plate's pixels are not what this test measures — the fold's height
+    // is set by the chrome, not by the image — so the image requests are
+    // aborted rather than left to queue behind the dev optimizer, which is
+    // slow enough to time the navigation out.
+    await page.route('**/_next/image**', (route) => route.abort());
     for (const [width, height] of [
       [320, 640],
       [375, 760],
