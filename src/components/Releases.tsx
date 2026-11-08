@@ -27,16 +27,20 @@ export function ReleaseRow({
       rel="noopener noreferrer"
       aria-label={`${release.title} — listen on Spotify`}
       data-testid={`release-${release.title.toLowerCase()}`}
-      className="group grid grid-cols-[1.5rem_minmax(0,1fr)] gap-x-3 border-b border-line px-4 py-7 transition-colors duration-200 hover:bg-paper-deep/50 active:bg-paper-deep md:grid-cols-[9rem_minmax(0,1fr)_9rem] md:gap-x-10 md:px-6 md:py-9"
+      className="group grid grid-cols-1 border-b border-line px-4 py-7 transition-colors duration-200 hover:bg-paper-deep/50 active:bg-paper-deep md:grid-cols-[9rem_minmax(0,1fr)_9rem] md:gap-x-10 md:px-6 md:py-9"
     >
+      {/* On the phone the margin folds above the title — the same fold the
+          plate headers make — so the number, the title, the line and the
+          year all print on the card's one text edge. From `md` the number
+          returns to the margin column, where the plate label sits. */}
       <span
         aria-hidden="true"
-        className="pt-1.5 font-mono text-[10px] tabular-nums text-ink-soft/60 md:pt-2 md:text-sm"
+        className="mb-1 font-mono text-[10px] tabular-nums text-ink-soft/60 md:col-start-1 md:row-start-1 md:mb-0 md:pt-2 md:text-sm"
       >
         {String(index + 1).padStart(2, "0")}
       </span>
 
-      <span className="block">
+      <span className="block md:col-start-2 md:row-start-1">
         <span className="block font-display text-[1.5rem] leading-[1.05] tracking-[-0.01em] text-ink transition-colors duration-200 group-hover:text-rust md:text-5xl md:leading-[1.02]">
           {release.title}
         </span>
@@ -48,7 +52,7 @@ export function ReleaseRow({
       </span>
 
       <span
-        className={`col-span-2 mt-3 flex items-baseline gap-6 md:col-span-1 md:col-start-3 md:mt-0 md:flex-col md:items-end ${
+        className={`mt-3 flex items-baseline gap-6 md:col-span-1 md:col-start-3 md:row-start-1 md:mt-0 md:flex-col md:items-end ${
           showYear ? "justify-between" : "justify-end"
         }`}
       >

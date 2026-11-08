@@ -34,13 +34,18 @@ export default function Header({ narrow = false }: { narrow?: boolean }) {
   return (
     <header id="top" className="relative border-b border-line" data-testid="site-header">
       <div
-        className={`mx-auto flex flex-col gap-3 px-4 py-5 md:gap-3 md:px-10 md:py-7 lg:flex-row lg:items-baseline lg:justify-between lg:gap-8 ${
+        className={`mx-auto flex flex-col gap-3 px-9 py-5 md:gap-3 md:px-10 md:py-7 lg:flex-row lg:items-baseline lg:justify-between lg:gap-8 ${
           narrow ? "max-w-[72rem]" : "max-w-[90rem]"
         }`}
       >
         {/* On the phone the wordmark and MENU share one line; from `md` the
-            wrapper dissolves and the nav takes its own row as before. */}
-        <div className="flex items-baseline justify-between gap-4 md:contents">
+            wrapper dissolves and the nav takes its own row as before. The
+            phone sets the masthead on the same text axis as the plates
+            below it (the sheet's one rem-and-a-bit margin), so the wordmark,
+            the menu and every card title start on one edge. The gap is only
+            a floor — justify-between opens the line on a normal phone — but
+            at 320px the two must fit, and 8px is what keeps them clear. */}
+        <div className="flex items-baseline justify-between gap-2 md:contents">
           <a
             href="/"
             className="font-display text-[1.375rem] leading-none text-ink transition-colors duration-200 hover:text-press md:text-[1.75rem]"
