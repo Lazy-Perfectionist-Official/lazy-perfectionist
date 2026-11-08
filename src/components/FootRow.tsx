@@ -21,7 +21,7 @@ export default function FootRow({
       aria-label={label}
       target={external ? "_blank" : undefined}
       rel={external ? "noopener noreferrer" : undefined}
-      className="group flex justify-end border-b border-line px-4 py-4 font-mono text-[10px] uppercase tracking-[0.14em] text-ink-soft transition-colors duration-200 hover:bg-paper-deep/50 hover:text-rust active:bg-paper-deep md:px-6 md:py-6 md:text-xs md:tracking-[0.16em]"
+      className="group flex justify-end border-b border-line px-4 py-4 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-soft transition-colors duration-200 hover:bg-paper-deep/50 hover:text-rust active:bg-paper-deep md:px-6 md:py-6 md:text-xs md:tracking-[0.16em]"
     >
       {text}{" "}
       <span

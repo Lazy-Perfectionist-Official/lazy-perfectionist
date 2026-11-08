@@ -34,7 +34,7 @@ export default function Connect() {
                     {item.label}
                   </span>
 
-                  <span className="flex items-baseline gap-2 whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.14em] text-ink-soft transition-colors duration-200 group-hover:text-press md:col-start-1 md:row-start-1 md:gap-3 md:text-xs md:tracking-[0.16em]">
+                  <span className="flex items-baseline gap-2 whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.14em] text-ink-soft transition-colors duration-200 group-hover:text-press md:col-start-1 md:row-start-1 md:gap-3 md:text-xs md:tracking-[0.16em]">
                     {item.meta}
                     <span
                       aria-hidden="true"

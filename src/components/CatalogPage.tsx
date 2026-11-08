@@ -69,7 +69,7 @@ export default function CatalogPage({
   // The active chip is inverted rather than only recoloured, so the state
   // never depends on telling two browns apart.
   const chip = (active: boolean) =>
-    `border px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.14em] transition-colors duration-200 md:text-xs md:tracking-[0.16em] ${
+    `border px-2.5 py-2 font-mono text-[11px] uppercase tracking-[0.14em] transition-colors duration-200 md:text-xs md:tracking-[0.16em] ${
       active
         ? "border-ink bg-ink text-paper"
         : "border-line text-ink-soft hover:border-rust hover:text-rust"
@@ -117,7 +117,7 @@ export default function CatalogPage({
               />
               <button
                 type="submit"
-                className="col-start-2 row-start-1 justify-self-end font-mono text-[10px] uppercase tracking-[0.14em] text-ink-soft transition-colors duration-200 hover:text-rust md:text-xs md:tracking-[0.16em]"
+                className="col-start-2 row-start-1 justify-self-end font-mono text-[11px] uppercase tracking-[0.14em] text-ink-soft transition-colors duration-200 hover:text-rust md:text-xs md:tracking-[0.16em]"
               >
                 Find{" "}
                 <span aria-hidden="true" className="inline-block">

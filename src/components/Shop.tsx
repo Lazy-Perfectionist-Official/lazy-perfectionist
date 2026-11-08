@@ -40,7 +40,7 @@ export function ShopRow({ product }: { product: Product }) {
         <span className="block font-display text-[1.5rem] leading-[1.05] tracking-[-0.01em] text-ink transition-colors duration-200 group-hover:text-rust md:text-4xl md:leading-[1.02]">
           {product.name}
         </span>
-        <span className="mt-1.5 block max-w-md text-[0.9375rem] leading-relaxed text-ink-soft md:mt-2 md:text-base">
+        <span className="mt-1.5 block max-w-md text-base leading-relaxed text-ink-soft md:mt-2 md:text-base">
           {product.summary}
         </span>
       </span>

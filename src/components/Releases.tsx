@@ -31,7 +31,7 @@ export function ReleaseRow({
     >
       <span
         aria-hidden="true"
-        className="pt-1.5 font-mono text-[10px] tabular-nums text-ink-soft/60 md:pt-2 md:text-sm"
+        className="pt-1.5 font-mono text-[11px] tabular-nums text-ink-soft/60 md:pt-2 md:text-sm"
       >
         {String(index + 1).padStart(2, "0")}
       </span>
@@ -41,7 +41,7 @@ export function ReleaseRow({
           {release.title}
         </span>
         {release.description?.trim() ? (
-          <span className="mt-1.5 block max-w-md text-[0.9375rem] leading-relaxed text-ink-soft md:mt-2 md:text-base">
+          <span className="mt-1.5 block max-w-md text-base leading-relaxed text-ink-soft md:mt-2 md:text-base">
             {release.description}
           </span>
         ) : null}

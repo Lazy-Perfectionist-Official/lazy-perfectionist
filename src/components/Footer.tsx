@@ -27,7 +27,7 @@ export default function Footer({ narrow = false }: { narrow?: boolean }) {
         </p>
 
         <div className="mt-7 flex flex-col gap-3 md:mt-9 md:flex-row md:items-baseline md:justify-between">
-          <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-paper/80 md:text-xs">
+          <p className="font-mono text-xs uppercase tracking-[0.16em] text-paper/80">
             <span className="block sm:inline">© 2026 Lazy Perfectionist</span>
             <span className="hidden sm:inline"> · </span>
             <span className="block sm:inline">Hong Kong</span>
