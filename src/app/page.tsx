@@ -8,41 +8,14 @@ import Shop from "@/components/Shop";
 import SkipLink from "@/components/SkipLink";
 import Writing from "@/components/Writing";
 
-import { LINKS, RELEASES } from "@/lib/site";
-
-// The catalog as crawlers read it: the group, then every single as a
-// MusicRecording pointing at where it actually plays. The @ids are the
-// Spotify pages — stable, and they don't wait on the site's own domain
-// (SITE_URL, still unset) to tie the graph together.
-const structuredData = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "MusicGroup",
-      "@id": LINKS.spotifyArtist,
-      name: "Lazy Perfectionist",
-      genre: ["Instrumental Rock", "Instrumental Metal"],
-      locationCreated: { "@type": "Place", name: "Hong Kong" },
-      url: LINKS.spotifyArtist,
-      sameAs: [LINKS.youtube, LINKS.instagram, LINKS.medium, LINKS.kofi],
-    },
-    ...RELEASES.map((release) => ({
-      "@type": "MusicRecording",
-      "@id": release.href,
-      name: release.title,
-      datePublished: String(release.year),
-      url: release.href,
-      byArtist: { "@id": LINKS.spotifyArtist },
-    })),
-  ],
-};
+import { siteGraph } from "@/lib/structured-data";
 
 export default function Home() {
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(siteGraph()) }}
       />
 
       <SkipLink />

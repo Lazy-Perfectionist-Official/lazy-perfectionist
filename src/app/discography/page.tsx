@@ -1,16 +1,16 @@
-import type { Metadata } from "next";
-
 import CatalogPage from "@/components/CatalogPage";
 import { ReleaseRow } from "@/components/Releases";
-import { LINKS, RELEASES, SITE_URL, type Release } from "@/lib/site";
+import { pageMetadata } from "@/lib/metadata";
+import { LINKS, RELEASES, type Release } from "@/lib/site";
+import { catalogGraph } from "@/lib/structured-data";
 import { filteredHref, firstParam, tagSlug } from "@/lib/tags";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Discography",
   description:
     "The full Lazy Perfectionist discography — every release, by year, with links to listen on Spotify.",
-  alternates: SITE_URL ? { canonical: "/discography" } : undefined,
-};
+  path: "/discography",
+});
 
 // The ordered catalog: every release under the year it belongs to, one
 // separator card per year. Search, the year facets and the order are plain
@@ -122,6 +122,17 @@ export default async function DiscographyPage({
       }}
       testId="discography-screen"
     >
+      {/* The catalog as a crawler reads it: the page, and the releases as an
+          ordered ItemList pointing at their Spotify pages. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            catalogGraph({ name: "Discography", path: "/discography" }),
+          ),
+        }}
+      />
+
       {groups.map((group) => (
         <section
           key={group.year}

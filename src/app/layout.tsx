@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Bodoni_Moda, Courier_Prime, Inter } from "next/font/google";
 
+import { SHARE_CARD } from "@/lib/metadata";
 import { SITE_URL } from "@/lib/site";
 
 import "./globals.css";
@@ -32,11 +33,10 @@ const title = "Lazy Perfectionist — Instrumental Rock/Metal | Hong Kong";
 const description =
   "Lazy Perfectionist is an instrumental rock/metal project from Hong Kong. The new single LUSG is out now — alongside Cyclothymia and Orbit — on all streaming platforms.";
 
-// The site has no domain of its own yet, so the canonical host comes from
-// the deploy environment (see SITE_URL in site.ts). Until it is set, no
-// canonical is emitted rather than pointing crawlers at somebody else's
-// sales page; the share card still works because its image path is
-// site-relative.
+// The canonical host comes from the deploy environment (see SITE_URL in
+// site.ts): a real domain when one is set, Vercel's own production host
+// otherwise. The parked lazyperfectionist.com is never substituted, so a
+// canonical tag always names an address the site actually answers on.
 export const metadata: Metadata = {
   metadataBase: SITE_URL ? new URL(SITE_URL) : undefined,
   title: { default: title, template: "%s | Lazy Perfectionist" },
@@ -62,20 +62,14 @@ export const metadata: Metadata = {
     siteName: "Lazy Perfectionist",
     title,
     description,
-    images: [
-      {
-        url: "/assets/img/og-card.png",
-        width: 2400,
-        height: 1260,
-        alt: "Lazy Perfectionist — instrumental rock/metal from Hong Kong",
-      },
-    ],
+    url: SITE_URL ? new URL("/", SITE_URL).toString() : undefined,
+    images: [SHARE_CARD],
   },
   twitter: {
     card: "summary_large_image",
     title,
     description,
-    images: ["/assets/img/og-card.png"],
+    images: [SHARE_CARD.url],
   },
 };
 
