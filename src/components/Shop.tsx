@@ -24,19 +24,21 @@ export function ShopRow({ product }: { product: Product }) {
       rel="noopener noreferrer"
       aria-label={`${product.name} — ${accessiblePrice(product)} on Ko-fi`}
       data-testid={`shop-${product.slug}`}
-      className="group grid grid-cols-[3rem_minmax(0,1fr)] gap-x-3 border-b border-line px-4 py-6 transition-colors duration-200 hover:bg-paper-deep/50 active:bg-paper-deep md:grid-cols-[9rem_minmax(0,1fr)_9rem] md:gap-x-10 md:px-6 md:py-8"
+      className="group grid grid-cols-[3rem_minmax(0,1fr)_auto] gap-x-3 border-b border-line px-4 py-6 transition-colors duration-200 hover:bg-paper-deep/50 active:bg-paper-deep md:grid-cols-[9rem_minmax(0,1fr)_9rem] md:gap-x-10 md:px-6 md:py-8"
     >
-      <span className="relative block aspect-square overflow-hidden border border-line bg-paper-deep">
-        <Image
-          src={product.image}
-          alt=""
-          fill
-          sizes="(min-width: 768px) 9rem, 3rem"
-          className="object-cover"
-        />
+      <span className="col-start-1 row-start-1 self-start">
+        <span className="relative block aspect-square overflow-hidden border border-line bg-paper-deep">
+          <Image
+            src={product.image}
+            alt=""
+            fill
+            sizes="(min-width: 768px) 9rem, 3rem"
+            className="object-cover"
+          />
+        </span>
       </span>
 
-      <span className="block">
+      <span className="col-start-2 row-start-1 block">
         <span className="block font-display text-[1.375rem] leading-[1.05] tracking-[-0.01em] text-ink transition-colors duration-200 group-hover:text-rust md:text-4xl md:leading-[1.02]">
           {product.name}
         </span>
@@ -45,21 +47,19 @@ export function ShopRow({ product }: { product: Product }) {
         </span>
       </span>
 
-      {/* The phone keeps the price and the action in the text column, under
-          the title and the line — the art holds the card's left edge, and
-          every word on the card prints on the one edge to the right of it. */}
-      <span className="col-start-2 mt-3 flex items-baseline justify-between md:col-span-1 md:col-start-3 md:mt-0 md:flex-col md:items-end">
-        <span className="font-mono text-[10px] tabular-nums text-ink-soft md:text-sm">
-          {product.price}
-        </span>
-        <span
-          aria-hidden="true"
-          className="font-mono text-[10px] uppercase tracking-[0.16em] text-ink-soft transition-colors duration-200 group-hover:text-rust md:text-xs"
-        >
-          Get{" "}
-          <span className="inline-block transition-transform duration-200 group-hover:-translate-y-[2px] group-hover:translate-x-[2px]">
-            ↗
-          </span>
+      {/* The desktop row, kept whole at phone width: the price starts on the
+          title's line at the right, the Get closes the row at its foot. */}
+      <span className="col-start-3 row-start-1 self-start justify-self-end font-mono text-[10px] tabular-nums text-ink-soft md:text-sm">
+        {product.price}
+      </span>
+
+      <span
+        aria-hidden="true"
+        className="col-start-2 col-end-4 row-start-2 mt-3 justify-self-end font-mono text-[10px] uppercase tracking-[0.16em] text-ink-soft transition-colors duration-200 group-hover:text-rust md:col-start-3 md:row-start-1 md:mt-0 md:self-end md:text-xs"
+      >
+        Get{" "}
+        <span className="inline-block transition-transform duration-200 group-hover:-translate-y-[2px] group-hover:translate-x-[2px]">
+          ↗
         </span>
       </span>
     </a>

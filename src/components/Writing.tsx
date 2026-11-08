@@ -31,18 +31,19 @@ export function PostRow({ post, index }: { post: Post; index: number }) {
       rel="noopener noreferrer"
       aria-label={`${post.title} — read on Medium`}
       data-testid={`post-${post.slug}`}
-      className="group grid grid-cols-1 border-b border-line px-4 py-7 transition-colors duration-200 hover:bg-paper-deep/50 active:bg-paper-deep md:grid-cols-[9rem_minmax(0,1fr)_9rem] md:gap-x-10 md:px-6 md:py-9"
+      className="group grid grid-cols-[1.5rem_minmax(0,1fr)_auto] gap-x-3 border-b border-line px-4 py-7 transition-colors duration-200 hover:bg-paper-deep/50 active:bg-paper-deep md:grid-cols-[9rem_minmax(0,1fr)_9rem] md:gap-x-10 md:px-6 md:py-9"
     >
-      {/* The phone folds the index above the title, on the card's one text
-          edge; from `md` it returns to the margin column. */}
+      {/* The desktop row, kept whole at phone width: the number rides the
+          title's first line in the margin, the date starts on that same
+          line at the right, and the Read closes the row at its foot. */}
       <span
         aria-hidden="true"
-        className="mb-1 font-mono text-[10px] tabular-nums text-ink-soft/60 md:col-start-1 md:row-start-1 md:mb-0 md:pt-2 md:text-sm"
+        className="col-start-1 row-start-1 self-start pt-1.5 font-mono text-[10px] tabular-nums text-ink-soft/60 md:pt-2 md:text-sm"
       >
         {String(index + 1).padStart(2, "0")}
       </span>
 
-      <span className="block md:col-start-2 md:row-start-1">
+      <span className="col-start-2 row-start-1 block">
         <span className="block max-w-xl font-display text-[1.3125rem] leading-[1.12] tracking-[-0.01em] text-ink transition-colors duration-200 group-hover:text-rust md:text-4xl md:leading-[1.08]">
           {post.title}
         </span>
@@ -54,18 +55,22 @@ export function PostRow({ post, index }: { post: Post; index: number }) {
         </span>
       </span>
 
-      <span className="mt-3 flex items-baseline justify-between md:col-span-1 md:col-start-3 md:row-start-1 md:mt-0 md:flex-col md:items-end">
-        <span className="font-mono text-[10px] tabular-nums text-ink-soft md:text-sm">
-          {dateLabel(post.date)}
-        </span>
-        <span
-          aria-hidden="true"
-          className="font-mono text-[10px] uppercase tracking-[0.16em] text-ink-soft transition-colors duration-200 group-hover:text-rust md:text-xs"
-        >
-          Read{" "}
-          <span className="inline-block transition-transform duration-200 group-hover:-translate-y-[2px] group-hover:translate-x-[2px]">
-            ↗
-          </span>
+      {/* In a 66px column the phone would give the title a fifth of its
+          width away to the date; `max-w` lets the date set as two lines
+          ("28 OCT" / "2025") in a narrow column, still starting on the
+          title's first line. From `md` the column is 9rem and the date
+          prints on one line. */}
+      <span className="col-start-3 row-start-1 max-w-[2.5rem] self-start justify-self-end text-right font-mono text-[10px] tabular-nums text-ink-soft md:max-w-none md:text-sm">
+        {dateLabel(post.date)}
+      </span>
+
+      <span
+        aria-hidden="true"
+        className="col-start-2 col-end-4 row-start-2 mt-3 justify-self-end font-mono text-[10px] uppercase tracking-[0.16em] text-ink-soft transition-colors duration-200 group-hover:text-rust md:col-start-3 md:row-start-1 md:mt-0 md:self-end md:text-xs"
+      >
+        Read{" "}
+        <span className="inline-block transition-transform duration-200 group-hover:-translate-y-[2px] group-hover:translate-x-[2px]">
+          ↗
         </span>
       </span>
     </a>
