@@ -44,7 +44,10 @@ export function PostRow({ post, index }: { post: Post; index: number }) {
         <span className="block max-w-xl font-display text-[1.5rem] leading-[1.12] tracking-[-0.01em] text-ink transition-colors duration-200 group-hover:text-rust md:text-4xl md:leading-[1.08]">
           {post.title}
         </span>
-        <span className="mt-1.5 block max-w-md text-base leading-relaxed text-ink-soft md:mt-2 md:text-base">
+        <span
+          className="mt-1.5 line-clamp-1 max-w-md text-base leading-relaxed text-ink-soft md:mt-2 md:line-clamp-none md:text-base"
+          data-testid="writing-excerpt"
+        >
           {post.excerpt}
         </span>
       </span>
